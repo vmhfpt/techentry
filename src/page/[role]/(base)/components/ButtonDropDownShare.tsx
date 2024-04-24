@@ -1,5 +1,5 @@
 import React from "react";
-import NcDropDown from "shared/NcDropDown/NcDropDown";
+import NcDropDown from "../shared/NcDropDown/NcDropDown";
 
 export interface ButtonDropDownShareProps {
   className?: string;

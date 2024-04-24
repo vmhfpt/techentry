@@ -535,14 +535,6 @@ body {
   height: 22px;
 }
 
-.h3,
-.h4,
-h3,
-h4 {
-  font-weight: 700;
-  color: #141414;
-}
-
 .ant-list-item-meta-title > a {
   color: rgba(0, 0, 0, 0.65);
   transition: all 0.3s;
@@ -1184,10 +1176,6 @@ span.blue {
   margin: 0px;
 }
 
-.text-xs {
-  color: #8c8c8c;
-}
-
 .percent-progress span.ant-progress-text {
   display: flex;
   margin-top: -27px;
@@ -1256,12 +1244,7 @@ img {
 .border10 {
   border-radius: 10px;
 }
-.py-4 {
-  padding: 20px;
-}
-.mb-5 {
-  margin-bottom: 3rem !important;
-}
+
 .icon-move-right .anticon-right {
   color: #40a9ff;
   margin-left: 2px;
@@ -1270,9 +1253,6 @@ img {
   color: #17c1e8;
 
   display: block;
-}
-.mb-4 {
-  margin-bottom: 1.5rem !important;
 }
 
 .gradent {
@@ -1706,11 +1686,6 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
   color: #8c8c8c;
 }
 
-.text-sm {
-  font-size: 12px;
-  color: #8c8c8c;
-  font-weight: 600;
-}
 .ant-progress-project .ant-progress {
   margin-right: 15px;
 }
@@ -1718,12 +1693,6 @@ ul.ant-menu.ant-menu-root.ant-menu-inline.ant-menu-light.left-nav
 .semibold {
   font-weight: 600;
   color: #8c8c8c;
-}
-
-.text-sm {
-  font-size: 12px;
-  color: #8c8c8c;
-  font-weight: 600;
 }
 
 .ant-progress-project .ant-progress-bg {
@@ -2249,11 +2218,6 @@ button.ant-btn.bell strong {
   padding: 0;
   margin: 0 20px 0;
 }
-.m-10,
-.mr-10,
-.mx-10 {
-  margin-right: 10px !important;
-}
 
 .ant-table-tbody > tr > td h6 {
   font-size: 14px;
@@ -2312,15 +2276,7 @@ section.ant-layout.layout-content .ant-layout-content.content-ant {
   display: flex;
   align-items: flex-end;
 }
-.m-auto,
-.ml-auto {
-  margin-left: auto !important;
-}
-.m-30,
-.mr-30,
-.mx-30 {
-  margin-right: 30px !important;
-}
+
 .card-credit .card-footer h6,
 .card-credit .card-footer p {
   margin-bottom: 0;
@@ -2331,12 +2287,7 @@ section.ant-layout.layout-content .ant-layout-content.content-ant {
 .card-credit .card-footer h6 {
   font-weight: 700;
 }
-.width-100 {
-  width: 100%;
-}
-.p-20 {
-  padding: "0px 20px 0px 0px";
-}
+
 .layout-default .ant-layout-content.p-0 {
   padding: 0px;
 }
@@ -2706,27 +2657,6 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 }
 .card-profile-information hr {
   opacity: 0.2;
-}
-
-.p-5,
-.pr-5,
-.px-5 {
-  padding-right: 5px !important;
-}
-.p-5,
-.pl-5,
-.px-5 {
-  padding-left: 5px !important;
-}
-.m-5,
-.mr-5,
-.mx-5 {
-  margin-right: 5px !important;
-}
-.m-5,
-.ml-5,
-.mx-5 {
-  margin-left: 5px !important;
 }
 
 .card-profile-information .ant-descriptions .ant-descriptions-row > td,

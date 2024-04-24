@@ -9,7 +9,7 @@ import { useAppSelector } from "../../../app/hooks";
 import { setVisible } from "../../../app/webSlice";
 import { useAppDispatch } from "../../../app/hooks";
 
-export default function Manager() {
+const Manager = () => {
     const { Header: AntHeader, Content, Sider } = Layout;
     const {fixedNavbar, miniSidenav} = useAppSelector(state => state.web)
     const dispatch = useAppDispatch()
@@ -74,3 +74,5 @@ export default function Manager() {
         </Layout>
     );
 }
+
+export default Manager
