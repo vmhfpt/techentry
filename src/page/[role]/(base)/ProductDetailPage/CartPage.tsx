@@ -1,10 +1,10 @@
 import { NoSymbolIcon, CheckIcon } from "@heroicons/react/24/outline";
-import NcInputNumber from "components/NcInputNumber";
-import Prices from "components/Prices";
-import { Product, PRODUCTS } from "data/data";
+import NcInputNumber from "../components/NcInputNumber";
+import Prices from "../components/Prices";
+import { Product,PRODUCTS  } from "../../../../data/data";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import ButtonPrimary from "shared/Button/ButtonPrimary";
+import ButtonPrimary from "../shared/Button/ButtonPrimary";
 
 const CartPage = () => {
   const renderStatusSoldout = () => {
