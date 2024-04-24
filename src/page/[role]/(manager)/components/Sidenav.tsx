@@ -8,7 +8,6 @@ import Rtl from "./icon/Rtl";
 import profile from "./icon/Profile";
 import Dashboard from "./icon/Dashboard";
 import { useAppSelector } from "../../../../app/hooks";
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 
 function Sidenav() {  

@@ -5,13 +5,19 @@ import Layout from "../page";
 import Billing from "../page/[role]/(manager)/billing";
 import NotPage from "../page/(error)/404";
 import Profile from "../page/[role]/(manager)/profile";
+import Base from "../page/[role]/(base)";
+import PageHome from "../page/[role]/(base)/PageHome";
 
 export default function Router() {
   return (
     <>
         <Routes>
           <Route path="/" element={<Layout/>}>
-            <Route index element={<Navigate to="admin" />} />
+            <Route index element={<Navigate to={'/home'}/>}/>
+              
+            <Route path="home" element={<Base/>}>
+              <Route index element={<PageHome/>}/>
+            </Route>
             <Route path="admin" element={<Manager/>}>
                 <Route index element={<Navigate to="/admin/dashboard" />}/>
                 <Route path="dashboard" element={<Dashboard/>}/>

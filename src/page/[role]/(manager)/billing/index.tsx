@@ -14,10 +14,8 @@ import {
   import mastercard from "../../../../assets/images/manager/mastercard-logo.png";
   import paypal from "../../../../assets/images/manager/paypal-logo-2.png";
   import visa from "../../../../assets/images/manager/visa-logo.png";
-  import Angle from "./components/icon/Angle";
   import Calender from "./components/icon/Calender";
   import Deletebtn from "./components/icon/Deletebtn";
-  import Download from "./components/icon/Download";
   import Mins from "./components/icon/Mins";
   import Pencil from "./components/icon/Pencil";
   import { useAppSelector } from "../../../../app/hooks";
@@ -27,7 +25,7 @@ import {
   import AddRoundedIcon from '@mui/icons-material/AddRounded';
   
 const Billing = () => {
-    const {darkColor, mainColor} = useAppSelector(state => state.web)
+    const {darkColor} = useAppSelector(state => state.web)
 
     const data = [
       {
