@@ -15,15 +15,17 @@ import IconDiscount from "../components/IconDiscount";
 import Prices from "../components/Prices";
 import toast from "react-hot-toast";
 import SectionSliderProductCard from "../components/SectionSliderProductCard";
-import detail1JPG from "images/products/detail1.jpg";
-import detail2JPG from "images/products/detail2.jpg";
-import detail3JPG from "images/products/detail3.jpg";
+import detail1JPG from "../../../../images/products/detail1.jpg";
+import detail2JPG from "../../../../images/products/detail2.jpg";
+import detail3JPG from "../../../../images/products/detail3.jpg";
 import Policy from "./Policy";
 import ReviewItem from "../components/ReviewItem";
 import ButtonSecondary from "../shared/Button/ButtonSecondary";
 import SectionPromo2 from "../components/SectionPromo2";
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../components/NotifyAddTocart";
+
+
 
 export interface ProductDetailPageProps {
   className?: string;

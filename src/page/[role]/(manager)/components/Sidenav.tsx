@@ -43,11 +43,11 @@ function Sidenav() {
               >
                 {<Tables color={darkColor}/>}
               </span>
-              <span className="label">Tables</span>
+              <span className="label">Users</span>
             </Flex>
           </>
         ),
-        link: '/admin/Tables'
+        link: '/admin/users'
       },
       {
         label: (
