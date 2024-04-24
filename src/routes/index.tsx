@@ -9,9 +9,9 @@ import Base from "../page/[role]/(base)";
 import PageHome from "../page/[role]/(base)/PageHome";
 
 
-import UserManagement from "../page/[role]/(manager)/(user)";
-import AddUser from "../page/[role]/(manager)/(user)/_components/add";
-import EditUser from "../page/[role]/(manager)/(user)/_components/edit";
+import UserManagement from "../page/[role]/(manager)/user";
+import AddUser from "../page/[role]/(manager)/user/_components/add";
+import EditUser from "../page/[role]/(manager)/user/_components/edit";
 import ProductDetailPage from "../page/[role]/(base)/ProductDetailPage/ProductDetailPage";
 import CartPage from "../page/[role]/(base)/ProductDetailPage/CartPage";
 
@@ -46,9 +46,6 @@ export default function Router() {
                   <Route path="add" element={<AddUser />} />
                   <Route path=":id" element={<EditUser />} />
                </Route>
-
-
-
             </Route>
           </Route>
           <Route path="*" element={<NotPage/>}/>
