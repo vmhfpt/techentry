@@ -3,19 +3,14 @@ import { Space, Table, Tag, Typography } from 'antd';
 import type { TableProps } from 'antd';
 import { Button, Flex } from 'antd';
 import { Link } from 'react-router-dom';
-interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
-}
+import { Iuser } from '../../../../../common/types/user.interface';
+
 
 
 
 export default function ListUser(){
     
-    const data: DataType[] = [
+    const data: Iuser[] = [
         {
           key: '1',
           name: 'John Brown',
@@ -39,7 +34,7 @@ export default function ListUser(){
         },
       ];
     
-    const columns: TableProps<DataType>['columns'] = [
+    const columns: TableProps<Iuser>['columns'] = [
         {
           title: 'Name',
           dataIndex: 'name',
