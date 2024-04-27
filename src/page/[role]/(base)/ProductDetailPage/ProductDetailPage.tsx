@@ -27,6 +27,10 @@ import NotifyAddTocart from "../components/NotifyAddTocart";
 
 
 
+
+
+
+
 export interface ProductDetailPageProps {
   className?: string;
 }
