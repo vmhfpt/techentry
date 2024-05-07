@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
 import Avatar from "../shared/Avatar/Avatar";
 import Badge from "../shared/Badge/Badge";

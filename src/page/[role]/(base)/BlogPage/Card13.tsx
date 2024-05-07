@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 import NcImage from "../shared/NcImage/NcImage";
 import { Link } from "react-router-dom";
 import { _getImgRd, _getTitleRd } from "../../../../contains/fakeData";
