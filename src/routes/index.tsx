@@ -31,7 +31,7 @@ export default function Router() {
 
             <Route path="" element={<Base/>}>
                 <Route path="cart" element={<CartPage/>}/>
-                <Route path=":slug" element={<ProductDetailPage/>}/>
+                <Route path="product-detail" element={<ProductDetailPage/>}/>
             </Route>
 
 
