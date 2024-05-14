@@ -66,8 +66,6 @@ export default function Router() {
                 <Route path="account-billing" element={<AccountBilling />} />
                 <Route path="account-my-order" element={<AccountOrder />} />
 
-
-
                 <Route path="cart" element={<CartPage />}/>
                 <Route path="checkout" element={<CheckoutPage />}/>
                 <Route path="search" element={<PageSearch />} />
