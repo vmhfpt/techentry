@@ -35,10 +35,13 @@ import Login from "../page/[role]/(manager)/auth/login";
 
 
 
+
 export default function Router() {
   return (
     <>
         <Routes>
+
+      
           <Route path="/" element={<Layout/>}>
 
            

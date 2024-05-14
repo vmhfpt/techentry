@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "name": "newest",
+      "email": "fsdfs@gmail.com",
+      "password": "3242",
+      "phone": "fsdfsf",
+      "address_line1": "Trung Hoa Cau Giay Ha Noi",
+      "address_line2": "Nguyen Thi Thap, Lien Chieu, Da Nang",
+      "country": "Việt Nam",
+      "city": "Bà Rịa - Vũng Tàu-77",
+      "district": "Vũng Tàu",
+      "role_id": "1",
+      "id": "9ed2",
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715693936/example-react/p9mgar0zjrhxxpf79lzv.jpg"
+    },
+    {
+      "name": "fsdfsdaffdsfs 234234 update",
+      "email": "fsd3fs@gmail.com",
+      "password": "11111111",
+      "phone": "fsdfsf",
+      "address_line1": "Trung Hoa Cau Giay Ha Noi",
+      "address_line2": "Nguyen Thi Thap, Lien Chieu, Da Nang",
+      "country": "Việt Nam",
+      "city": "An Giang-89",
+      "district": "Long Xuyên",
+      "role_id": "2",
+      "id": "0f91",
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715692382/example-react/zzefjomhiyl4gzziy75o.jpg"
+    }
+  ]
+}

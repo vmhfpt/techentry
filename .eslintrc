@@ -2,6 +2,7 @@
     "extends": ["react-app", "prettier"],
     "plugins": ["react", "prettier"],
     "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
         "prettier/prettier": [
             "warn",
             {
