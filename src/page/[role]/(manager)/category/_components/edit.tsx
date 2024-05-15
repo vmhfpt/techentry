@@ -1,83 +1,98 @@
-import { Modal, Select, SelectProps, Switch } from 'antd'
-import { Button, Form, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { editCategory, getOneCategory } from '@/app/slices/categorySlice'
+import { Form, Input, Modal, message } from 'antd'
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
-}
+export default function EditCategory() {
+  const { id } = useParams()
 
-
-/* eslint-enable no-template-curly-in-string */
-
-const onFinish = (values: any) => {
-  console.log(values)
-}
-
-export default function AddCategory() {
   const navigate = useNavigate()
+  const [form] = Form.useForm()
+  const dispatch = useAppDispatch()
+  const { category, isLoadingDetails } = useAppSelector((state) => state.category)
 
   const handleCancel = () => {
     navigate('..')
   }
 
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+  const handleSubmit = async () => {
+    await form.validateFields()
+    const id = form.getFieldValue('id')
+    const name = form.getFieldValue('name')
+    const description = form.getFieldValue('description')
+    const parent_id = form.getFieldValue('parent_id')
+    const is_delete = false
 
-  const options: SelectProps['options'] = [
-     {
-        value : 1,
-        label : "Điện thoại"
-     },
-     {
-        value : 2,
-        label : "Laptop"
-     },
-     {
-        value : 2,
-        label : "Máy tính bảng"
-     }
-  ];
+    const data = { id, name, description, parent_id, is_delete }
+
+    const res = await dispatch(editCategory(data))
+    if (res.success) {
+      message.success('Sửa danh mục thành công!')
+      navigate('..')
+    } else if (!res.success) {
+      message.error('Sửa danh mục thất bại!')
+    }
+  }
+
+  form.setFieldsValue({
+    id: category?.id,
+    name: category?.name,
+    description: category?.description,
+    parent_id: category?.parent_id
+  })
+
+  useEffect(() => {
+    dispatch(getOneCategory(id as string))
+  }, [id, dispatch])
 
   return (
     <>
-      <Modal title='Edit category "abc"' open={true} onCancel={handleCancel}>
-        <Form
-          {...layout}
-          name='nest-messages'
-          onFinish={onFinish}
-          style={{ maxWidth: 600 }}
-         
-        >
-          <Form.Item name={['user', 'name']} label='Name' rules={[{ required: true }]}>
+      <Modal
+        title='Edit Category'
+        confirmLoading={isLoadingDetails}
+        open={true}
+        okText='Đồng ý'
+        cancelText='Huỷ'
+        onOk={handleSubmit}
+        onCancel={handleCancel}
+      >
+        <Form form={form} name='nest-messages' layout='vertical' style={{ maxWidth: 600 }}>
+          <Form.Item name='id' className='hidden'>
             <Input />
           </Form.Item>
-         
-         
-
-
-          <Form.Item name={['user', 'parent']} label='Parent category'>
-            <Select
-                    mode="tags"
-                    style={{ width: '100%' }}
-                    placeholder="Select parent"
-                    onChange={handleChange}
-                    options={options}
-                />
+          <Form.Item name='parent_id' className='hidden'>
+            <Input />
           </Form.Item>
 
-          <Form.Item name={['user', 'active']} label='Active'>
-           <Switch defaultChecked  />
+          <Form.Item
+            name='name'
+            label='Name'
+            className='w-full'
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên danh mục!' },
+              { max: 120, message: 'Tên không vượt quá 120 ký tự' },
+              {
+                whitespace: true,
+                message: 'Tên danh mục không được để trống!'
+              }
+            ]}
+          >
+            <Input size='large' placeholder='Nhập tên danh mục' />
           </Form.Item>
-
-
-
-        
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-            <Button type='primary' htmlType='submit'>
-              Update
-            </Button>
+          <Form.Item
+            name='description'
+            label='Description'
+            className='w-full'
+            rules={[
+              { required: true, message: 'Vui lòng nhập mô tả danh mục!' },
+              {
+                whitespace: true,
+                message: 'Mô tả danh mục không được để trống!'
+              }
+            ]}
+          >
+            <Input.TextArea size='large' rows={4} placeholder='Nhập mô tả danh mục' />
           </Form.Item>
         </Form>
       </Modal>

@@ -1,0 +1,54 @@
+{
+  "slide": [
+    {
+      "id": "6389",
+      "title": "Exclusive collection for everyone2",
+      "status": 3,
+      "img": "https://picsum.photos/200/300",
+      "url": "https://picsum.photos/200/300"
+    },
+    {
+      "title": "Exclusive collection for everyone2 update",
+      "status": 234,
+      "img": "https://picsum.photos/200/300",
+      "url": "https://picsum.photos/200/300",
+      "id": "e156"
+    },
+    {
+      "id": "6bb6",
+      "title": "Exclusive collection for everyone2",
+      "status": 4,
+      "img": "https://picsum.photos/200/300",
+      "url": "https://picsum.photos/200/300"
+    },
+    {
+      "id": "5bd2",
+      "title": "Exclusive collection for everyone2",
+      "status": 3,
+      "img": "https://picsum.photos/200/300",
+      "url": "https://picsum.photos/200/300"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Áo update",
+      "description": "moo taa",
+      "is_delete": false,
+      "id": "1"
+    },
+    {
+      "name": "iphone update hihih",
+      "description": "- ád\n-fg",
+      "parent_id": "2",
+      "is_delete": false,
+      "id": "89cf"
+    },
+    {
+      "id": "b124",
+      "name": "tai nghe",
+      "parent_id": "",
+      "description": "sdf",
+      "is_delete": false
+    }
+  ]
+}
