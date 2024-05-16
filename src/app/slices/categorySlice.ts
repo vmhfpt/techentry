@@ -5,6 +5,7 @@ import {
   deleteCategory,
   getCategory,
   getListCategory,
+  searchCategory,
   updateCategory
 } from '@/services/categoryService'
 import { Dispatch, createSlice } from '@reduxjs/toolkit'
@@ -87,6 +88,21 @@ export const getAllCategory = () => async (dispatch: Dispatch) => {
     dispatch(fetchedDone())
   }
 }
+
+export const searchCategories = (q: string) => async (dispatch: Dispatch) => {
+  dispatch(isFetching());
+  try {
+    const { data } = await searchCategory(q);
+    if (data) {
+      dispatch(getAllSuccess(data));
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch(getAllFailure());
+  } finally {
+    dispatch(fetchedDone());
+  }
+};
 
 export const getOneCategory = (id: string) => async (dispatch: Dispatch) => {
   dispatch(isFetchingDetails())

@@ -22,3 +22,12 @@ export const updateBanner = (payload: IBanner) => {
 export const deleteBanner = (id: string) => {
   return instance.delete(`slide/${id}`)
 }
+
+export const searchBanner = (q: string) => {
+  return instance.get('slide', {
+    params: {
+      title: q
+    }
+  })
+}
+

@@ -25,3 +25,11 @@ export const changeStatusCategory = (id: string, status: boolean) => {
 export const deleteCategory = (id: string) => {
   return instance.delete(`categories/${id}`)
 }
+
+export const searchCategory = (q: string) => {
+  return instance.get('categories', {
+    params: {
+      name: q
+    }
+  })
+}
