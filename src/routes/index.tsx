@@ -32,73 +32,80 @@ import BlogSingle from "../page/[role]/(base)/BlogPage/BlogSingle";
 import PageContact from "../page/[role]/(base)/PageContact/PageContact";
 import PageAbout from "../page/[role]/(base)/PageAbout/PageAbout";
 import Login from "../page/[role]/(manager)/auth/login";
+import AddBrand from "../page/[role]/(manager)/brand/_components/add";
+import BrandManagement from "../page/[role]/(manager)/brand";
 
 
 
 export default function Router() {
   return (
     <>
-        <Routes>
-          <Route path="/" element={<Layout/>}>
-
-           
-
-            <Route index element={<Navigate to={'/home'}/>}/>
-            <Route path="home" element={<Base/>}>
-                <Route index element={<PageHome/>}/>
-                <Route path="" element={<ProductDetailPage/>}/>
-            </Route>
-
-            <Route path="" element={<Base/>}>
-                <Route path="login" element={<PageLogin />} />
-                <Route path="signup" element={<PageSignUp />} />
-
-                <Route path="contact" element={<PageContact />} />
-                <Route path="about" element={<PageAbout />} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
 
 
-                <Route path="blog" element={<BlogPage />}/>
-                <Route path="blog/:slug" element={<BlogSingle />}/>
 
-                <Route path="account" element={<AccountPage />} />
-                <Route path="account-savelists" element={<AccountSavelists />} />
-                <Route path="account-change-password" element={<AccountPass />} />
-                <Route path="account-billing" element={<AccountBilling />} />
-                <Route path="account-my-order" element={<AccountOrder />} />
-
-                <Route path="cart" element={<CartPage />}/>
-                <Route path="checkout" element={<CheckoutPage />}/>
-                <Route path="search" element={<PageSearch />} />
-                <Route path="category" element={<PageCategory />}/>
-                <Route path="category/:slug" element={<PageCategory />}/>
-                <Route path=":slug" element={<ProductDetailPage/>}/>
-            </Route>
-
-            <Route path="admin/login" element={<Login />} />
-            
-            <Route path="admin" element={<Manager/>}>
-                <Route index element={<Navigate to="/admin/dashboard" />}/>
-                <Route path="dashboard" element={<Dashboard/>}/>
-                <Route path="billing" element={<Billing/>}/>
-                <Route path="profile" element={<Profile/>}/>
-
-
-                <Route path="users" element={<UserManagement />}>
-                  <Route path="add" element={<AddUser />} />
-                  <Route path=":id" element={<EditUser />} />
-               </Route>
-
-
-               <Route path="categories" element={<CategoryManagement />}>
-                  <Route path="add" element={<AddCategory />} />
-                  <Route path=":id" element={<EditCategory />} />
-               </Route>
-
-
-            </Route>
+          <Route index element={<Navigate to={'/home'} />} />
+          <Route path="home" element={<Base />}>
+            <Route index element={<PageHome />} />
+            <Route path="" element={<ProductDetailPage />} />
           </Route>
-          <Route path="*" element={<NotPage/>}/>
-        </Routes>
+
+          <Route path="" element={<Base />}>
+            <Route path="login" element={<PageLogin />} />
+            <Route path="signup" element={<PageSignUp />} />
+
+            <Route path="contact" element={<PageContact />} />
+            <Route path="about" element={<PageAbout />} />
+
+
+            <Route path="blog" element={<BlogPage />} />
+            <Route path="blog/:slug" element={<BlogSingle />} />
+
+            <Route path="account" element={<AccountPage />} />
+            <Route path="account-savelists" element={<AccountSavelists />} />
+            <Route path="account-change-password" element={<AccountPass />} />
+            <Route path="account-billing" element={<AccountBilling />} />
+            <Route path="account-my-order" element={<AccountOrder />} />
+
+            <Route path="cart" element={<CartPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="search" element={<PageSearch />} />
+            <Route path="category" element={<PageCategory />} />
+            <Route path="category/:slug" element={<PageCategory />} />
+            <Route path=":slug" element={<ProductDetailPage />} />
+          </Route>
+
+          <Route path="admin/login" element={<Login />} />
+
+          <Route path="admin" element={<Manager />}>
+            <Route index element={<Navigate to="/admin/dashboard" />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="billing" element={<Billing />} />
+            <Route path="profile" element={<Profile />} />
+
+
+            <Route path="users" element={<UserManagement />}>
+              <Route path="add" element={<AddUser />} />
+              <Route path=":id" element={<EditUser />} />
+            </Route>
+
+            <Route path="brand" element={<BrandManagement />}>
+              {/* <Route path="add" element={<AddBrand />} />
+              <Route path=":id" element={<EditBrand />} /> */}
+            </Route>
+
+
+            <Route path="categories" element={<CategoryManagement />}>
+              <Route path="add" element={<AddCategory />} />
+              <Route path=":id" element={<EditCategory />} />
+            </Route>
+
+
+          </Route>
+        </Route>
+        <Route path="*" element={<NotPage />} />
+      </Routes>
     </>
   );
 }

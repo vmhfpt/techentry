@@ -1,20 +1,20 @@
 import { axiosClient } from "../api/axios";
 import { Iuser } from "../common/types/user.interface";
-export class BrandDService {
-    async index(){
+export class BrandService {
+    async list(){
         return await axiosClient.get('/brand');
     }
     async create(data : Iuser){
-        return await axiosClient.post('/users', data);
+        return await axiosClient.post('/brand', data);
     }
     async findOneId(id : number){
-        return await axiosClient.get(`/users/${id}`);
+        return await axiosClient.get(`/brand/${id}`);
     }
     async update(id : number, data : Iuser){
-        return await axiosClient.put(`/users/${id}`, data);
+        return await axiosClient.put(`/brand/${id}`, data);
     }
     async delete(id : number){
-        return await axiosClient.delete(`/users/${id}`);
+        return await axiosClient.delete(`/brand/${id}`);
     }
 }
-export default new BrandDService();
+export default new BrandService();

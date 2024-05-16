@@ -8,7 +8,6 @@ import  axios, {
 
 
 const onRequest = (config: InternalAxiosRequestConfig | any): InternalAxiosRequestConfig => {
-    const { method, url } = config;
 
     return config;
 };
