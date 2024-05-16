@@ -1,6 +1,6 @@
 import { Dispatch, createSlice } from '@reduxjs/toolkit'
 import { IBanner } from '@/common/types/banner.interface'
-import { createBanner, deleteBanner, getBanner, getListBanner, updateBanner } from '@/services/bannerService'
+import { createBanner, deleteBanner, getBanner, getListBanner, searchBanner, updateBanner } from '@/services/bannerService'
 
 interface IInitialState {
   banners: IBanner[]
@@ -78,6 +78,21 @@ export const getAllBanner = () => async (dispatch: Dispatch) => {
     dispatch(fetchedDone())
   }
 }
+
+export const searchBanners = (q: string) => async (dispatch: Dispatch) => {
+  dispatch(isFetching());
+  try {
+    const { data } = await searchBanner(q);
+    if (data) {
+      dispatch(getAllSuccess(data));
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch(getAllFailure());
+  } finally {
+    dispatch(fetchedDone());
+  }
+};
 
 export const getOneBanner = (id: string) => async (dispatch: Dispatch) => {
   dispatch(isFetchingDetails())

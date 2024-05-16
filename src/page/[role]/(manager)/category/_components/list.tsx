@@ -1,13 +1,17 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { changeStatus, getAllCategory } from '@/app/slices/categorySlice'
+import { changeStatus, getAllCategory, searchCategories } from '@/app/slices/categorySlice'
 import { ICategory } from '@/common/types/category.interface'
 import type { TableProps } from 'antd'
-import { Button, Flex, Popconfirm, Space, Table, Tag, Typography, message } from 'antd'
-import { useEffect } from 'react'
+import { Button, Flex, Input, Popconfirm, Space, Table, Tag, Typography, message } from 'antd'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import useDebounce from '@/hooks/useDebounce'
 
 export default function ListCategory() {
   const dispatch = useAppDispatch()
+  const [searchValue, setSearchValue] = useState('')
+  const debouncedValue = useDebounce(searchValue, 600)
 
   const { categories, isLoading } = useAppSelector((state) => state.category)
 
@@ -31,9 +35,20 @@ export default function ListCategory() {
     }
   }
 
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value
+    if (!searchValue.startsWith(' ')) {
+      setSearchValue(searchValue)
+    }
+  }
+
   useEffect(() => {
-    dispatch(getAllCategory())
-  }, [dispatch])
+    if (!debouncedValue.trim()) {
+      dispatch(getAllCategory())
+    } else {
+      dispatch(searchCategories(debouncedValue))
+    }
+  }, [debouncedValue, dispatch])
 
   const columns: TableProps<ICategory>['columns'] = [
     {
@@ -117,9 +132,32 @@ export default function ListCategory() {
 
   return (
     <>
-      <Typography.Title editable level={2} style={{ margin: 0 }}>
-        List Category
-      </Typography.Title>
+      <div className='flex items-center justify-between my-2'>
+        <Typography.Title editable level={2} style={{ margin: 0 }}>
+          List Category
+        </Typography.Title>
+
+        <Input
+          className='header-search w-[250px]'
+          prefix={
+            <div className=' px-2'>
+              <SearchRoundedIcon />
+            </div>
+          }
+          value={searchValue}
+          spellCheck={false}
+          allowClear
+          onChange={handleChangeSearch}
+          size='small'
+          placeholder={'search'}
+          style={{
+            borderRadius: '2rem',
+            border: 'none',
+            backgroundColor: '#ffff',
+            boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'
+          }}
+        />
+      </div>
       <Table
         pagination={{ pageSize: 8 }}
         columns={columns}
