@@ -29,11 +29,17 @@ export default function ListUser(){
 
 
     const {
-      data : dataItem,
+      data ,
       isLoading,
       isError
     } = useGetUsersQuery({});
 
+    const dataItem = data?.map((item : Iuser, key : number) => {
+      return {
+        ...item,
+        key : key
+      }
+    })
     
     const columns: TableProps<Iuser>['columns'] = [
         {

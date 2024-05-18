@@ -32,6 +32,7 @@ import BlogSingle from "../page/[role]/(base)/BlogPage/BlogSingle";
 import PageContact from "../page/[role]/(base)/PageContact/PageContact";
 import PageAbout from "../page/[role]/(base)/PageAbout/PageAbout";
 import Login from "../page/[role]/(manager)/auth/login";
+import AttributeManagement from "../page/[role]/(manager)/attribute";
 
 
 
@@ -93,6 +94,9 @@ export default function Router() {
                   <Route path=":id" element={<EditUser />} />
                </Route>
 
+               <Route path="attributes-product" element={<AttributeManagement />}>
+               
+               </Route>
 
                <Route path="categories" element={<CategoryManagement />}>
                   <Route path="add" element={<AddCategory />} />

@@ -65,6 +65,21 @@ function Sidenav() {
         link: '/admin/users'
       },
       {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
+              <span className="label">Attributes Product</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/attributes-product'
+      },
+      {
         label: (
           <>
             <Flex align="center" justify="center">

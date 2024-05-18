@@ -1,6 +1,10 @@
-import { emptySplitApi } from "../../../../api/emptySplitApi";
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { baseApiConfig } from '../../../../api/baseApiConfig';
 
-
+const emptySplitApi = createApi({
+    reducerPath: 'usersApi',
+    ...baseApiConfig
+  });
 const apiWithTag = emptySplitApi.enhanceEndpoints({addTagTypes: ['Users']});
 export const usersApi = apiWithTag.injectEndpoints({
   

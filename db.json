@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "name": "newest",
+      "name": "newest update 1232",
       "email": "fsdfs@gmail.com",
       "password": "3242",
       "phone": "fsdfsf",
@@ -11,22 +11,256 @@
       "city": "Bà Rịa - Vũng Tàu-77",
       "district": "Vũng Tàu",
       "role_id": "1",
-      "id": "9ed2",
-      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715693936/example-react/p9mgar0zjrhxxpf79lzv.jpg"
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715694506/example-react/rdy53medgz3lfgy59wcb.jpg",
+      "id": 1
     },
     {
-      "name": "fsdfsdaffdsfs 234234 update",
+      "name": "fsdfsdaf",
       "email": "fsd3fs@gmail.com",
-      "password": "11111111",
+      "password": "efdsfds",
       "phone": "fsdfsf",
       "address_line1": "Trung Hoa Cau Giay Ha Noi",
       "address_line2": "Nguyen Thi Thap, Lien Chieu, Da Nang",
       "country": "Việt Nam",
-      "city": "An Giang-89",
-      "district": "Long Xuyên",
+      "city": "Bà Rịa - Vũng Tàu-77",
+      "district": "Vũng Tàu",
       "role_id": "2",
-      "id": "0f91",
-      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715692382/example-react/zzefjomhiyl4gzziy75o.jpg"
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png",
+      "id": 2
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Ram",
+      "description": "ram",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "name": "Rom",
+      "description": "Bộ nhớ trong"
+    },
+    {
+      "id": 3,
+      "name": "Màn hình",
+      "description": "màn hình"
+    },
+    {
+      "id": 4,
+      "name": "Dung lượng pin",
+      "description": "dung lượng pin"
+    },
+    {
+      "id": 5,
+      "name": "Hệ điều hành",
+      "description": "hệ điều hành"
+    },
+    {
+      "name": "Ổ cứng",
+      "description": "Hard diver",
+      "id": 6
+    },
+    {
+      "name": "Chip",
+      "description": "Chip xử lý",
+      "id": 7
+    },
+    {
+      "name": "Chất liệu",
+      "description": "Material",
+      "id": 8
+    }
+  ],
+  "value_attributes": [
+    {
+      "id": 1,
+      "attributeId": 1,
+      "value": "2Gb"
+    },
+    {
+      "attributeId": 1,
+      "value": "4Gb",
+      "id": 2
+    },
+    {
+      "attributeId": 2,
+      "value": "64Gb",
+      "id": 3
+    },
+    {
+      "attributeId": 3,
+      "value": "7.5 in",
+      "id": 4
+    },
+    {
+      "attributeId": 3,
+      "value": "5.5 in",
+      "id": 5
+    },
+    {
+      "attributeId": 3,
+      "value": "6.5 in",
+      "id": 6
+    },
+    {
+      "attributeId": 6,
+      "value": "SSD 250Gb",
+      "id": 7
+    },
+    {
+      "attributeId": 6,
+      "value": "SSD 500Gb",
+      "id": 8
+    },
+    {
+      "attributeId": 5,
+      "value": "Android",
+      "id": 9
+    },
+    {
+      "attributeId": 5,
+      "value": "IOS",
+      "id": 10
+    },
+    {
+      "attributeId": 4,
+      "value": "1200 mAh",
+      "id": 11
+    },
+    {
+      "attributeId": 4,
+      "value": "5000 mAh",
+      "id": 12
+    },
+    {
+      "attributeId": 7,
+      "value": "Snapdragon 850",
+      "id": 13
+    },
+    {
+      "attributeId": 7,
+      "value": "Snapdragon 625",
+      "id": 14
+    },
+    {
+      "attributeId": 7,
+      "value": "Mediatek G90T",
+      "id": 15
+    },
+    {
+      "attributeId": 7,
+      "value": "Core i5",
+      "id": 16
+    },
+    {
+      "attributeId": 7,
+      "value": "core i7",
+      "id": 17
+    },
+    {
+      "attributeId": 8,
+      "value": "Nhựa cứng",
+      "id": 18
+    },
+    {
+      "attributeId": 8,
+      "value": "Viền kim loại",
+      "id": 19
+    },
+    {
+      "attributeId": 8,
+      "value": "Vỏ nhựa",
+      "id": 20
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Điện thoại"
+    },
+    {
+      "id": 2,
+      "name": "Máy tính bảng"
+    },
+    {
+      "id": 3,
+      "name": "Laptop"
+    },
+    {
+      "id": 4,
+      "name": "Phụ kiện"
+    }
+  ],
+  "category_attributes": [
+    {
+      "id": 1,
+      "categoryId": 1,
+      "attributeId": 1
+    },
+    {
+      "id": 2,
+      "categoryId": 1,
+      "attributeId": 2
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 2,
+      "id": 3
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 6,
+      "id": 4
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 1,
+      "id": 5
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 3,
+      "id": 6
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 4,
+      "id": 7
+    },
+    {
+      "categoryId": 1,
+      "attributeId": 3,
+      "id": 8
+    },
+    {
+      "categoryId": 1,
+      "attributeId": 4,
+      "id": 9
+    },
+    {
+      "categoryId": 1,
+      "attributeId": 5,
+      "id": 10
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 1,
+      "id": 11
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 3,
+      "id": 12
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 4,
+      "id": 13
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 5,
+      "id": 14
     }
   ]
 }
