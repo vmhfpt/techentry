@@ -43,11 +43,43 @@ function Sidenav() {
               >
                 {<Tables color={darkColor}/>}
               </span>
+              <span className="label">Banner</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/banner'
+      },
+      {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
               <span className="label">Categories</span>
             </Flex>
           </>
         ),
         link: '/admin/categories'
+      },
+      {
+        label: (
+          <>
+            <div>
+                <Flex justify="center" align="center">
+                  <div
+                    className={`icon `}
+                  >
+                    {<Tables color={darkColor}/>}
+                  </div>
+                  <span className="label">Brand</span>
+                </Flex>
+            </div>
+          </>
+        ),
+        link: '/admin/brand'
       },
       {
         label:(

@@ -14,9 +14,6 @@ import AddUser from "../page/[role]/(manager)/user/_components/add";
 import EditUser from "../page/[role]/(manager)/user/_components/edit";
 import ProductDetailPage from "../page/[role]/(base)/ProductDetailPage/ProductDetailPage";
 import CartPage from "../page/[role]/(base)/ProductDetailPage/CartPage";
-import CategoryManagement from "../page/[role]/(manager)/category";
-import AddCategory from "../page/[role]/(manager)/category/_components/add";
-import EditCategory from "../page/[role]/(manager)/category/_components/edit";
 import PageCategory from "../page/[role]/(base)/CategoryPage/PageCategory";
 import CheckoutPage from "../page/[role]/(base)/PageCheckout/CheckoutPage";
 import PageLogin from "../page/[role]/(base)/Auth/PageLogin";
@@ -34,11 +31,19 @@ import PageAbout from "../page/[role]/(base)/PageAbout/PageAbout";
 import Login from "../page/[role]/(manager)/auth/login";
 import AttributeManagement from "../page/[role]/(manager)/attribute";
 
+import BrandManagement from "../page/[role]/(manager)/brand";
+import BannerManagement from "@/page/[role]/(manager)/banner";
+import AddBanner from "@/page/[role]/(manager)/banner/_components/add";
+import EditBanner from "@/page/[role]/(manager)/banner/_components/edit";
+import CategoryManagement from "@/page/[role]/(manager)/category";
+import AddCategory from "@/page/[role]/(manager)/category/_components/add";
+import EditCategory from "@/page/[role]/(manager)/category/_components/edit";
 
 
 
 export default function Router() {
   return (
+  
     <>
         <Routes>
 
@@ -94,8 +99,21 @@ export default function Router() {
                   <Route path=":id" element={<EditUser />} />
                </Route>
 
-               <Route path="attributes-product" element={<AttributeManagement />}>
-               
+               <Route path="attributes-product" element={<AttributeManagement />}></Route>
+
+               {/* <Route path="categories" element={<CategoryManagement />}>
+                  <Route path="add" element={<AddCategory />} />
+                  <Route path=":id" element={<EditCategory />} />
+               </Route> */}
+
+
+              <Route path="brand" element={<BrandManagement />}>
+              
+              </Route>
+
+               <Route path="banner" element={<BannerManagement />}>
+                  <Route path="add" element={<AddBanner />} />
+                  <Route path=":id" element={<EditBanner />} />
                </Route>
 
                <Route path="categories" element={<CategoryManagement />}>

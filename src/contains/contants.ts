@@ -1,3 +1,5 @@
+import { message } from "antd";
+
 const avatarColors = [
   "#ffdd00",
   "#fbb034",
@@ -28,3 +30,61 @@ const avatarColors = [
 ];
 
 export { avatarColors };
+
+export enum PAGINATE_DEFAULT {
+  PAGE = 1,
+  LIMIT = 10,
+  LIMIT_CHART = 5
+}
+
+export const showLoading = (content: string): void => {
+  message.loading({
+    content: content,
+    key: 'helper'
+  });
+};
+
+export const showAlertSuccess = (content: string): void => {
+  message.success({
+    content: content,
+    key: 'helper'
+  });
+};
+
+export const showAlertError = (content: string): void => {
+  message.error({
+    content: content,
+    key: 'helper'
+  });
+};
+
+export const showAlertWarning = (content: string): void => {
+  message.warning({
+    content: content,
+    key: 'helper'
+  });
+};
+
+export interface ConfirmModalParams {
+  visible: boolean;
+  title: string;
+  content: string;
+  type?: ConfirmModalType;
+  name?: string;
+}
+
+export const DefaultConfirmModalParams: ConfirmModalParams = {
+  visible: false,
+  title: '',
+  content: '',
+  type: undefined
+};
+
+export enum ConfirmModalType {
+  DELETE = 'DELETE',
+  CHANGE_STATUS = 'CHANGE_STATUS',
+  BLOCK = 'BLOCK',
+  UNLOCK = 'UNLOCK',
+  SHOW = 'SHOW',
+  HIDE = 'HIDE'
+}

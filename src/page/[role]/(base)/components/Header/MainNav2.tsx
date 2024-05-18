@@ -3,7 +3,6 @@ import Logo from "../../shared/Logo/Logo";
 import MenuBar from "../../shared/MenuBar/MenuBar";
 import LangDropdown from "./LangDropdown";
 import AvatarDropdown from "./AvatarDropdown";
-import TemplatesDropdown from "./TemplatesDropdown";
 import DropdownCategories from "./DropdownCategories";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -54,7 +53,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
           navigate("/page-search");
         }}
       >
-        <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded">
+        <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded-[999px]">
           {renderMagnifyingGlassIcon()}
           <input
             type="text"
@@ -71,6 +70,29 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
     );
   };
 
+  const searchForm = () => {
+    return (
+      <form
+        className="py-2 text-slate-900 dark:text-slate-100 hidden md:block mx-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          navigate("/page-search");
+        }}
+      >
+        <div className="bg-slate-50 dark:bg-slate-800 flex items-center space-x-1.5 px-5 rounded-[999px]">
+          {renderMagnifyingGlassIcon()}
+          <input
+            type="text"
+            placeholder="Bạn cần tìm gì?"
+            className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-base"
+            autoFocus
+          />
+        </div>
+        <input type="submit" hidden value="" />
+      </form>
+    )
+  }
+
   return (
     <div className="nc-MainNav2Logged relative z-10 bg-white dark:bg-slate-900 ">
       <div className="container">
@@ -81,33 +103,15 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 
           <div className="flex lg:flex-1 items-center space-x-3 sm:space-x-8">
             <Logo />
-            {!showSearchForm && (
-              <div className="hidden md:block h-10 border-l border-slate-200 dark:border-slate-700"></div>
-            )}
-            {!showSearchForm && (
-              <div className="hidden md:block">
-                <DropdownCategories />
-              </div>
-            )}
+            <div className="hidden md:block h-10 border-l border-slate-200 dark:border-slate-700"></div>
+            <div className="hidden md:block">
+              <DropdownCategories />
+            </div>
           </div>
 
-          {showSearchForm && (
-            <div className="flex-[2] flex !mx-auto px-10">
-              {renderSearchForm()}
-            </div>
-          )}
-
           <div className="flex-1 flex items-center justify-end ">
-            {!showSearchForm && <TemplatesDropdown />}
+            {searchForm()}
             {!showSearchForm && <LangDropdown />}
-            {!showSearchForm && (
-              <button
-                className="hidden lg:flex w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none items-center justify-center"
-                onClick={() => setShowSearchForm(!showSearchForm)}
-              >
-                {renderMagnifyingGlassIcon()}
-              </button>
-            )}
             <AvatarDropdown />
             <CartDropdown />
           </div>

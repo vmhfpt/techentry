@@ -1,83 +1,76 @@
-import { Modal, Select, SelectProps, Switch } from 'antd'
-import { Button, Form, Input } from 'antd'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { createNewCategory } from '@/app/slices/categorySlice'
+import { Form, Input, Modal, message } from 'antd'
 import { useNavigate } from 'react-router-dom'
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
-}
-
-
-/* eslint-enable no-template-curly-in-string */
-
-const onFinish = (values: any) => {
-  console.log(values)
-}
 
 export default function AddCategory() {
   const navigate = useNavigate()
+  const [form] = Form.useForm()
+  const dispatch = useAppDispatch()
+  const { isLoading } = useAppSelector((state) => state.category)
 
   const handleCancel = () => {
     navigate('..')
   }
+  const handleSubmit = async () => {
+    await form.validateFields()
 
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+    const name = form.getFieldValue('name')
+    const parent_id = ''
+    const description = form.getFieldValue('description')
+    const is_delete = false
 
-  const options: SelectProps['options'] = [
-     {
-        value : 1,
-        label : "Điện thoại"
-     },
-     {
-        value : 2,
-        label : "Laptop"
-     },
-     {
-        value : 2,
-        label : "Máy tính bảng"
-     }
-  ];
+    const data = { name, parent_id, description, is_delete }
+
+    const res = await dispatch(createNewCategory(data))
+    if (res.success) {
+      message.success('Tạo danh mục thành công!')
+      navigate('..')
+    } else if (!res.success) {
+      message.error('Tạo danh mục thất bại!')
+    }
+  }
 
   return (
     <>
-      <Modal title='Add category' open={true} onCancel={handleCancel}>
-        <Form
-          {...layout}
-          name='nest-messages'
-          onFinish={onFinish}
-          style={{ maxWidth: 600 }}
-         
-        >
-          <Form.Item name={['user', 'name']} label='Name' rules={[{ required: true }]}>
-            <Input />
+      <Modal
+        title='Add Category'
+        confirmLoading={isLoading}
+        open={true}
+        okText='Đồng ý'
+        cancelText='Huỷ'
+        onOk={handleSubmit}
+        onCancel={handleCancel}
+      >
+        <Form form={form} name='nest-messages' layout='vertical' style={{ maxWidth: 600 }}>
+          <Form.Item
+            name='name'
+            label='Name'
+            className='w-full'
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên danh mục!' },
+              { max: 120, message: 'Tên không vượt quá 120 ký tự' },
+              {
+                whitespace: true,
+                message: 'Tên danh mục không được để trống!'
+              }
+            ]}
+          >
+            <Input size='large' placeholder='Nhập tên danh mục' />
           </Form.Item>
-         
-         
-
-
-          <Form.Item name={['user', 'parent']} label='Parent category'>
-            <Select
-                    mode="tags"
-                    style={{ width: '100%' }}
-                    placeholder="Select parent"
-                    onChange={handleChange}
-                    options={options}
-                />
-          </Form.Item>
-
-          <Form.Item name={['user', 'active']} label='Active'>
-           <Switch defaultChecked  />
-          </Form.Item>
-
-
-
-        
-          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-            <Button type='primary' htmlType='submit'>
-              Create
-            </Button>
+          <Form.Item
+            name='description'
+            label='Description'
+            className='w-full'
+            rules={[
+              { required: true, message: 'Vui lòng nhập mô tả danh mục!' },
+              {
+                whitespace: true,
+                message: 'Mô tả danh mục không được để trống!'
+              }
+            ]}
+          >
+            <Input.TextArea size='large' rows={4} placeholder='Nhập mô tả danh mục' />
           </Form.Item>
         </Form>
       </Modal>
