@@ -17,13 +17,14 @@ instance.interceptors.request.use(
   }
 )
 
-instance.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
+// const onRequest = (config: InternalAxiosRequestConfig | any): InternalAxiosRequestConfig => {
+// instance.interceptors.response.use(
+//   (response) => {
+//     return response
+//   },
+//   (error) => {
+//     return Promise.reject(error)
+//   }
+// )
 
 export default instance
