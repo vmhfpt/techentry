@@ -1,0 +1,316 @@
+{
+  "users": [
+    {
+      "name": "newest update 1232",
+      "email": "fsdfs@gmail.com",
+      "password": "3242",
+      "phone": "fsdfsf",
+      "address_line1": "Trung Hoa Cau Giay Ha Noi",
+      "address_line2": "Nguyen Thi Thap, Lien Chieu, Da Nang",
+      "country": "Việt Nam",
+      "city": "Bà Rịa - Vũng Tàu-77",
+      "district": "Vũng Tàu",
+      "role_id": "1",
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715694506/example-react/rdy53medgz3lfgy59wcb.jpg",
+      "id": 1
+    },
+    {
+      "name": "fsdfsdaf",
+      "email": "fsd3fs@gmail.com",
+      "password": "efdsfds",
+      "phone": "fsdfsf",
+      "address_line1": "Trung Hoa Cau Giay Ha Noi",
+      "address_line2": "Nguyen Thi Thap, Lien Chieu, Da Nang",
+      "country": "Việt Nam",
+      "city": "Bà Rịa - Vũng Tàu-77",
+      "district": "Vũng Tàu",
+      "role_id": "2",
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png",
+      "id": 2
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Ram",
+      "description": "ram",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "name": "Rom",
+      "description": "Bộ nhớ trong"
+    },
+    {
+      "id": 3,
+      "name": "Màn hình",
+      "description": "màn hình"
+    },
+    {
+      "id": 4,
+      "name": "Dung lượng pin",
+      "description": "dung lượng pin"
+    },
+    {
+      "id": 5,
+      "name": "Hệ điều hành",
+      "description": "hệ điều hành"
+    },
+    {
+      "name": "Ổ cứng",
+      "description": "Hard diver",
+      "id": 6
+    },
+    {
+      "name": "Chip",
+      "description": "Chip xử lý",
+      "id": 7
+    },
+    {
+      "name": "Chất liệu",
+      "description": "Material",
+      "id": 8
+    }
+  ],
+  "value_attributes": [
+    {
+      "id": 1,
+      "attributeId": 1,
+      "value": "2Gb"
+    },
+    {
+      "attributeId": 1,
+      "value": "4Gb",
+      "id": 2
+    },
+    {
+      "attributeId": 2,
+      "value": "64Gb",
+      "id": 3
+    },
+    {
+      "attributeId": 3,
+      "value": "7.5 in",
+      "id": 4
+    },
+    {
+      "attributeId": 3,
+      "value": "5.5 in",
+      "id": 5
+    },
+    {
+      "attributeId": 3,
+      "value": "6.5 in",
+      "id": 6
+    },
+    {
+      "attributeId": 6,
+      "value": "SSD 250Gb",
+      "id": 7
+    },
+    {
+      "attributeId": 6,
+      "value": "SSD 500Gb",
+      "id": 8
+    },
+    {
+      "attributeId": 5,
+      "value": "Android",
+      "id": 9
+    },
+    {
+      "attributeId": 5,
+      "value": "IOS",
+      "id": 10
+    },
+    {
+      "attributeId": 4,
+      "value": "1200 mAh",
+      "id": 11
+    },
+    {
+      "attributeId": 4,
+      "value": "5000 mAh",
+      "id": 12
+    },
+    {
+      "attributeId": 7,
+      "value": "Snapdragon 850",
+      "id": 13
+    },
+    {
+      "attributeId": 7,
+      "value": "Snapdragon 625",
+      "id": 14
+    },
+    {
+      "attributeId": 7,
+      "value": "Mediatek G90T",
+      "id": 15
+    },
+    {
+      "attributeId": 7,
+      "value": "Core i5",
+      "id": 16
+    },
+    {
+      "attributeId": 7,
+      "value": "core i7",
+      "id": 17
+    },
+    {
+      "attributeId": 8,
+      "value": "Nhựa cứng",
+      "id": 18
+    },
+    {
+      "attributeId": 8,
+      "value": "Viền kim loại",
+      "id": 19
+    },
+    {
+      "attributeId": 8,
+      "value": "Vỏ nhựa",
+      "id": 20
+    }
+  ],
+  "slide": [
+    {
+      "id": 1,
+      "title": "Exclusive collection for everyone2",
+      "status": 3,
+      "img": "https://picsum.photos/200/300",
+      "url": "https://picsum.photos/200/300"
+    },
+    {
+      "title": "Exclusive",
+      "status": 234,
+      "img": "https://picsum.photos/200/300",
+      "url": "https://picsum.photos/200/300",
+      "id": 2
+    }
+  ],
+  "categories": [
+    {
+      "name": "Điện thoại",
+      "description": "moo taa",
+      "is_delete": false,
+      "id": 1
+    },
+    {
+      "name": "Máy tính bảng",
+      "description": "- ád\n-fg",
+      "parent_id": "2",
+      "is_delete": false,
+      "id": 2
+    },
+    {
+      "id": 3,
+      "name": "Laptop",
+      "parent_id": "",
+      "description": "sdf",
+      "is_delete": false
+    },
+    {
+      "id": 4,
+      "name": "Phụ kiện",
+      "parent_id": "",
+      "description": "sdf",
+      "is_delete": false
+    },
+    {
+      "name": "fsdfsd update",
+      "description": "fsdfdsaf",
+      "parent_id": "",
+      "is_delete": false,
+      "id": 5
+    },
+    {
+      "name": "fsdf 12312",
+      "description": "fsdfdsaf",
+      "parent_id": "",
+      "is_delete": false,
+      "id": 6
+    }
+  ],
+  "category_attributes": [
+    {
+      "id": 1,
+      "categoryId": 1,
+      "attributeId": 1
+    },
+    {
+      "id": 2,
+      "categoryId": 1,
+      "attributeId": 2
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 2,
+      "id": 3
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 6,
+      "id": 4
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 1,
+      "id": 5
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 3,
+      "id": 6
+    },
+    {
+      "categoryId": 3,
+      "attributeId": 4,
+      "id": 7
+    },
+    {
+      "categoryId": 1,
+      "attributeId": 3,
+      "id": 8
+    },
+    {
+      "categoryId": 1,
+      "attributeId": 4,
+      "id": 9
+    },
+    {
+      "categoryId": 1,
+      "attributeId": 5,
+      "id": 10
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 1,
+      "id": 11
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 3,
+      "id": 12
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 4,
+      "id": 13
+    },
+    {
+      "categoryId": 2,
+      "attributeId": 5,
+      "id": 14
+    }
+  ],
+  "brand": [
+    {
+      "id": 1,
+      "name": "Puma",
+      "logo": "url",
+      "create_at": "2024-05-11T02:48:09.735Z",
+      "updated_at": "2024-05-11T02:48:09.735Z"
+    }
+  ]
+}
