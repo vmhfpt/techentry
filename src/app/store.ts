@@ -21,7 +21,7 @@ export const store = configureStore({
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
   middleware: (getDefaultMiddleware) => //attributesApi.middleware
-  getDefaultMiddleware().concat(usersApi.middleware, addressApi.middleware, attributesApi.middleware, categoryAttributesApi.middleware, valueAttributesApi.middleware),
+  getDefaultMiddleware({ serializableCheck: false }).concat(usersApi.middleware, addressApi.middleware, attributesApi.middleware, categoryAttributesApi.middleware, valueAttributesApi.middleware),
 });
 
 

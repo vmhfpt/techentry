@@ -70,6 +70,7 @@ export default function useBrand() {
     };
 
     const onShowDeletePopup = (item: IBrand) => {
+        
         setModalParams({
             visible: true,
             title: 'Xóa Brand',
@@ -119,9 +120,7 @@ export default function useBrand() {
                     updated_at: getCurrentDateTime()
                 }
                 const res = await axios.put(`http://localhost:3000/brand/${Index}`, bodyEdit, {
-                    headers: {
-                        'Content-Type': 'application/vnd.api+json'
-                    }
+                  
                 });
 
                 console.log("body", res);
@@ -145,9 +144,7 @@ export default function useBrand() {
                     updated_at: getCurrentDateTime()
                 }
                 const res = await axios.post(`http://localhost:3000/brand`, bodyCreate, {
-                    headers: {
-                        'Content-Type': 'application/vnd.api+json'
-                    }
+               
                 });
                 if (res.statusText !== 'Created') {
                     showAlertError('Thêm mới thất bại');

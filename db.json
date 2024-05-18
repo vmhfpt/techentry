@@ -175,32 +175,18 @@
   ],
   "slide": [
     {
-      "id": "6389",
+      "id": 1,
       "title": "Exclusive collection for everyone2",
       "status": 3,
       "img": "https://picsum.photos/200/300",
       "url": "https://picsum.photos/200/300"
     },
     {
-      "title": "Exclusive collection for everyone2 update",
+      "title": "Exclusive",
       "status": 234,
       "img": "https://picsum.photos/200/300",
       "url": "https://picsum.photos/200/300",
-      "id": "e156"
-    },
-    {
-      "id": "6bb6",
-      "title": "Exclusive collection for everyone2",
-      "status": 4,
-      "img": "https://picsum.photos/200/300",
-      "url": "https://picsum.photos/200/300"
-    },
-    {
-      "id": "5bd2",
-      "title": "Exclusive collection for everyone2",
-      "status": 3,
-      "img": "https://picsum.photos/200/300",
-      "url": "https://picsum.photos/200/300"
+      "id": 2
     }
   ],
   "categories": [
@@ -232,11 +218,18 @@
       "is_delete": false
     },
     {
-      "name": "fsdfsd",
-      "parent_id": "",
+      "name": "fsdfsd update",
       "description": "fsdfdsaf",
+      "parent_id": "",
       "is_delete": false,
       "id": 5
+    },
+    {
+      "name": "fsdf  3434",
+      "description": "fsdfdsaf",
+      "parent_id": "",
+      "is_delete": false,
+      "id": 6
     }
   ],
   "category_attributes": [
@@ -313,7 +306,7 @@
   ],
   "brand": [
     {
-      "id": "3",
+      "id": 1,
       "name": "Puma",
       "logo": "url",
       "create_at": "2024-05-11T02:48:09.735Z",

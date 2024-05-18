@@ -57,7 +57,7 @@ const bannerSlice = createSlice({
       state.isLoading = false
     },
     deleteSuccess: (state, { payload }) => {
-      state.banners = state.banners?.filter((banner: IBanner) => banner?.id !== payload?.id)
+      state.banners = state.banners?.filter((banner: IBanner) => banner?.id != payload)
       state.isLoading = false
     }
   }
@@ -127,6 +127,7 @@ export const createNewBanner = (payload: IBanner) => async (dispatch: Dispatch) 
 }
 
 export const editBanner = (payload: IBanner) => async (dispatch: Dispatch) => {
+  
   dispatch(isFetching())
   try {
     const response = await updateBanner(payload)
@@ -148,7 +149,7 @@ export const removeBanner = (id: string) => async (dispatch: Dispatch) => {
   try {
     const response = await deleteBanner(id)
     if (response.data) {
-      dispatch(deleteSuccess(response.data))
+      dispatch(deleteSuccess(id))
       return { success: true }
     }
     return { success: false }

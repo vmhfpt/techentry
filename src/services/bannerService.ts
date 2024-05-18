@@ -20,6 +20,7 @@ export const updateBanner = (payload: IBanner) => {
 }
 
 export const deleteBanner = (id: string) => {
+ 
   return instance.delete(`slide/${id}`)
 }
 

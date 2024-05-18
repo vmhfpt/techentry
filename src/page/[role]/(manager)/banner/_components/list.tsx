@@ -16,7 +16,8 @@ export default function ListBanner() {
   const { banners, isLoading } = useAppSelector((state) => state.banner)
 
   const handlerRemoveBanner = async (value: IBanner) => {
-    const res = await dispatch(removeBanner(value?.id as string))
+    
+    const res = await dispatch(removeBanner(value.id as string))
     if (res?.success) {
       message.success('Xoá banner thành công!')
     } else if (!res.success) {
@@ -86,7 +87,7 @@ export default function ListBanner() {
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
-          <Link to={record?.id}>
+          <Link to={"" + record?.id}>
             <Button type='primary'>Edit</Button>
           </Link>
           <Popconfirm

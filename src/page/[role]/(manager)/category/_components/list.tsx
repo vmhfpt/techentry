@@ -14,7 +14,7 @@ export default function ListCategory() {
   const debouncedValue = useDebounce(searchValue, 600)
 
   const { categories, isLoading } = useAppSelector((state) => state.category)
-
+ 
   const handlerDistableCategory = async (value: ICategory) => {
     if (!value.is_delete) {
       const res = await dispatch(changeStatus(value?.id as string, true))
@@ -104,8 +104,8 @@ export default function ListCategory() {
       render: (record) => (
         <Space size={'middle'}>
           {!record.is_delete && (
-            <Link to={record?.id}>
-              <Button type='primary'>Edit</Button>
+            <Link to={"" + record.id}>
+              <Button type='primary'>Edit </Button>
             </Link>
           )}
           <Popconfirm
