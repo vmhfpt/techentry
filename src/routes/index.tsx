@@ -38,94 +38,97 @@ import EditBanner from "@/page/[role]/(manager)/banner/_components/edit";
 import CategoryManagement from "@/page/[role]/(manager)/category";
 import AddCategory from "@/page/[role]/(manager)/category/_components/add";
 import EditCategory from "@/page/[role]/(manager)/category/_components/edit";
+import VoucherManagement from "../page/[role]/(manager)/voucher";
 
 
 
 export default function Router() {
   return (
-  
+
     <>
-        <Routes>
+      <Routes>
 
-      
-          <Route path="/" element={<Layout/>}>
 
-           
+        <Route path="/" element={<Layout />}>
 
-            <Route index element={<Navigate to={'/home'}/>}/>
-            <Route path="home" element={<Base/>}>
-                <Route index element={<PageHome/>}/>
-                <Route path="" element={<ProductDetailPage/>}/>
+
+
+          <Route index element={<Navigate to={'/home'} />} />
+          <Route path="home" element={<Base />}>
+            <Route index element={<PageHome />} />
+            <Route path="" element={<ProductDetailPage />} />
+          </Route>
+
+          <Route path="" element={<Base />}>
+            <Route path="login" element={<PageLogin />} />
+            <Route path="signup" element={<PageSignUp />} />
+
+            <Route path="contact" element={<PageContact />} />
+            <Route path="about" element={<PageAbout />} />
+
+
+            <Route path="blog" element={<BlogPage />} />
+            <Route path="blog/:slug" element={<BlogSingle />} />
+
+            <Route path="account" element={<AccountPage />} />
+            <Route path="account-savelists" element={<AccountSavelists />} />
+            <Route path="account-change-password" element={<AccountPass />} />
+            <Route path="account-billing" element={<AccountBilling />} />
+            <Route path="account-my-order" element={<AccountOrder />} />
+
+
+
+            <Route path="cart" element={<CartPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="search" element={<PageSearch />} />
+            <Route path="category" element={<PageCategory />} />
+            <Route path="category/:slug" element={<PageCategory />} />
+            <Route path=":slug" element={<ProductDetailPage />} />
+          </Route>
+
+          <Route path="admin/login" element={<Login />} />
+
+          <Route path="admin" element={<Manager />}>
+            <Route index element={<Navigate to="/admin/dashboard" />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="billing" element={<Billing />} />
+            <Route path="profile" element={<Profile />} />
+
+
+            <Route path="users" element={<UserManagement />}>
+              <Route path="add" element={<AddUser />} />
+              <Route path=":id" element={<EditUser />} />
             </Route>
 
-            <Route path="" element={<Base/>}>
-                <Route path="login" element={<PageLogin />} />
-                <Route path="signup" element={<PageSignUp />} />
+            <Route path="attributes-product" element={<AttributeManagement />}></Route>
 
-                <Route path="contact" element={<PageContact />} />
-                <Route path="about" element={<PageAbout />} />
-
-
-                <Route path="blog" element={<BlogPage />}/>
-                <Route path="blog/:slug" element={<BlogSingle />}/>
-
-                <Route path="account" element={<AccountPage />} />
-                <Route path="account-savelists" element={<AccountSavelists />} />
-                <Route path="account-change-password" element={<AccountPass />} />
-                <Route path="account-billing" element={<AccountBilling />} />
-                <Route path="account-my-order" element={<AccountOrder />} />
-
-
-
-                <Route path="cart" element={<CartPage />}/>
-                <Route path="checkout" element={<CheckoutPage />}/>
-                <Route path="search" element={<PageSearch />} />
-                <Route path="category" element={<PageCategory />}/>
-                <Route path="category/:slug" element={<PageCategory />}/>
-                <Route path=":slug" element={<ProductDetailPage/>}/>
-            </Route>
-
-            <Route path="admin/login" element={<Login />} />
-            
-            <Route path="admin" element={<Manager/>}>
-                <Route index element={<Navigate to="/admin/dashboard" />}/>
-                <Route path="dashboard" element={<Dashboard/>}/>
-                <Route path="billing" element={<Billing/>}/>
-                <Route path="profile" element={<Profile/>}/>
-
-
-                <Route path="users" element={<UserManagement />}>
-                  <Route path="add" element={<AddUser />} />
-                  <Route path=":id" element={<EditUser />} />
-               </Route>
-
-               <Route path="attributes-product" element={<AttributeManagement />}></Route>
-
-               {/* <Route path="categories" element={<CategoryManagement />}>
+            {/* <Route path="categories" element={<CategoryManagement />}>
                   <Route path="add" element={<AddCategory />} />
                   <Route path=":id" element={<EditCategory />} />
                </Route> */}
 
-
-              <Route path="brand" element={<BrandManagement />}>
-              
-              </Route>
-
-               <Route path="banner" element={<BannerManagement />}>
-                  <Route path="add" element={<AddBanner />} />
-                  <Route path=":id" element={<EditBanner />} />
-               </Route>
-
-               <Route path="categories" element={<CategoryManagement />}>
-                  <Route path="add" element={<AddCategory />} />
-                  <Route path=":id" element={<EditCategory />} />
-               </Route>
-
+            <Route path="voucher" element={<VoucherManagement />}>
 
             </Route>
+            <Route path="brand" element={<BrandManagement />}>
+
+            </Route>
+
+            <Route path="banner" element={<BannerManagement />}>
+              <Route path="add" element={<AddBanner />} />
+              <Route path=":id" element={<EditBanner />} />
+            </Route>
+
+            <Route path="categories" element={<CategoryManagement />}>
+              <Route path="add" element={<AddCategory />} />
+              <Route path=":id" element={<EditCategory />} />
+            </Route>
+
+
           </Route>
-          <Route path="*" element={<NotPage/>}/>
-        </Routes>
+        </Route>
+        <Route path="*" element={<NotPage />} />
+      </Routes>
     </>
   );
 }

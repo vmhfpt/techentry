@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { IBrand, IBrandCreate, IBrandEdit, IBrandReq } from "../../../../../common/types/brand.interface";
 import { ConfirmModalParams, ConfirmModalType, DefaultConfirmModalParams, PAGINATE_DEFAULT, showAlertError, showAlertSuccess } from "../../../../../contains/contants";
 import axios from "axios";
 import { Form } from "antd";
+import { IVoucher, IVoucherEdit, IVoucherCreate } from "@/common/types/voucher.interface copy";
 import instance from "@/api/axios";
+import moment from "moment";
+import dayjs from "dayjs";
 
-export default function useBrand() {
+export default function useVoucher() {
     const [form] = Form.useForm();
-    const [dataList, setDataList] = useState<IBrand[]>([]);
+    const [dataList, setDataList] = useState<IVoucher[]>([]);
     const [test, setTest] = useState([]);
     const [dataTotal, setDataTotal] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
@@ -15,8 +17,8 @@ export default function useBrand() {
     const [Index, setIndex] = useState<number>();
     const [modalParams, setModalParams] = useState<ConfirmModalParams>(DefaultConfirmModalParams);
     const [dataIndex, setDataIndex] = useState<number>();
-    const [visibleModalBrandDetail, setVisibleModalBrandDetail] = useState<boolean>(false);
-    console.log(visibleModalBrandDetail);
+    const [visibleModalVoucherDetail, setVisibleModalVoucherDetail] = useState<boolean>(false);
+    console.log(visibleModalVoucherDetail);
 
 
     useEffect(() => {
@@ -27,7 +29,7 @@ export default function useBrand() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const res = await instance.get(`brand`);
+            const res = await instance.get(`voucher`)
             setTest(res.data);
             setDataList(res.data);
             setDataTotal(res.data.total);
@@ -37,41 +39,38 @@ export default function useBrand() {
             setLoading(false);
         }
     };
-
-    const onEditBrand = (values: any) => {
+    const dateFormat = 'YYYY-MM-DD';
+    const onEditVoucher = (values: any) => {
         setIndex(values.id);
-        setVisibleModalBrandDetail(true);
+        setVisibleModalVoucherDetail(true);
         form.setFieldsValue({
             name: values.name,
-            logo: values.logo,
-            // create_at: getCurrentDateTime(),
-            updated_at: getCurrentDateTime()
+            code: values.code,
+            discount_amount: values.discount_amount,
+            start_date: dayjs(values.start_date),
+            end_date: dayjs(values.end_date),
+            usage_limit: values.usage_limit
         })
     }
 
     const onDelete = async () => {
-        const res = await axios.delete(`http://localhost:3000/brand/${dataIndex}`, {
-            headers: {
-                'Content-Type': 'application/vnd.api+json'
-            }
-        });
-
+        const res = await instance.delete(`voucher/${dataIndex}`)
         if (!res) {
             showAlertError('Xóa không thành công');;
             return;
         }
 
-        showAlertSuccess('Xóa thành công thành công');
+        showAlertSuccess('Xóa thành công');
         setRefresh((prev) => !prev);
         onHideConfirmPopup();
     };
 
-    const onShowDeletePopup = (item: IBrand) => {
+    const onShowDeletePopup = (item: IVoucher) => {
 
         setModalParams({
             visible: true,
-            title: 'Xóa Brand',
-            content: 'Bạn có muốn xóa brand không ?',
+            title: 'Xóa Voucher',
+            content: 'Bạn có muốn xóa Voucher không ?',
             type: ConfirmModalType.DELETE
         });
         setDataIndex(item.id);
@@ -90,35 +89,44 @@ export default function useBrand() {
     };
 
     const onShowModalDetail = () => {
-        setVisibleModalBrandDetail(true);
+        setVisibleModalVoucherDetail(true);
         setIndex(undefined);
-
+        form.resetFields();
     };
 
     const onCancelModalDetail = () => {
-        setVisibleModalBrandDetail(false);
+        setVisibleModalVoucherDetail(false);
         setIndex(undefined);
-        // setNewsEdit(undefined);
+
     };
 
-    const getCurrentDateTime = () => {
-        const now = new Date();
-        return now.toISOString(); // Format as ISO string
+    const generateVoucherCode = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        for (let i = 0; i < 10; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            result += characters[randomIndex];
+        }
+        return result;
     };
 
     const onSubmit = async (values: any) => {
         try {
             setLoading(true);
             if (Index) {
-                const bodyEdit: IBrandEdit = {
+                const bodyEdit: IVoucherEdit = {
                     name: values.name,
-                    logo: values.logo,
-                    // create_at: getCurrentDateTime(),
-                    updated_at: getCurrentDateTime()
+                    code: generateVoucherCode(),
+                    discount_amount: values.discount_amount,
+                    start_date: values.start_date,
+                    end_date: values.end_date,
+                    usage_limit: values.usage_limit
                 }
-                const res = await axios.put(`http://localhost:3000/brand/${Index}`, bodyEdit, {
+                // const res = await axios.put(`http://localhost:3000/Voucher/${Index}`, bodyEdit, {
 
-                });
+                // });
+
+                const res = await instance.put(`voucher/${Index}`, bodyEdit)
 
                 console.log("body", res);
 
@@ -134,15 +142,16 @@ export default function useBrand() {
                 form.resetFields();
                 onCancelModalDetail();
             } else {
-                const bodyCreate: IBrandCreate = {
+                const bodyCreate: IVoucherCreate = {
                     name: values.name,
-                    logo: values.logo,
-                    create_at: getCurrentDateTime(),
-                    updated_at: getCurrentDateTime()
+                    code: generateVoucherCode(),
+                    discount_amount: values.discount_amount,
+                    start_date: values.start_date,
+                    end_date: values.end_date,
+                    usage_limit: values.usage_limit
                 }
-                const res = await axios.post(`http://localhost:3000/brand`, bodyCreate, {
-
-                });
+                console.log("bodyCreate", bodyCreate);
+                const res = await instance.post(`voucher`, bodyCreate)
                 if (res.statusText !== 'Created') {
                     showAlertError('Thêm mới thất bại');
                     onCancelModalDetail
@@ -172,14 +181,14 @@ export default function useBrand() {
         dataList,
         loading,
         test,
-        onEditBrand,
+        onEditVoucher,
         onHideConfirmPopup,
         handleOkPopup,
         modalParams,
         onShowDeletePopup,
         dataTotal,
         onCancelModalDetail,
-        visibleModalBrandDetail,
+        visibleModalVoucherDetail,
         onShowModalDetail,
         onSubmit
 
