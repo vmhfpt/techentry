@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import useDebounce from '@/hooks/useDebounce'
+import '../../styles/category.css';
 
 export default function ListCategory() {
   const dispatch = useAppDispatch()
@@ -73,7 +74,8 @@ export default function ListCategory() {
       key: 'description',
       align: 'center',
       width: 200,
-      render: (text) => <>{text}</>
+      ellipsis: true,
+      render: (text) => <span className="ellipsis">{text}</span>
     },
     {
       title: 'Parent',
@@ -122,7 +124,8 @@ export default function ListCategory() {
           </Popconfirm>
         </Space>
       )
-    }
+    },
+      Table.EXPAND_COLUMN 
   ]
 
   const newData = categories?.map((category: ICategory, index: number) => ({
@@ -167,7 +170,11 @@ export default function ListCategory() {
         dataSource={newData}
         loading={isLoading}
         expandable={{
-          expandedRowRender: (record) => <p dangerouslySetInnerHTML={{ __html: record.description }}></p>
+          expandedRowRender: (record) => (
+            <div style={{ maxWidth: '90%', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+              {record.description}
+            </div>
+          )
         }}
       />
 
@@ -179,3 +186,4 @@ export default function ListCategory() {
     </>
   )
 }
+
