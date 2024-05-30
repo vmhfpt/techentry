@@ -27,9 +27,8 @@ export default function EditBanner() {
     const img = form.getFieldValue('img')
     const url = form.getFieldValue('url')
     const newImg = img.file ? img.file?.response?.secure_url : img
-    const newUrl = url.file ? url.file?.response?.secure_url : url
 
-    const data = { id, title, status: +status, img: newImg, url: newUrl }
+    const data = { id, title, status: +status, img: newImg, url }
 
     const res = await dispatch(editBanner(data))
     if (res.success) {
@@ -153,11 +152,15 @@ export default function EditBanner() {
             name='url'
             label='Url Banner'
             className='w-full'
-            rules={[{ required: true, message: 'Vui lòng chọn Url banner!' }]}
+            rules={[
+              { required: true, message: 'Vui lòng nhập Url banner!' },
+              {
+                whitespace: true,
+                message: 'Url không được để trống!'
+              }
+            ]}
           >
-            <Dragger listType='picture' customRequest={customRequest}>
-              <Button>Upload</Button>
-            </Dragger>
+            <Input size='large' placeholder='Nhập url banner' className='w-full' />
           </Form.Item>
         </Form>
       </Modal>
