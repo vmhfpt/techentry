@@ -38,6 +38,7 @@ import EditBanner from "@/page/[role]/(manager)/banner/_components/edit";
 import CategoryManagement from "@/page/[role]/(manager)/category";
 import AddCategory from "@/page/[role]/(manager)/category/_components/add";
 import EditCategory from "@/page/[role]/(manager)/category/_components/edit";
+import PrivilegeManagement from "@/page/[role]/(manager)/privilege";
 
 
 
@@ -115,6 +116,10 @@ export default function Router() {
                   <Route path="add" element={<AddBanner />} />
                   <Route path=":id" element={<EditBanner />} />
                </Route>
+
+               <Route path="privilege" element={<PrivilegeManagement />} />
+          
+
 
                <Route path="categories" element={<CategoryManagement />}>
                   <Route path="add" element={<AddCategory />} />

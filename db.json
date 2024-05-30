@@ -36,9 +36,9 @@
       "id": 1
     },
     {
-      "id": 2,
       "name": "Rom",
-      "description": "Bộ nhớ trong"
+      "description": "Bộ nhớ trong",
+      "id": 2
     },
     {
       "id": 3,
@@ -46,9 +46,9 @@
       "description": "màn hình"
     },
     {
-      "id": 4,
       "name": "Dung lượng pin",
-      "description": "dung lượng pin"
+      "description": "dung lượng pin",
+      "id": 4
     },
     {
       "id": 5,
@@ -311,6 +311,68 @@
       "logo": "url",
       "create_at": "2024-05-11T02:48:09.735Z",
       "updated_at": "2024-05-11T02:48:09.735Z"
+    }
+  ],
+  "privilege_groups": [
+    {
+      "id": 1,
+      "name": "Quản lý banner"
+    },
+    {
+      "id": 2,
+      "name": "Quản lý tài khoản user"
+    },
+    {
+      "id": 3,
+      "name": "Quản lý biến thể sản phẩm"
+    },
+    {
+      "id": 4,
+      "name": "Quản lý thương hiệu (brand) "
+    }
+  ],
+  "privileges": [
+    {
+      "id": 1,
+      "name": "Xem danh sách người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users$"
+    },
+    {
+      "id": 5,
+      "name": "Thêm người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users\\/add$"
+    },
+    {
+      "id": 2,
+      "name": "Sửa người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users\\/(\\d+)$"
+    },
+    {
+      "id": 3,
+      "name": "Xóa người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users\\/delete$"
+    },
+    {
+      "id": 4,
+      "name": "Quản lý thêm, sửa, xóa banner",
+      "privilege_groupId": 3,
+      "url_match": "admin\\/banner"
+    },
+    {
+      "id": 6,
+      "name": "Quản lý biến thể",
+      "privilege_groupId": 1,
+      "url_match": "admin\\/attributes-product$"
+    },
+    {
+      "id": 7,
+      "name": "Quản lý danh sách, thêm, sửa, xóa thương hiệu",
+      "privilege_groupId": 4,
+      "url_match": "admin\\/brand$"
     }
   ]
 }

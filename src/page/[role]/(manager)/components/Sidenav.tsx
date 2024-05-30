@@ -112,6 +112,21 @@ function Sidenav() {
         link: '/admin/attributes-product'
       },
       {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
+              <span className="label">Privilege</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/privilege'
+      },
+      {
         label: (
           <>
             <Flex align="center" justify="center">
