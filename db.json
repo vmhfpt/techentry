@@ -348,5 +348,22 @@
       "usage_limit": 4,
       "id": "4cd3"
     }
+  ],
+  "post_category": [
+    {
+      "id": "1",
+      "name": "Tin tức",
+      "slug": "tintuc"
+    },
+    {
+      "id": "2",
+      "name": "Tuyển dụng",
+      "slug": "tuyendung"
+    },
+    {
+      "name": "Test Update hi",
+      "slug": "test_update_hi",
+      "id": "3176"
+    }
   ]
 }

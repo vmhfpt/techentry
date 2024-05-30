@@ -80,6 +80,21 @@ function Sidenav() {
         link: '/admin/categories'
       },
       {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
+              <span className="label">Post Categories</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/post-categories'
+      },
+      {
         label: (
           <>
             <div>
