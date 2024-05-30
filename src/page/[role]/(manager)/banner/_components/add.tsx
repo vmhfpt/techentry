@@ -23,9 +23,8 @@ export default function AddBanner() {
     const img = form.getFieldValue('img')
     const url = form.getFieldValue('url')
     const newImg = img.file?.response?.secure_url
-    const newUrl = url.file?.response?.secure_url
 
-    const data = { title, status: +status, img: newImg, url: newUrl }
+    const data = { title, status: +status, img: newImg, url }
 
     const res = await dispatch(createNewBanner(data))
     if (res.success) {
@@ -133,11 +132,15 @@ export default function AddBanner() {
             name='url'
             label='Url Banner'
             className='w-full'
-            rules={[{ required: true, message: 'Vui lòng chọn Url banner!' }]}
+            rules={[
+              { required: true, message: 'Vui lòng nhập Url banner!' },
+              {
+                whitespace: true,
+                message: 'Url không được để trống!'
+              }
+            ]}
           >
-            <Dragger listType='picture' customRequest={customRequest}>
-              <Button>Upload</Button>
-            </Dragger>
+            <Input size='large' placeholder='Nhập url banner' className='w-full' />
           </Form.Item>
         </Form>
       </Modal>

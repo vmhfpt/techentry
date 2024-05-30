@@ -16,7 +16,6 @@ export default function ListBanner() {
   const { banners, isLoading } = useAppSelector((state) => state.banner)
 
   const handlerRemoveBanner = async (value: IBanner) => {
-    
     const res = await dispatch(removeBanner(value.id as string))
     if (res?.success) {
       message.success('Xoá banner thành công!')
@@ -77,8 +76,8 @@ export default function ListBanner() {
       dataIndex: 'url',
       key: 'url',
       align: 'center',
-      width: 100,
-      render: (url) => <img src={url || ''} className='mx-auto w-16' alt='' />
+      width: 140,
+      render: (text) => <>{text.slice(0, 20).concat(' . . .')}</>
     },
     {
       title: 'Action',
@@ -87,7 +86,7 @@ export default function ListBanner() {
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
-          <Link to={"" + record?.id}>
+          <Link to={'' + record?.id}>
             <Button type='primary'>Edit</Button>
           </Link>
           <Popconfirm
