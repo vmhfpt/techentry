@@ -8,7 +8,7 @@ export const baseApiConfig = {
             // Use getState to access your redux store
             //const token = getState().auth.token;
            
-            console.log('token will prepare in here')
+            //console.log('token will prepare in here')
             headers.set('authorization', `Bearer tokenhere`);
             
             return headers;

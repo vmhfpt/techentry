@@ -36,9 +36,9 @@
       "id": "1"
     },
     {
-      "id": "2",
       "name": "Rom",
-      "description": "Bộ nhớ trong"
+      "description": "Bộ nhớ trong",
+      "id": 2
     },
     {
       "id": "3",
@@ -46,9 +46,9 @@
       "description": "màn hình"
     },
     {
-      "id": "4",
       "name": "Dung lượng pin",
-      "description": "dung lượng pin"
+      "description": "dung lượng pin",
+      "id": 4
     },
     {
       "id": "5",
@@ -334,10 +334,155 @@
       "updated_at": "2024-05-11T02:48:09.735Z"
     }
   ],
+  "privilege_users": [
+    {
+      "userId": 1,
+      "privilegeId": 5,
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "privilegeId": 2,
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "privilegeId": 1,
+      "id": 7
+    },
+    {
+      "userId": 1,
+      "privilegeId": 5,
+      "id": 8
+    },
+    {
+      "userId": 1,
+      "privilegeId": 2,
+      "id": 9
+    },
+    {
+      "userId": 1,
+      "privilegeId": 7,
+      "id": 10
+    },
+    {
+      "userId": 1,
+      "privilegeId": 3,
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "privilegeId": 8,
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "privilegeId": 6,
+      "id": 13
+    }
+  ],
+  "privilege_groups": [
+    {
+      "name": "Quản lý tài khoản user",
+      "id": 2
+    },
+    {
+      "name": "Quản lý biến thể sản phẩm",
+      "id": 3
+    },
+    {
+      "name": "Quản lý banner",
+      "id": 4
+    },
+    {
+      "name": "Quản lý danh mục bài viết",
+      "id": 5
+    },
+    {
+      "name": "Quản lý thương hiệu sản phẩm",
+      "id": 6
+    },
+    {
+      "name": "Quản lý quyền truy cập trang web",
+      "id": 7
+    },
+    {
+      "name": "Quản lý danh mục sản phẩm",
+      "id": 8
+    }
+  ],
+  "privileges": [
+    {
+      "id": 1,
+      "name": "Xem danh sách người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users$"
+    },
+    {
+      "id": 5,
+      "name": "Thêm người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users\\/add$"
+    },
+    {
+      "id": 2,
+      "name": "Sửa người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users\\/(\\d+)$"
+    },
+    {
+      "id": 3,
+      "name": "Xóa người dùng",
+      "privilege_groupId": 2,
+      "url_match": "admin\\/users\\/delete$"
+    },
+    {
+      "id": 4,
+      "name": "Quản lý thêm, sửa, xóa banner",
+      "privilege_groupId": 4,
+      "url_match": "admin\\/banner"
+    },
+    {
+      "id": 6,
+      "name": "Quản lý biến thể",
+      "privilege_groupId": 3,
+      "url_match": "admin\\/attributes-product$"
+    },
+    {
+      "name": "Quản lý thêm, sửa,  xóa danh mục bài viết",
+      "privilege_groupId": 5,
+      "url_match": "admin\\/post-categories",
+      "id": 7
+    },
+    {
+      "name": "Quản lý thêm, sửa, xóa thương hiệu sản phẩm",
+      "privilege_groupId": 6,
+      "url_match": "admin\\/brand",
+      "id": 8
+    },
+    {
+      "name": "Quản lý thêm, sửa nhóm quyền và  các quyền truy cập",
+      "privilege_groupId": 7,
+      "url_match": "admin\\/privilege",
+      "id": 9
+    },
+    {
+      "name": "Quản lý thêm, sửa xóa danh mục sản phẩm",
+      "privilege_groupId": 8,
+      "url_match": "admin\\/categories",
+      "id": 10
+    },
+    {
+      "name": "Phân quyền người dùng",
+      "privilege_groupId": 7,
+      "url_match": "admin\\/users\\/privilege\\/(\\d+)$",
+      "id": 11
+    }
+  ],
   "voucher": [
     {
       "name": "Sale cuoi nam",
-      "code": "F686VDR0CL",
+      "code": "FQXXEAMBGC",
       "discount_amount": 1009,
       "start_date": "2024-05-24T17:00:00.000Z",
       "end_date": "2024-05-29T17:00:00.000Z",
