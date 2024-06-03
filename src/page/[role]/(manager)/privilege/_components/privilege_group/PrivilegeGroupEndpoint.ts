@@ -10,7 +10,7 @@ export const privilegeGroupApi = apiWithTag.injectEndpoints({
   
   endpoints: (builder) => ({
     getPrivilegeGroups: builder.query({
-      query: () => 'privilege_groups',
+      query: () => 'privilege_groups?_embed=privileges',
       providesTags: (result) =>
       result
         ? [

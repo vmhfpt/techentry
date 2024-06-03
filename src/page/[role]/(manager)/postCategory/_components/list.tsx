@@ -1,26 +1,27 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import type { TableProps } from 'antd'
 import { Button, Flex, Input, Popconfirm, Space, Table, Typography, message } from 'antd'
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { getAllBanner, removeBanner, searchBanners } from '@/app/slices/bannerSlice'
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { IBanner } from '@/common/types/banner.interface'
+import { Link } from 'react-router-dom'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import useDebounce from '@/hooks/useDebounce'
+import '../../styles/category.css'
+import { getAllPostCategory, removePostCategory, searchPostCategories } from '@/app/slices/postCategorySlice'
+import { IPostCategory } from '@/common/types/category.interface'
 
-export default function ListBanner() {
+export default function ListPostCategory() {
   const dispatch = useAppDispatch()
   const [searchValue, setSearchValue] = useState('')
   const debouncedValue = useDebounce(searchValue, 600)
 
-  const { banners, isLoading } = useAppSelector((state) => state.banner)
+  const { postCategories, isLoading } = useAppSelector((state) => state.postCategory)
 
-  const handlerRemoveBanner = async (value: IBanner) => {
-    const res = await dispatch(removeBanner(value.id as string))
+  const handlerRemovePostCategory = async (value: IPostCategory) => {
+    const res = await dispatch(removePostCategory(value.id as string))
     if (res?.success) {
-      message.success('Xoá banner thành công!')
+      message.success('Xoá danh mục bài viết thành công!')
     } else if (!res.success) {
-      message.error('Xoá banner thất bại!')
+      message.error('Xoá danh mục bài viết thất bại!')
     }
   }
 
@@ -33,13 +34,13 @@ export default function ListBanner() {
 
   useEffect(() => {
     if (!debouncedValue.trim()) {
-      dispatch(getAllBanner())
+      dispatch(getAllPostCategory())
     } else {
-      dispatch(searchBanners(debouncedValue))
+      dispatch(searchPostCategories(debouncedValue))
     }
   }, [debouncedValue, dispatch])
 
-  const columns: TableProps<IBanner>['columns'] = [
+  const columns: TableProps<IPostCategory>['columns'] = [
     {
       title: '#',
       dataIndex: 'key',
@@ -48,36 +49,12 @@ export default function ListBanner() {
       align: 'center'
     },
     {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       align: 'center',
-      width: 160,
+      width: 250,
       render: (text) => <a>{text}</a>
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      align: 'center',
-      width: 160,
-      render: (text) => <>{text}</>
-    },
-    {
-      title: 'Img',
-      dataIndex: 'img',
-      key: 'img',
-      align: 'center',
-      width: 100,
-      render: (img) => <img src={img || ''} className='mx-auto w-16' alt='' />
-    },
-    {
-      title: 'Url',
-      dataIndex: 'url',
-      key: 'url',
-      align: 'center',
-      width: 140,
-      render: (text) => <>{text.slice(0, 20).concat(' . . .')}</>
     },
     {
       title: 'Action',
@@ -86,28 +63,26 @@ export default function ListBanner() {
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
-          <Link to={'' + record?.id}>
-            <Button type='primary'>Edit</Button>
+          <Link to={'' + record.id}>
+            <Button type='primary'>Edit </Button>
           </Link>
           <Popconfirm
             placement='topRight'
-            title='Are you sure delete this banner?'
-            onConfirm={() => handlerRemoveBanner(record)}
+            title='Are you sure delete this post category?'
+            onConfirm={() => handlerRemovePostCategory(record)}
             onCancel={() => {}}
             okText='Đồng ý'
             cancelText='Hủy bỏ'
           >
-            <Button type='primary' danger>
-              Delete
-            </Button>
+            <Button type='primary'>Delete</Button>
           </Popconfirm>
         </Space>
       )
     }
   ]
 
-  const newData = banners?.map((banner: IBanner, index: number) => ({
-    ...banner,
+  const newData = postCategories?.map((category: IPostCategory, index: number) => ({
+    ...category,
     key: index + 1
   }))
 
@@ -115,8 +90,9 @@ export default function ListBanner() {
     <>
       <div className='flex items-center justify-between my-2'>
         <Typography.Title editable level={2} style={{ margin: 0 }}>
-          List Banner
+          List Post Category
         </Typography.Title>
+
         <Input
           className='header-search w-[250px]'
           prefix={
@@ -138,7 +114,6 @@ export default function ListBanner() {
           }}
         />
       </div>
-
       <Table
         pagination={{ pageSize: 8 }}
         columns={columns}
@@ -151,7 +126,7 @@ export default function ListBanner() {
 
       <Flex wrap='wrap' gap='small'>
         <Link to='add'>
-          <Button type='primary'>Add Banner</Button>
+          <Button type='primary'>Add Category</Button>
         </Link>
       </Flex>
     </>

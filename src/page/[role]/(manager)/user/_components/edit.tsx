@@ -182,7 +182,7 @@ export default function EditUser() {
   return (
     <>
     
-     <Modal title='Edit user' open={true} onCancel={handleCancel}>
+     <Modal okButtonProps={{ hidden: true }}  title='Edit user' open={true} onCancel={handleCancel}>
         <Form
           initialValues={dataItem}
           form={form}

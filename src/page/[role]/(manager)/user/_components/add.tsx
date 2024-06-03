@@ -33,7 +33,7 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 export default function AddUser() {
-  const [file, setFile] = useState({
+  const [file, setFile] = useState({ 
     data: {},
     loading: false
   })
@@ -133,7 +133,7 @@ export default function AddUser() {
   if (isError) return <ErrorLoad />
   return (
     <>
-      <Modal title='Add user' open={true} onCancel={handleCancel}>
+      <Modal okButtonProps={{ hidden: true }}  title='Add user' open={true} onCancel={handleCancel}>
         <Form
           form={form}
           {...layout}

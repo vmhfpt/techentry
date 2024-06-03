@@ -112,6 +112,9 @@ export default function ListUser(){
           key: 'action',
           render: (data: Iuser) => (
             <Flex wrap="wrap" gap="small">
+               <Link to={"privilege/" + String(data?.id)}>   <Button danger  >
+                  Privilege
+                </Button> </Link>
                <Link to={String(data?.id)}>   <Button type="primary"  >
                   Edit
                 </Button> </Link>

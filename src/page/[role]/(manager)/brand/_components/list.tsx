@@ -3,7 +3,6 @@ import { Table, Typography } from 'antd';
 import moment from 'moment';
 import type { TableProps } from 'antd';
 import { Button, Flex } from 'antd';
-import { Link } from 'react-router-dom';
 import { IBrand } from '../../../../../common/types/brand.interface';
 import useBrand from '../utils/brand.hooks';
 import ConfirmModal from '../../../(base)/brand/confirm.modal';
@@ -14,29 +13,7 @@ import ModalCreateBrand from './add';
 export default function ListBrand() {
   const hooks = useBrand();
   console.log(hooks.dataList);
-  // const data: IBrand[] = [
-  //     {
-  //       key: '1',
-  //       name: 'John Brown',
-  //       age: 32,
-  //       address: 'New York No. 1 Lake Park',
-  //       tags: ['nice', 'developer'],
-  //     },
-  //     {
-  //       key: '2',
-  //       name: 'Jim Green',
-  //       age: 42,
-  //       address: 'London No. 1 Lake Park',
-  //       tags: ['loser'],
-  //     },
-  //     {
-  //       key: '3',
-  //       name: 'Joe Black',
-  //       age: 32,
-  //       address: 'Sydney No. 1 Lake Park',
-  //       tags: ['cool', 'teacher'],
-  //     },
-  //   ];
+
 
   const columns: TableProps<IBrand>['columns'] = [
     {

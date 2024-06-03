@@ -33,7 +33,7 @@
     {
       "name": "Ram",
       "description": "ram",
-      "id": 1
+      "id": "1"
     },
     {
       "name": "Rom",
@@ -41,7 +41,7 @@
       "id": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Màn hình",
       "description": "màn hình"
     },
@@ -51,131 +51,131 @@
       "id": 4
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Hệ điều hành",
       "description": "hệ điều hành"
     },
     {
       "name": "Ổ cứng",
       "description": "Hard diver",
-      "id": 6
+      "id": "6"
     },
     {
       "name": "Chip",
       "description": "Chip xử lý",
-      "id": 7
+      "id": "7"
     },
     {
       "name": "Chất liệu",
       "description": "Material",
-      "id": 8
+      "id": "8"
     }
   ],
   "value_attributes": [
     {
-      "id": 1,
+      "id": "1",
       "attributeId": 1,
       "value": "2Gb"
     },
     {
       "attributeId": 1,
       "value": "4Gb",
-      "id": 2
+      "id": "2"
     },
     {
       "attributeId": 2,
       "value": "64Gb",
-      "id": 3
+      "id": "3"
     },
     {
       "attributeId": 3,
       "value": "7.5 in",
-      "id": 4
+      "id": "4"
     },
     {
       "attributeId": 3,
       "value": "5.5 in",
-      "id": 5
+      "id": "5"
     },
     {
       "attributeId": 3,
       "value": "6.5 in",
-      "id": 6
+      "id": "6"
     },
     {
       "attributeId": 6,
       "value": "SSD 250Gb",
-      "id": 7
+      "id": "7"
     },
     {
       "attributeId": 6,
       "value": "SSD 500Gb",
-      "id": 8
+      "id": "8"
     },
     {
       "attributeId": 5,
       "value": "Android",
-      "id": 9
+      "id": "9"
     },
     {
       "attributeId": 5,
       "value": "IOS",
-      "id": 10
+      "id": "10"
     },
     {
       "attributeId": 4,
       "value": "1200 mAh",
-      "id": 11
+      "id": "11"
     },
     {
       "attributeId": 4,
       "value": "5000 mAh",
-      "id": 12
+      "id": "12"
     },
     {
       "attributeId": 7,
       "value": "Snapdragon 850",
-      "id": 13
+      "id": "13"
     },
     {
       "attributeId": 7,
       "value": "Snapdragon 625",
-      "id": 14
+      "id": "14"
     },
     {
       "attributeId": 7,
       "value": "Mediatek G90T",
-      "id": 15
+      "id": "15"
     },
     {
       "attributeId": 7,
       "value": "Core i5",
-      "id": 16
+      "id": "16"
     },
     {
       "attributeId": 7,
       "value": "core i7",
-      "id": 17
+      "id": "17"
     },
     {
       "attributeId": 8,
       "value": "Nhựa cứng",
-      "id": 18
+      "id": "18"
     },
     {
       "attributeId": 8,
       "value": "Viền kim loại",
-      "id": 19
+      "id": "19"
     },
     {
       "attributeId": 8,
       "value": "Vỏ nhựa",
-      "id": 20
+      "id": "20"
     }
   ],
   "slide": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Exclusive collection for everyone2",
       "status": 3,
       "img": "https://picsum.photos/200/300",
@@ -186,7 +186,21 @@
       "status": 234,
       "img": "https://picsum.photos/200/300",
       "url": "https://picsum.photos/200/300",
-      "id": 2
+      "id": "2"
+    },
+    {
+      "id": "f907",
+      "title": "asdasd",
+      "status": 2,
+      "img": "https://res.cloudinary.com/dhwpz6l7t/image/upload/v1717040582/datn-img/cpveisvf2hvrkefeltjc.jpg",
+      "url": "https://res.cloudinary.com/dhwpz6l7t/image/upload/v1717040590/datn-img/t5iwukbffkb99zapvamz.jpg"
+    },
+    {
+      "title": "sad update",
+      "status": 2,
+      "img": "https://res.cloudinary.com/do7coevfh/image/upload/v1717053369/datn-img/fyzx3p6l71pi8tetylds.jpg",
+      "url": "https://res.cloudinary.com/do7coevfh/image/upload/v1717053379/datn-img/ys6n2enil8umiwlpwcbs.jpg",
+      "id": "6557"
     }
   ],
   "categories": [
@@ -194,24 +208,24 @@
       "name": "Điện thoại",
       "description": "moo taa",
       "is_delete": false,
-      "id": 1
+      "id": "1"
     },
     {
       "name": "Máy tính bảng",
       "description": "- ád\n-fg",
       "parent_id": "2",
       "is_delete": false,
-      "id": 2
+      "id": "2"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Laptop",
       "parent_id": "",
       "description": "sdf",
       "is_delete": false
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Phụ kiện",
       "parent_id": "",
       "description": "sdf",
@@ -222,113 +236,179 @@
       "description": "fsdfdsaf",
       "parent_id": "",
       "is_delete": false,
-      "id": 5
+      "id": "5"
     },
     {
       "name": "fsdf  3434",
       "description": "fsdfdsaf",
       "parent_id": "",
       "is_delete": false,
-      "id": 6
+      "id": "6"
+    },
+    {
+      "id": "24d1",
+      "name": "đ",
+      "parent_id": "",
+      "description": "đ",
+      "is_delete": false
     }
   ],
   "category_attributes": [
     {
-      "id": 1,
+      "id": "1",
       "categoryId": 1,
       "attributeId": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "categoryId": 1,
       "attributeId": 2
     },
     {
       "categoryId": 2,
       "attributeId": 2,
-      "id": 3
+      "id": "3"
     },
     {
       "categoryId": 3,
       "attributeId": 6,
-      "id": 4
+      "id": "4"
     },
     {
       "categoryId": 3,
       "attributeId": 1,
-      "id": 5
+      "id": "5"
     },
     {
       "categoryId": 3,
       "attributeId": 3,
-      "id": 6
+      "id": "6"
     },
     {
       "categoryId": 3,
       "attributeId": 4,
-      "id": 7
+      "id": "7"
     },
     {
       "categoryId": 1,
       "attributeId": 3,
-      "id": 8
+      "id": "8"
     },
     {
       "categoryId": 1,
       "attributeId": 4,
-      "id": 9
+      "id": "9"
     },
     {
       "categoryId": 1,
       "attributeId": 5,
-      "id": 10
+      "id": "10"
     },
     {
       "categoryId": 2,
       "attributeId": 1,
-      "id": 11
+      "id": "11"
     },
     {
       "categoryId": 2,
       "attributeId": 3,
-      "id": 12
+      "id": "12"
     },
     {
       "categoryId": 2,
       "attributeId": 4,
-      "id": 13
+      "id": "13"
     },
     {
       "categoryId": 2,
       "attributeId": 5,
-      "id": 14
+      "id": "14"
     }
   ],
   "brand": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Puma",
       "logo": "url",
       "create_at": "2024-05-11T02:48:09.735Z",
       "updated_at": "2024-05-11T02:48:09.735Z"
     }
   ],
+  "privilege_users": [
+    {
+      "userId": 1,
+      "privilegeId": 5,
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "privilegeId": 2,
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "privilegeId": 1,
+      "id": 7
+    },
+    {
+      "userId": 1,
+      "privilegeId": 5,
+      "id": 8
+    },
+    {
+      "userId": 1,
+      "privilegeId": 2,
+      "id": 9
+    },
+    {
+      "userId": 1,
+      "privilegeId": 7,
+      "id": 10
+    },
+    {
+      "userId": 1,
+      "privilegeId": 3,
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "privilegeId": 8,
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "privilegeId": 6,
+      "id": 13
+    }
+  ],
   "privilege_groups": [
     {
-      "id": 1,
-      "name": "Quản lý banner"
+      "name": "Quản lý tài khoản user",
+      "id": 2
     },
     {
-      "id": 2,
-      "name": "Quản lý tài khoản user"
+      "name": "Quản lý biến thể sản phẩm",
+      "id": 3
     },
     {
-      "id": 3,
-      "name": "Quản lý biến thể sản phẩm"
+      "name": "Quản lý banner",
+      "id": 4
     },
     {
-      "id": 4,
-      "name": "Quản lý thương hiệu (brand) "
+      "name": "Quản lý danh mục bài viết",
+      "id": 5
+    },
+    {
+      "name": "Quản lý thương hiệu sản phẩm",
+      "id": 6
+    },
+    {
+      "name": "Quản lý quyền truy cập trang web",
+      "id": 7
+    },
+    {
+      "name": "Quản lý danh mục sản phẩm",
+      "id": 8
     }
   ],
   "privileges": [
@@ -359,20 +439,90 @@
     {
       "id": 4,
       "name": "Quản lý thêm, sửa, xóa banner",
-      "privilege_groupId": 3,
+      "privilege_groupId": 4,
       "url_match": "admin\\/banner"
     },
     {
       "id": 6,
       "name": "Quản lý biến thể",
-      "privilege_groupId": 1,
+      "privilege_groupId": 3,
       "url_match": "admin\\/attributes-product$"
     },
     {
-      "id": 7,
-      "name": "Quản lý danh sách, thêm, sửa, xóa thương hiệu",
-      "privilege_groupId": 4,
-      "url_match": "admin\\/brand$"
+      "name": "Quản lý thêm, sửa,  xóa danh mục bài viết",
+      "privilege_groupId": 5,
+      "url_match": "admin\\/post-categories",
+      "id": 7
+    },
+    {
+      "name": "Quản lý thêm, sửa, xóa thương hiệu sản phẩm",
+      "privilege_groupId": 6,
+      "url_match": "admin\\/brand",
+      "id": 8
+    },
+    {
+      "name": "Quản lý thêm, sửa nhóm quyền và  các quyền truy cập",
+      "privilege_groupId": 7,
+      "url_match": "admin\\/privilege",
+      "id": 9
+    },
+    {
+      "name": "Quản lý thêm, sửa xóa danh mục sản phẩm",
+      "privilege_groupId": 8,
+      "url_match": "admin\\/categories",
+      "id": 10
+    },
+    {
+      "name": "Phân quyền người dùng",
+      "privilege_groupId": 7,
+      "url_match": "admin\\/users\\/privilege\\/(\\d+)$",
+      "id": 11
+    }
+  ],
+  "voucher": [
+    {
+      "name": "Sale cuoi nam",
+      "code": "FQXXEAMBGC",
+      "discount_amount": 1009,
+      "start_date": "2024-05-24T17:00:00.000Z",
+      "end_date": "2024-05-29T17:00:00.000Z",
+      "usage_limit": 1,
+      "id": "1"
+    },
+    {
+      "id": "eb20",
+      "name": "sdaasda",
+      "code": "F2WDTUOCZN",
+      "discount_amount": 1111,
+      "start_date": "2024-05-20T17:00:00.000Z",
+      "end_date": "2024-05-23T17:00:00.000Z",
+      "usage_limit": 123123
+    },
+    {
+      "name": "dá",
+      "code": "UQVYWNX6Z8",
+      "discount_amount": 3,
+      "start_date": "2024-05-24T17:00:00.000Z",
+      "end_date": "2024-05-25T17:00:00.000Z",
+      "usage_limit": 4,
+      "id": "4cd3"
+    }
+  ],
+  "post_category": [
+    {
+      "id": "1",
+      "name": "Tin tức",
+      "slug": "tintuc"
+    },
+    {
+      "id": "2",
+      "name": "Tuyển dụng",
+      "slug": "tuyendung"
+    },
+    {
+      "name": "Test Update hi",
+      "slug": "test_update_hi",
+      "id": "3176"
     }
   ]
 }
