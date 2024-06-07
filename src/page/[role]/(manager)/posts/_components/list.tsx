@@ -128,7 +128,9 @@ export default function ListPosts() {
             okText='Đồng ý'
             cancelText='Hủy bỏ'
           >
-            <Button type='primary'>Delete</Button>
+            <Button type='primary' danger>
+              Delete
+            </Button>
           </Popconfirm>
         </Space>
       )
