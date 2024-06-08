@@ -1,8 +1,8 @@
 import instance from '@/api/axios'
-import { IPost } from '@/common/types/post.interface'
+import { IPost, IPrams } from '@/common/types/post.interface'
 
-export const getListPost = () => {
-  return instance.get(`posts`)
+export const getListPost = (params?: IPrams) => {
+  return instance.get(`posts`, { params })
 }
 
 export const getPost = (id: string) => {

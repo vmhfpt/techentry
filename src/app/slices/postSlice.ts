@@ -1,4 +1,4 @@
-import { IPost } from '@/common/types/post.interface'
+import { IPost, IPrams } from '@/common/types/post.interface'
 import { createPost, deletePost, getListPost, getPost, searchPost, updatePost } from '@/services/postService'
 import { Dispatch, createSlice } from '@reduxjs/toolkit'
 
@@ -64,10 +64,10 @@ const postSlice = createSlice({
 })
 
 // Thunk
-export const getAllPost = () => async (dispatch: Dispatch) => {
+export const getAllPost = (params?: IPrams) => async (dispatch: Dispatch) => {
   dispatch(isFetching())
   try {
-    const { data } = await getListPost()
+    const { data } = await getListPost(params)
     if (data) {
       dispatch(getAllSuccess(data))
     }
