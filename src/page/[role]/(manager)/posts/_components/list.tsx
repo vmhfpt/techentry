@@ -9,7 +9,6 @@ import '../../styles/category.css'
 import { getAllPost, removePost, searchPosts } from '@/app/slices/postSlice'
 import { IPost } from '@/common/types/post.interface'
 import { getAllPostCategory } from '@/app/slices/postCategorySlice'
-import { IPostCategory } from '@/common/types/category.interface'
 
 export default function ListPosts() {
   const dispatch = useAppDispatch()
@@ -17,7 +16,6 @@ export default function ListPosts() {
   const debouncedValue = useDebounce(searchValue, 600)
 
   const { posts, isLoading } = useAppSelector((state) => state.post)
-  const { postCategories } = useAppSelector((state) => state.postCategory)
 
   const handlerRemovePost = async (value: IPost) => {
     const res = await dispatch(removePost(value.id as string))
@@ -37,7 +35,7 @@ export default function ListPosts() {
 
   useEffect(() => {
     if (!debouncedValue.trim()) {
-      dispatch(getAllPost())
+      dispatch(getAllPost({ _expand: 'postCategory' }))
       dispatch(getAllPostCategory())
     } else {
       dispatch(searchPosts(debouncedValue))
@@ -80,15 +78,11 @@ export default function ListPosts() {
     },
     {
       title: 'Category',
-      dataIndex: 'postCategoryId',
-      key: 'postCategoryId',
+      dataIndex: 'postCategory',
+      key: 'postCategory',
       align: 'center',
       width: 100,
-      render: (postCategoryId) => (
-        <span>
-          {postCategories.find((category: IPostCategory) => category.id === postCategoryId)?.name || 'No Category'}
-        </span>
-      )
+      render: (postCategory) => <span>{postCategory?.name || 'No Category'}</span>
     },
     {
       title: 'Status',

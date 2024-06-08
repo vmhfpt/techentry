@@ -9,3 +9,8 @@ export interface IPost {
   status: number
   isActive?: boolean
 }
+
+export interface IPrams {
+  _expand?: string
+  _embed?: string
+}
