@@ -25,8 +25,8 @@
       "city": "Bà Rịa - Vũng Tàu-77",
       "district": "Vũng Tàu",
       "role_id": "2",
-      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png",
-      "id": "2"
+      "id": 2,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png"
     }
   ],
   "attributes": [
@@ -337,113 +337,83 @@
   "privilege_users": [
     {
       "userId": 1,
-      "privilegeId": 5,
-      "id": "5"
-    },
-    {
-      "userId": 1,
-      "privilegeId": 2,
-      "id": "6"
-    },
-    {
-      "userId": 1,
       "privilegeId": 1,
-      "id": "7"
+      "id": 1
     },
     {
       "userId": 1,
       "privilegeId": 5,
-      "id": "8"
-    },
-    {
-      "userId": 1,
-      "privilegeId": 2,
-      "id": "9"
-    },
-    {
-      "userId": 1,
-      "privilegeId": 7,
-      "id": "10"
-    },
-    {
-      "userId": 1,
-      "privilegeId": 3,
-      "id": "11"
-    },
-    {
-      "userId": 1,
-      "privilegeId": 8,
-      "id": "12"
+      "id": 2
     },
     {
       "userId": 1,
       "privilegeId": 6,
-      "id": "13"
+      "id": 3
     }
   ],
   "privilege_groups": [
     {
       "name": "Quản lý tài khoản user",
-      "id": "2"
+      "id": 2
     },
     {
       "name": "Quản lý biến thể sản phẩm",
-      "id": "3"
+      "id": 3
     },
     {
       "name": "Quản lý banner",
-      "id": "4"
+      "id": 4
     },
     {
       "name": "Quản lý danh mục bài viết",
-      "id": "5"
+      "id": 5
     },
     {
       "name": "Quản lý thương hiệu sản phẩm",
-      "id": "6"
+      "id": 6
     },
     {
       "name": "Quản lý quyền truy cập trang web",
-      "id": "7"
+      "id": 7
     },
     {
       "name": "Quản lý danh mục sản phẩm",
-      "id": "8"
+      "id": 8
     }
   ],
   "privileges": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Xem danh sách người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users$"
     },
     {
-      "id": "5",
+      "id": 5,
       "name": "Thêm người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users\\/add$"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "Sửa người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users\\/(\\d+)$"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Xóa người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users\\/delete$"
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "Quản lý thêm, sửa, xóa banner",
       "privilege_groupId": 4,
       "url_match": "admin\\/banner"
     },
     {
-      "id": "6",
+      "id": 6,
       "name": "Quản lý biến thể",
       "privilege_groupId": 3,
       "url_match": "admin\\/attributes-product$"
@@ -452,31 +422,31 @@
       "name": "Quản lý thêm, sửa,  xóa danh mục bài viết",
       "privilege_groupId": 5,
       "url_match": "admin\\/post-categories",
-      "id": "7"
+      "id": 7
     },
     {
       "name": "Quản lý thêm, sửa, xóa thương hiệu sản phẩm",
       "privilege_groupId": 6,
       "url_match": "admin\\/brand",
-      "id": "8"
+      "id": 8
     },
     {
       "name": "Quản lý thêm, sửa nhóm quyền và  các quyền truy cập",
       "privilege_groupId": 7,
       "url_match": "admin\\/privilege",
-      "id": "9"
+      "id": 9
     },
     {
       "name": "Quản lý thêm, sửa xóa danh mục sản phẩm",
       "privilege_groupId": 8,
       "url_match": "admin\\/categories",
-      "id": "10"
+      "id": 10
     },
     {
       "name": "Phân quyền người dùng",
       "privilege_groupId": 7,
       "url_match": "admin\\/users\\/privilege\\/(\\d+)$",
-      "id": "11"
+      "id": 11
     }
   ],
   "voucher": [
@@ -547,6 +517,34 @@
       "status": 2,
       "isActive": true,
       "id": "347b"
+    }
+  ],
+  "products": [
+    {
+      "name": "update  image 1231313",
+      "price": "4444",
+      "discount": "4444",
+      "categoryId": "1",
+      "brandId": "1",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<h2><i>4444</i></h2>",
+      "in_active": false,
+      "id": 1,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1717851153/example-react/a80yd2icpcf3pntg3rwl.jpg"
+    },
+    {
+      "name": "11111 update",
+      "price": "1111",
+      "discount": "11",
+      "categoryId": "4",
+      "brandId": "1",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>2222</p>",
+      "in_active": true,
+      "id": 2,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1717839600/example-react/vk7ykn2tiklip1drsws7.jpg"
     }
   ]
 }

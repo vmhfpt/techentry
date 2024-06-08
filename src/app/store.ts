@@ -14,6 +14,7 @@ import { privilegeApi } from '@/page/[role]/(manager)/privilege/_components/priv
 import { privilegeUsersApi } from '@/page/[role]/(manager)/user/PrivilegeUsersEndpoints'
 import postSlice from './slices/postSlice'
 
+import { productsApi } from '@/page/[role]/(manager)/products/ProductsEndpoints'
 export const store = configureStore({
   reducer: {
     web: webReducer,
@@ -25,26 +26,17 @@ export const store = configureStore({
     [addressApi.reducerPath]: addressApi.reducer,
     [attributesApi.reducerPath]: attributesApi.reducer,
     [categoryAttributesApi.reducerPath]: categoryAttributesApi.reducer,
-    [valueAttributesApi.reducerPath]: valueAttributesApi.reducer,
-    [privilegeGroupApi.reducerPath]: privilegeGroupApi.reducer,
-    [privilegeApi.reducerPath]: privilegeApi.reducer,
-    [privilegeUsersApi.reducerPath]: privilegeUsersApi.reducer
+    [valueAttributesApi.reducerPath] : valueAttributesApi.reducer,
+    [privilegeGroupApi.reducerPath] : privilegeGroupApi.reducer,
+    [privilegeApi.reducerPath] : privilegeApi.reducer,
+    [privilegeUsersApi.reducerPath] : privilegeUsersApi.reducer,
+    [productsApi.reducerPath] : productsApi.reducer
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
-  middleware: (
-    getDefaultMiddleware //attributesApi.middleware
-  ) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(
-      usersApi.middleware,
-      addressApi.middleware,
-      attributesApi.middleware,
-      categoryAttributesApi.middleware,
-      valueAttributesApi.middleware,
-      privilegeGroupApi.middleware,
-      privilegeApi.middleware,
-      privilegeUsersApi.middleware
-    )
-})
+  middleware: (getDefaultMiddleware) => //attributesApi.middleware
+  getDefaultMiddleware({ serializableCheck: false }).concat(usersApi.middleware, addressApi.middleware, attributesApi.middleware, categoryAttributesApi.middleware, valueAttributesApi.middleware, privilegeGroupApi.middleware, privilegeApi.middleware, privilegeUsersApi.middleware, productsApi.middleware),
+});
+
 
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
