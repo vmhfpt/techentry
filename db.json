@@ -25,8 +25,8 @@
       "city": "Bà Rịa - Vũng Tàu-77",
       "district": "Vũng Tàu",
       "role_id": "2",
-      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png",
-      "id": 2
+      "id": 2,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png"
     }
   ],
   "attributes": [
@@ -337,48 +337,18 @@
   "privilege_users": [
     {
       "userId": 1,
-      "privilegeId": 5,
-      "id": 5
-    },
-    {
-      "userId": 1,
-      "privilegeId": 2,
-      "id": 6
-    },
-    {
-      "userId": 1,
       "privilegeId": 1,
-      "id": 7
+      "id": 1
     },
     {
       "userId": 1,
       "privilegeId": 5,
-      "id": 8
-    },
-    {
-      "userId": 1,
-      "privilegeId": 2,
-      "id": 9
-    },
-    {
-      "userId": 1,
-      "privilegeId": 7,
-      "id": 10
-    },
-    {
-      "userId": 1,
-      "privilegeId": 3,
-      "id": 11
-    },
-    {
-      "userId": 1,
-      "privilegeId": 8,
-      "id": 12
+      "id": 2
     },
     {
       "userId": 1,
       "privilegeId": 6,
-      "id": 13
+      "id": 3
     }
   ],
   "privilege_groups": [
@@ -523,6 +493,34 @@
       "name": "Test Update hi",
       "slug": "test_update_hi",
       "id": "3176"
+    }
+  ],
+  "products": [
+    {
+      "name": "update  image 1231313",
+      "price": "4444",
+      "discount": "4444",
+      "categoryId": "1",
+      "brandId": "1",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<h2><i>4444</i></h2>",
+      "in_active": true,
+      "id": 1,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1717851153/example-react/a80yd2icpcf3pntg3rwl.jpg"
+    },
+    {
+      "name": "11111 update",
+      "price": "1111",
+      "discount": "11",
+      "categoryId": "4",
+      "brandId": "1",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>2222</p>",
+      "in_active": true,
+      "id": 2,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1717839600/example-react/vk7ykn2tiklip1drsws7.jpg"
     }
   ]
 }

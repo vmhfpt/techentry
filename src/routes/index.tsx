@@ -44,6 +44,9 @@ import PostCategoryManagement from '@/page/[role]/(manager)/postCategory'
 import AddPostCategory from '@/page/[role]/(manager)/postCategory/_components/add'
 import EditPostCategory from '@/page/[role]/(manager)/postCategory/_components/edit'
 import PrivilegeUser from "@/page/[role]/(manager)/user/_components/privilege";
+import ProductManagement from "@/page/[role]/(manager)/products";
+import AddProduct from "@/page/[role]/(manager)/products/_components/add";
+import EditProduct from "@/page/[role]/(manager)/products/_components/edit";
 export default function Router() {
   return (
     <>
@@ -91,6 +94,11 @@ export default function Router() {
               <Route path='add' element={<AddUser />} />
               <Route path='privilege/:id' element={<PrivilegeUser />} />
               <Route path=':id' element={<EditUser />} />
+              
+            </Route>
+            <Route path='products' element={<ProductManagement />}>
+              <Route path='add' element={<AddProduct />} />
+              <Route path=':id' element={<EditProduct />} />
               
             </Route>
 
