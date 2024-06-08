@@ -206,7 +206,7 @@ export default function EditPosts() {
             <Input size='large' placeholder='Nhập trạng thái bài viết' className='w-full' />
           </Form.Item>
 
-          <Form.Item name='isActive' className='w-full'>
+          <Form.Item name='isActive' valuePropName='checked' className='w-full'>
             <Checkbox
               onChange={(e) => {
                 form.setFieldsValue({ isActive: e.target.checked })
