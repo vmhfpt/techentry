@@ -6,11 +6,13 @@ import { popupError, popupSuccess } from "../../../components/util/Toast";
 import { useState } from "react";
 import EditAttribute from "./edit";
 import { useGetCategoriesAttributesQuery } from "../category_attribute/CategoryAttributeEndpoints";
+import { useGetValueAttributesQuery } from "../value_attribute/ValueAttributeEndPoints";
 import { Typography } from 'antd';
 
 const { Title } = Typography;
 export default function Attribute(){
   const { refetch } = useGetCategoriesAttributesQuery({});
+  const { refetch : refetchValueAttributes } = useGetValueAttributesQuery({})
   const [formValuesUpdate, setFormValuesUpdate] = useState<IAttribute>({
      name : '',
      description : ''
@@ -39,6 +41,7 @@ export default function Attribute(){
     try {
       await updateAttribute(payload);
       refetch();
+      refetchValueAttributes();
       setOpen(false);
       popupSuccess(`Update attribute ${values.name} success`);
     } catch (error) {

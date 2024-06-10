@@ -1,26 +1,28 @@
-import type { TableProps } from 'antd'
-import { Button, Flex, Input, Popconfirm, Space, Table, Typography, message } from 'antd'
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { getAllBanner, removeBanner, searchBanners } from '@/app/slices/bannerSlice'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { IBanner } from '@/common/types/banner.interface'
+import type { TableProps } from 'antd'
+import { Button, Flex, Input, Popconfirm, Space, Table, Tag, Typography, message } from 'antd'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import useDebounce from '@/hooks/useDebounce'
+import '../../styles/category.css'
+import { getAllPost, removePost, searchPosts } from '@/app/slices/postSlice'
+import { IPost } from '@/common/types/post.interface'
+import { getAllPostCategory } from '@/app/slices/postCategorySlice'
 
-export default function ListBanner() {
+export default function ListPosts() {
   const dispatch = useAppDispatch()
   const [searchValue, setSearchValue] = useState('')
   const debouncedValue = useDebounce(searchValue, 600)
 
-  const { banners, isLoading } = useAppSelector((state) => state.banner)
+  const { posts, isLoading } = useAppSelector((state) => state.post)
 
-  const handlerRemoveBanner = async (value: IBanner) => {
-    const res = await dispatch(removeBanner(value.id as string))
+  const handlerRemovePost = async (value: IPost) => {
+    const res = await dispatch(removePost(value.id as string))
     if (res?.success) {
-      message.success('Xoá banner thành công!')
+      message.success('Xoá bài viết thành công!')
     } else if (!res.success) {
-      message.error('Xoá banner thất bại!')
+      message.error('Xoá bài viết thất bại!')
     }
   }
 
@@ -33,13 +35,14 @@ export default function ListBanner() {
 
   useEffect(() => {
     if (!debouncedValue.trim()) {
-      dispatch(getAllBanner())
+      dispatch(getAllPost({ _expand: 'postCategory' }))
+      dispatch(getAllPostCategory())
     } else {
-      dispatch(searchBanners(debouncedValue))
+      dispatch(searchPosts(debouncedValue))
     }
   }, [debouncedValue, dispatch])
 
-  const columns: TableProps<IBanner>['columns'] = [
+  const columns: TableProps<IPost>['columns'] = [
     {
       title: '#',
       dataIndex: 'key',
@@ -52,32 +55,54 @@ export default function ListBanner() {
       dataIndex: 'title',
       key: 'title',
       align: 'center',
-      width: 160,
+      width: 100,
       render: (text) => <a>{text}</a>
+    },
+    Table.EXPAND_COLUMN,
+    {
+      title: 'Content',
+      dataIndex: 'content',
+      key: 'content',
+      align: 'center',
+      width: 100,
+      ellipsis: true,
+      render: (text) => <span className='ellipsis'>{text}</span>
+    },
+    {
+      title: 'Thumbnail',
+      dataIndex: 'thumbnail',
+      key: 'thumbnail',
+      align: 'center',
+      width: 100,
+      render: (url) => <img src={url || ''} className='mx-auto w-14' alt='' />
+    },
+    {
+      title: 'Category',
+      dataIndex: 'postCategory',
+      key: 'postCategory',
+      align: 'center',
+      width: 100,
+      render: (postCategory) => <span>{postCategory?.name || 'No Category'}</span>
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
       align: 'center',
-      width: 160,
-      render: (text) => <>{text}</>
+      width: 80
     },
     {
-      title: 'Img',
-      dataIndex: 'img',
-      key: 'img',
+      title: 'Active',
+      dataIndex: 'isActive',
+      key: 'isActive',
       align: 'center',
       width: 100,
-      render: (img) => <img src={img || ''} className='mx-auto w-16' alt='' />
-    },
-    {
-      title: 'Url',
-      dataIndex: 'url',
-      key: 'url',
-      align: 'center',
-      width: 140,
-      render: (text) => <>{text.slice(0, 20).concat(' . . .')}</>
+      render: (isActive) => {
+        const color = !isActive ? 'volcano' : 'green'
+        const text = !isActive ? 'No Active' : 'Active'
+
+        return <Tag color={color}>{text.toUpperCase()}</Tag>
+      }
     },
     {
       title: 'Action',
@@ -86,13 +111,13 @@ export default function ListBanner() {
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
-          <Link to={'' + record?.id}>
+          <Link to={'' + record.id}>
             <Button type='primary'>Edit</Button>
           </Link>
           <Popconfirm
             placement='topRight'
-            title='Are you sure delete this banner?'
-            onConfirm={() => handlerRemoveBanner(record)}
+            title='Are you sure delete this post?'
+            onConfirm={() => handlerRemovePost(record)}
             onCancel={() => {}}
             okText='Đồng ý'
             cancelText='Hủy bỏ'
@@ -106,8 +131,8 @@ export default function ListBanner() {
     }
   ]
 
-  const newData = banners?.map((banner: IBanner, index: number) => ({
-    ...banner,
+  const newData = posts?.map((post: IPost, index: number) => ({
+    ...post,
     key: index + 1
   }))
 
@@ -115,8 +140,9 @@ export default function ListBanner() {
     <>
       <div className='flex items-center justify-between my-2'>
         <Typography.Title editable level={2} style={{ margin: 0 }}>
-          List Banner
+          List Posts
         </Typography.Title>
+
         <Input
           className='header-search w-[250px]'
           prefix={
@@ -138,7 +164,6 @@ export default function ListBanner() {
           }}
         />
       </div>
-
       <Table
         pagination={{ pageSize: 8 }}
         columns={columns}
@@ -147,11 +172,16 @@ export default function ListBanner() {
         sticky={{ offsetHeader: 0 }}
         dataSource={newData}
         loading={isLoading}
+        expandable={{
+          expandedRowRender: (record) => (
+            <div style={{ maxWidth: '90%', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{record.content}</div>
+          )
+        }}
       />
 
       <Flex wrap='wrap' gap='small'>
         <Link to='add'>
-          <Button type='primary'>Add Banner</Button>
+          <Button type='primary'>Add Post</Button>
         </Link>
       </Flex>
     </>

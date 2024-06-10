@@ -3,45 +3,49 @@ import {   Popconfirm,  Table, Tag, Typography } from 'antd';
 import type {    TableProps } from 'antd';
 import { Button, Flex } from 'antd';
 import { Link } from 'react-router-dom';
-import { Iuser } from '../../../../../common/types/user.interface';
-import { useGetUsersQuery } from '../UsersEndpoints';
+import { IProduct } from '@/common/types/product.interface';
+import { useGetProductsQuery,useUpdateProductMutation } from '../ProductsEndpoints';
 import HandleLoading from '../../components/util/HandleLoading';
-import { useDeleteUserMutation } from '../UsersEndpoints';
+
 import {  useState } from 'react';
 
 import useQuerySearch from '../../hooks/useQuerySearch';
 import { getColumnSearchProps } from '../../components/util/SortHandle';
 import { popupSuccess } from '../../components/util/Toast';
-export default function ListUser(){
+export default function ListProduct(){
 
 
   const {searchText,setSearchText,setSearchedColumn, searchedColumn, searchInput, handleSearch, handleReset } = useQuerySearch();
-  
+  const {
+    data ,
+    isLoading,
+    isError
+  } = useGetProductsQuery({});
 
   const [id, setId] = useState<number | string>();
-  const [deleteUser, {isLoading : isDeleting}, ] = useDeleteUserMutation();
+  const [hiddenProduct, {isLoading : isHiddenProduct}, ] = useUpdateProductMutation();
  
   const confirm = async (id : number | string) => {
     setId(id)
-    await deleteUser(id);
-     popupSuccess('Delete user success');
+    
+    data.map(async (item : IProduct) => {
+      const mutableItem  = { ...item };
+      delete mutableItem.category;
+        await hiddenProduct({
+              ...mutableItem,
+            in_active : false
+        });
+        popupSuccess('Hidden product success');
+    })
   };
-
-
-    const {
-      data ,
-      isLoading,
-      isError
-    } = useGetUsersQuery({});
-
-    const dataItem = data?.map((item : Iuser, key : number) => {
+    const dataItem = data?.map((item : IProduct, key : number) => {
       return {
         ...item,
         key : key
       }
     })
     
-    const columns: TableProps<Iuser>['columns'] = [
+    const columns: TableProps<IProduct>['columns'] = [
         {
           title: 'Name',
           dataIndex: 'name',
@@ -63,70 +67,57 @@ export default function ListUser(){
             ),
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
-          ...getColumnSearchProps(
-            'email',
-             handleSearch,
-             handleReset,
-             searchText,
-             setSearchText,
-             searchedColumn,
-             setSearchedColumn,
-             searchInput
-            ),
+          title: 'Price',
+          dataIndex: 'price',
+          key: 'price',
+        },
+        {
+            title: 'Discount',
+            dataIndex: 'discount',
+            key: 'discount',
         },
         {
           title: 'Image',
-          dataIndex: 'image',
-          key: 'image',
-          render: (image) => <img src={image} alt="" width={110} />
+          dataIndex: 'thumbnail',
+          key: 'thumbnail',
+          render: (thumbnail) => <img src={thumbnail} alt="" width={110} />
         },
         {
-          title: 'Role',
-          key: 'role_id',
-          dataIndex: 'role_id',
-          render: (_, { role_id  }) => (
+            title: 'Category',
+            dataIndex: 'category',
+            key: 'category',
+            render: (category: { name: string }) => category.name,
+        },
+        {
+          title: 'Active',
+          key: 'in_active',
+          dataIndex: 'in_active',
+          render: (_, { in_active  }) => (
             <>
-                  <Tag color={role_id == '1' ? 'geekblue' : 'green'} >
-                      {role_id == '1' ? 'Admin' : 'Guest'}
+                  <Tag color={in_active ? 'green' : 'red'} >
+                      {in_active ? 'Active' : 'InActive'}
                   </Tag>
             </>
-          ),
-          filters: [
-            {
-              text: 'Admin',
-              value: '1',
-            },
-            {
-              text: 'Guest',
-              value: '2',
-            },
-          ],
-          onFilter: (value, record) => record.role_id.startsWith(value as string),
-          filterSearch: true,
+          )
         },
         {
           title: 'Action',
           key: 'action',
-          render: (data: Iuser) => (
+          render: (data: IProduct) => (
             <Flex wrap="wrap" gap="small">
-               <Link to={"privilege/" + String(data?.id)}>   <Button danger  >
-                  Privilege
-                </Button> </Link>
+              
                <Link to={String(data?.id)}>   <Button type="primary"  >
                   Edit
                 </Button> </Link>
                 <Popconfirm
-                    disabled={isDeleting}
-                    title="Delete the user"
-                    description={`Are you sure to delete "${data.name}" ?`}
+                    disabled={isHiddenProduct}
+                    title="Hidden the product"
+                    description={`Are you sure to hidden product "${data.name}" ?`}
                     onConfirm={() => confirm(String(data.id))}
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button danger loading={isDeleting && data.id == id} >Delete</Button>
+                {data.in_active && <Button danger loading={isHiddenProduct && data.id == id} >Disable</Button>} 
                   </Popconfirm>
           </Flex>
           ),
@@ -138,13 +129,13 @@ export default function ListUser(){
    
     <HandleLoading isLoading={isLoading} isError={isError}>
           <Typography.Title editable level={2} style={{ margin: 0 }}>
-                List users
+                List products
             </Typography.Title>
             <Table columns={columns} dataSource={dataItem} />
 
             <Flex wrap="wrap" gap="small">
-          <Link to="add">    <Button type="primary" danger>
-            Add user
+          <Link to="add">    <Button type="primary" danger className='my-[20px]'>
+            Add product
           </Button> </Link>
           
 
