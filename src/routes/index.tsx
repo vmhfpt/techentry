@@ -50,6 +50,7 @@ import EditPosts from "@/page/[role]/(manager)/posts/_components/edit";
 import ProductManagement from "@/page/[role]/(manager)/products";
 import AddProduct from "@/page/[role]/(manager)/products/_components/add";
 import EditProduct from "@/page/[role]/(manager)/products/_components/edit";
+import ColorManagement from "@/page/[role]/(manager)/color";
 export default function Router() {
   return (
     <>
@@ -113,6 +114,7 @@ export default function Router() {
                </Route> */}
 
             <Route path='voucher' element={<VoucherManagement />}></Route>
+            <Route path='color' element={<ColorManagement />}></Route>
             <Route path='brand' element={<BrandManagement />}></Route>
 
 

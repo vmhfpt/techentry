@@ -10,10 +10,10 @@ import Dashboard from "./icon/Dashboard";
 import { useAppSelector } from "../../../../app/hooks";
 
 
-function Sidenav() {  
+function Sidenav() {
   const { Text } = Typography;
-  
-  const {bgIcon, darkColor} = useAppSelector(state => state.web)
+
+  const { bgIcon, darkColor } = useAppSelector(state => state.web)
 
   const useSidenav = UseSidenav({
     components: [
@@ -21,27 +21,27 @@ function Sidenav() {
         label: (
           <>
             <div>
-                <Flex justify="center" align="center">
-                  <div
-                    className={`icon `}
-                  >
-                    {<Dashboard color={darkColor}/>}
-                  </div>
-                  <span className="label">Dashboard</span>
-                </Flex>
+              <Flex justify="center" align="center">
+                <div
+                  className={`icon `}
+                >
+                  {<Dashboard color={darkColor} />}
+                </div>
+                <span className="label">Dashboard</span>
+              </Flex>
             </div>
           </>
         ),
         link: '/admin/dashboard'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Voucher</span>
             </Flex>
@@ -50,13 +50,28 @@ function Sidenav() {
         link: '/admin/voucher'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
+              </span>
+              <span className="label">Color</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/Color'
+      },
+      {
+        label: (
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Products</span>
             </Flex>
@@ -65,13 +80,13 @@ function Sidenav() {
         link: '/admin/products'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Banner</span>
             </Flex>
@@ -80,13 +95,13 @@ function Sidenav() {
         link: '/admin/banner'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Categories</span>
             </Flex>
@@ -95,13 +110,13 @@ function Sidenav() {
         link: '/admin/categories'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Post Categories</span>
             </Flex>
@@ -110,13 +125,13 @@ function Sidenav() {
         link: '/admin/post-categories'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Posts</span>
             </Flex>
@@ -128,27 +143,27 @@ function Sidenav() {
         label: (
           <>
             <div>
-                <Flex justify="center" align="center">
-                  <div
-                    className={`icon `}
-                  >
-                    {<Tables color={darkColor}/>}
-                  </div>
-                  <span className="label">Brand</span>
-                </Flex>
+              <Flex justify="center" align="center">
+                <div
+                  className={`icon `}
+                >
+                  {<Tables color={darkColor} />}
+                </div>
+                <span className="label">Brand</span>
+              </Flex>
             </div>
           </>
         ),
         link: '/admin/brand'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Users</span>
             </Flex>
@@ -157,13 +172,13 @@ function Sidenav() {
         link: '/admin/users'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Attributes Product</span>
             </Flex>
@@ -172,13 +187,13 @@ function Sidenav() {
         link: '/admin/attributes-product'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Privilege</span>
             </Flex>
@@ -193,7 +208,7 @@ function Sidenav() {
               <span
                 className={`icon `}
               >
-                <Billing color={darkColor}/>
+                <Billing color={darkColor} />
               </span>
               <span className="label">Billing</span>
             </Flex>
@@ -207,7 +222,7 @@ function Sidenav() {
             <span
               className={`icon `}
             >
-              <Rtl color={darkColor}/>
+              <Rtl color={darkColor} />
             </span>
             <span className="label">RTL</span>
           </Flex>
@@ -217,7 +232,7 @@ function Sidenav() {
       {
         label: (
           <>
-            <Text style={{fontSize: '16px', fontWeight: '700' }} className={`text-[${bgIcon}]`}>
+            <Text style={{ fontSize: '16px', fontWeight: '700' }} className={`text-[${bgIcon}]`}>
               Account Pages
             </Text>
           </>
@@ -241,16 +256,16 @@ function Sidenav() {
   })
 
   const items = useSidenav.getMenu();
-  const defaultActiveString = useSidenav.getKeyActive().map(num => num.toString());  
-        
+  const defaultActiveString = useSidenav.getKeyActive().map(num => num.toString());
+
   return (
     <>
-      <Flex gap={10} className="brand" style={{ display: 'flex', alignItems: 'center'}}>
+      <Flex gap={10} className="brand" style={{ display: 'flex', alignItems: 'center' }}>
         <img src={logo} alt="" />
         <span className=" text-center">Muse Dashboard</span>
       </Flex>
       <hr />
-      <Menu theme="light" mode="inline" triggerSubMenuAction='click' defaultOpenKeys={defaultActiveString} defaultSelectedKeys={defaultActiveString} items={items}/>
+      <Menu theme="light" mode="inline" triggerSubMenuAction='click' defaultOpenKeys={defaultActiveString} defaultSelectedKeys={defaultActiveString} items={items} />
     </>
   );
 }
