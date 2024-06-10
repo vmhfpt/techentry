@@ -15,7 +15,7 @@ import Overview from "./components/Overview";
 import { useAppSelector } from "../../../../app/hooks";
 
 export default function Dashboard() {
-    const { Title, Text } = Typography;    
+    const { Title } = Typography;    
     const {backgroundColor} = useAppSelector(state => state.web)
     const count = [
       {

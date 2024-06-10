@@ -44,6 +44,8 @@ export const webSlice = createSlice({
       state.notification = action.payload
     },
     setLoading: (state, action) => {
+      console.log(action.payload);
+      
       state.loading = action.payload
     }
   }

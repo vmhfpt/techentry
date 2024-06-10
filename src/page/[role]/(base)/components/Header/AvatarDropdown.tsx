@@ -1,11 +1,33 @@
 import { Popover, Transition } from "@headlessui/react";
 import { avatarImgs } from "../../../../../contains/fakeData";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import SwitchDarkMode2 from "../../shared/SwitchDarkMode/SwitchDarkMode2";
+import { Button, Checkbox, Flex, Form, Input, Modal } from "antd";
+import { Typography } from "antd/lib";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { Signin } from "@/app/slices/authSlide";
+import { ISignin } from "@/common/types/Auth.interface";
+import { setLoading } from "@/app/webSlice";
+
+type FieldType = {
+  email?: string;
+  password?: string;
+};
 
 export default function AvatarDropdown() {
+  const dispatch = useAppDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(true);
+
+  const onSignin = (value :ISignin) => {
+    dispatch(setLoading(true));
+    dispatch(Signin(value));
+    dispatch(setLoading(false));
+  }
+
   return (
     <div className="AvatarDropdown ">
       <Popover className="relative">
@@ -15,7 +37,7 @@ export default function AvatarDropdown() {
               className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none flex items-center justify-center`}
             >
               <svg
-                className=" w-6 h-6"
+                className=" w-5 h-5"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -48,18 +70,84 @@ export default function AvatarDropdown() {
               <Popover.Panel className="absolute z-10 w-screen max-w-[260px] px-4 mt-3.5 -right-10 sm:right-0 sm:px-0">
                 <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
-                    <div className="flex items-center space-x-3">
+                    {/* <div className="flex items-center space-x-3">
                       <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
 
                       <div className="flex-grow">
                         <h4 className="font-semibold">Eden Smith</h4>
                         <p className="text-xs mt-0.5">Los Angeles, CA</p>
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
+                    {/* <div className="w-full border-b border-neutral-200 dark:border-neutral-700" /> */}
 
                     {/* ------------------ 1 --------------------- */}
+                    <button
+                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                      onClick={() => setOpen(true)}
+                    >
+                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium ">{"Login"}</p>
+                      </div>
+                    </button>
+
+                    <button
+                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                      onClick={() => close()}
+                    >
+                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium ">{"Signin"}</p>
+                      </div>
+                    </button>
+
                     <Link
                       to={"/account"}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
@@ -327,6 +415,124 @@ export default function AvatarDropdown() {
           </>
         )}
       </Popover>
+      <Modal open={open} onCancel={()=>setOpen(false)} footer=''>
+          <div className="p-10">
+            <Flex vertical gap={20}>
+                <h1 className="font-mono text-[24px] font-bold">
+                  Wecome to
+                </h1>
+                <Flex justify="space-around">
+                  <button className="flex justify-center items-center gap-2 font-bold">
+                    <div>
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        <path d="M1 1h22v22H1z" fill="none"/>
+                      </svg>
+                    </div>
+                    <span>Signin with Google</span>
+                  </button>
+                  <button className="flex justify-center items-center gap-2 font-bold">
+                    <div>
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width={24} height={24} version="1.1" id="Layer_1" x="0px" y="0px" viewBox="73 0 267 266.9" enableBackground="new 73 0 267 266.9" xmlSpace="preserve">
+                        <path id="Blue_1_" fill="#157DC3" d="M321.1,262.3c7.9,0,14.2-6.4,14.2-14.2V18.8c0-7.9-6.4-14.2-14.2-14.2H91.8  C84,4.6,77.6,11,77.6,18.8v229.3c0,7.9,6.4,14.2,14.2,14.2H321.1z"/>
+                        <path id="f" fill="#FFFFFF" d="M255.4,262.3v-99.8h33.5l5-38.9h-38.5V98.8c0-11.3,3.1-18.9,19.3-18.9l20.6,0V45  c-3.6-0.5-15.8-1.5-30-1.5c-29.7,0-50,18.1-50,51.4v28.7h-33.6v38.9h33.6v99.8H255.4z"/>
+                      </svg>
+                    </div>
+                    <span>
+                      Signin with FB
+                    </span>
+                  </button>
+                </Flex>
+                <Flex justify="center" align="center" gap={20}>
+                    <div className="border-b-[1px] flex-1"/>
+                    <span>
+                      of signin with
+                    </span>
+                    <div className="border-b-[1px] flex-1"/>
+                </Flex>
+                <Form 
+                  name="basic"
+                  initialValues={{ remember: true }}
+                  onFinish={onSignin}
+                  autoComplete="off"
+                >
+                  <div>
+                    <label htmlFor="email"  className="font-bold block mb-[0.5rem]">Email</label>
+
+                    <Form.Item<FieldType>
+                      name="email"
+                      rules={[{ required: true, message: 'Email không được để trống', type:'email' }]}
+                    >
+                      <Input id="email"/>
+                    </Form.Item>
+                  </div>
+                  <div>
+                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Password</label>
+                    <Form.Item<FieldType>
+                      name="password"
+                      rules={[
+                        { 
+                          required: true,
+                          validator: (_, value) => {
+                            if(!value){
+                              return Promise.reject(new Error('Mật khẩu phải không được để trống'));
+                            }
+                            if (value.length < 6) {
+                              return Promise.reject(new Error('Mật khẩu phải có ít nhất 6 ký tự!'));
+                            }
+                            if (!/[A-Z]/.test(value)) {
+                              return Promise.reject(new Error('Mật khẩu phải chứa ít nhất một chữ hoa!'));
+                            }
+                            if (!/[a-z]/.test(value)) {
+                              return Promise.reject(new Error('Mật khẩu phải chứa ít nhất một chữ thường!'));
+                            }
+                            if (!/[0-9]/.test(value)) {
+                              return Promise.reject(new Error('Mật khẩu phải chứa ít nhất một số!'));
+                            }
+                            return Promise.resolve();
+                          }
+                        }
+                      ]}
+                      
+                    >
+                      <Input.Password className=" py-0 px-2" id="password"/>
+                    </Form.Item>
+                  </div>
+
+                  <Form.Item<FieldType>
+                    valuePropName="checked"
+                    rules={[
+                      { 
+                        validator: (_, value): Promise<void> =>{
+                          if(value){
+                            setChecked(true);
+                            return Promise.resolve();
+                          }else{
+                            setChecked(false)
+                            return Promise.reject()
+                          }   
+                        }
+                      },
+                    ]}
+                  >
+                    <Checkbox className={`${!checked ? " text-red-500" : ''}`}>Remember me</Checkbox>
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" className=" w-full p-5">
+                      Submit
+                    </Button>
+                  </Form.Item>
+                  <div className="flex justify-center">
+                    <span>Bạn chưa có tài khoản? <Link to={''}>Đăng kí ngay</Link></span>
+                  </div>
+                </Form>
+            </Flex>
+          </div>
+      </Modal>
     </div>
   );
 }
