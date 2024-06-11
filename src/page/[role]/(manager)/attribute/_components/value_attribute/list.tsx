@@ -4,7 +4,7 @@ import { useCreateValueAttributesMutation, useGetValueAttributesQuery, useDelete
 import { IValueAttribute } from "../../../../../../common/types/valueAttribute.interface";
 import { useGetAttributesQuery } from "../attribute/AttributeEndpoints";
 import { IAttribute } from "../../../../../../common/types/attribute.interface";
-import { popupError, popupSuccess } from "../../../components/util/Toast";
+import { popupSuccess,popupError } from '@/page/[role]/shared/toastBase'
 import { useState } from "react";
 import { Typography } from 'antd';
 

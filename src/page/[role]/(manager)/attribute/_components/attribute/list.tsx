@@ -2,7 +2,7 @@ import { Col, Row, Table, Form, Button, TableColumnsType, Input, Popconfirm, Fle
 import { useDeleteAttributeMutation, useGetAttributesQuery, useUpdateAttributeMutation} from "./AttributeEndpoints";
 import { IAttribute } from "../../../../../../common/types/attribute.interface";
 import { useCreateAttributeMutation } from "./AttributeEndpoints";
-import { popupError, popupSuccess } from "../../../components/util/Toast";
+import { popupSuccess,popupError } from '@/page/[role]/shared/toastBase'
 import { useState } from "react";
 import EditAttribute from "./edit";
 import { useGetCategoriesAttributesQuery } from "../category_attribute/CategoryAttributeEndpoints";

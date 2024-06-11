@@ -4,7 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Checkbox, Col, Row } from 'antd'
 import { Typography } from 'antd'
 import { useGetPrivilegeGroupsQuery } from '../../privilege/_components/privilege_group/PrivilegeGroupEndpoint'
-import { popupSuccess, popupError } from '../../components/util/Toast'
+
+import { popupSuccess, popupError } from '@/page/[role]/shared/toastBase'
 import LoadingUser from '../util/Loading'
 import { IPrivilegeGroup } from '@/common/types/privilegeGroup.interface'
 import {

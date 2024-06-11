@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { Iuser } from '../../../../../common/types/user.interface'
 import { useCreateUserMutation } from '../UsersEndpoints'
 
-import { popupSuccess, popupError } from '../../components/util/Toast'
+import { popupSuccess, popupError } from '@/page/[role]/shared/toastBase'
 //
 import { UploadOutlined } from '@ant-design/icons'
 import axios from 'axios'

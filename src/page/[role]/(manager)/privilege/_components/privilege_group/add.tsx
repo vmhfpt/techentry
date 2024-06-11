@@ -1,7 +1,7 @@
 import { IPrivilegeGroup } from "@/common/types/privilegeGroup.interface";
 import { Button, Col, Form, Input, Row } from "antd";
 import { useCreatePrivilegeGroupMutation } from "./PrivilegeGroupEndpoint";
-import { popupError, popupSuccess } from "../../../components/util/Toast";
+import { popupSuccess,popupError } from '@/page/[role]/shared/toastBase'
 export default function AddPrivilegeGroup(){
   const [createPrivilegeGroup, { isLoading: loadingCreate }] = useCreatePrivilegeGroupMutation();
 

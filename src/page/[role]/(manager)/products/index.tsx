@@ -4,7 +4,7 @@ import ListProduct from "./_components/list";
 export default function ProductManagement(){
     return (
         <div>
-            <ListProduct />
+            <ListProduct  />
             <Outlet />  
         </div>
     )

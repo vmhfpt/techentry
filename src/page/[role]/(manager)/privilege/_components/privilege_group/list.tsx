@@ -4,7 +4,7 @@ import { Button, Flex, Popconfirm, Table, TableColumnsType } from "antd";
 import { Typography } from 'antd';
 import { useCallback, useState } from "react";
 import EditPrivilegeGroup from "./edit";
-import { popupError, popupSuccess } from "../../../components/util/Toast";
+import { popupSuccess,popupError } from '@/page/[role]/shared/toastBase'
 import AddPrivilegeGroup from "./add";
 import { useGetPrivilegesQuery } from "../privilege/PrivilegeEndpoint";
 export default function ListPrivilegeGroup(){
