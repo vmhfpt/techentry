@@ -22,10 +22,16 @@ export default function AvatarDropdown() {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(true);
 
-  const onSignin = (value :ISignin) => {
+  const onSignin = async (value :ISignin) => {
     dispatch(setLoading(true));
-    dispatch(Signin(value));
+    const result = await dispatch(Signin(value));
     dispatch(setLoading(false));
+
+    if(result?.sucess == false){
+      console.log(result?.result?.message);
+    }else{
+      console.log(result?.result?.message);
+    }
   }
 
   return (
@@ -502,23 +508,8 @@ export default function AvatarDropdown() {
                     </Form.Item>
                   </div>
 
-                  <Form.Item<FieldType>
-                    valuePropName="checked"
-                    rules={[
-                      { 
-                        validator: (_, value): Promise<void> =>{
-                          if(value){
-                            setChecked(true);
-                            return Promise.resolve();
-                          }else{
-                            setChecked(false)
-                            return Promise.reject()
-                          }   
-                        }
-                      },
-                    ]}
-                  >
-                    <Checkbox className={`${!checked ? " text-red-500" : ''}`}>Remember me</Checkbox>
+                  <Form.Item>
+                    <Link to={''}>Forgot password</Link>
                   </Form.Item>
 
                   <Form.Item>

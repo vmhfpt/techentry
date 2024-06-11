@@ -8,10 +8,28 @@ export const Signin = (payload: ISignin) => async (dispatch: Dispatch) => {
 
         if(data && data.success == true){
             localStorage.setItem('user', JSON.stringify(data.result.data));
-            console.log(localStorage.getItem('user'));
+
+            return {
+                sucess: true,
+                result: {
+                    message: 'login success'
+                }
+            }
+        }
+
+        return {
+            sucess: false,
+            result: {
+                message: 'login fail'
+            }
         }
     }catch(e){
         console.log(e);
-        
+        return {
+            sucess: false,
+            result: {
+                message: 'serve error'
+            }
+        }
     }
 }

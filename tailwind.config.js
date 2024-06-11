@@ -74,6 +74,7 @@ export default {
           900: customColors("--c-neutral-900"),
         },
       },
+      
     },
   },
   plugins: [

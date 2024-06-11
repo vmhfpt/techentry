@@ -8,7 +8,7 @@ import LoadingUser from '../../user/util/Loading'
 import ErrorLoad from '../../components/util/ErrorLoad'
 import React, {  useEffect, useRef, useState } from 'react'
 import { IProduct } from '@/common/types/product.interface'
-import { popupSuccess, popupError } from '../../components/util/Toast'
+import { popupSuccess, popupError } from '@/page/[role]/shared/Toast'
 import { UploadOutlined } from '@ant-design/icons'
 import axios from 'axios'
 

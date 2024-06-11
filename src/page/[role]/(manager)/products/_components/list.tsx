@@ -11,7 +11,7 @@ import {  useState } from 'react';
 
 import useQuerySearch from '../../hooks/useQuerySearch';
 import { getColumnSearchProps } from '../../components/util/SortHandle';
-import { popupSuccess } from '../../components/util/Toast';
+import { popupSuccess } from '@/page/[role]/shared/Toast';
 export default function ListProduct(){
 
 

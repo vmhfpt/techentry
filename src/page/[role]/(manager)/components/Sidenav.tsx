@@ -88,6 +88,21 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
+              <span className="label">Products</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/products'
+      },
+      {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
               <span className="label">Banner</span>
             </Flex>
           </>
@@ -123,6 +138,21 @@ function Sidenav() {
           </>
         ),
         link: '/admin/post-categories'
+      },
+      {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
+              <span className="label">Posts</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/posts'
       },
       {
         label: (
@@ -185,6 +215,21 @@ function Sidenav() {
           </>
         ),
         link: '/admin/attributes-product'
+      },
+      {
+        label:(
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor}/>}
+              </span>
+              <span className="label">Privilege</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/privilege'
       },
       {
         label: (
