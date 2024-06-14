@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { editCategory, getOneCategory } from '@/app/slices/categorySlice'
+import { getOneCategory } from '@/app/slices/categorySlice'
 import { Form, Input, Modal, message } from 'antd'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'

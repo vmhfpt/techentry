@@ -1,4 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
+import { setLogin } from '@/app/webSlice'
+
 
 const instance: AxiosInstance = axios.create({
   baseURL: 'http://localhost:3000/',

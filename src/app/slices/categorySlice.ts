@@ -136,7 +136,7 @@ export const createNewCategory = (payload: ICategory) => async (dispatch: Dispat
   }
 }
 
-export const editCategory = (payload: ICategory) => async (dispatch: Dispatch) => {
+export const leditCategory = (payload: ICategory) => async (dispatch: Dispatch) => {
   dispatch(isFetching())
   try {
     const response = await updateCategory(payload)
