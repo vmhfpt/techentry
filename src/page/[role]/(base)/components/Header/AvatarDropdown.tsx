@@ -4,7 +4,7 @@ import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import SwitchDarkMode2 from "../../shared/SwitchDarkMode/SwitchDarkMode2";
-import { Button, Checkbox, Flex, Form, Input, Modal } from "antd";
+import { Button, Checkbox, Flex, Form, Input, Modal, Select } from "antd";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { login, logout, Logout, Signin } from "@/app/slices/authSlide";
 import { ISignin } from "@/common/types/Auth.interface";
@@ -44,6 +44,18 @@ export default function AvatarDropdown() {
       ])
       popupError(result?.result?.message);
     }else{
+      form.setFields([
+        {
+          name: 'email',
+          value: '',
+          errors: ['Email is required']
+        },
+        {
+          name: 'password',
+          value: '',
+          errors: ['Password is required']
+        }
+      ])
       dispatch(login(result))
       dispatch(setOpenModalLogin(false))
       popupSuccess(result?.result?.message);

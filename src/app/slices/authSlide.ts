@@ -51,7 +51,7 @@ export const Signin = (payload: ISignin) => async (dispatch: Dispatch) => {
     }catch(error){
         const axiosError = error as AxiosError<ErrorResponse>;
 
-        if(axiosError?.response?.status == 401){
+        if(axiosError?.response?.status == 422){
             return axiosError?.response?.data
         }
         
@@ -78,7 +78,7 @@ export const Logout = (payload: string) => async (dispatch: Dispatch) => {
         const axiosError = error as AxiosError<ErrorResponse>;
         console.log(error);
         
-        if(axiosError?.response?.status == 401){
+        if(axiosError?.response?.status == 422){
             return {
                 success: false,
                 result: {
