@@ -16,6 +16,12 @@ import { ICategory } from '@/common/types/category.interface'
 import instance from '@/api/axios'
 import { IBrand } from '@/common/types/brand.interface';
 import { useCreateProductMutation } from '../ProductsEndpoints'
+import { useGetAttributesQuery } from '../../attribute/_components/attribute/AttributeEndpoints'
+import { IAttribute } from '@/common/types/attribute.interface'
+import { IValueAttribute } from '@/common/types/valueAttribute.interface'
+import { Typography } from "antd" ;
+import UploadFile from './uploadfile/upload'
+const { Title } = Typography;
 const validateMessages = {
   required: '${label} is required!',
   
@@ -23,6 +29,8 @@ const validateMessages = {
 
 
 function AddProduct() {
+  const {data , isLoading} = useGetAttributesQuery({});
+  console.log(data)
     const [createProduct, { isLoading: loadingCreateProduct }] = useCreateProductMutation()
   const [status, setStatus] = useState({
      isLoading : false,
@@ -105,6 +113,7 @@ function AddProduct() {
 
 
   const onFinish = async (values: IProduct) => {
+    
     values.avg_stars = 0;
     values.total_review = 0;
 
@@ -168,6 +177,15 @@ function AddProduct() {
   const handleCancel = () => {
     navigate('..')
   }
+  const convertArrayValueAtrribute = (arr : IValueAttribute[] | undefined) => {
+    if(!arr) return [];
+     return arr.map((item) => {
+       return {
+          value : item.id,
+          label : item.value
+       }
+     })
+  }
   if (status.isLoading) return <LoadingUser />
   if (status.isError) return <ErrorLoad />
   return (
@@ -228,7 +246,7 @@ function AddProduct() {
                     </Form.Item>
               </Col>
               <Col span={24}>
-
+       
 
                     <Form.Item rules={[{ required: true }]} name='description' label='Content'>
                         <textarea ref={box} className="form-control"  id="ckeditor" cols={30} rows={10}></textarea>
@@ -249,6 +267,47 @@ function AddProduct() {
                         </Upload>
                     </Form.Item>
               </Col>
+
+              <Col span={24}>
+                   <Form.Item
+                       
+                        label='Gallery'
+                       
+                    >
+                          <UploadFile />
+                    </Form.Item>
+                  
+              </Col>
+
+              <Col span={12}>
+
+                 <Title level={5}>Thông Tin Chi Tiết</Title>
+                  <Row gutter={[24, 24]}>
+
+
+                    
+                    {data?.map((item : IAttribute,  key : number) => (
+                      <Col span={12} key={key}>
+
+                          <Form.Item rules={[{ required: true }]}  label={item.description}>
+                            <Select
+                                loading={isLoading}
+                                  mode="tags"
+                                  style={{ width: '100%' }}
+                                  placeholder="Enter value"
+                                  options={convertArrayValueAtrribute(item.value_attributes)}
+                                />
+                          </Form.Item>
+                          
+                          </Col>
+                    ))}
+                  </Row>
+
+
+
+
+              </Col>
+
 
               <Col span={24}>
                    
