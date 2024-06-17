@@ -2,12 +2,12 @@ import { Card, Col, Modal, Row, Switch, Upload } from 'antd'
 import { Button, Form, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { Select } from 'antd'
-import type { SelectProps } from 'antd'
+import type { SelectProps, UploadFile , GetProp, UploadProps } from 'antd'
 import ClassicEditor from '@/utils/ckeditorConfig'
 import LoadingUser from '../../user/util/Loading'
 import ErrorLoad from '../../components/util/ErrorLoad'
-import React, { useEffect, useRef, useState } from 'react'
-import { IProduct } from '@/common/types/product.interface'
+import React, {  useEffect, useRef, useState } from 'react'
+import { IGallery, IProduct } from '@/common/types/product.interface'
 import { popupSuccess, popupError } from '@/page/[role]/shared/Toast'
 import { UploadOutlined } from '@ant-design/icons'
 import axios from 'axios'
@@ -19,18 +19,20 @@ import { useCreateProductMutation } from '../ProductsEndpoints'
 import { useGetAttributesQuery } from '../../attribute/_components/attribute/AttributeEndpoints'
 import { IAttribute } from '@/common/types/attribute.interface'
 import { IValueAttribute } from '@/common/types/valueAttribute.interface'
-import { Typography } from 'antd'
-import UploadFile from './uploadfile/upload'
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
-
-const { Title } = Typography
+import { Typography } from "antd" ;
+import UploadFileGallery from './uploadGallery/uploadGallery'
+import { getBase64 } from '@/utils/getBase64';
+import Variant from './Variant/variant'
+const { Title } = Typography;
 const validateMessages = {
-  required: '${label} is required!'
+  required: '${label} is required!',
 }
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 function AddProduct() {
-  const { data, isLoading } = useGetAttributesQuery({})
-  console.log(data)
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const {data , isLoading} = useGetAttributesQuery({});
+  const [loadingUploadGallery, setLoadingUploadGallery] = useState<boolean>(false);
   const [createProduct, { isLoading: loadingCreateProduct }] = useCreateProductMutation()
   const [status, setStatus] = useState({
     isLoading: false,
@@ -102,8 +104,54 @@ function AddProduct() {
     })
     onSuccess('Upload successful', file)
   }
+  const getIdAttribute = ( attributeName : string ) => {
+      for(let i = 0; i < data.length; i ++){
+        if(data[i].name == attributeName){
+             return data[i].id;
+        }
+      }
+  }
+  
+  const handleUploadGallery =  async  (productId : number) => {
+    for (const image  of fileList) {
+      const blob = new Blob([await getBase64(image.originFileObj as FileType)], { type: image.type });
+      const newFile = new File([blob], image.name, { type: image.type });
+    
+      const formData = new FormData()
+      formData.append('file', newFile as FileType)
+      formData.append('upload_preset', 'vuminhhung904')
+      const response : any = await axios.post('https://api.cloudinary.com/v1_1/dqouzpjiz/upload', formData);
+      //console.log(response.data.secure_url)
+      const payload : IGallery = {
+        productId : productId,
+        image : response.data.secure_url
+      }
+      await instance.post('galleries', payload)
+      
+    }
+  }
+  const onFinish = async (values: IProduct | any) => {
+   
+    const deviceSpecs = values.inforDetailProduct;
+    const modifiedDeviceSpecs: { [key: number | string]: [] } = {};
+    for (const key in values.inforDetailProduct) {
+      modifiedDeviceSpecs[getIdAttribute(String(key))] = deviceSpecs[key];
+    }
 
-  const onFinish = async (values: IProduct) => {
+    console.log(modifiedDeviceSpecs)
+
+
+    return true;
+
+
+    if(fileList.length <= 2) {
+      popupError('At least 3 photos are required');
+      return true;
+    }
+
+    
+    values.avg_stars = 0;
+    values.total_review = 0;
 
     values.avg_stars = 0
     values.total_review = 0
@@ -115,30 +163,36 @@ function AddProduct() {
         loading: true
       }
     })
+  
+
     const formData = new FormData()
 
     formData.append('file', file.data as any)
     formData.append('upload_preset', 'vuminhhung904')
 
-    Promise.all([axios.post('https://api.cloudinary.com/v1_1/dqouzpjiz/upload', formData)])
-      .then(async ([response]: any) => {
+   
+ Promise.all([axios.post('https://api.cloudinary.com/v1_1/dqouzpjiz/upload', formData)]).then(      async ([response]: any) => {
         setFile({
           data: {},
           loading: false
         })
         try {
-          await createProduct({
-            ...values,
-            thumbnail: response.data.secure_url
-          })
-          popupSuccess(`Add product "${values.name}"  success`)
-          handleCancel()
-        } catch (err) {
-          popupError(`Add product "${values.name}"  error`)
-          handleCancel()
-        }
-      })
-      .catch(() => {
+            const responseCreate : any  = await createProduct({
+                ...values,
+                thumbnail : response.data.secure_url
+            });
+            setLoadingUploadGallery(true);
+            await handleUploadGallery(Number(responseCreate.data.id));
+            setLoadingUploadGallery(false)
+            popupSuccess(`Add product "${values.name}"  success`)
+            handleCancel();
+          } catch (err) {
+            popupError(`Add product "${values.name}"  error`)
+            handleCancel()
+          }
+      }
+    )
+    .catch(() => {
         popupError('Upload file Error ! lets try again ')
       })
   }
@@ -163,14 +217,14 @@ function AddProduct() {
   const handleCancel = () => {
     navigate('..')
   }
-  const convertArrayValueAtrribute = (arr: IValueAttribute[] | undefined) => {
-    if (!arr) return []
-    return arr.map((item) => {
-      return {
-        value: item.id,
-        label: item.value
-      }
-    })
+  const convertArrayValueAtrribute = (arr : IValueAttribute[] | undefined) => {
+    if(!arr) return [];
+     return arr.map((item) => {
+       return {
+          value : item.value,
+          label : item.value
+       }
+     })
   }
 
   const initialValues = {
@@ -256,123 +310,89 @@ function AddProduct() {
               </Form.Item>
             </Col>
 
-            <Col span={24}>
-              <Form.Item label='Gallery'>
-                <UploadFile />
-              </Form.Item>
-            </Col>
+            
 
-            <Col span={12}>
-              <Title level={5}>Thông Tin Chi Tiết</Title>
-              <Row gutter={[24, 24]}>
-                {data?.map((item: IAttribute, key: number) => (
-                  <Col span={12} key={key}>
-                    <Form.Item rules={[{ required: true }]} label={item.description}>
-                      <Select
-                        loading={isLoading}
-                        mode='tags'
-                        style={{ width: '100%' }}
-                        placeholder='Enter value'
-                        options={convertArrayValueAtrribute(item.value_attributes)}
-                      />
+            
+              <Col span={24}>
+                    <Form.Item
+                        name='upload'
+                        label='Image'
+                        valuePropName='fileList'
+                        getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
+                        rules={[{ required: true }]}
+                    >
+                        <Upload name='image' listType='picture' customRequest={handleUpload}>
+                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
                     </Form.Item>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
+              </Col>
 
-            <Col span={24}>
-              <Title level={5}>Thông Tin Bán Hàng</Title>
-              <Form.List name='sales_information'>
-                {(fields, { remove }) => (
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: 40 }}>
-                    {fields.map((field) => (
-                      <Form.Item key={field.key} noStyle shouldUpdate>
-                        {({ getFieldValue }) => {
-                          const fieldName = getFieldValue(['sales_information', field.name, 'name'])
-                          return (
-                            <Card
-                              style={{ width: '50%' }}
-                              size='small'
-                              title={fieldName || `Item ${field.name + 1}`}
-                              extra={
-                                <CloseOutlined
-                                  onClick={() => {
-                                    remove(field.name)
-                                  }}
-                                />
-                              }
-                            >
-                              {/* Nest Form.List */}
-                              <Form.Item>
-                                <Form.List name={[field.name, 'list']}>
-                                  {(subFields, subOpt) => (
-                                    <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
-                                      {subFields.map((subField) => {
-                                        return (
-                                          <div key={subField.key} style={{ display: 'flex', gap: 16, width: '100%' }}>
-                                            {fieldName === 'Màu sắc' ? (
-                                              <>
-                                                <Form.Item noStyle name={[subField.name, 'img']}>
-                                                  <Upload listType='picture'>
-                                                    <Button size='large'>
-                                                      <UploadOutlined />
-                                                    </Button>
-                                                  </Upload>
-                                                </Form.Item>
-                                                <Form.Item noStyle name={[subField.name, 'name']}>
-                                                  <Input placeholder='name' />
-                                                </Form.Item>
-                                              </>
-                                            ) : (
-                                              <Form.Item noStyle name={subField.name}>
-                                                <Input placeholder='Value' />
-                                              </Form.Item>
-                                            )}
+              <Col span={24}>
+                   <Form.Item
+                        label='Gallery'
+                    >
+                       <UploadFileGallery fileList={fileList} setFileList={setFileList} />
+                    </Form.Item>
+                  
+              </Col>
 
-                                            <CloseOutlined
-                                              onClick={() => {
-                                                subOpt.remove(subField.name)
-                                              }}
-                                            />
-                                          </div>
-                                        )
-                                      })}
-                                      <Button type='dashed' size='large' onClick={() => subOpt.add()} block>
-                                        <PlusOutlined />
-                                      </Button>
-                                    </div>
-                                  )}
-                                </Form.List>
-                              </Form.Item>
-                            </Card>
-                          )
-                        }}
-                      </Form.Item>
-                    ))}
-                  </div>
-                )}
-              </Form.List>
-            </Col>
+              <Col span={24}>
 
-            <Col span={24}>
-              <Form.Item name='in_active' label='Active?'>
-                <Switch defaultChecked />
-              </Form.Item>
-            </Col>
+                 <Title level={5}>Thông Tin Chi Tiết</Title>
+                  <Row gutter={[24, 1]}>
 
-            <Col span={24}>
-              <Form.Item>
-                <Button
-                  loading={loadingCreateProduct || file.loading}
-                  disabled={false}
-                  type='primary'
-                  htmlType='submit'
-                >
-                  Create
-                </Button>
-              </Form.Item>
-            </Col>
+
+                  <Form.List name="inforDetailProduct">
+                      {(fields) => (
+                        <>
+                          {data?.map((item :  IAttribute, key : number) => (
+                            <Col span={8} key={key}>
+                                      <Form.Item
+                                          {...fields[key]}
+                                          name={[  item.name]}
+                                          rules={[{ required: true }]}
+                                          label={item.name}
+                                        >
+                                          <Select
+                                            loading={isLoading}
+                                            mode="tags"
+                                            placeholder="Enter value"
+                                            options={convertArrayValueAtrribute(item.value_attributes)}
+                                          />
+                                        </Form.Item>
+                            </Col>
+                          
+                          ))}
+                        </>
+                      )}
+                    </Form.List>
+
+                  </Row>
+              </Col>
+
+              <Col span={24}>
+                  <Title level={5}>Thông Tin bán hàng</Title>
+                  <Variant />
+              </Col>
+
+
+              <Col span={24}>
+                   
+
+              <Form.Item name="in_active" label="Active?">
+                    <Switch defaultChecked />
+            </Form.Item>
+
+              </Col>
+
+           
+              <Col span={24}>
+                    <Form.Item >
+                        <Button loading={loadingCreateProduct || file.loading || loadingUploadGallery} disabled={false} type='primary' htmlType='submit'>
+                        Create
+                        </Button>
+                    </Form.Item>
+              </Col>
           </Row>
         </Form>
       </Modal>

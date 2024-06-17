@@ -754,6 +754,85 @@
       "in_active": false,
       "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718432279/example-react/ttgro2tirsayeoyd3ngq.png",
       "id": 17
+    },
+    {
+      "name": "fsdfsdaf update",
+      "price": "14234",
+      "discount": "4324",
+      "categoryId": "3",
+      "brandId": "7gQbxFZ",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>32423424</p>",
+      "in_active": true,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718529126/example-react/wukrc6t7fhndc5wn9kip.png",
+      "id": 18
+    },
+    {
+      "name": "123",
+      "price": "23",
+      "discount": "2",
+      "categoryId": "3",
+      "brandId": "7gQbxFZ",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>243242</p>",
+      "in_active": true,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718529244/example-react/c5pu5uuwlrzg8fmrec4m.png",
+      "id": 19
+    },
+    {
+      "name": "fsdfsdaff dfsdaf",
+      "price": "123131",
+      "discount": "2",
+      "categoryId": "2",
+      "brandId": "7gQbxFZ",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>123123</p>",
+      "in_active": true,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530268/example-react/d5qiz0xygyn0bygj1jz7.jpg",
+      "id": 20
+    },
+    {
+      "name": "453534",
+      "price": "2131",
+      "discount": "0.2",
+      "categoryId": "2",
+      "brandId": "70mPlxz",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>31231</p>",
+      "in_active": true,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530780/example-react/nh0wwbitg0uy6fhcsj3r.png",
+      "id": 21
+    }
+  ],
+  "galleries": [
+    {
+      "productId": 21,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530782/example-react/o3twzw9jqrndm8dhwpoh.png",
+      "id": 5
+    },
+    {
+      "productId": 21,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530783/example-react/epnuxw5zh29po5bgau2i.png",
+      "id": 6
+    },
+    {
+      "productId": 21,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530784/example-react/zhnw2wiy4gxxnzwt69c6.jpg",
+      "id": 7
+    },
+    {
+      "productId": 21,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530785/example-react/odgfbvhdmlem89cmkzdv.png",
+      "id": 8
+    },
+    {
+      "productId": 21,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530786/example-react/ybzfyxb7yz0augsrx044.png",
+      "id": 9
     }
   ]
 }

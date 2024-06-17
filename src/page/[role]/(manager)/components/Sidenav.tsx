@@ -27,6 +27,58 @@ function Sidenav() {
                 >
                   {<Dashboard color={darkColor} />}
                 </div>
+                <span className="label">Demo</span>
+              </Flex>
+            </div>
+          </>
+        ),
+        children : [
+          {
+            label: (
+              <>
+                <div>
+                  <Flex justify="center" align="center">
+                    <div
+                      className={`icon `}
+                    >
+                      {<Dashboard color={darkColor} />}
+                    </div>
+                    <span className="label">Dashboard</span>
+                  </Flex>
+                </div>
+              </>
+            ),
+            link: '/admin/dashboard'
+          },
+          {
+            label: (
+              <>
+                <div>
+                  <Flex justify="center" align="center">
+                    <div
+                      className={`icon `}
+                    >
+                      {<Dashboard color={darkColor} />}
+                    </div>
+                    <span className="label">Post</span>
+                  </Flex>
+                </div>
+              </>
+            ),
+            link: '/admin/posts'
+          },
+        ]
+      },
+      {
+        label: (
+          <>
+            <div>
+              <Flex justify="center" align="center">
+                <div
+                  className={`icon `}
+                >
+                  {<Dashboard color={darkColor} />}
+                </div>
                 <span className="label">Dashboard</span>
               </Flex>
             </div>

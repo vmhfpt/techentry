@@ -15,3 +15,8 @@ export interface IProduct {
     upload ?: [File];
     category ?: ICategory;
 }
+export interface IGallery {
+    id ?: number | string;
+    productId : number;
+    image : string;
+}
