@@ -80,13 +80,13 @@ function Sidenav() {
         link: '/admin/products'
       },
       {
-        label:(
+        label: (
           <>
             <Flex align="center" justify="center">
               <span
                 className={`icon `}
               >
-                {<Tables color={darkColor}/>}
+                {<Tables color={darkColor} />}
               </span>
               <span className="label">Banner</span>
             </Flex>

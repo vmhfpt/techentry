@@ -25,7 +25,7 @@
       "city": "Bà Rịa - Vũng Tàu-77",
       "district": "Vũng Tàu",
       "role_id": "2",
-      "id": 2,
+      "id": "2",
       "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1715871988/example-react/msit66z35me8fbzvh0jh.png"
     }
   ],
@@ -342,82 +342,82 @@
     {
       "userId": 1,
       "privilegeId": 1,
-      "id": 1
+      "id": "1"
     },
     {
       "userId": 1,
       "privilegeId": 5,
-      "id": 2
+      "id": "2"
     },
     {
       "userId": 1,
       "privilegeId": 6,
-      "id": 3
+      "id": "3"
     }
   ],
   "privilege_groups": [
     {
       "name": "Quản lý tài khoản user",
-      "id": 2
+      "id": "2"
     },
     {
       "name": "Quản lý biến thể sản phẩm",
-      "id": 3
+      "id": "3"
     },
     {
       "name": "Quản lý banner",
-      "id": 4
+      "id": "4"
     },
     {
       "name": "Quản lý danh mục bài viết",
-      "id": 5
+      "id": "5"
     },
     {
       "name": "Quản lý thương hiệu sản phẩm",
-      "id": 6
+      "id": "6"
     },
     {
       "name": "Quản lý quyền truy cập trang web",
-      "id": 7
+      "id": "7"
     },
     {
       "name": "Quản lý danh mục sản phẩm",
-      "id": 8
+      "id": "8"
     }
   ],
   "privileges": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Xem danh sách người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users$"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Thêm người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users\\/add$"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Sửa người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users\\/(\\d+)$"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Xóa người dùng",
       "privilege_groupId": 2,
       "url_match": "admin\\/users\\/delete$"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Quản lý thêm, sửa, xóa banner",
       "privilege_groupId": 4,
       "url_match": "admin\\/banner"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Quản lý biến thể",
       "privilege_groupId": 3,
       "url_match": "admin\\/attributes-product$"
@@ -426,31 +426,31 @@
       "name": "Quản lý thêm, sửa,  xóa danh mục bài viết",
       "privilege_groupId": 5,
       "url_match": "admin\\/post-categories",
-      "id": 7
+      "id": "7"
     },
     {
       "name": "Quản lý thêm, sửa, xóa thương hiệu sản phẩm",
       "privilege_groupId": 6,
       "url_match": "admin\\/brand",
-      "id": 8
+      "id": "8"
     },
     {
       "name": "Quản lý thêm, sửa nhóm quyền và  các quyền truy cập",
       "privilege_groupId": 7,
       "url_match": "admin\\/privilege",
-      "id": 9
+      "id": "9"
     },
     {
       "name": "Quản lý thêm, sửa xóa danh mục sản phẩm",
       "privilege_groupId": 8,
       "url_match": "admin\\/categories",
-      "id": 10
+      "id": "10"
     },
     {
       "name": "Phân quyền người dùng",
       "privilege_groupId": 7,
       "url_match": "admin\\/users\\/privilege\\/(\\d+)$",
-      "id": 11
+      "id": "11"
     }
   ],
   "voucher": [
@@ -544,7 +544,7 @@
       "avg_stars": 0,
       "description": "<h3 style=\"text-align:justify;\">Trong khi sức hút đến từ bộ 4 phiên bản&nbsp;iPhone 12&nbsp;vẫn chưa nguội đi, thì hãng điện thoại&nbsp;Apple&nbsp;đã mang đến cho người dùng một siêu phẩm mới <a href=\"https://www.thegioididong.com/dtdd-apple-iphone-13-series\">iPhone 13 series</a> với&nbsp;nhiều cải tiến thú vị sẽ mang lại những trải nghiệm hấp dẫn nhất cho người dùng.</h3><h3 style=\"text-align:justify;\">Hiệu năng vượt trội nhờ chip Apple A15 Bionic</h3><p style=\"text-align:justify;\">Con chip <a href=\"https://www.thegioididong.com/hoi-dap/tim-hieu-chip-apple-a15-bionic-suc-manh-cuc-khung-duoc-he-1339072\">Apple A15 Bionic</a>&nbsp;siêu mạnh được sản xuất trên quy trình 5 nm giúp <a href=\"https://www.thegioididong.com/dtdd/iphone-13\">iPhone 13</a>&nbsp;đạt hiệu năng ấn tượng, với CPU nhanh hơn 50%,&nbsp;GPU nhanh hơn 30% so với các đối thủ trong cùng phân khúc.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-1-1.jpg\" alt=\"Chip Apple A15 Bionic mạnh mẽ - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Nhờ hiệu năng được cải tiến, người dùng có được những trải nghiệm tốt hơn trên <a href=\"https://www.thegioididong.com/dtdd\">điện thoại</a> khi dùng các ứng dụng chỉnh sửa ảnh hay chiến các tựa game đồ họa cao mượt mà.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-2.jpg\" alt=\"Đồ họa mượt mà - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">iPhone 13 trang bị&nbsp;bộ nhớ trong 128 GB&nbsp;dung lượng lý tưởng&nbsp;cho phép bạn thỏa thích lưu trữ mọi nội dung theo ý muốn mà không lo nhanh đầy bộ nhớ.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-19.jpg\" alt=\"Dung lượng bộ nhớ - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Tốc độ 5G tốt hơn&nbsp;</h3><p style=\"text-align:justify;\">Mạng 5G được cải thiện chất lượng với nhiều băng tần hơn, với 5G giúp điện thoại xem trực tuyến hay tải xuống các ứng dụng và tài liệu đều đạt tốc độ nhanh chóng. Không chỉ vậy, siêu phẩm mới này còn có chế độ dữ liệu thông minh, tự động phát hiện và giảm tải tốc độ mạng để tiết kiệm năng lượng khi không cần dùng tốc độ cao.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-4.jpg\" alt=\"Hỗ trợ kết nối 5G hiện đại - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Màn hình Super Retina XDR độ sáng cao, tiết kiệm pin</h3><p style=\"text-align:justify;\">iPhone 13 sử dụng tấm nền OLED với kích thước màn hình 6.1 inch&nbsp;cho chất lượng màu sắc và chi tiết hình ảnh sắc nét, sống động, độ phân giải đạt 1170 x 2532 Pixels.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-6.jpg\" alt=\"Màn hình OLED 6.1 inch - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Nhờ có công nghệ Super Retina XDR giúp cho máy đạt&nbsp;độ sáng 800 nits, tối đa lên đến 1200 nits cùng dải màu rộng P3, tỷ lệ tương phản lớn giúp ổn định tốt màu sắc và chất lượng hình ảnh hiển thị trong nhiều điều kiện sáng khác nhau, kể cả môi trường nắng gắt hay ánh sáng chói.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-5.jpg\" alt=\"Độ sáng đạt 1200 nits - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Phía ngoài màn hình còn được phủ lớp oleophobic hạn chế tình trạng bám bụi bẩn và mồ hôi do tay người dùng, giữ màn hình luôn sạch và tinh tế hơn. Và trang bị&nbsp;kính cường lực Ceramic Shield giúp màn hình của máy được an toàn hơn trước những vết xước, va đập trong quá trình sử dụng.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-7.jpg\" alt=\"Trang bị kính cường lực Ceramic Shield - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Cụm camera kép nổi bật với nhiều cải tiến</h3><p style=\"text-align:justify;\">Cụm camera kép phía sau trên iPhone 13 đều sở hữu độ phân giải 12 MP, camera chính&nbsp;giúp thu được nhiều ánh sáng hơn, tăng khả năng thu sáng lên đến 47% nên chất lượng ảnh chụp cũng cải thiện hơn so với bản tiền nhiệm. <a href=\"https://www.thegioididong.com/dtdd-camera-goc-rong\">Điện thoại có&nbsp;camera góc siêu rộng</a>&nbsp;cho góc nhìn&nbsp;120 độ giúp thu được nhiều chi tiết hơn, dễ dàng ghi lại những khung cảnh núi non hùng vĩ, ảnh chụp nhóm đông người.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-8.jpg\" alt=\"Cụm camera sau sắc nét - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Cụm camera cũng được trang bị tính năng chống rung quang học Sensor Shift giúp lấy nét nhanh chóng, khả năng chụp đêm cũng trở nên rõ nét mà ít bị nhiễu hạt, hay quay video cũng rất ổn định và mượt mà hơn.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-9.jpg\" alt=\"Chụp đêm siêu rõ nét - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">“Chế độ điện ảnh” cho phép camera trên iPhone 13 tự động làm mờ hậu cảnh trong video để đối tượng luôn được lấy nét nổi bật. Đặc biệt người dùng có thể thay đổi tiêu điểm để chọn chủ thể mong muốn trong khung hình khi sử dụng quay video, nhờ đó tạo nên những video chuyên nghiệp, như ý hơn.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-10.jpg\" alt=\"Chế độ điện ảnh độc đáo - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Chế độ chụp Smart HDR 4 nhận diện tối đa 4 người trong một khung hình, tiến hành tối ưu hóa ánh sáng và tương phản, tone màu da cho từng người để hoàn thiện bức ảnh đẹp mà không cần qua chỉnh sửa.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-11.jpg\" alt=\"Chế độ Smart HDR 4 - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Camera trước vẫn nằm trong tai thỏ, độ phân giải cũng đạt 12 MP với các công nghệ chụp ảnh chuyên nghiệp như hiệu ứng bokeh, chế độ điện ảnh, Animoji và Memoji để bạn tự tin thể hiện mình trước ống kính, không lo lắng che giấu khuyết điểm.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-12.jpg\" alt=\"Camera trước 12 MP - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Sang trọng, đẳng cấp hơn về ngoại hình</h3><p style=\"text-align:justify;\">iPhone 13&nbsp;có thiết kế nguyên khối vuông vắn như tiền nhiệm, khung viền được làm từ nhôm cùng mặt lưng kính sang trọng, cao cấp.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-13.jpg\" alt=\"Thiết kế nguyên khối sang trọng, đẳng cấp - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Ngoại hình không quá khác biệt so với tiền nhiệm, nhưng tỷ lệ màn hình so với khung máy tốt hơn, phần tai thỏ nhỏ hơn 20% gia tăng diện tích trải nghiệm khi lướt web, xem phim, chơi game.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-14.jpg\" alt=\"Màn hình cải tiến - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Điểm khác biệt lớn nhất trong ngoại hình có lẽ chính là các cảm biến camera được đặt chéo thay vì xếp thẳng hàng như <a href=\"https://www.thegioididong.com/dtdd/iphone-12-128gb\">iPhone 12</a>, tạo điểm nhận diện đặc trưng, mới mẻ và đẹp mắt, sang chảnh hơn.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-15.jpg\" alt=\"Cụm camera sau với diện mạo mới - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Màu sắc trên mẫu <a href=\"https://www.thegioididong.com/dtdd-apple-iphone\">iPhone</a> mới này cũng đa dạng hơn gồm Trắng, Đen, Đỏ, Xanh dương và Hồng mới mẻ dễ tùy chọn cho mọi người dùng.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-16.jpg\" alt=\"Có nhiều màu sắc để lựa chọn - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">iPhone 13 hỗ trợ chuẩn kháng nước và bụi IP68, bạn sẽ yên tâm sử dụng hơn khi đem theo thiết bị để chụp ảnh khi bơi hay những lần vô tình làm đổ nước, có cơn mưa đột ngột.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-17.jpg\" alt=\"Khả năng kháng nước, bụi - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Thời lượng pin cũng được cải thiện</h3><p style=\"text-align:justify;\">Theo công bố của hãng, iPhone 13 có thời lượng pin tăng thêm 2.5 tiếng so với thế hệ trước, cho thời gian sử dụng lâu hơn, phục vụ hiệu quả với người dùng có nhu cầu sử dụng tần suất cao.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-18.jpg\" alt=\"Chip A15 tối ưu hóa năng lượng - iPhone 13 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Hỗ trợ&nbsp;sạc nhanh&nbsp;20 W giúp nạp đầy 50% pin chỉ trong khoảng 30 phút. Đi kèm theo các công nghệ sạc không dây&nbsp;tiên tiến như chuẩn Qi hay MagSafe.</p><p style=\"text-align:justify;\">Lưu ý: Củ sạc nhanh 20 W sẽ không đi kèm trong hộp khi mua.</p><p style=\"text-align:justify;\">Tóm lại, với những nâng cấp và cải tiến mạnh mẽ về hiệu năng, camera đa chức năng, mình nghĩ rằng iPhone 13 128GB sẽ là một chiếc điện thoại cao cấp rất đáng được đầu tư và sử dụng.</p>",
       "in_active": true,
-      "id": 1,
+      "id": "1",
       "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1717851153/example-react/a80yd2icpcf3pntg3rwl.jpg"
     },
     {
@@ -557,7 +557,7 @@
       "avg_stars": 0,
       "description": "<h3 style=\"text-align:justify;\"><a href=\"https://www.thegioididong.com/dtdd/iphone-14-pro-max\">iPhone 14 Pro Max</a>&nbsp;một siêu phẩm trong giới smartphone được nhà Táo tung ra thị trường vào tháng 09/2022. Máy trang bị con chip Apple A16 Bionic vô cùng mạnh mẽ, đi kèm theo đó là thiết kế màn hình mới, hứa hẹn mang lại những trải nghiệm đầy mới mẻ cho người dùng iPhone.</h3><h3 style=\"text-align:justify;\">Thiết kế cao cấp bền bỉ</h3><p style=\"text-align:justify;\">iPhone năm nay sẽ được thừa hưởng nét đặc trưng từ người anh <a href=\"https://www.thegioididong.com/dtdd/iphone-13-pro-max-1tb\">iPhone 13 Pro Max</a>, vẫn sẽ là khung thép không gỉ và mặt lưng kính cường lực kết hợp với tạo hình vuông vức hiện đại thông qua cách tạo hình phẳng ở các cạnh và phần mặt lưng.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103221.jpg\" alt=\"Thiết kế sang trọng - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Dòng Pro năm nay được ra mắt với nhiều tùy chọn màu sắc và trong đó nổi bật nhất có lẽ là phiên bản Deep Purple (tím), bởi vì đây là một màu mới nên mang lại độ nhận diện khá cao.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103227.jpg\" alt=\"Màu sắc mới mẻ - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Nổi bật với thiết kế màn hình mới</h3><p style=\"text-align:justify;\">Điểm ấn tượng nhất trên <a href=\"https://www.thegioididong.com/dtdd-apple-iphone\">iPhone</a> năm nay nằm ở thiết kế màn hình, có thể dễ dàng nhận thấy được là hãng cũng đã loại bỏ cụm tai thỏ truyền thống qua bao đời iPhone bằng một hình dáng mới vô cùng lạ mắt.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103229.jpg\" alt=\"Thiết kế hình notch mới - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">So với cụm tai thỏ hình notch năm nay đã có phần tiết kiệm diện tích tương đối tốt, nhưng khi so với các kiểu màn hình dạng “nốt ruồi” thì đây vẫn chưa thực sự là một điều quá tối ưu cho phần màn hình. Thế nhưng Apple lại rất biết cách tận dụng những nhược điểm để biến chúng trở thành ưu điểm một cách ngoạn mục bằng cách phát minh nhiều hiệu ứng thú vị.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103232.jpg\" alt=\"Kích thước nhỏ gọn - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Để làm cho chúng trở nên bắt mắt hơn Apple cũng đã giới thiệu nhiều hiệu ứng chuyển động nhằm làm tăng sự thích thú cho người dùng, điều này được kích hoạt trong lúc mình ấn giữ phần hình notch khi đang dùng các phần mềm hỗ trợ như: Nghe nhạc, đồng hồ hẹn giờ, ghi âm,...</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103235.jpg\" alt=\"Hiệu ứng sinh động - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><h3 style=\"text-align:justify;\">Hiển thị nội dung chân thực hơn thông qua màn hình chất lượng</h3><p style=\"text-align:justify;\">Từ trước đến nay, tấm nền OLED luôn được cộng đồng người dùng đánh giá rất cao khi xuất hiện trên các dòng sản phẩm của Apple, với chiếc iPhone 14 Pro Max điều này cũng không là ngoại lệ khi hình ảnh mà máy mang lại hết sức chân thực.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103237.jpg\" alt=\"Màn hình cao cấp - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Nhìn vào màn hình ta sẽ thấy được một độ trong trẻo vô cùng thích mắt, nội dung hiển thị có chiều sâu, cảm giác khi xem phim hay chơi game cũng trở nên sống động hơn.</p><p style=\"text-align:justify;\">Điểm vượt trội nhất mà tấm nền này mang lại là độ chuẩn xác về màu sắc, mình cũng đã sử dụng iPhone 14 Pro Max để thiết kế một vài ấn phẩm như poster hay sticker đơn giản và thành quả lúc in ra sau khi đối chiếu lại với ảnh trên <a href=\"https://www.thegioididong.com/dtdd\">điện thoại</a> thì gần như là bằng nhau, độ sai lệch không quá đáng kể giúp mình an tâm hơn trong việc thiết kế hình ảnh.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103240.jpg\" alt=\"Độ chuẩn xác về màu cao - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Độ phân giải màn hình đạt mức 2796 x 1290 Pixels nên việc tái tạo hình ảnh có độ chi tiết cao là điều hết sức dễ dàng, hiện tượng như rỗ màn hình là điều mà mình chưa từng thấy xuất hiện trên điện thoại trong 2 tuần trải nghiệm.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103242.jpg\" alt=\"Độ chi tiết cực lớn - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\"><strong>Hỗ trợ tính năng Always On Display</strong></p><p style=\"text-align:justify;\">Bên cạnh sự đổi mới về hình notch, năm nay Apple còn trang bị cho dòng Pro và Pro Max thêm công nghệ màn hình Always On Display, điều này cho phép thiết bị không tắt màn hình hẳn mà vẫn hiển thị màn hình khóa với một độ sáng khá nhỏ, đủ để mình có thể đọc thông báo nhanh xem ngày giờ khá thuận tiện.</p><p style=\"text-align:justify;\">Xem thêm: <a href=\"https://www.thegioididong.com/hoi-dap/always-on-display-la-gi-co-hao-pin-khong-huong-dan-1169208\">Always On Display là gì? Có tốn pin không? Cách bật, tắt</a></p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103239.jpg\" alt=\"TÍnh năng trên màn hình - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Tuy nhiên màn hình lúc này khá tối nên dùng ngoài trời sẽ hơi khó nhìn đôi chút. Bên cạnh đó, tính năng này cũng sẽ giảm tuổi thọ pin hơn so với thông thường, để điện thoại qua đêm khoảng 7 tiếng ở chế độ Always On Display thì máy mất khoảng 3 - 4% dung lượng pin.</p><p style=\"text-align:justify;\"><strong>Tần số quét 120 Hz</strong></p><p style=\"text-align:justify;\">iPhone 14 Pro Max có tần số quét rất cao vậy nên mọi thao tác hằng ngày của mình đều được phản hồi nhanh chóng, cảm giác vuốt chạm cũng trở nên thích hơn, hiện tượng khựng hay độ trễ trong lúc vuốt đã được cải thiện đáng kể so với những chuẩn màn hình 60 Hz.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103244.jpg\" alt=\"Vuốt chạm mượt mà - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Ngoài ra, Apple còn bổ sung tùy chọn để giúp bạn có thể dễ dàng điều chỉnh tần số quét lên 120 Hz hay xuống 60 Hz tùy vào nhu cầu sử dụng, phù hợp để dùng trong những tình huống khẩn cấp như đang muốn tiết kiệm pin nhằm đảm bảo thiết bị có thể duy trì sử dụng dài lâu.</p><p style=\"text-align:justify;\"><strong>Độ sáng 2000 nits</strong></p><p style=\"text-align:justify;\">So với những đối thủ khác trong phân khúc thì độ sáng 2000 nits được xem là ưu điểm vượt trội mà ít có hãng nào có thể sánh kịp, thế liệu nó giúp ích được gì và có thực sự hiệu quả hay không chắc hẳn là điều được rất nhiều người thắc mắc.</p><figure class=\"image\" style=\"height:auto !important;\"><img style=\"aspect-ratio:1020/570;\" src=\"https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-041222-103246.jpg\" alt=\"Độ sáng màn hình cao - iPhone 14 Pro Max 128GB\" width=\"1020\" height=\"570\"></figure><p style=\"text-align:justify;\">Cụ thể là màn hình có độ sáng cao đã giúp ích cho mình rất nhiều trong mọi nhu cầu sử dụng hằng ngày của mình, kể từ khi sử dụng iPhone 14 Pro Max việc xem bản đồ khi đang ở ngoài đường lúc trời nắng gắt cũng trở nên dễ dàng, màn hình lúc này không quá sập tối hay lóa, các thông báo chỉ dẫn đường đi cũng đều được thể hiện rõ ràng.</p><p style=\"text-align:justify;\"><br>&nbsp;</p>",
       "in_active": true,
-      "id": 2,
+      "id": "2",
       "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1717839600/example-react/vk7ykn2tiklip1drsws7.jpg"
     },
     {
