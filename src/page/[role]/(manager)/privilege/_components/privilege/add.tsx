@@ -3,7 +3,7 @@ import { Button, Col, Form, Input, Row, Select } from "antd";
 import { useGetPrivilegeGroupsQuery } from "../privilege_group/PrivilegeGroupEndpoint";
 import {  useCreatePrivilegeMutation } from "./PrivilegeEndpoint";
 import { IPrivilegeGroup } from "@/common/types/privilegeGroup.interface";
-import { popupError, popupSuccess } from "../../../components/util/Toast";
+import { popupError, popupSuccess } from "@/page/[role]/shared/Toast";
 export default function AddPrivilege(){
     const {data : listPrivilegeGroups , isLoading, refetch} = useGetPrivilegeGroupsQuery({});
     const [createPrivilege, { isLoading: loadingCreate }] = useCreatePrivilegeMutation();

@@ -11,7 +11,7 @@ import {  useState } from 'react';
 
 import useQuerySearch from '../../hooks/useQuerySearch';
 import { getColumnSearchProps } from '../../components/util/SortHandle';
-import { popupSuccess } from '../../components/util/Toast';
+import { popupSuccess } from '@/page/[role]/shared/Toast';
 export default function ListProduct(){
 
 
@@ -29,13 +29,15 @@ export default function ListProduct(){
     setId(id)
     
     data.map(async (item : IProduct) => {
-      const mutableItem  = { ...item };
-      delete mutableItem.category;
+      if(id == item.id){
+        const mutableItem  = { ...item };
+        delete mutableItem.category;
         await hiddenProduct({
               ...mutableItem,
             in_active : false
         });
         popupSuccess('Hidden product success');
+      }
     })
   };
     const dataItem = data?.map((item : IProduct, key : number) => {

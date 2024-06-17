@@ -7,6 +7,7 @@ import DropdownCategories from "./DropdownCategories";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import LoginDropdown from "./LoginDropdown";
 
 export interface MainNav2Props {
   className?: string;

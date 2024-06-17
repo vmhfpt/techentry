@@ -124,6 +124,7 @@ function Sidenav() {
         ),
         link: '/admin/post-categories'
       },
+     
       {
         label: (
           <>
@@ -186,6 +187,7 @@ function Sidenav() {
         ),
         link: '/admin/attributes-product'
       },
+     
       {
         label: (
           <>
@@ -254,6 +256,7 @@ function Sidenav() {
       }
     ]
   })
+  
 
   const items = useSidenav.getMenu();
   const defaultActiveString = useSidenav.getKeyActive().map(num => num.toString());

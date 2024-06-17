@@ -33,7 +33,6 @@ import {
   VerticalAlignTopOutlined,
 } from "@ant-design/icons";
 
-import BgProfile from "../../../../assets/images/manager/bg-profile.jpg";
 import profilavatar from "../../../../assets/images/manager/face-1.jpg";
 import convesionImg from "../../../../assets/images/manager/face-3.jpg";
 import convesionImg2 from "../../../../assets/images/manager/face-4.jpg";
