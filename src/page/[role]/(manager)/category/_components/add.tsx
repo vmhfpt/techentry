@@ -128,7 +128,7 @@ export default function AddCategory() {
                   </div>
                 </Form.Item>
                 <Form.Item className='' name={'in_active'}>
-                    <div className=' border border-2 rounded-md overflow-hidden' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
+                    <div className=' border border-2 border-dashed rounded-md overflow-hidden' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
                         <div className='p-2'>
                           <h2 >Setting</h2>
                         </div>
