@@ -311,22 +311,6 @@ function AddProduct() {
             </Col>
 
             
-
-            
-              <Col span={24}>
-                    <Form.Item
-                        name='upload'
-                        label='Image'
-                        valuePropName='fileList'
-                        getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-                        rules={[{ required: true }]}
-                    >
-                        <Upload name='image' listType='picture' customRequest={handleUpload}>
-                        <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                        </Upload>
-                    </Form.Item>
-              </Col>
-
               <Col span={24}>
                    <Form.Item
                         label='Gallery'
