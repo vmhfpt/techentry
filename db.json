@@ -806,6 +806,49 @@
       "in_active": true,
       "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530780/example-react/nh0wwbitg0uy6fhcsj3r.png",
       "id": 21
+    },
+    {
+      "name": "iphone",
+      "price": "2342",
+      "discount": "234",
+      "categoryId": "2",
+      "brandId": "1",
+      "total_review": 0,
+      "avg_stars": 0,
+      "description": "<p>dsfsdfs</p>",
+      "in_active": true,
+      "sales_information": [
+        {
+          "list": [
+            {
+              "image": "https://res.cloudinary.com/do7coevfh/image/upload/v1718799147/datn-img/nlwwn6opbqoozoyw2xo3.jpg",
+              "name": "hhh"
+            },
+            {
+              "image": "https://res.cloudinary.com/do7coevfh/image/upload/v1718799154/datn-img/olfolsnqumoyfv20mk28.jpg",
+              "name": "sdfsdf"
+            },
+            {
+              "image": "https://res.cloudinary.com/do7coevfh/image/upload/v1718799180/datn-img/tjyoum4aiz7tbn4ufe0w.jpg",
+              "name": "cvbxcv"
+            }
+          ],
+          "name": "mau"
+        },
+        {
+          "list": [
+            {
+              "name": "ád"
+            },
+            {
+              "name": "akkkkk"
+            }
+          ],
+          "name": "hi"
+        }
+      ],
+      "id": 22,
+      "thumbnail": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718797769/example-react/l4sxtkzchxicigpdhocp.jpg"
     }
   ],
   "galleries": [
@@ -833,6 +876,21 @@
       "productId": 21,
       "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718530786/example-react/ybzfyxb7yz0augsrx044.png",
       "id": 9
+    },
+    {
+      "productId": 22,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718797771/example-react/bz61p8pn4ykf3ng1uuzr.jpg",
+      "id": 10
+    },
+    {
+      "productId": 22,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718797771/example-react/qjbai5teynbdf9pcf3d3.jpg",
+      "id": 11
+    },
+    {
+      "productId": 22,
+      "image": "https://res.cloudinary.com/dqouzpjiz/image/upload/v1718797772/example-react/p6mcjhpxn3jomvuf80se.jpg",
+      "id": 12
     }
   ]
 }

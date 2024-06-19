@@ -1,121 +1,113 @@
-import { Badge, Button, Card, Input, Upload } from "antd";
-import { FileImageOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
+import { Badge, Button, Card, Form, Input } from 'antd'
 
-export default function Variant(){
+import './variant.css'
+import UploadVariant from './UploadVariant'
 
-   const [first, setFirst] = useState<any>();
-   const [second, setSecond] = useState<any>();
+export default function Variant({ form }: { form?: any }) {
+  return (
+    <div className='app__variant'>
+      <Badge status='processing' text='Phân loại hàng' />
+      <div>
+        <Form.List name='sales_information' initialValue={[]}>
+          {(fields, { add, remove }) => (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {fields.map((field, index) => (
+                <Card className='my-2' size='small' key={field.key} style={{ background: '#F6F6F6' }}>
+                  <div className='mb-4 flex items-center justify-between border-b border-solid border-[#ccc]'>
+                    <Form.Item name={[field.name, 'name']} className='m-0'>
+                      <Input placeholder={`Nhập name phân loại ${index + 1}`} />
+                    </Form.Item>
 
+                    <CloseOutlined
+                      className='p-2'
+                      onClick={() => {
+                        remove(field.name)
+                      }}
+                    />
+                  </div>
 
-    
+                  {/* Nest Form.List */}
+                  <Form.Item className='m-0'>
+                    <Form.List name={[field.name, 'list']} initialValue={[{}]}>
+                      {(subFields, subOpt) => (
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <div className='flex items-center flex-wrap'>
+                            {subFields.map((subField) => (
+                              <div key={subField.key} className='flex items-center gap-2 mx-4 w-[46%] mb-4'>
+                                {index === 0 && <UploadVariant subField={subField} form={form}/>}
 
-
-    return (<div className="app__variant">
-             <Badge status="processing" text="Phân loại hàng" />
-             <Card  size="small" title={'abcd'} className=" w-full my-3" style={{background : '#F6F6F6'}}>
-                <div className="w-1/2 mb-4">
-                            <Input placeholder="Nhập tên biến thể 1" />
-                </div>
-                <div className=" grid grid-cols-2 gap-4">
-                    <div className=" flex gap-[6px] items-center ">
-                        <div className="w-[70px] h-[70px]">
-                        <Upload
-                                
-                                name="avatar"
-                                listType="picture-card"
-                                className="avatar-uploader"
-                                showUploadList={false}
-                                beforeUpload={() => {}}
-                                onChange={() => {}}
-                            >
-                                <button style={{ border: 0, background: 'none' }} type="button">
-                                <FileImageOutlined />
-                                </button>
-                            </Upload>
+                                <Form.Item noStyle name={[subField.name, 'name']}>
+                                  <Input placeholder='Nhập' />
+                                </Form.Item>
+                                <CloseOutlined
+                                  onClick={() => {
+                                    subOpt.remove(subField.name)
+                                  }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                          <Button type='dashed' className='mb-4 !w-48 mx-auto' onClick={() => subOpt.add()} block>
+                            + Add
+                          </Button>
                         </div>
-                        <div className="w-full">
-                            <Input placeholder="Nhập" />
-                        </div>
-                        <div className="w-[50px] cursor-pointer">
-                            <DeleteOutlined style={{color : 'red'}}/>
-                        </div>
-                    </div>
-                   
-                </div>
-               
-            </Card>
+                      )}
+                    </Form.List>
+                  </Form.Item>
+                </Card>
+              ))}
 
-            <Card  size="small" title={'abcd'} className=" w-full my-3 relative" style={{background : '#F6F6F6'}}>
-                <div className=" absolute top-[-5px] right-[-5px] text-[20px] text-white bg-black rounded-full w-[20px] h-[20px] flex items-center justify-center"> &times; </div>
-                <div className=" grid grid-cols-2">
-                    <div className=" flex gap-[6px] items-center ">
-                      
-                        <div className="w-full">
-                            <Input placeholder="Nhập tên biến thể 2" />
-                        </div>
-                        <div className="w-[50px] cursor-pointer">
-                            <DeleteOutlined style={{color : 'red'}}/>
-                        </div>
-                    </div>
-                    <div className=" flex gap-[6px] items-center ">
-                   
-                        <div className="w-full">
-                            <Input placeholder="Nhập" />
-                        </div>
-                        <div className="w-[50px] cursor-pointer">
-                            <DeleteOutlined style={{color : 'red'}}/>
-                        </div>
-                    </div>
-                </div>
-               
-            </Card>
-           
+              <div className='my-2 bg-[#F6F6F6] p-3 rounded-[4px]'>
+                <Button icon={<PlusOutlined />} onClick={() => add()} type='dashed' className='w-[240px]' danger>
+                  Thêm nhóm phân loại {fields.length + 1}
+                </Button>
+              </div>
+            </div>
+          )}
+        </Form.List>
+      </div>
 
-            <div className="my-5 bg-[#F6F6F6] p-3 rounded-[4px]">
-                    <Button icon={<PlusOutlined />} type="dashed" className="w-[240px]" danger>
-                        Thêm nhóm phân loại 2
-                    </Button>
+      <Badge status='processing' text='Danh sách phân loại hàng' />
+
+      <div className='bg-[#F6F6F6] p-3 rounded-[4px] my-3'>
+        <div className='flex'>
+          <div className='p-3 w-[200px]'>
+            <Badge status='processing' /> Color
+          </div>
+          <div className='p-3 w-[90px]'> Ram </div>
+          <div className='p-3 w-full'>Giá</div>
+          <div className='p-3 w-full'>Số lượng</div>
+          <div className='p-3 w-full'>SKU</div>
+        </div>
+        <div className=''>
+          <div className='flex items-center h-full '>
+            <div className='p-3 w-[200px] flex justify-center'> Red</div>
+            <div className=' flex flex-col gap-3 w-[90px]  h-[100%] '>
+              <span className='p-2'>4Gb</span>
+              <span className='p-2'>8Gb</span>
+              <span className='p-2'>8Gb</span>
             </div>
 
-            <Badge status="processing" text="Danh sách phân loại hàng" />
-
-            <div className="bg-[#F6F6F6] p-3 rounded-[4px] my-3">
-               
-                <div className="flex">
-                    <div className="p-3 w-[200px]"><Badge status="processing"  />  Color</div>
-                    <div className="p-3 w-[90px]"> Ram </div>
-                    <div className="p-3 w-full">Giá</div>
-                    <div className="p-3 w-full" >Số lượng</div>
-                    <div className="p-3 w-full">SKU</div>
-                </div>
-                <div className="">
-                    <div className="flex items-center h-full ">
-                        <div className="p-3 w-[200px] flex justify-center">  Red</div>
-                        <div className=" flex flex-col gap-3 w-[90px]  h-[100%] ">
-                             <span className="p-2">4Gb</span> 
-                             <span className="p-2">8Gb</span> 
-                             <span className="p-2">8Gb</span> 
-                             
-                        </div>
-                        
-                        <div className="p-3 flex flex-col gap-3 w-full">
-                            <Input placeholder="0" /> 
-                            <Input placeholder="0" />
-                            <Input placeholder="0" />
-                        </div>
-                        <div className="p-3 flex flex-col gap-3 w-full">
-                            <Input placeholder="0" /> 
-                            <Input placeholder="0" />
-                            <Input placeholder="0" />
-                        </div>
-                        <div className="p-3 flex flex-col gap-3 w-full">
-                            <Input placeholder="0" /> 
-                            <Input placeholder="0" />
-                            <Input placeholder="0" />
-                        </div>
-                    </div>
-                </div>
+            <div className='p-3 flex flex-col gap-3 w-full'>
+              <Input placeholder='0' />
+              <Input placeholder='0' />
+              <Input placeholder='0' />
             </div>
-    </div>)
+            <div className='p-3 flex flex-col gap-3 w-full'>
+              <Input placeholder='0' />
+              <Input placeholder='0' />
+              <Input placeholder='0' />
+            </div>
+            <div className='p-3 flex flex-col gap-3 w-full'>
+              <Input placeholder='0' />
+              <Input placeholder='0' />
+              <Input placeholder='0' />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
