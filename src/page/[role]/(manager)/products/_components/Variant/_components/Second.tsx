@@ -45,9 +45,9 @@ export default function SecondHandle({second, setSecond, checkFirst2, setCheckFi
   
     return (
         <>
-          {second.value.map((item : any, key : any) => (
+          {second.value.map((item : any) => (
 
-            <div key={key} className=" flex gap-[6px] items-center ">
+            <div key={item.id} className=" flex gap-[6px] items-center ">
                             
             <div className="w-full">
                 <Input value={item[second.name]}  onChange={(e) => onChangeSecond(e.target.value, item.id)}  placeholder="Nhập" />

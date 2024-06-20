@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 import FirstHandle from './_components/First'
 import getRandomNumber from '@/utils/randomNumber'
 import SecondHandle from './_components/Second'
-export default function Variant() {
+
+export default function Variant({
+  formatVariant,
+  setFormatVariant
+} : any) {
   const ref = useRef<any>()
   const refSecond = useRef<any>()
   const [checkFirst, setCheckFirst] = useState<number>(0)
@@ -17,7 +21,7 @@ export default function Variant() {
 
   const [showAddSecond, setShowAddSecond] = useState<boolean>(false)
 
-  const [formatVariant, setFormatVariant] = useState<any>([])
+  
 
   const removeSecond = () => {
     setCheckFirst2(0)
@@ -44,12 +48,10 @@ export default function Variant() {
                   quantity: 0,
                   SKU: '',
                   id: getRandomNumber(),
-                  variant: [
-                    {
-                      [first.name]: item[first.name],
-                      [second.name]: item1[second.name]
-                    }
-                  ]
+                  variant: {
+                    [first.name]: item[first.name],
+                    [second.name]: item1[second.name]
+                  }
                 }
               ]
             }
@@ -68,11 +70,9 @@ export default function Variant() {
                 quantity: 0,
                 SKU: '',
                 id: getRandomNumber(),
-                variant: [
-                  {
-                    [first.name]: item[first.name]
-                  }
-                ]
+                variant: {
+                  [first.name]: item[first.name]
+                }
               }
             } else {
               return null
@@ -92,7 +92,7 @@ export default function Variant() {
             name: nameFirst,
             value: [
               {
-                image: 'File',
+                image: null,
                 id: numberId,
                 [nameFirst]: ''
               }
@@ -136,7 +136,43 @@ export default function Variant() {
     }
   }, [refSecond, nameSecond])
 
-  console.log(formatVariant)
+
+
+  const getImagePreview = (file: File): string => {
+    const previewUrl = URL.createObjectURL(file);
+
+    return previewUrl;
+  };
+  const onChangeVariantInput = (id : number, type : any, value : string) => {
+     //console.log(id, type, value)
+     setFormatVariant((prev : any) => {
+       return prev.map((item : any) => {
+          if(item.id == id){
+            item[type] = value;
+            return item;
+          }else {
+            return item;
+          }
+       })
+     })
+
+  }
+  const handleGetInput = (iFirst : any, iSecond : any, type : any) => {
+     if(iSecond != null){
+       for (const i of formatVariant) {
+          if( i.variant[first.name] == iFirst && i.variant[second.name] == iSecond){
+            return <Input type={type == 'quantity' || type == 'price' ? "number" : "text"} onChange={(e) => onChangeVariantInput(i.id, type, e.target.value)} key={i.id} placeholder='0' />
+          }
+       }
+     }else {
+      for (const i of formatVariant) {
+        if( i.variant[first.name] == iFirst ){
+          return <Input type={type == 'quantity' || type == 'price' ? "number" : "text"} onChange={(e) => onChangeVariantInput(i.id, type, e.target.value)} key={i.id} placeholder='0' />
+        }
+      }
+     }
+       
+  }
 
   return (
     <div className='app__variant'>
@@ -232,10 +268,10 @@ export default function Variant() {
             </tr>
           </thead>
           <tbody className=''>
-            {first && first.value.map((item : any, key : any) => {
+            {first && first.value.map((item : any) => {
                 if(item[first.name]){
-                    return (<tr key={key}>
-                        <td className='p-3 text-center'>{item[first.name]}</td>
+                    return (<tr key={item.id}>
+                        <td className='p-3 text-center'>{item.image && <img  src={getImagePreview(item.image)} alt="" className=" w-[100px] object-cover" />}</td>
           
                        {second  &&    <td>
                           <div className=' flex flex-col gap-3 w-[90px]  h-[100%] '>
@@ -257,24 +293,30 @@ export default function Variant() {
 
                         <td>
                           <div className='p-3 flex flex-col gap-3 w-full'>
-                            <Input placeholder='0' />
-                            <Input placeholder='0' />
-                            <Input placeholder='0' />
+                             {second && second.value.length > 1 ? second.value.map((item1 : any) => {
+                                if(item1[second.name]){
+                                  return handleGetInput(item[first.name], item1[second.name], 'price');
+                                }
+                             }) : handleGetInput(item[first.name], null, 'price')}
                           </div>
                         </td>
                         <td>
                           <div className='p-3 flex flex-col gap-3 w-full'>
-                            <Input placeholder='0' />
-                            <Input placeholder='0' />
-                            <Input placeholder='0' />
+                          {second && second.value.length > 1 ? second.value.map((item1 : any) => {
+                                if(item1[second.name]){
+                                  return handleGetInput(item[first.name], item1[second.name], 'quantity');
+                                }
+                             }) : handleGetInput(item[first.name], null, 'quantity')}
                           </div>
                         </td>
           
                         <td>
                           <div className='p-3 flex flex-col gap-3 w-full'>
-                            <Input placeholder='0' />
-                            <Input placeholder='0' />
-                            <Input placeholder='0' />
+                           {second && second.value.length > 1 ? second.value.map((item1 : any) => {
+                                if(item1[second.name]){
+                                  return handleGetInput(item[first.name], item1[second.name], 'SKU');
+                                }
+                             }) : handleGetInput(item[first.name], null, 'SKU')}
                           </div>
                         </td>
                       </tr>)

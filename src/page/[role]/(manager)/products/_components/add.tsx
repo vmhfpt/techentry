@@ -30,6 +30,8 @@ const validateMessages = {
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 function AddProduct() {
+  
+  const [formatVariant, setFormatVariant] = useState<any>([])
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const {data , isLoading} = useGetAttributesQuery({});
   const [loadingUploadGallery, setLoadingUploadGallery] = useState<boolean>(false);
@@ -138,18 +140,35 @@ function AddProduct() {
       modifiedDeviceSpecs[getIdAttribute(String(key))] = deviceSpecs[key];
     }
 
-    console.log(modifiedDeviceSpecs)
-
-
-    return true;
-
+    //console.log(fileList,modifiedDeviceSpecs, formatVariant)
 
     if(fileList.length <= 2) {
       popupError('At least 3 photos are required');
       return true;
     }
-
     
+    let arrGallery : any = [];
+    for (const iGallery of fileList) {
+        arrGallery = [...arrGallery, iGallery.originFileObj]
+    }
+    const payload = {
+      thumbnail : file.data,
+      gallegy : arrGallery,
+      name : values.name,
+      content : values.description,
+      category : values.categoryId,
+      brand : values.brandId,
+      price : values.price,
+      discount : values.discount,
+      total_review : 0,
+      avg_stars : 0,
+      in_active : values.in_active ? 1 : 0,
+      parameter : modifiedDeviceSpecs,
+      product_variant : formatVariant
+    };
+
+    console.log(payload)
+    return true;
     values.avg_stars = 0;
     values.total_review = 0;
 
@@ -356,7 +375,7 @@ function AddProduct() {
 
               <Col span={24}>
                   <Title level={5}>Thông Tin bán hàng</Title>
-                  <Variant />
+                  <Variant formatVariant={formatVariant} setFormatVariant={setFormatVariant} />
               </Col>
 
 
