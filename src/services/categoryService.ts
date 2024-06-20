@@ -1,4 +1,4 @@
-import instance from '@/api/axios'
+import instance, { instanceTest } from '@/api/axios'
 import { ICategory } from '@/common/types/category.interface'
 
 export const getListCategory = () => {
@@ -9,8 +9,12 @@ export const getCategory = (id: string) => {
   return instance.get(`categories/${id}`)
 }
 
-export const createCategory = (payload: ICategory) => {
-  return instance.post(`categories`, payload)
+export const createCategory = (payload) => {
+  return instanceTest.post(`category/create`, payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    }
+  })
 }
 
 export const updateCategory = (payload: ICategory) => {
