@@ -43,7 +43,7 @@ function Sidenav() {
                     >
                       {<Dashboard color={darkColor} />}
                     </div>
-                    <span className="label">Dashboard</span>
+                    <span className="label">Demo 1</span>
                   </Flex>
                 </div>
               </>
@@ -60,7 +60,7 @@ function Sidenav() {
                     >
                       {<Dashboard color={darkColor} />}
                     </div>
-                    <span className="label">Post</span>
+                    <span className="label">Demo 2</span>
                   </Flex>
                 </div>
               </>

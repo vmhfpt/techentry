@@ -3,53 +3,65 @@ import { FileImageOutlined, DeleteOutlined } from '@ant-design/icons';
 import getRandomNumber from "@/utils/randomNumber";
 import type { GetProp, UploadProps } from 'antd';
 import { variantNameRequired } from "@/utils/pattern";
-import { useRef, useState } from "react";
+import _ from 'lodash';
+import { useCallback } from "react";
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} : any){
   const [messageApi, contextHolder] = message.useMessage();
+ 
+  const debouncedSave = useCallback(
+    _.debounce((value : string, id : number) => {
+      if(!variantNameRequired.test(value)){
+        messageApi.error("Tên biến thể không để trống")
+        return true;
+      }else if(value.length >= 20){
+        messageApi.error("Tên biến thể quá dài");
+        return true;
+      }
 
-   const onChangeFirst = (value : string, id : number) => {
-    if(!variantNameRequired.test(value)){
-      messageApi.error("Tên biến thể không để trống")
-    }else if(value.length >= 20){
-      messageApi.error("Tên biến thể quá dài");
-      return true;
-    }
-     setFirst((prev : any) => {
-        return {
-          ...prev,
-          value : prev.value.map((item : any) => {
-              if(item.id == id){
-                return {
-                   ...item,
-                   [first.name] : value
-                }
-              }else {
-                return item
-              }
-              
-          })
-        }
-     })
-     if(checkFirst == id){
-        const numberId = getRandomNumber();
-        setFirst((prev : any) => {
+      
+      if(first.value.filter((obj : any) => obj[first.name] == value).length >= 1 ){
+        messageApi.error("Tên biến thể đã tồn tại");
+        return false;
+      }
+
+       setFirst((prev : any) => {
           return {
             ...prev,
-            value : [...prev.value, {  
-              id : numberId, 
-              image : null,
-              [first.name] : '',
-
-             }
-            ]
+            value : prev.value.map((item : any) => {
+                if(item.id == id){
+                  return {
+                     ...item,
+                     [first.name] : value
+                  }
+                }else {
+                  return item
+                }
+                
+            })
           }
-        })
-        setCheckFirst(numberId);
-     }
+       })
+       if(checkFirst == id){
+          const numberId = getRandomNumber();
+          setFirst((prev : any) => {
+            return {
+              ...prev,
+              value : [...prev.value, {  
+                id : numberId, 
+                image : null,
+                [first.name] : '',
+  
+               }
+              ]
+            }
+          })
+          setCheckFirst(numberId);
+       }
 
+    }, 800),
+    [first]
+  );
 
-   }
 
    const onDelete = (id : number) => {
       
@@ -101,7 +113,7 @@ export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} 
       }
    })
  };
-
+ 
    
      return ( <>
      {contextHolder}
@@ -123,7 +135,7 @@ export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} 
      </div>
 
      <div className="w-full" >
-         <Input value={item[first.name]} onChange={(e) => onChangeFirst(e.target.value, item.id)} placeholder="Nhập" />
+         <Input  onChange={(e) => debouncedSave(e.target.value, item.id)} placeholder="Nhập" />
      </div>
 
      <div className="w-[50px] cursor-pointer">
