@@ -1,14 +1,17 @@
-import { Badge, Button, Card, Input, Upload } from 'antd'
+
+import { Badge, Button, Card, Form, Input, Tag, Typography, message} from 'antd'
 import { FileImageOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 import FirstHandle from './_components/First'
 import getRandomNumber from '@/utils/randomNumber'
 import SecondHandle from './_components/Second'
-
+import { variantNamePattern } from '@/utils/pattern'
+const { Paragraph } = Typography;
 export default function Variant({
   formatVariant,
   setFormatVariant
 } : any) {
+  const [messageApi, contextHolder] = message.useMessage();
   const ref = useRef<any>()
   const refSecond = useRef<any>()
   const [checkFirst, setCheckFirst] = useState<number>(0)
@@ -87,6 +90,10 @@ export default function Variant({
     function handleClickOutside(event: any) {
       if (ref.current && !ref.current?.contains(event.target)) {
         if (nameFirst) {
+          if(!variantNamePattern.test(nameFirst)){
+            messageApi.error("Tên nhóm phân loại 1 không hợp lệ")
+            return true;
+          }
           const numberId = getRandomNumber()
           setFirst({
             name: nameFirst,
@@ -114,6 +121,15 @@ export default function Variant({
     function handleClickOutside2(event: any) {
       if (refSecond.current && !refSecond.current?.contains(event.target)) {
         if (nameSecond) {
+          if(!variantNamePattern.test(nameSecond)){
+            messageApi.error("Tên nhóm phân loại 2 không hợp lệ")
+            return true;
+          }
+
+          if(nameSecond == nameFirst){
+            messageApi.error("Tên nhóm phân loại 2 trùng tên phân loại 1")
+            return true;
+          }
           const numberId = getRandomNumber()
           setSecond({
             name: nameSecond,
@@ -173,14 +189,42 @@ export default function Variant({
      }
        
   }
+ const setEditableTab = (value : string, type : number) => {
+  if(!variantNamePattern.test(value)){
+    messageApi.error("Tên nhóm phân loại không hợp lệ")
+    return true;
+  }
+   if(type == 1){
+    setFirst((prev : any) => {
+      return {
+        ...prev,
+        name : value
+      }
+    })
+   }
+   if(type == 2){
+    setSecond((prev : any) => {
+      return {
+        ...prev,
+        name : value
+      }
+    })
+   }
+ }
+
 
   return (
     <div className='app__variant'>
+       {contextHolder}
       <Badge status='processing' text='Phân loại hàng' />
-      <Card size='small' title={first.name} className=' w-full my-3' style={{ background: '#F6F6F6' }}>
+      <Card size='small' title={first && first.name ? <Paragraph className='w-[120px] !z-[9999]' editable={{ onChange: (e) => setEditableTab(e, 1) }}>{first.name}</Paragraph> : false} className=' w-full my-3' style={{ background: '#F6F6F6' }}>
         {!first && (
           <div ref={ref} className='w-1/2 mb-4'>
-            <Input placeholder='Nhập tên biến thể 1' onChange={(e) => setNameFirst(e.target.value)} />
+                <Input 
+                   
+                   placeholder='Nhập tên biến thể 1' 
+                   onChange={(e) => setNameFirst(e.target.value)} />
+            
           </div>
         )}
         <div className=' grid grid-cols-2 gap-4'>
@@ -205,10 +249,10 @@ export default function Variant({
       )}
 
       {showAddSecond && (
-        <Card size='small' title={second.name} className=' w-full my-3 relative' style={{ background: '#F6F6F6' }}>
+        <Card size='small' title={second && second.name ? <Paragraph className='w-[120px] !z-[9999]' editable={{ onChange: (e) => setEditableTab(e, 2) }}>{second.name}</Paragraph> : false} className=' w-full my-3' style={{ background: '#F6F6F6' }} >
           <div
             onClick={() => removeSecond()}
-            className=' absolute top-[-5px] right-[-5px] text-[20px] text-white bg-black rounded-full w-[20px] h-[20px] flex items-center justify-center'
+            className=' absolute top-[-5px] right-[-5px] text-[20px] text-white bg-black rounded-full w-[20px] h-[20px] flex items-center justify-center cursor-pointer'
           >
             {' '}
             &times;{' '}
@@ -244,13 +288,13 @@ export default function Variant({
         <table className='  w-full'>
           <thead>
             <tr>
-              {first && <th className='flex justify-start'>
+              {first && <th className='flex justify-start  w-[120px]'>
               
               <div className='p-3 '>
                 <Badge status='processing' /> {first.name}
               </div>
             </th>}
-              {second && <th>
+              {second && <th className=''>
                 <div className='p-3 flex justify-start'> {second.name} </div>
               </th>}
               <th>
@@ -269,9 +313,15 @@ export default function Variant({
           </thead>
           <tbody className=''>
             {first && first.value.map((item : any) => {
-                if(item[first.name]){
-                    return (<tr key={item.id}>
-                        <td className='p-3 text-center'>{item.image && <img  src={getImagePreview(item.image)} alt="" className=" w-[100px] object-cover" />}</td>
+                if(item[first.name] || item.image){
+                 
+                    return (<tr key={item.id} >
+                        <td className='p-3 text-center    !w-[90px]'>
+                        <div className="relative w-full">
+                        <div className={`bg-red-500 text-white rounded-[5px] text-[12px] px-2   top-[-10px] right-[0px] !z-[9999] w-fit ${item.image ? ' absolute ' : ' flex justify-center'}`} color="red">{item[first.name]}</div>
+                          {item.image && <div className=' relative '><img  src={getImagePreview(item.image)} alt="" className=" w-[100px] object-cover" /></div>}
+                        </div>
+                        </td>
           
                        {second  &&    <td>
                           <div className=' flex flex-col gap-3 w-[90px]  h-[100%] '>

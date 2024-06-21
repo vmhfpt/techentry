@@ -1,15 +1,20 @@
-import { Input, Upload } from "antd";
+import { Input, Upload , message} from "antd";
 import { FileImageOutlined, DeleteOutlined } from '@ant-design/icons';
 import getRandomNumber from "@/utils/randomNumber";
 import type { GetProp, UploadProps } from 'antd';
-
+import { variantNameRequired } from "@/utils/pattern";
 import { useRef, useState } from "react";
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} : any){
-  
+  const [messageApi, contextHolder] = message.useMessage();
 
    const onChangeFirst = (value : string, id : number) => {
-    
+    if(!variantNameRequired.test(value)){
+      messageApi.error("Tên biến thể không để trống")
+    }else if(value.length >= 20){
+      messageApi.error("Tên biến thể quá dài");
+      return true;
+    }
      setFirst((prev : any) => {
         return {
           ...prev,
@@ -99,6 +104,7 @@ export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} 
 
    
      return ( <>
+     {contextHolder}
      {first.value.map((item : any) => (<div key={item.id} className=" flex gap-[6px] items-center ">
      <div  className="w-[70px] h-[70px] upload-custom">
         <Upload
