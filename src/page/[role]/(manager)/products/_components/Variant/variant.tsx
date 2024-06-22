@@ -1,5 +1,5 @@
 
-import { Badge, Button, Card, Form, Input, Tag, Typography, message} from 'antd'
+import { Badge, Button, Card, Form, Input, Select, Tag, Typography, message} from 'antd'
 import { FileImageOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 import FirstHandle from './_components/First'
@@ -12,15 +12,15 @@ export default function Variant({
   setFormatVariant
 } : any) {
   const [messageApi, contextHolder] = message.useMessage();
-  const ref = useRef<any>()
-  const refSecond = useRef<any>()
+ 
+  
   const [checkFirst, setCheckFirst] = useState<number>(0)
-  const [nameFirst, setNameFirst] = useState<string>('')
+ 
   const [first, setFirst] = useState<any>(false)
 
   const [checkFirst2, setCheckFirst2] = useState<number>(0)
   const [second, setSecond] = useState<any>(false)
-  const [nameSecond, setNameSecond] = useState<string>('')
+
 
   const [showAddSecond, setShowAddSecond] = useState<boolean>(false)
 
@@ -86,73 +86,58 @@ export default function Variant({
     }
   }, [first, second])
 
-  useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (ref.current && !ref.current?.contains(event.target)) {
-        if (nameFirst) {
-          if(!variantNamePattern.test(nameFirst)){
-            messageApi.error("Tên nhóm phân loại 1 không hợp lệ")
-            return true;
-          }
-          const numberId = getRandomNumber()
-          setFirst({
-            name: nameFirst,
-            value: [
-              {
-                image: null,
-                id: numberId,
-                [nameFirst]: ''
-              }
-            ]
-          })
 
-          setCheckFirst(numberId)
-        }
+
+
+  function handleClickOutside(value: (string[])) {
+    if (value[0]) {
+      if(!variantNamePattern.test(value[0])){
+        messageApi.error("Tên nhóm phân loại 1 không hợp lệ")
+        return true;
       }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [ref, nameFirst])
-
-  useEffect(() => {
-    function handleClickOutside2(event: any) {
-      if (refSecond.current && !refSecond.current?.contains(event.target)) {
-        if (nameSecond) {
-          if(!variantNamePattern.test(nameSecond)){
-            messageApi.error("Tên nhóm phân loại 2 không hợp lệ")
-            return true;
+      const numberId = getRandomNumber()
+      setFirst({
+        name: value[0],
+        value: [
+          {
+            image: null,
+            id: numberId,
+            [value[0]]: ''
           }
+        ]
+      })
 
-          if(nameSecond == nameFirst){
-            messageApi.error("Tên nhóm phân loại 2 trùng tên phân loại 1")
-            return true;
-          }
-          const numberId = getRandomNumber()
-          setSecond({
-            name: nameSecond,
-            value: [
-              {
-                id: numberId,
-                [nameSecond]: ''
-              }
-            ]
-          })
+      setCheckFirst(numberId)
+    }
+  }
 
-          setCheckFirst2(numberId)
-        }
+ 
+
+  function handleClickOutside2(value: (string)[]) {
+    if (value[0]) {
+      if(!variantNamePattern.test(value[0])){
+        messageApi.error("Tên nhóm phân loại 2 không hợp lệ")
+        return false;
       }
+
+      if(value[0] == first.name){
+        messageApi.error("Tên nhóm phân loại 2 trùng tên phân loại 1")
+        return false;
+      }
+      const numberId = getRandomNumber()
+      setSecond({
+        name: value[0],
+        value: [
+          {
+            id: numberId,
+            [value[0]]: ''
+          }
+        ]
+      })
+
+      setCheckFirst2(numberId)
     }
-
-    document.addEventListener('mousedown', handleClickOutside2)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside2)
-    }
-  }, [refSecond, nameSecond])
-
-
+  }
 
   const getImagePreview = (file: File): string => {
     const previewUrl = URL.createObjectURL(file);
@@ -194,6 +179,10 @@ export default function Variant({
     messageApi.error("Tên nhóm phân loại không hợp lệ")
     return true;
   }
+  if((type == 1 && second.name == value) || (type == 2 && first.name == value)){
+    messageApi.error("Tên 2 nhóm phân loại không được trùng nhau")
+    return true;
+  }
    if(type == 1){
     setFirst((prev : any) => {
       return {
@@ -211,21 +200,32 @@ export default function Variant({
     })
    }
  }
-
+ 
 
   return (
     <div className='app__variant'>
+
        {contextHolder}
       <Badge status='processing' text='Phân loại hàng' />
       <Card size='small' title={first && first.name ? <Paragraph className='w-[120px] !z-[9999]' editable={{ onChange: (e) => setEditableTab(e, 1) }}>{first.name}</Paragraph> : false} className=' w-full my-3' style={{ background: '#F6F6F6' }}>
         {!first && (
-          <div ref={ref} className='w-1/2 mb-4'>
-                <Input 
-                   
-                   placeholder='Nhập tên biến thể 1' 
-                   onChange={(e) => setNameFirst(e.target.value)} />
+           <div  className='w-1/2 mb-4'>
+          <Select
+          onChange={(e) => {handleClickOutside(e)}}
+          className='w-[50%]'
+          maxCount={1}
+           mode='tags'
+           placeholder='Nhập tên biến thể 1'
+           options={[
+             { value: 'Màu xanh', label: 'Màu xanh' },
+             { value: 'Màu đen', label: 'Màu đen' },
+             { value: 'Màu vàng', label: 'Màu vàng' },
+           ]}
+         />
             
           </div>
+
+       
         )}
         <div className=' grid grid-cols-2 gap-4'>
           {first && (
@@ -260,8 +260,20 @@ export default function Variant({
           <div className=' grid grid-cols-2 gap-4'>
             {!second && (
               <div className=' flex gap-[6px] items-center '>
-                <div ref={refSecond} className='w-full'>
-                  <Input onChange={(e) => setNameSecond(e.target.value)} placeholder='Nhập tên biến thể 2' />
+                <div  className='w-full'>
+                
+                  <Select
+                    onChange={(e) => {handleClickOutside2(e)}}
+                    className='w-[50%]'
+                    maxCount={1}
+                    mode='tags'
+                    placeholder='Nhập tên biến thể 2'
+                    options={[
+                      { value: 'Ram', label: 'Ram' },
+                      { value: 'Rom', label: 'Bộ nhớ trong' },
+                      { value: 'mAh', label: 'Dung lượng pin' },
+                    ]}
+                  />
                 </div>
 
                 <div className='w-[50px] cursor-pointer'></div>
