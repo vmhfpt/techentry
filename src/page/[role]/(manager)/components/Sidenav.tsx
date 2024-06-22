@@ -17,6 +17,8 @@ function Sidenav() {
 
   const useSidenav = UseSidenav({
     components: [
+
+      //dashboard
       {
         label: (
           <>
@@ -34,6 +36,8 @@ function Sidenav() {
         ),
         link: '/admin/dashboard'
       },
+      //dashboard
+
       {
         label: (
           <>
@@ -43,12 +47,91 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className="label">Voucher</span>
+              <span className="label">Maketing</span>
             </Flex>
           </>
         ),
-        link: '/admin/voucher'
+        children: [
+          {
+            label: (
+              <>
+                <Flex align="center" justify="center">
+                  <span
+                    className={`icon `}
+                  >
+                    {<Tables color={darkColor} />}
+                  </span>
+                  <span className="label">Voucher</span>
+                </Flex>
+              </>
+            ),
+            link: '/admin/voucher'
+          },
+          {
+            label: (
+              <>
+                <Flex align="center" justify="center">
+                  <span
+                    className={`icon `}
+                  >
+                    {<Tables color={darkColor} />}
+                  </span>
+                  <span className="label">Sales</span>
+                </Flex>
+              </>
+            ),
+            link: '/admin/voucher'
+          },
+        ]
       },
+
+      {
+        label: (
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor} />}
+              </span>
+              <span className="label">Catalog</span>
+            </Flex>
+          </>
+        ),
+        children: [
+          {
+            label: (
+              <>
+                <Flex align="center" justify="center">
+                  <span
+                    className={`icon `}
+                  >
+                    {<Tables color={darkColor} />}
+                  </span>
+                  <span className="label">Products</span>
+                </Flex>
+              </>
+            ),
+            link: '/admin/products'
+          },
+          {
+            label: (
+              <>
+                <Flex align="center" justify="center">
+                  <span
+                    className={`icon `}
+                  >
+                    {<Tables color={darkColor} />}
+                  </span>
+                  <span className="label">Categories</span>
+                </Flex>
+              </>
+            ),
+            link: '/admin/categories'
+          },
+        ]
+      },
+
       {
         label: (
           <>
@@ -64,6 +147,7 @@ function Sidenav() {
         ),
         link: '/admin/Color'
       },
+      
       {
         label: (
           <>
@@ -72,36 +156,6 @@ function Sidenav() {
                 className={`icon `}
               >
                 {<Tables color={darkColor} />}
-              </span>
-              <span className="label">Products</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/products'
-      },
-      {
-        label: (
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor} />}
-              </span>
-              <span className="label">Products</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/products'
-      },
-      {
-        label:(
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor}/>}
               </span>
               <span className="label">Banner</span>
             </Flex>
@@ -118,42 +172,13 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className="label">Categories</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/categories'
-      },
-      {
-        label: (
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor} />}
-              </span>
               <span className="label">Post Categories</span>
             </Flex>
           </>
         ),
         link: '/admin/post-categories'
       },
-      {
-        label:(
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor}/>}
-              </span>
-              <span className="label">Posts</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/posts'
-      },
+     
       {
         label: (
           <>
@@ -201,51 +226,7 @@ function Sidenav() {
         ),
         link: '/admin/users'
       },
-      {
-        label: (
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor} />}
-              </span>
-              <span className="label">Attributes Product</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/attributes-product'
-      },
-      {
-        label:(
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor}/>}
-              </span>
-              <span className="label">Privilege</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/privilege'
-      },
-      {
-        label: (
-          <>
-            <Flex align="center" justify="center">
-              <span
-                className={`icon `}
-              >
-                {<Tables color={darkColor} />}
-              </span>
-              <span className="label">Privilege</span>
-            </Flex>
-          </>
-        ),
-        link: '/admin/privilege'
-      },
+     
       {
         label: (
           <>
