@@ -264,7 +264,6 @@ function AddProduct() {
 
 
   const handleSetDetail = () => {
-    form.setFieldsValue({variant: []});
     setVariant([
         ...variant,
       {
@@ -280,6 +279,7 @@ function AddProduct() {
         ]
       }
     ])
+    // form.setFieldsValue({variant: });
   }
   const handleRemoveDetail = (name) => {  
     form.setFieldsValue({variant: []});      

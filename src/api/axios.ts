@@ -31,7 +31,6 @@ instance.interceptors.request.use(
 
 const instanceTest: AxiosInstance = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
-  timeout: 6000,
 })
 
 instanceTest.interceptors.request.use(
