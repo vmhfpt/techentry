@@ -9,7 +9,7 @@ import {
   updateCategory
 } from '@/services/categoryService'
 import { Dispatch, createSlice } from '@reduxjs/toolkit'
-
+import { store } from '../store'
 interface IInitialState {
   categories: ICategory[]
   category: ICategory | null
@@ -119,12 +119,12 @@ export const getOneCategory = (id: string) => async (dispatch: Dispatch) => {
   }
 }
 
-export const createNewCategory = (payload: ICategory) => async (dispatch: Dispatch) => {
-  dispatch(isFetching())
+export const createNewCategory = async (payload: any)  => {
+  store.dispatch(isFetching())
   try {
     const response = await createCategory(payload)
-    if (response.data) {
-      dispatch(createSuccess(response.data))
+    if (response.data.success) {
+      store.dispatch(createSuccess(response.data.data))
       return { success: true }
     }
     return { success: false }
@@ -132,7 +132,7 @@ export const createNewCategory = (payload: ICategory) => async (dispatch: Dispat
     console.log(error)
     return { success: false, error }
   } finally {
-    dispatch(fetchedDone())
+    store.dispatch(fetchedDone())
   }
 }
 

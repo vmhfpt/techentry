@@ -169,52 +169,52 @@ function AddProduct() {
 
     console.log(payload)
     return true
-    values.avg_stars = 0
-    values.total_review = 0
+    // values.avg_stars = 0
+    // values.total_review = 0
 
-    newData.avg_stars = 0
-    newData.total_review = 0
+    // newData.avg_stars = 0
+    // newData.total_review = 0
 
-    newData.avg_stars = 0
-    newData.total_review = 0
+    // newData.avg_stars = 0
+    // newData.total_review = 0
 
-    delete newData.upload
-    setFile((prev) => {
-      return {
-        ...prev,
-        loading: true
-      }
-    })
+    // delete newData.upload
+    // setFile((prev) => {
+    //   return {
+    //     ...prev,
+    //     loading: true
+    //   }
+    // })
 
-    const formData = new FormData()
+    // const formData = new FormData()
 
-    formData.append('file', file.data as any)
-    formData.append('upload_preset', 'vuminhhung904')
+    // formData.append('file', file.data as any)
+    // formData.append('upload_preset', 'vuminhhung904')
 
-    Promise.all([axios.post('https://api.cloudinary.com/v1_1/dqouzpjiz/upload', formData)])
-      .then(async ([response]: any) => {
-        setFile({
-          data: {},
-          loading: false
-        })
-        try {
-          const responseCreate: any = await createProduct({
-            ...newData,
-            thumbnail: response.data.secure_url
-          })
-          setLoadingUploadGallery(true)
-          await handleUploadGallery(Number(responseCreate.data.id))
-          setLoadingUploadGallery(false)
-          popupSuccess(`Add product "${values.name}"  success`)
-          handleCancel()
-        } catch (err) {
-          popupError(`Add product "${values.name}"  error`)
-          handleCancel()
-        }
-      })
-      .catch(() => {
-        popupError('Upload file Error ! lets try again ')
-      })
+    // Promise.all([axios.post('https://api.cloudinary.com/v1_1/dqouzpjiz/upload', formData)])
+    //   .then(async ([response]: any) => {
+    //     setFile({
+    //       data: {},
+    //       loading: false
+    //     })
+    //     try {
+    //       const responseCreate: any = await createProduct({
+    //         ...newData,
+    //         thumbnail: response.data.secure_url
+    //       })
+    //       setLoadingUploadGallery(true)
+    //       await handleUploadGallery(Number(responseCreate.data.id))
+    //       setLoadingUploadGallery(false)
+    //       popupSuccess(`Add product "${values.name}"  success`)
+    //       handleCancel()
+    //     } catch (err) {
+    //       popupError(`Add product "${values.name}"  error`)
+    //       handleCancel()
+    //     }
+    //   })
+    //   .catch(() => {
+    //     popupError('Upload file Error ! lets try again ')
+    //   })
   }
 
   const optionCategories: SelectProps['options'] = []

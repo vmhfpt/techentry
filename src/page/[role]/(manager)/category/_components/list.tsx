@@ -13,11 +13,13 @@ export default function ListCategory() {
   const dispatch = useAppDispatch()
   const [searchValue, setSearchValue] = useState('')
   const debouncedValue = useDebounce(searchValue, 600)
+  const [current, setCurrent] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const { categories, isLoading } = useAppSelector((state) => state.category)
  
   const handlerDistableCategory = async (value: ICategory) => {
-    if (!value.is_delete) {
+    if (value.active == 1) {
       const res = await dispatch(changeStatus(value?.id as string, true))
 
       if (res.success) {
@@ -25,7 +27,7 @@ export default function ListCategory() {
       } else if (!res.success) {
         message.error('Vô hiệu hoá danh mục thất bại!')
       }
-    } else if (value.is_delete) {
+    } else if (value.active == 0) {
       const res = await dispatch(changeStatus(value?.id as string, false))
 
       if (res.success) {
@@ -67,15 +69,13 @@ export default function ListCategory() {
       width: 140,
       render: (text) => <a>{text}</a>
     },
-    Table.EXPAND_COLUMN,
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Image',
+      dataIndex: 'image',
+      key: 'image',
       align: 'center',
-      width: 200,
-      ellipsis: true,
-      render: (text) => <span className="ellipsis">{text}</span>
+      width: 50,
+      render: (image) => <img src={image} alt="" className="w-[120px] object-cover" />
     },
     {
       title: 'Parent',
@@ -87,13 +87,13 @@ export default function ListCategory() {
     },
     {
       title: 'Status',
-      dataIndex: 'is_delete',
-      key: 'is_delete',
+      dataIndex: 'active',
+      key: 'active',
       align: 'center',
       width: 100,
-      render: (status) => {
-        const color = status ? 'volcano' : 'green'
-        const text = status ? 'Disable' : 'Enable'
+      render: (active) => {
+        const color = active == 0 ? 'volcano' : 'green'
+        const text = active == 0 ? 'Disable' : 'Enable'
 
         return <Tag color={color}>{text.toUpperCase()}</Tag>
       }
@@ -101,34 +101,33 @@ export default function ListCategory() {
     {
       title: 'Action',
       key: 'action',
-      width: 100,
+      width: 150,
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
-          {!record.is_delete && (
+          {record.active == 1 && (
             <Link to={"" + record.id}>
               <Button type='primary'>Edit </Button>
             </Link>
           )}
           <Popconfirm
             placement='topRight'
-            title={!record.is_delete ? 'Are you sure distable this category?' : 'Are you sure enable this category?'}
+            title={record.active == 1 ? 'Are you sure distable this category?' : 'Are you sure enable this category?'}
             onConfirm={() => handlerDistableCategory(record)}
             onCancel={() => {}}
             okText='Đồng ý'
             cancelText='Hủy bỏ'
           >
-            <Button type='primary' danger={!record.is_delete}>
-              {!record.is_delete ? 'Disable' : 'Enable'}
+            <Button type='primary' danger={record.active}>
+              {!record.active ? 'Disable' : 'Enable'}
             </Button>
           </Popconfirm>
         </Space>
       )
     },
-      Table.EXPAND_COLUMN 
   ]
 
-  const newData = categories?.map((category: ICategory, index: number) => ({
+  const newData = categories?.data?.map((category: ICategory, index: number) => ({
     ...category,
     key: index + 1
   }))
@@ -139,50 +138,47 @@ export default function ListCategory() {
         <Typography.Title editable level={2} style={{ margin: 0 }}>
           List Category
         </Typography.Title>
-
-        <Input
-          className='header-search w-[250px]'
-          prefix={
-            <div className=' px-2'>
-              <SearchRoundedIcon />
-            </div>
-          }
-          value={searchValue}
-          spellCheck={false}
-          allowClear
-          onChange={handleChangeSearch}
-          size='small'
-          placeholder={'search'}
-          style={{
-            borderRadius: '2rem',
-            border: 'none',
-            backgroundColor: '#ffff',
-            boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'
+      </div>
+      <div className=''>
+        <Flex wrap='wrap' gap='small' className='my-5' align='center' justify='space-between'>
+          <Input
+            className='header-search w-[250px]'
+            prefix={
+              <div className=' px-2'>
+                <SearchRoundedIcon />
+              </div>
+            }
+            value={searchValue}
+            spellCheck={false}
+            allowClear
+            onChange={handleChangeSearch}
+            size='small'
+            placeholder={'search'}
+            style={{
+              borderRadius: '2rem',
+            }}
+          />
+          <Link to='add'>
+            <Button type='primary'>Add Category</Button>
+          </Link>
+        </Flex>
+        <Table
+          style={{border: '2px', borderRadius: '10px', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', height: '100%'}}
+          columns={columns}
+          sticky={{ offsetHeader: 0 }}
+          dataSource={newData}
+          loading={isLoading}
+          pagination={{
+            current: current,
+            pageSize: pageSize,
+            total: columns.length,
+            onChange: (page, pageSize) => {
+              setCurrent(page);
+              setPageSize(pageSize);
+            },
           }}
         />
       </div>
-      <Table
-        pagination={{ pageSize: 8 }}
-        columns={columns}
-        size='middle'
-        scroll={{ x: 1000, y: 500 }}
-        sticky={{ offsetHeader: 0 }}
-        dataSource={newData}
-        loading={isLoading}
-        expandable={{
-          expandedRowRender: (record) => (
-            <div style={{ maxWidth: '90%', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-              {record.description}
-            </div>
-          )
-        }}
-      />
-
-      <Flex wrap='wrap' gap='small'>
-        <Link to='add'>
-          <Button type='primary'>Add Category</Button>
-        </Link>
-      </Flex>
     </>
   )
 }

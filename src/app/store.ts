@@ -13,6 +13,7 @@ import { privilegeGroupApi } from '@/page/[role]/(manager)/privilege/_components
 import { privilegeApi } from '@/page/[role]/(manager)/privilege/_components/privilege/PrivilegeEndpoint'
 import { privilegeUsersApi } from '@/page/[role]/(manager)/user/PrivilegeUsersEndpoints'
 import postSlice from './slices/postSlice'
+import authSlice from './slices/authSlide'
 
 import { productsApi } from '@/page/[role]/(manager)/products/ProductsEndpoints'
 export const store = configureStore({
@@ -22,6 +23,7 @@ export const store = configureStore({
     category: categorySlice,
     postCategory: postCategorySlice,
     post: postSlice,
+    auth: authSlice,
     [usersApi.reducerPath]: usersApi.reducer,
     [addressApi.reducerPath]: addressApi.reducer,
     [attributesApi.reducerPath]: attributesApi.reducer,
