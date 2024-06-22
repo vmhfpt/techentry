@@ -1,21 +1,19 @@
-import { Col, Image, Modal, Row, Switch, Typography, Upload } from 'antd'
-import { Button, Form, Input } from 'antd'
-import { useNavigate, useParams } from 'react-router-dom'
-import { Select } from 'antd'
-import type { SelectProps } from 'antd'
-import ClassicEditor from '@/utils/ckeditorConfig'
-import LoadingUser from '../../user/util/Loading'
-import ErrorLoad from '../../components/util/ErrorLoad'
-import React, { useEffect, useRef, useState } from 'react'
 import { IProduct } from '@/common/types/product.interface'
-import { popupSuccess, popupError } from '@/page/[role]/shared/Toast'
+import { popupError, popupSuccess } from '@/page/[role]/shared/Toast'
+import ClassicEditor from '@/utils/ckeditorConfig'
 import { UploadOutlined } from '@ant-design/icons'
+import type { SelectProps } from 'antd'
+import { Button, Col, Drawer, Form, Image, Input, Row, Select, Space, Switch, Typography, Upload } from 'antd'
 import axios from 'axios'
+import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ErrorLoad from '../../components/util/ErrorLoad'
+import LoadingUser from '../../user/util/Loading'
 const { Title } = Typography
 
-import { ICategory } from '@/common/types/category.interface'
 import instance from '@/api/axios'
 import { IBrand } from '@/common/types/brand.interface'
+import { ICategory } from '@/common/types/category.interface'
 import { useGetProductQuery, useUpdateProductMutation } from '../ProductsEndpoints'
 import Variant from './Variant/variant'
 const validateMessages = {
@@ -84,6 +82,24 @@ function EditProduct() {
     }
   }, [dataLoading])
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (box.current) {
+        ClassicEditor.create(box.current as HTMLElement).then((editor) => {
+          editor.model.document.on('change:data', () => {
+            form.setFieldsValue({ description: editor.getData() })
+          })
+          const editorElement = document.querySelectorAll('.ck-editor')
+          editorElement.forEach((element, key) => {
+            if (key != 0) {
+              element.remove()
+            }
+          })
+        })
+      }
+    }, 600)
+  }, [form])
+
   const handleUpload = async (options: any) => {
     const { onSuccess, file } = options
     setFile({
@@ -116,7 +132,6 @@ function EditProduct() {
           loading: true
         }
       })
-
 
       const formData = new FormData()
 
@@ -183,12 +198,17 @@ function EditProduct() {
   if (status.isError) return <ErrorLoad />
   return (
     <>
-      <Modal
+      <Drawer
         width={1400}
-        okButtonProps={{ hidden: true }}
+        placement='right'
         title={`Edit product "${dataItem?.name}"`}
         open={true}
-        onCancel={handleCancel}
+        onClose={handleCancel}
+        extra={
+          <Space>
+            <Button onClick={handleCancel}>Cancel</Button>
+          </Space>
+        }
       >
         <Form
           initialValues={dataItem}
@@ -291,7 +311,7 @@ function EditProduct() {
             </Col>
           </Row>
         </Form>
-      </Modal>
+      </Drawer>
     </>
   )
 }
