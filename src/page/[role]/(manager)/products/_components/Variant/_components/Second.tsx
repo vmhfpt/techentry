@@ -9,7 +9,7 @@ export default function SecondHandle({second, setSecond, checkFirst2, setCheckFi
   const [messageApi, contextHolder] = message.useMessage();
   const debouncedSave = useCallback(
     _.debounce((value : string, id : number) => {
-      console.log(value,second.value )
+    //  console.log(value,second.value )
       if(!value){
         messageApi.error("Giá trị biến thể không được để trống");
         return false;

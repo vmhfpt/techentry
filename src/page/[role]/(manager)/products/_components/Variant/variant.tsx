@@ -29,20 +29,26 @@ export default function Variant({
   const removeSecond = () => {
     setCheckFirst2(0)
     setSecond(false)
-    setNameSecond('')
+    
     setShowAddSecond(false)
   }
 
   useEffect(() => {
+    
+    
     if (first && second && second.value.length >= 2) {
-      let newArr: any = []
+      let newArr: any = [];
+    
       const firstArr = first.value
       const secondArr = second.value
-
+      
       for (const item of firstArr) {
         if (item && item[first.name]) {
+         
           for (const item1 of secondArr) {
+    
             if (item1 && item1[second.name]) {
+             
               newArr = [
                 ...newArr,
                 {
@@ -57,12 +63,16 @@ export default function Variant({
                   }
                 }
               ]
+              
             }
           }
         }
       }
+
+     // 
       setFormatVariant(newArr)
     } else if (first) {
+  
       setFormatVariant(() => {
         return first.value
           .map((item: any) => {
@@ -184,17 +194,32 @@ export default function Variant({
     return true;
   }
    if(type == 1){
+
     setFirst((prev : any) => {
       return {
-        ...prev,
-        name : value
+        name : value,
+        value : prev.value.map((item : any) => {
+          return {
+            id : item.id,
+            image : item.image,
+            [value] : item[first.name]
+          }
+        }),
       }
     })
+
    }
    if(type == 2){
+   
+
     setSecond((prev : any) => {
       return {
-        ...prev,
+        value : prev.value.map((item : any) => {
+          return {
+            id : item.id,
+            [value] : item[second.name]
+          }
+        }),
         name : value
       }
     })
