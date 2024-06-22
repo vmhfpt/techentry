@@ -1,28 +1,26 @@
-import { Card, Col, Modal, Row, Switch, Upload } from 'antd'
-import { Button, Form, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { Select } from 'antd'
-import type { SelectProps, UploadFile, GetProp, UploadProps } from 'antd'
-import ClassicEditor from '@/utils/ckeditorConfig'
-import LoadingUser from '../../user/util/Loading'
-import ErrorLoad from '../../components/util/ErrorLoad'
-import React, { useEffect, useRef, useState } from 'react'
 import { IGallery, IProduct } from '@/common/types/product.interface'
-import { popupSuccess, popupError } from '@/page/[role]/shared/Toast'
+import { popupError, popupSuccess } from '@/page/[role]/shared/Toast'
+import ClassicEditor from '@/utils/ckeditorConfig'
 import { UploadOutlined } from '@ant-design/icons'
+import type { GetProp, SelectProps, UploadFile, UploadProps } from 'antd'
+import { Button, Col, Drawer, Form, Input, Row, Select, Space, Switch, Upload } from 'antd'
 import axios from 'axios'
+import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import ErrorLoad from '../../components/util/ErrorLoad'
+import LoadingUser from '../../user/util/Loading'
 
-import { ICategory } from '@/common/types/category.interface'
 import instance from '@/api/axios'
-import { IBrand } from '@/common/types/brand.interface'
-import { useCreateProductMutation } from '../ProductsEndpoints'
-import { useGetAttributesQuery } from '../../attribute/_components/attribute/AttributeEndpoints'
 import { IAttribute } from '@/common/types/attribute.interface'
+import { IBrand } from '@/common/types/brand.interface'
+import { ICategory } from '@/common/types/category.interface'
 import { IValueAttribute } from '@/common/types/valueAttribute.interface'
-import { Typography } from 'antd'
-import UploadFileGallery from './uploadGallery/uploadGallery'
 import { getBase64 } from '@/utils/getBase64'
+import { Typography } from 'antd'
+import { useGetAttributesQuery } from '../../attribute/_components/attribute/AttributeEndpoints'
+import { useCreateProductMutation } from '../ProductsEndpoints'
 import Variant from './Variant/variant'
+import UploadFileGallery from './uploadGallery/uploadGallery'
 const { Title } = Typography
 const validateMessages = {
   required: '${label} is required!'
@@ -30,6 +28,7 @@ const validateMessages = {
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
 function AddProduct() {
+  const [formatVariant, setFormatVariant] = useState<any>([])
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const { data, isLoading } = useGetAttributesQuery({})
   const [loadingUploadGallery, setLoadingUploadGallery] = useState<boolean>(false)
@@ -77,24 +76,29 @@ function AddProduct() {
       }
     })()
     form.setFieldsValue({ in_active: true })
-    if (box.current) {
-      ClassicEditor.create(box.current as HTMLElement)
-        .then((editor) => {
-          editor.model.document.on('change:data', () => {
-            form.setFieldsValue({ description: editor.getData() })
-          })
-          const editorElement = document.querySelectorAll('.ck-editor')
-          editorElement.forEach((element, key) => {
-            if (key != 0) {
-              element.remove()
-            }
-          })
-        })
-        .catch((error) => {
-          console.error(error.stack)
-        })
-    }
   }, [status.isLoading])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (box.current) {
+        ClassicEditor.create(box.current)
+          .then((editor) => {
+            editor.model.document.on('change:data', () => {
+              form.setFieldsValue({ description: editor.getData() })
+            })
+            const editorElement = document.querySelectorAll('.ck-editor')
+            editorElement.forEach((element, key) => {
+              if (key !== 0) {
+                element.remove()
+              }
+            })
+          })
+          .catch((error) => {
+            console.error(error.stack)
+          })
+      }
+    }, 600)
+  }, [form])
 
   const handleUpload = async (options: any) => {
     const { onSuccess, file } = options
@@ -136,23 +140,37 @@ function AddProduct() {
       modifiedDeviceSpecs[getIdAttribute(String(key))] = deviceSpecs[key]
     }
 
-    const newData = {
-      ...values,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      sales_information: values?.sales_information?.map((value: any) => ({
-        ...value,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        list: value?.list?.map((item: any) => ({
-          ...item,
-          ...(item?.image && { image: item.image?.file?.response?.url })
-        }))
-      }))
-    }
+    //console.log(fileList,modifiedDeviceSpecs, formatVariant)
 
     if (fileList.length <= 2) {
       popupError('At least 3 photos are required')
       return true
     }
+
+    let arrGallery: any = []
+    for (const iGallery of fileList) {
+      arrGallery = [...arrGallery, iGallery.originFileObj]
+    }
+    const payload = {
+      thumbnail: file.data,
+      gallegy: arrGallery,
+      name: values.name,
+      content: values.description,
+      category: values.categoryId,
+      brand: values.brandId,
+      price: values.price,
+      discount: values.discount,
+      total_review: 0,
+      avg_stars: 0,
+      in_active: values.in_active ? 1 : 0,
+      parameter: modifiedDeviceSpecs,
+      product_variant: formatVariant
+    }
+
+    console.log(payload)
+    return true
+    values.avg_stars = 0
+    values.total_review = 0
 
     newData.avg_stars = 0
     newData.total_review = 0
@@ -233,7 +251,18 @@ function AddProduct() {
   if (status.isError) return <ErrorLoad />
   return (
     <>
-      <Modal width={1400} okButtonProps={{ hidden: true }} title='Add product' open={true} onCancel={handleCancel}>
+      <Drawer
+        width={1400}
+        placement='right'
+        title='Add product'
+        open={true}
+        onClose={handleCancel}
+        extra={
+          <Space>
+            <Button onClick={handleCancel}>Cancel</Button>
+          </Space>
+        }
+      >
         <Form
           layout='vertical'
           form={form}
@@ -297,20 +326,6 @@ function AddProduct() {
             </Col>
 
             <Col span={24}>
-              <Form.Item
-                name='upload'
-                label='Image'
-                valuePropName='fileList'
-                getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-                rules={[{ required: true }]}
-              >
-                <Upload name='image' listType='picture' customRequest={handleUpload}>
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-
-            <Col span={24}>
               <Form.Item label='Gallery'>
                 <UploadFileGallery fileList={fileList} setFileList={setFileList} />
               </Form.Item>
@@ -342,7 +357,7 @@ function AddProduct() {
 
             <Col span={24}>
               <Title level={5}>Thông Tin bán hàng</Title>
-              <Variant />
+              <Variant formatVariant={formatVariant} setFormatVariant={setFormatVariant} />
             </Col>
 
             <Col span={24}>
@@ -365,7 +380,7 @@ function AddProduct() {
             </Col>
           </Row>
         </Form>
-      </Modal>
+      </Drawer>
     </>
   )
 }
