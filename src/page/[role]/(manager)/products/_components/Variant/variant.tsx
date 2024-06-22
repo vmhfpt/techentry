@@ -242,9 +242,7 @@ export default function Variant({
            mode='tags'
            placeholder='Nhập tên biến thể 1'
            options={[
-             { value: 'Màu xanh', label: 'Màu xanh' },
-             { value: 'Màu đen', label: 'Màu đen' },
-             { value: 'Màu vàng', label: 'Màu vàng' },
+             { value: 'Màu xanh', label: 'Màu sắc' },
            ]}
          />
             
