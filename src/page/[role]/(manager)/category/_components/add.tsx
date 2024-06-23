@@ -7,11 +7,20 @@ import { useState } from 'react';
 import { Typography } from 'antd';
 import ButtonEdit from '../../shared/ButtonEdit/ButtonEdit';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
-
+import { useCreateCategoryMutation, useGetCategoriesQuery } from '../CategoryEndpoints';
+import { ICategory } from '@/common/types/category.interface';
 export default function AddCategory() {
+  const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
+  const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
   const navigate = useNavigate()
   const [form] = Form.useForm()
-
+  const dataCategories = listCategory?.data?.map((item : ICategory) => {
+    return {
+      label : item.name,
+      value : item.id
+    }
+  }) 
+ 
 
   const [imageUrl, setImageUrl] = useState<File>();
   const [DisplayPic, setDisplayPic] = useState<string>();
@@ -114,7 +123,16 @@ export default function AddCategory() {
       formData.append('image', imageUrl);
     }
 
-    console.log(detail)
+    try {
+      await createCategory(formData);
+      
+      popupSuccess('Add category success')
+      navigate('..')
+    } catch (error) {
+      popupError('Add category error');
+    }
+
+  
   }
 
   const selectedImg = (e) => {
@@ -139,11 +157,11 @@ export default function AddCategory() {
     }
 
   }
- console.log(details)
+  console.log(details)
   return (
     <>
       <Modal
-        confirmLoading={false}
+        confirmLoading={isLoadingCreateCategory}
         open={true}
         width={1400}
         footer=''
@@ -164,7 +182,7 @@ export default function AddCategory() {
           <Form.Item>
             <Flex justify='space-between' className='pb-4' align='center'>
               <h2 className=' font-bold text-[24px]'>Create new category</h2>
-              <Button type="primary" htmlType="submit" className=" w-[100px] p-5">
+              <Button loading={isLoadingCreateCategory} disabled={isLoadingCategories} type="primary" htmlType="submit" className=" w-[100px] p-5">
                 Create
               </Button>
             </Flex>
@@ -261,14 +279,16 @@ export default function AddCategory() {
                       name='parent_id'
                       label='parent_id'
                     >
-                      <Select
+                      {dataCategories &&  <Select
                         style={{ width: '200px',height:40 }}
                         onChange={(v)=>{console.log(v);
                         }}
                         options={[
                           { value: '', label: 'none' },
+                          ...dataCategories
                         ]}
-                      />
+                      />}
+                     
                     </Form.Item>
                   </Flex>
                   <div>

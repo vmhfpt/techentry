@@ -1,90 +1,64 @@
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
+
 import { createNewCategory } from '@/app/slices/categorySlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
 import { Flex, Form, Input, Modal, Button, Switch, Select } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import ButtonEdit from '../../shared/ButtonEdit/ButtonEdit';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
-import { useCreateCategoryMutation, useGetCategoryQuery } from '../CategoryEndpoints';
-
+import { useCreateCategoryMutation, useGetCategoriesQuery, useUpdateCategoryMutation } from '../CategoryEndpoints';
+import { ICategory } from '@/common/types/category.interface';
+import ButtonEditNext from '../../shared/ButtonEdit/ButtonEditNext';
+import getRandomNumber from '@/utils/randomNumber';
+import { useGetCategoryQuery } from '../CategoryEndpoints';
 export default function EditCategory() {
- 
+
   const params = useParams();
-  
-  const {data : dataItem , isLoading} = useGetCategoryQuery(params.id)
-
-
-  console.log(dataItem)
- 
-  const [createCategory, { isLoading: loadingCreateCategory}] = useCreateCategoryMutation()
+  const {data : dataItem, isLoading : isLoadingGetCategory} = useGetCategoryQuery(params.id)
+  const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
+  const [updateCategory, {isLoading : loadingUpdateCategory}] = useUpdateCategoryMutation();
+  const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
   const navigate = useNavigate()
   const [form] = Form.useForm()
+  const dataCategories = listCategory ? listCategory.data.map((item : ICategory) => {
+    return {
+      label : item.name,
+      value : item.id
+    }
+  }) : [];
   
+ 
   const [imageUrl, setImageUrl] = useState<File>();
   const [DisplayPic, setDisplayPic] = useState<string>();
 
-  const [details, setDetails] = useState<Array <object>>([
-    {
-      id : 55,
-      name : '1111',
-      attribute : [
-         {
-            id : 56,
-            value : '1'
-         },
-         {
-          id : 57,
-          value : '2'
-         },
-         {
-          id : 58,
-          value : '3'
-         },
-         {
-          id : 100,
-          value : ''
-       }
-      ]
-    },
-    {
-      id : 59,
-      name : '2222',
-      attribute : [
-         {
-            id : 60,
-            value : '4'
-         },
-         {
-          id : 61,
-          value : '5'
-         },
-         {
-          id : 62,
-          value : '6'
-         },
-         {
-          id : 110,
-          value : ''
-       }
-      ]
-    },
-    {
-      id : 63,
-      name : '',
-      attribute : [
-         
-         {
-          id : 113,
-          value : ''
-       }
-      ]
-    }
-    
-  ]);
+  
+  const [details, setDetails] = useState<Array <object>>([]);
 
-  const validateNoDuplicate = (fieldName : any, setNo : any, setError : any) => (_ : any, value : any) => {    
+  useEffect(() => {
+    
+    if(dataItem) {
+        setDisplayPic(dataItem.data.image)
+        const setData = dataItem.data;
+        
+        setDetails(() => {
+          return setData.details.map((item : any) => {
+              return {
+                 id : getRandomNumber(),
+                 name : item.name,
+                 attribute : [...item.attributes.map((item1 : any) => {
+                  return {
+                    id : getRandomNumber(),
+                    value : item1.name
+                  }
+               }), {id : getRandomNumber(), value : ''}]
+              }
+          })
+        })
+    }
+  },[dataItem]);
+
+  const validateNoDuplicate = (fieldName, setNo, setError) => (_, value) => {    
     const fields = form.getFieldsValue();
     const inputValues = Object.keys(fields)
       .filter(key => key.startsWith(fieldName))
@@ -100,7 +74,7 @@ export default function EditCategory() {
     return Promise.resolve();
   };
 
-  const validateOption = (fieldName : any, setError : any, field : any) => (_ : any, value : any) => {    
+  const validateOption = (fieldName, setError, field) => (_, value) => {    
     const fields = form.getFieldsValue();
     const inputValues = Object.keys(fields)
       .filter(key => key.startsWith(fieldName))
@@ -110,7 +84,7 @@ export default function EditCategory() {
 
     
     if (duplicateValues.length > 1) {
-      setError((prevErrors : any) => ({
+      setError((prevErrors) => ({
         ...prevErrors,
         [field]: 'không được trùng',
     }));
@@ -124,10 +98,10 @@ export default function EditCategory() {
     navigate('..')
   }
 
-  const handleRemoveDetail = (name : any) => {    
+  const handleRemoveDetail = (name) => {    
     if(details.length > 1){
       setDetails([
-        ...details.filter((item : any, index)=>item.id != name)
+        ...details.filter((item, index)=>item.id != name)
       ])
     }
   }
@@ -136,11 +110,11 @@ export default function EditCategory() {
     setDetails([
         ...details,
       {
-        id: Date.now() + '',
+        id: getRandomNumber(),
         name: '',
         attribute: [
           {
-            id: Date.now() + '',
+            id: getRandomNumber(),
             value: ''
           }
         ]
@@ -148,21 +122,22 @@ export default function EditCategory() {
     ])
   }
 
-  const handleSubmit = async () => {
-    // console.log(values);
+  const handleSubmit = async (values) => {
+   
     
     const name = form.getFieldValue('name');
     const active = form.getFieldValue('active');
     const parent_id = form.getFieldValue('parent_id');    
-    const detail = details.map((item : any)=>{
+    const detail = details.map((item)=>{
       return {
         ...item,
-        attribute: item.attribute.filter((field : any)=>field.value)
+        attribute: item.attribute.filter((field)=>field.value)
       }
     });
 
     const formData = new FormData();
     
+    console.log(name, active, parent_id, detail)
     formData.append('name', name);
     formData.append('active', active);
     formData.append('parent_id', parent_id);
@@ -171,18 +146,30 @@ export default function EditCategory() {
       formData.append('image', imageUrl);
     }
 
+    //console.log(details, imageUrl);
     try {
-      //console.log(name, active, parent_id, detail, imageUrl)
+      const payload = {
+        id : params.id,
+        payload : formData
+      }
+      await updateCategory(payload);
+    } catch (error) {
+      
+    }
+    return false;
+    try {
       await createCategory(formData);
-      popupSuccess('Tạo danh mục thành công')
+      
+      popupSuccess('Add category success')
       navigate('..')
     } catch (error) {
-      popupError('Tạo danh mục thất bại!')
+      popupError('Add category error');
     }
-   
+
+  
   }
 
-  const selectedImg = (e : any) => {
+  const selectedImg = (e) => {
     
     const types = [
       'jpeg',
@@ -204,36 +191,33 @@ export default function EditCategory() {
     }
 
   }
-
+ 
   return (
     <>
       <Modal
-        confirmLoading={isLoading}
+        confirmLoading={isLoadingGetCategory}
         open={true}
         width={1400}
         footer=''
         onCancel={handleCancel}
       >
-        
-      {dataItem && <Form 
-          
+        {dataItem &&  <Form 
           form={form} 
           name='category' 
           layout='vertical' 
           className='w-full p-6' 
           onFinish={handleSubmit}
-          
           initialValues={{
-            parent_id: '',
-            active: true,
-            name : dataItem.data.name
+            parent_id: dataItem?.data?.parent_id ? dataItem?.data?.parent_id : '',
+            active: dataItem?.data?.active == 1 ? true : false,
+            name : dataItem?.data?.name
           }}
         >
           <Form.Item>
             <Flex justify='space-between' className='pb-4' align='center'>
-              <h2 className=' font-bold text-[24px]'>Edit category "{dataItem?.data.name}"</h2>
-              <Button loading={loadingCreateCategory} disabled={loadingCreateCategory} type="primary" htmlType="submit" className=" w-[100px] p-5">
-                 Update
+              <h2 className=' font-bold text-[24px]'>Update category "{dataItem?.data?.name}"</h2>
+              <Button loading={isLoadingCreateCategory} disabled={isLoadingCategories} type="primary" htmlType="submit" className=" w-[100px] p-5">
+                Update
               </Button>
             </Flex>
           </Form.Item>
@@ -243,14 +227,14 @@ export default function EditCategory() {
                 <Form.Item
                   name="upload"
                   className='border-[1px] p-[50px] rounded-md border-[#F1F1F4]'
-                  rules={[{ required: true, message: 'Please upload a file!' }]}
+    
                   style={{boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)'}}
                 >
                   <div>
                   <h2 className='font-bold mb-2 text-[16px]'>Thumbnail</h2>
                   <div style={{ flex: 5, height: '200px', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }} className='border-none rounded-[12px]  ' >
                     {
-                      imageUrl && DisplayPic
+                       DisplayPic
                       ?
                       <div style={{ height: '100%', maxWidth: '100%' }} className='relative group'>
                           <img src={DisplayPic} alt="" className='object-cover h-[100%] object-center' style={{width: '100%' }} />
@@ -335,6 +319,7 @@ export default function EditCategory() {
                         }}
                         options={[
                           { value: '', label: 'none' },
+                          ...dataCategories
                         ]}
                       />
                     </Form.Item>
@@ -348,15 +333,15 @@ export default function EditCategory() {
           <Flex vertical gap={20}>
             <h2 className='font-bold text-[24px] mt-5'>Thông tin chi tiết</h2>
 
-            {details.map((name : any, i) => (
-                <ButtonEdit key={name.id} keyValue={name.id} detail={details} setDetail={setDetails} handleRemoveDetail={handleRemoveDetail as any} validateNoDuplicate={validateNoDuplicate as any} validateOption={validateOption as any}/>
+            {details.map((name, i) => (
+                <ButtonEditNext item={name} key={name.id} keyValue={name.id} detail={details} setDetail={setDetails} handleRemoveDetail={handleRemoveDetail} validateNoDuplicate={validateNoDuplicate} validateOption={validateOption}/>
             ))}
-
             <div>
             <Button className=' border-dashed' onClick={handleSetDetail}>Thêm thông tin chi tiết</Button>
             </div>
           </Flex>
         </Form>}
+       
       </Modal>
     </>
   )

@@ -39,7 +39,8 @@ export const categoriesApi = apiWithTag.injectEndpoints({
       query: (updatedCategory) => ({
         url: `category/${updatedCategory.id}`,
         method: 'PUT',
-        body: updatedCategory,
+        body: updatedCategory.payload,
+        formData: true,
       }),
       invalidatesTags: (id) => [{ type: 'Categories', id },  { type: 'Categories', id: 'LIST' }],
     }),
