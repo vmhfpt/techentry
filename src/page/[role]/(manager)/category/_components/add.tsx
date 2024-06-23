@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
+
 import { createNewCategory } from '@/app/slices/categorySlice'
 import { useNavigate } from 'react-router-dom'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
@@ -11,8 +11,8 @@ import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 export default function AddCategory() {
   const navigate = useNavigate()
   const [form] = Form.useForm()
-  const dispatch = useAppDispatch()
-  const { isLoading } = useAppSelector((state) => state.category)
+
+
   const [imageUrl, setImageUrl] = useState<File>();
   const [DisplayPic, setDisplayPic] = useState<string>();
 
@@ -114,17 +114,7 @@ export default function AddCategory() {
       formData.append('image', imageUrl);
     }
 
-    const res = await createNewCategory(formData);
-
-    
-    if (res.success) {
-      popupSuccess('Tạo danh mục thành công')
-
-
-      navigate('..')
-    } else if (!res.success) {
-      popupError('Tạo danh mục thất bại!')
-    }
+    console.log(detail)
   }
 
   const selectedImg = (e) => {
@@ -149,11 +139,11 @@ export default function AddCategory() {
     }
 
   }
-
+ console.log(details)
   return (
     <>
       <Modal
-        confirmLoading={isLoading}
+        confirmLoading={false}
         open={true}
         width={1400}
         footer=''
@@ -174,7 +164,7 @@ export default function AddCategory() {
           <Form.Item>
             <Flex justify='space-between' className='pb-4' align='center'>
               <h2 className=' font-bold text-[24px]'>Create new category</h2>
-              <Button loading={isLoading} disabled={isLoading} type="primary" htmlType="submit" className=" w-[100px] p-5">
+              <Button type="primary" htmlType="submit" className=" w-[100px] p-5">
                 Create
               </Button>
             </Flex>

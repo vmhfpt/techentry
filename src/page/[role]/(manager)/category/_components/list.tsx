@@ -8,34 +8,42 @@ import { Link } from 'react-router-dom'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import useDebounce from '@/hooks/useDebounce'
 import '../../styles/category.css';
-
+import { useGetCategoriesQuery } from '../CategoryEndpoints'
+import { useDeleteCategoryMutation } from '../CategoryEndpoints'
+import axios from 'axios'
 export default function ListCategory() {
-  const dispatch = useAppDispatch()
+  
   const [searchValue, setSearchValue] = useState('')
   const debouncedValue = useDebounce(searchValue, 600)
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const { categories, isLoading } = useAppSelector((state) => state.category)
- 
-  const handlerDistableCategory = async (value: ICategory) => {
-    if (value.active == 1) {
-      const res = await dispatch(changeStatus(value?.id as string, true))
+  const {data : categories , isLoading} = useGetCategoriesQuery({});
+  const [deleteCategory, { isLoading: loadingDeleteCategory}] = useDeleteCategoryMutation();
 
-      if (res.success) {
+  const handlerDistableCategory = async (value: ICategory) => {
+  
+    if (value.active == 1) {
+     // const res = await dispatch(changeStatus(value?.id as string, true))
+  
+      try {
+        const response = await deleteCategory(value?.id);
         message.success('Vô hiệu hoá danh mục thành công!')
-      } else if (!res.success) {
+      } catch (error) {
         message.error('Vô hiệu hoá danh mục thất bại!')
       }
+     
     } else if (value.active == 0) {
-      const res = await dispatch(changeStatus(value?.id as string, false))
+    
 
-      if (res.success) {
-        message.success('Tắt vô hiệu hoá danh mục thành công!')
-      } else if (!res.success) {
-        message.error('Tắt vô hiệu hoá danh mục thất bại!')
-      }
+      // if (res.success) {
+      //   message.success('Tắt vô hiệu hoá danh mục thành công!')
+      // } else if (!res.success) {
+      //   message.error('Tắt vô hiệu hoá danh mục thất bại!')
+      // }
     }
+
+
   }
 
   const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,13 +53,7 @@ export default function ListCategory() {
     }
   }
 
-  useEffect(() => {
-    if (!debouncedValue.trim()) {
-      dispatch(getAllCategory())
-    } else {
-      dispatch(searchCategories(debouncedValue))
-    }
-  }, [debouncedValue, dispatch])
+
 
   const columns: TableProps<ICategory>['columns'] = [
     {
@@ -119,7 +121,7 @@ export default function ListCategory() {
             cancelText='Hủy bỏ'
           >
             <Button type='primary' danger={record.active}>
-              {!record.active ? 'Disable' : 'Enable'}
+              {record.active == 1 ? 'Disable' : 'Enable'}
             </Button>
           </Popconfirm>
         </Space>
@@ -131,7 +133,7 @@ export default function ListCategory() {
     ...category,
     key: index + 1
   }))
-
+ 
   return (
     <>
       <div className='flex items-center justify-between my-2'>
@@ -168,18 +170,11 @@ export default function ListCategory() {
           sticky={{ offsetHeader: 0 }}
           dataSource={newData}
           loading={isLoading}
-          pagination={{
-            current: current,
-            pageSize: pageSize,
-            total: columns.length,
-            onChange: (page, pageSize) => {
-              setCurrent(page);
-              setPageSize(pageSize);
-            },
-          }}
+         
         />
       </div>
     </>
+    
   )
 }
 

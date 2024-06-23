@@ -3,7 +3,7 @@ import { setLogin } from '@/app/webSlice'
 
 
 const instance: AxiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api',
+  baseURL: 'http://localhost:3000',
   timeout: 6000,
   headers: {
     'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ instance.interceptors.request.use(
 // )
 
 const instanceTest: AxiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: 'http://127.0.0.1:8000/api',
  
 })
 
