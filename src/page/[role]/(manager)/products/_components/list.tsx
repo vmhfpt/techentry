@@ -95,19 +95,21 @@ export default function ListProduct(){
           render: (data: IProduct) => (
             <Flex wrap="wrap" gap="small">
               
-               <Link to={String(data?.id)}>   <Button type="primary"  >
-                  Edit
-                </Button> </Link>
+               <Link to={String(data?.id)}>   
+                  <Button type="primary"  >
+                    Edit
+                  </Button> 
+                </Link>
                 <Popconfirm
-                    disabled={isHiddenProduct}
-                    title="Hidden the product"
-                    description={`Are you sure to hidden product "${data.name}" ?`}
-                    onConfirm={() => confirm(String(data.id))}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                {data.in_active && <Button danger loading={isHiddenProduct && data.id == id} >Disable</Button>} 
-                  </Popconfirm>
+                  disabled={isHiddenProduct}
+                  title="Hidden the product"
+                  description={`Are you sure to hidden product "${data.name}" ?`}
+                  onConfirm={() => confirm(String(data.id))}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  {data.in_active && <Button danger loading={isHiddenProduct && data.id == id} >Disable</Button>} 
+                </Popconfirm>
           </Flex>
           ),
         },
