@@ -25,24 +25,57 @@ export const categoriesApi = apiWithTag.injectEndpoints({
       query: (id) => `category/${id}`,
       providesTags: (id) => [{ type: 'Categories', id }],
     }),
+ 
     createCategory: builder.mutation({
       query: (newCategory) => ({
         
-        url: 'category/create',
+        url: 'category',
         method: 'POST',
         body: newCategory,
         formData: true,
       }),
       invalidatesTags: [{ type: 'Categories', id: 'LIST' }],
     }),
+    createAttribute: builder.mutation({
+      query: (newAttribute) => ({
+        url: 'attribute',
+        method: 'POST',
+        body: newAttribute,
+      }),
+     // invalidatesTags: [{ type: 'Categories', id: 'LIST' }],
+    }),
+    createDetail: builder.mutation({
+      query: (newDetail) => ({
+        url: 'detail',
+        method: 'POST',
+        body: newDetail,
+      }),
+     // invalidatesTags: [{ type: 'Categories', id: 'LIST' }],
+    }),
     updateCategory: builder.mutation({
       query: (updatedCategory) => ({
         url: `category/${updatedCategory.id}`,
-        method: 'PUT',
+        method: 'POST',
         body: updatedCategory.payload,
         formData: true,
       }),
-      invalidatesTags: (id) => [{ type: 'Categories', id },  { type: 'Categories', id: 'LIST' }],
+     invalidatesTags: (id) => [{ type: 'Categories', id },  { type: 'Categories', id: 'LIST' }],
+    }),
+    updateDetail: builder.mutation({
+      query: (updatedCategory) => ({
+        url: `detail/${updatedCategory.id}`,
+        method: 'POST',
+        body: updatedCategory,
+      }),
+    //  invalidatesTags: (id) => [{ type: 'Categories', id },  { type: 'Categories', id: 'LIST' }],
+    }),
+    updateAttribute: builder.mutation({
+      query: (updatedAtribute) => ({
+        url: `attribute/${updatedAtribute.id}`,
+        method: 'POST',
+        body: updatedAtribute,
+      }),
+     // invalidatesTags: (id) => [{ type: 'Categories', id },  { type: 'Categories', id: 'LIST' }],
     }),
     deleteCategory: builder.mutation({
       query: (id) => ({
@@ -50,6 +83,20 @@ export const categoriesApi = apiWithTag.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Categories', id: 'LIST' }],
+    }),
+    deleteDetail: builder.mutation({
+      query: (id) => ({
+        url: `detail/${id}`,
+        method: 'DELETE',
+      }),
+      //invalidatesTags: [{ type: 'Categories', id: 'LIST' }],
+    }),
+    deleteAttribute: builder.mutation({
+      query: (id) => ({
+        url: `attribute/${id}`,
+        method: 'DELETE',
+      }),
+     
     }),
   }),
 });
@@ -59,5 +106,13 @@ export const {
   useGetCategoryQuery,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
-  useCreateCategoryMutation
+  useCreateCategoryMutation,
+  useUpdateDetailMutation,
+  useUpdateAttributeMutation,
+  useDeleteAttributeMutation,
+  useCreateAttributeMutation,
+  useCreateDetailMutation,
+  useDeleteDetailMutation,
+  useLazyGetCategoryQuery
+  
 } = categoriesApi;

@@ -2,13 +2,14 @@
 import { createNewCategory } from '@/app/slices/categorySlice'
 import { useNavigate } from 'react-router-dom'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
-import { Flex, Form, Input, Modal, Button, Switch, Select } from 'antd';
+import { Flex, Form, Input, Modal, Button, Switch, Select, Drawer } from 'antd';
 import { useState } from 'react';
 import { Typography } from 'antd';
 import ButtonEdit from '../../shared/ButtonEdit/ButtonEdit';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 import { useCreateCategoryMutation, useGetCategoriesQuery } from '../CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
+import axios from 'axios';
 export default function AddCategory() {
   const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
   const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
@@ -124,10 +125,11 @@ export default function AddCategory() {
     }
 
     try {
-      await createCategory(formData);
       
+      await createCategory(formData).unwrap();;
       popupSuccess('Add category success')
       navigate('..')
+     
     } catch (error) {
       popupError('Add category error');
     }
@@ -155,20 +157,15 @@ export default function AddCategory() {
     } else {
         e.target.value = ''
     }
+   
 
   }
   console.log(details)
   return (
     <>
-      <Modal
-        confirmLoading={isLoadingCreateCategory}
-        open={true}
-        width={1400}
-        footer=''
-        onCancel={handleCancel}
-      >
-        
-        <Form 
+       <Drawer width={'70%'} loading={isLoadingCategories} title="Create new category" onClose={() => handleCancel()} open={true}>
+       <Form 
+          
           form={form} 
           name='category' 
           layout='vertical' 
@@ -308,7 +305,8 @@ export default function AddCategory() {
             </div>
           </Flex>
         </Form>
-      </Modal>
+      </Drawer>
+    
     </>
   )
 }

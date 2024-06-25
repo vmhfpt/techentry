@@ -2,23 +2,30 @@
 import { createNewCategory } from '@/app/slices/categorySlice'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
-import { Flex, Form, Input, Modal, Button, Switch, Select } from 'antd';
+import { Flex, Form, Input, Modal, Button, Switch, Select, Drawer } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 import ButtonEdit from '../../shared/ButtonEdit/ButtonEdit';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
-import { useCreateCategoryMutation, useGetCategoriesQuery, useUpdateCategoryMutation } from '../CategoryEndpoints';
+import {  useGetCategoriesQuery, useUpdateCategoryMutation } from '../CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
 import ButtonEditNext from '../../shared/ButtonEdit/ButtonEditNext';
 import getRandomNumber from '@/utils/randomNumber';
 import { useGetCategoryQuery } from '../CategoryEndpoints';
+import ErrorLoad from '../../components/util/ErrorLoad';
+import { useDeleteDetailMutation } from '../CategoryEndpoints';
 export default function EditCategory() {
-
+  const [deleteDetail, {isLoading : isLoadingDeleteDetail}] = useDeleteDetailMutation();
+  const [isShowInputAddDetail, setIsShowInputAddDetail] = useState<any>({
+     detailId : 0,
+     attributeId : 0
+  })
+  const [addDetail, setAddDetail] = useState<number>(0);
   const params = useParams();
-  const {data : dataItem, isLoading : isLoadingGetCategory} = useGetCategoryQuery(params.id)
+  const {refetch, data : dataItem, isLoading : isLoadingGetCategory, isError : isErrorGetCategory} = useGetCategoryQuery(params.id)
   const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
   const [updateCategory, {isLoading : loadingUpdateCategory}] = useUpdateCategoryMutation();
-  const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
+
   const navigate = useNavigate()
   const [form] = Form.useForm()
   const dataCategories = listCategory ? listCategory.data.map((item : ICategory) => {
@@ -44,14 +51,16 @@ export default function EditCategory() {
         setDetails(() => {
           return setData.details.map((item : any) => {
               return {
+                 detailId : item.id,
                  id : getRandomNumber(),
                  name : item.name,
-                 attribute : [...item.attributes.map((item1 : any) => {
+                 attribute : item.attributes.map((item1 : any) => {
                   return {
+                    attributeId : item1.id,
                     id : getRandomNumber(),
                     value : item1.name
                   }
-               }), {id : getRandomNumber(), value : ''}]
+               })
               }
           })
         })
@@ -98,23 +107,51 @@ export default function EditCategory() {
     navigate('..')
   }
 
-  const handleRemoveDetail = (name) => {    
-    if(details.length > 1){
-      setDetails([
-        ...details.filter((item, index)=>item.id != name)
-      ])
+  const handleRemoveDetail = async (name : any, detailId : number) => {  
+   
+ 
+
+    if(!detailId){
+      if(details.length > 1){
+        setDetails([
+          ...details.filter((item, index)=>item.id != name)
+        ])
+      }
+    }else {
+      try {
+        await deleteDetail(String(detailId)).unwrap();
+        if(details.length > 1){
+          setDetails([
+            ...details.filter((item, index)=>item.id != name)
+          ])
+        }
+        refetch();
+        popupSuccess('Delete detail success');
+      } catch (error) {
+        popupError('Delete detail error');
+      }
     }
+   
   }
 
   const handleSetDetail = () => {
+    const detailId = getRandomNumber();
+    const attributeId = getRandomNumber()
+
+    setIsShowInputAddDetail({
+      detailId: detailId,
+      attributeId : attributeId
+    })
+
     setDetails([
         ...details,
       {
-        id: getRandomNumber(),
+        id: detailId,
         name: '',
         attribute: [
           {
-            id: getRandomNumber(),
+            id: attributeId,
+
             value: ''
           }
         ]
@@ -126,45 +163,35 @@ export default function EditCategory() {
    
     
     const name = form.getFieldValue('name');
-    const active = form.getFieldValue('active');
+    const active = form.getFieldValue('active') ? 1 : 0;
     const parent_id = form.getFieldValue('parent_id');    
-    const detail = details.map((item)=>{
-      return {
-        ...item,
-        attribute: item.attribute.filter((field)=>field.value)
-      }
-    });
+ 
 
     const formData = new FormData();
     
-    console.log(name, active, parent_id, detail)
+   
     formData.append('name', name);
-    formData.append('active', active);
+    formData.append('active', active as any);
     formData.append('parent_id', parent_id);
-    formData.append('detail', JSON.stringify(detail));
+   
     if(imageUrl){      
       formData.append('image', imageUrl);
     }
-
-    //console.log(details, imageUrl);
+   
     try {
       const payload = {
         id : params.id,
         payload : formData
       }
-      await updateCategory(payload);
-    } catch (error) {
-      
-    }
-    return false;
-    try {
-      await createCategory(formData);
-      
-      popupSuccess('Add category success')
+      await updateCategory(payload).unwrap();
+      popupSuccess('Update category success');
       navigate('..')
     } catch (error) {
-      popupError('Add category error');
+      popupError('Update category error');
     }
+
+ 
+   
 
   
   }
@@ -191,17 +218,13 @@ export default function EditCategory() {
     }
 
   }
- 
+  if(isErrorGetCategory){
+    return <ErrorLoad />
+  }
   return (
     <>
-      <Modal
-        confirmLoading={isLoadingGetCategory}
-        open={true}
-        width={1400}
-        footer=''
-        onCancel={handleCancel}
-      >
-        {dataItem &&  <Form 
+    <Drawer width={'70%'} loading={isLoadingGetCategory || isLoadingCategories} title="Create new category" onClose={() => handleCancel()} open={true}>
+    {dataItem &&  <Form 
           form={form} 
           name='category' 
           layout='vertical' 
@@ -216,7 +239,7 @@ export default function EditCategory() {
           <Form.Item>
             <Flex justify='space-between' className='pb-4' align='center'>
               <h2 className=' font-bold text-[24px]'>Update category "{dataItem?.data?.name}"</h2>
-              <Button loading={isLoadingCreateCategory} disabled={isLoadingCategories} type="primary" htmlType="submit" className=" w-[100px] p-5">
+              <Button loading={loadingUpdateCategory} disabled={loadingUpdateCategory} type="primary" htmlType="submit" className=" w-[100px] p-5">
                 Update
               </Button>
             </Flex>
@@ -314,6 +337,7 @@ export default function EditCategory() {
                       label='parent_id'
                     >
                       <Select
+                        loading={isLoadingCategories}
                         style={{ width: '200px',height:40 }}
                         onChange={(v)=>{console.log(v);
                         }}
@@ -334,15 +358,15 @@ export default function EditCategory() {
             <h2 className='font-bold text-[24px] mt-5'>Thông tin chi tiết</h2>
 
             {details.map((name, i) => (
-                <ButtonEditNext item={name} key={name.id} keyValue={name.id} detail={details} setDetail={setDetails} handleRemoveDetail={handleRemoveDetail} validateNoDuplicate={validateNoDuplicate} validateOption={validateOption}/>
+                <ButtonEditNext refetch={refetch} setIsShowInputAddDetail={setIsShowInputAddDetail} isShowInputAddDetail={isShowInputAddDetail} addDetail={addDetail} setAddDetail={setAddDetail} item={name} key={name.id} keyValue={name.id} detail={details} setDetail={setDetails} handleRemoveDetail={handleRemoveDetail} validateNoDuplicate={validateNoDuplicate} validateOption={validateOption}/>
             ))}
             <div>
             <Button className=' border-dashed' onClick={handleSetDetail}>Thêm thông tin chi tiết</Button>
             </div>
           </Flex>
         </Form>}
-       
-      </Modal>
+    </Drawer>
+     
     </>
   )
 }

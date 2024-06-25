@@ -28,3 +28,10 @@
 .ck-blurred {
     height : 200px !important;
 }
+.custom-add-ant {
+    .ant-btn {
+        svg {
+            margin-right:  0px !important;
+        }
+    }
+}

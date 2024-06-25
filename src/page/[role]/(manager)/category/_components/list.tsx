@@ -11,6 +11,7 @@ import '../../styles/category.css';
 import { useGetCategoriesQuery } from '../CategoryEndpoints'
 import { useDeleteCategoryMutation } from '../CategoryEndpoints'
 import axios from 'axios'
+import ErrorLoad from '../../components/util/ErrorLoad'
 export default function ListCategory() {
   
   const [searchValue, setSearchValue] = useState('')
@@ -18,29 +19,17 @@ export default function ListCategory() {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const {data : categories , isLoading} = useGetCategoriesQuery({});
+  const {data : categories , isLoading, isError} = useGetCategoriesQuery({});
   const [deleteCategory, { isLoading: loadingDeleteCategory}] = useDeleteCategoryMutation();
 
   const handlerDistableCategory = async (value: ICategory) => {
   
-    if (value.active == 1) {
-     // const res = await dispatch(changeStatus(value?.id as string, true))
-  
-      try {
-        const response = await deleteCategory(value?.id);
-        message.success('Vô hiệu hoá danh mục thành công!')
-      } catch (error) {
-        message.error('Vô hiệu hoá danh mục thất bại!')
-      }
+    try {
+     await deleteCategory(value?.id).unwrap();
      
-    } else if (value.active == 0) {
-    
-
-      // if (res.success) {
-      //   message.success('Tắt vô hiệu hoá danh mục thành công!')
-      // } else if (!res.success) {
-      //   message.error('Tắt vô hiệu hoá danh mục thất bại!')
-      // }
+      message.success( 'Vô hiệu hoá danh mục thành công!')
+    } catch (error : any) {
+      message.error( error.data ? error.data.message :'Vô hiệu hoá danh mục thất bại!')
     }
 
 
@@ -107,11 +96,9 @@ export default function ListCategory() {
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
-          {record.active == 1 && (
-            <Link to={"" + record.id}>
+           <Link to={"" + record.id}>
               <Button type='primary'>Edit </Button>
             </Link>
-          )}
           <Popconfirm
             placement='topRight'
             title={record.active == 1 ? 'Are you sure distable this category?' : 'Are you sure enable this category?'}
@@ -120,8 +107,8 @@ export default function ListCategory() {
             okText='Đồng ý'
             cancelText='Hủy bỏ'
           >
-            <Button type='primary' danger={record.active}>
-              {record.active == 1 ? 'Disable' : 'Enable'}
+            <Button type='primary' danger>
+               Delete
             </Button>
           </Popconfirm>
         </Space>
@@ -133,7 +120,9 @@ export default function ListCategory() {
     ...category,
     key: index + 1
   }))
- 
+  if(isError ){
+    return <ErrorLoad />
+  }
   return (
     <>
       <div className='flex items-center justify-between my-2'>
