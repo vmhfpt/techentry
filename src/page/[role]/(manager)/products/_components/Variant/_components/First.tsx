@@ -8,20 +8,40 @@ import { useCallback } from "react";
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} : any){
   const [messageApi, contextHolder] = message.useMessage();
- 
+  
+  const setErrorFirst = (message : string, id : number) => {
+    setFirst((prev : any) => {
+      return {
+        ...prev,
+        value : prev.value.map((item :any) => {
+          if(item.id == id){
+            return {
+              ...item,
+              error : message
+            }
+          }else {
+            return item;
+          }
+        })
+      }
+    })
+  }
   const debouncedSave = useCallback(
     _.debounce((value : string, id : number) => {
       if(!variantNameRequired.test(value)){
-        messageApi.error("Tên biến thể không để trống")
+        //messageApi.error("Tên biến thể không để trống")
+        setErrorFirst('Tên biến thể không để trống', id);
         return true;
       }else if(value.length >= 20){
-        messageApi.error("Tên biến thể quá dài");
+        //messageApi.error("Tên biến thể quá dài");
+        setErrorFirst('Tên biến thể quá dài', id);
         return true;
       }
 
       
       if(first.value.filter((obj : any) => obj[first.name] == value).length >= 1 ){
-        messageApi.error("Tên biến thể đã tồn tại");
+        setErrorFirst('Tên biến thể đã tồn tại', id);
+        //messageApi.error("Tên biến thể đã tồn tại");
         return false;
       }
 
@@ -29,10 +49,15 @@ export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} 
           return {
             ...prev,
             value : prev.value.map((item : any) => {
+               
                 if(item.id == id){
+                  if(item.error){
+                    delete item.error;
+                  }
                   return {
                      ...item,
-                     [first.name] : value
+                     
+                     [first.name] : value,
                   }
                 }else {
                   return item
@@ -135,7 +160,9 @@ export default function FirstHandle({first,setFirst, checkFirst, setCheckFirst} 
      </div>
 
      <div className="w-full" >
-         <Input  onChange={(e) => debouncedSave(e.target.value, item.id)} placeholder="Nhập" />
+         <Input autoFocus={true} status={item?.error && "error"} onChange={(e) => debouncedSave(e.target.value, item.id)} placeholder="Nhập" />
+        
+         {item?.error &&  <span className=" text-red-500 text-[11px]">* {item?.error}</span>}
      </div>
 
      <div className="w-[50px] cursor-pointer">

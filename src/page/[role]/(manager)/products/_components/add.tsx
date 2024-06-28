@@ -46,7 +46,7 @@ function AddProduct() {
     loading: false
   })
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       try {
         setStatus((prev) => {
           return {
@@ -79,26 +79,22 @@ function AddProduct() {
   }, [status.isLoading])
 
   useEffect(() => {
-    setTimeout(() => {
-      if (box.current) {
-        ClassicEditor.create(box.current)
-          .then((editor) => {
-            editor.model.document.on('change:data', () => {
-              form.setFieldsValue({ description: editor.getData() })
-            })
-            const editorElement = document.querySelectorAll('.ck-editor')
-            editorElement.forEach((element, key) => {
-              if (key !== 0) {
-                element.remove()
-              }
-            })
+    if (box.current) {
+      ClassicEditor.create(box.current)
+        .then((editor) => {
+          editor.model.document.on('change:data', () => {
+            form.setFieldsValue({ description: editor.getData() })
           })
-          .catch((error) => {
-            console.error(error.stack)
+          const editorElement = document.querySelectorAll('.ck-editor')
+          editorElement.forEach((element, key) => {
+            if (key !== 0) {
+              element.remove()
+            }
           })
-      }
-    }, 600)
-  }, [form])
+        })
+    
+    }
+  }, [form, status])
 
   const handleUpload = async (options: any) => {
     const { onSuccess, file } = options
@@ -247,7 +243,7 @@ function AddProduct() {
     })
   }
 
-  
+  console.log(formatVariant)
   if (status.isLoading) return <LoadingUser />
   if (status.isError) return <ErrorLoad />
   return (

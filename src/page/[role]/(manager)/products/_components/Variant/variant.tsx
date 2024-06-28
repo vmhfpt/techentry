@@ -178,7 +178,7 @@ export default function Variant({
      }else {
       for (const i of formatVariant) {
         if( i.variant[first.name] == iFirst ){
-          return <Input type={type == 'quantity' || type == 'price' ? "number" : "text"} onChange={(e) => onChangeVariantInput(i.id, type, e.target.value)} key={i.id} placeholder='0' />
+          return <Input  type={type == 'quantity' || type == 'price' ? "number" : "text"} onChange={(e) => onChangeVariantInput(i.id, type, e.target.value)} key={i.id} placeholder='0' />
         }
       }
      }
