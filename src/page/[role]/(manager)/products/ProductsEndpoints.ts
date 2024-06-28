@@ -27,7 +27,7 @@ export const productsApi = apiWithTag.injectEndpoints({
     }),
     createProduct: builder.mutation({
       query: (newProduct) => ({
-        url: 'products',
+        url: 'product',
         method: 'POST',
         body: newProduct,
       }),

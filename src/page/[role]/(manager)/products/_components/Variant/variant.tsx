@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react'
 import {EditOutlined} from '@ant-design/icons'
-import { Flex, Form, Input } from 'antd';
+import { Flex, Form, GetProp, Input, UploadProps } from 'antd';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
-import { popupError } from '@/page/[role]/shared/Toast';
-import getRandomNumber from '@/utils/randomNumber';
+import { FormInstance } from 'antd/es/form';
 
 interface attribute{
     id: string,
@@ -24,18 +23,63 @@ interface ButtonEditProps {
     handleRemoveDetail: (name: any) => void;
     detail: Array<variant>;
     setDetail: React.Dispatch<React.SetStateAction<any>>
-    validateNoDuplicate: (any)=>void;
-    validateOption: (any)=>void;
     show: number;
+    form: FormInstance
 }
 
-export default function Variant({keyValue, detail, show, setDetail, handleRemoveDetail, validateNoDuplicate, validateOption}:ButtonEditProps) {
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+export default function Variant({keyValue, detail, show, setDetail, handleRemoveDetail, form}:ButtonEditProps) {
     const [edit, setEdit] = useState(true);
     const [value, setValue] = useState('');
     const inputRef = useRef<null>(null);
     const [inputField, setinputField] = useState<number>(1);
     const [error, setError] = useState({});
     const [no, setNo] = useState<boolean>(false);
+
+    const getBase64 = (file: FileType): Promise<string> =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (error) => reject(error);
+        });
+
+    const validateNoDuplicate = (fieldName: string) => (_, value) => {    
+        const fields = form.getFieldsValue();
+        const inputValues = Object.keys(fields)
+          .filter(key => key.startsWith(fieldName))
+          .map(key => fields[key]);
+        
+        const duplicateValues = inputValues.filter((item) => item === value && item);
+        
+        if (duplicateValues.length > 1) {
+          setNo(true)
+          return Promise.reject(`không được trùng với các cột khác!`);
+        }
+        setNo(false)
+        return Promise.resolve();
+      };
+    
+      const validateOption = (fieldName: string, field: string) => (_, value) => {    
+        const fields = form.getFieldsValue();
+        const inputValues = Object.keys(fields)
+          .filter(key => key.startsWith(fieldName))
+          .map(key => fields[key]);
+        
+        const duplicateValues = inputValues.filter((item) => item === value && item);
+    
+        
+        if (duplicateValues.length > 1) {
+          setError((prevErrors) => ({
+            ...prevErrors,
+            [field]: 'không được trùng',
+        }));
+    
+          return Promise.reject(`không được trùng với các cột khác!`);
+        }
+        return Promise.resolve();
+      };
 
     const handelChangeParent = (e) => { 
 
@@ -121,7 +165,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
         }
     }
 
-    const selectedImg = (e, id) => {        
+    const selectedImg = async (e, id) => {        
         const types = [
           'jpeg',
           'png',
@@ -133,6 +177,8 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
     
         const size = fileSelected.size;
         const type = types.includes(fileSelected.type.replace('image/', ''));
+
+        const newFile = await getBase64(fileSelected) ;
     
         if (size <= 1048576 && type) {
             const newDetail = detail.map((item)=> {
@@ -142,7 +188,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
                         if(attr.id == id){
                             return {
                                 ...attr,
-                                image: fileSelected,
+                                image: newFile,
                                 url: URL.createObjectURL(fileSelected)
                             }
                         }
@@ -178,8 +224,8 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
     }
     
   return (
-    <Flex vertical gap={20} className='border border-1 rounded-md overflow-hidden relative p-8 px-10' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
-
+    <Flex vertical gap={30} className='sm:rounded-lg overflow-hidden relative p-8 px-10 bg-[#f6f6f6]'>
+      
         <CloseRoundedIcon className=' absolute right-1 top-1 cursor-pointer' onClick={()=>{handleRemoveDetail(keyValue)}}/>
 
         <div>
@@ -203,7 +249,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
                             message: 'Không được để trông',
                         },
                         {
-                            validator: validateNoDuplicate(`input-`, setNo)
+                            validator: validateNoDuplicate(`input-`)
                         },
                         { max: 20, message: 'Tên không vượt quá 20 ký tự' },
 
@@ -220,11 +266,11 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
             {detail.find((item, i)=>item.id == keyValue).attribute.map((value, index) => (
                 index < 5
                 ?
-                <Flex className='relative w-[23%]' key={index} justify='center' align='center' gap={10}>
+                <Flex className='relative w-[30%]' key={index} justify='center' align='center' gap={10}>
                     {
                         show === 0
                         ?
-                        <div style={{height: '50px', width: '50px', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }} className='border-none rounded-[12px] flex-[.9] ' >
+                        <div style={{height: '50px', width: '50px', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }} className='border-none rounded-[12px] ' >
                             {
                                 value.url
                                 ?
@@ -234,7 +280,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
                                         <DeleteOutlined onClick={() => handelRemoveImage(value.id)} className=" duration-1000 opacity-0 group-hover:opacity-100 absolute left-[50%] top-[50%]" style={{transform: 'translate(-50%, -50%)', zIndex: 999, fontSize: "20px", color: 'white'}} />
                                 </div>
                                 :
-                                <Flex className='border-dashed border-2 relative hover:bg-gray-100 hover:border-solid hover:border' vertical gap={10} justify='center' align='center' style={{ width: '100%', height: "100%", borderRadius: '12px' }}>
+                                <Flex className='border-dashed border-2 relative hover:bg-gray-100 bg-white hover:border-solid hover:border' vertical gap={10} justify='center' align='center' style={{ width: '100%', height: "100%", borderRadius: '12px' }}>
                                     <Flex vertical gap={10} style={{ width: '100%' }}>
                                         <Flex vertical align='center' justify='center'>
                                             <CloudUploadOutlined style={{ fontSize: '10px', color: 'gray' }} className='' />
@@ -285,7 +331,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
                                 }
                             },
                             {
-                                validator: validateOption('attr-value-', setError, value.id)
+                                validator: validateOption('attr-value-', value.id)
                             }
                         ]}
                         >
@@ -296,7 +342,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
                             index < inputField-1
                             ?
                                 (
-                                    <DeleteForeverRoundedIcon className='cursor-pointer absolute right-[2px]' onClick={(e)=>{handelRemoveOption(value.id)}} style={{color: 'red'}}/>
+                                  <DeleteForeverRoundedIcon className='cursor-pointer absolute right-[2px]' onClick={(e)=>{handelRemoveOption(value.id)}} style={{color: 'red'}}/>
                                 )
                             :
                             ''
