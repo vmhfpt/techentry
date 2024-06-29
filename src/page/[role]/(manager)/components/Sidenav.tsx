@@ -275,6 +275,22 @@ function Sidenav() {
         ),
         link: '/admin/banner'
       },
+
+      {
+        label: (
+          <>
+            <Flex align="center" justify="center">
+              <span
+                className={`icon `}
+              >
+                {<Tables color={darkColor} />}
+              </span>
+              <span className="label">Orders</span>
+            </Flex>
+          </>
+        ),
+        link: '/admin/order'
+      },
      
      
       {

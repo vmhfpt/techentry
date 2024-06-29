@@ -50,6 +50,7 @@ import EditPosts from "@/page/[role]/(manager)/posts/_components/edit";
 import ProductManagement from "@/page/[role]/(manager)/products";
 import AddProduct from "@/page/[role]/(manager)/products/_components/add";
 import ColorManagement from "@/page/[role]/(manager)/color";
+import OrderManagement from "@/page/[role]/(manager)/order";
 export default function Router() {
   return (
     <>
@@ -96,6 +97,11 @@ export default function Router() {
               <Route path='add' element={<AddUser />} />
               <Route path='privilege/:id' element={<PrivilegeUser />} />
               <Route path=':id' element={<EditUser />} />
+              
+            </Route>
+
+            <Route path='order' element={<OrderManagement />}>
+              <Route path='add' element={<AddProduct />} />
               
             </Route>
             <Route path='products' element={<ProductManagement />}>

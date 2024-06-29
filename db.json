@@ -11,6 +11,30 @@
       "note": "4444",
       "order_date": "2024-06-29T13:05:25.820Z",
       "id": 1
+    },
+    {
+      "first_name": "Dung ",
+      "last_name": "Nguyen",
+      "phone_number": "0359932904",
+      "provinces": "Bà Rịa - Vũng Tàu-77",
+      "district": "Châu Đức-750",
+      "ward": "Bình Ba",
+      "address": "Trung Hoa Cau Giay Ha Noi",
+      "note": "123213",
+      "order_date": "2024-06-29T14:13:47.989Z",
+      "id": 2
+    },
+    {
+      "first_name": "Hung",
+      "last_name": "Vu",
+      "phone_number": "0359932904",
+      "provinces": "Cà Mau-96",
+      "district": "Cái Nước-969",
+      "ward": "Phú Hưng",
+      "address": "123 ",
+      "note": "3423",
+      "order_date": "2024-06-29T14:21:10.127Z",
+      "id": 3
     }
   ],
   "orderDetails": [
@@ -58,6 +82,87 @@
       "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719581573/developer/variant-%C4%90en-336265.jpg",
       "variant": "Đen | 8Gb",
       "id": 5
+    },
+    {
+      "orderId": 2,
+      "name": "iPhone 14 pro max",
+      "price": 19000000,
+      "quantity": 2,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719581286/developer/variant-%C4%90en-505990.jpg",
+      "variant": "Đen | 8Gb",
+      "id": 6
+    },
+    {
+      "orderId": 2,
+      "name": "iPhone 14 pro max",
+      "price": 16000000,
+      "quantity": 1,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719581570/developer/variant-%C4%90en-567942.jpg",
+      "variant": "Đen | 4Gb",
+      "id": 7
+    },
+    {
+      "orderId": 2,
+      "name": "iPhone Xs Max",
+      "price": 6900000,
+      "quantity": 1,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719668990/developer/variant-X%C3%A1m-765528.png",
+      "variant": "Xám ",
+      "id": 8
+    },
+    {
+      "orderId": 2,
+      "name": "iPhone Xs Max",
+      "price": 6000000,
+      "quantity": 1,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719668986/developer/variant-V%C3%A0ng%20%C4%91%E1%BB%93ng-411608.png",
+      "variant": "vàng đồng ",
+      "id": 9
+    },
+    {
+      "orderId": 2,
+      "name": "iPhone Xs Max",
+      "price": 58000000,
+      "quantity": 2,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719668988/developer/variant-B%E1%BA%A1c-540604.png",
+      "variant": "Bạc ",
+      "id": 10
+    },
+    {
+      "orderId": 3,
+      "name": "iPhone Xs Max",
+      "price": 6900000,
+      "quantity": 20,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719668990/developer/variant-X%C3%A1m-765528.png",
+      "variant": "Xám ",
+      "id": 11
+    },
+    {
+      "orderId": 3,
+      "name": "iPhone 15 pro max",
+      "price": 19000000,
+      "quantity": 3,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719586635/developer/variant-white-316444.jpg",
+      "variant": "white ",
+      "id": 12
+    },
+    {
+      "orderId": 3,
+      "name": "iPhone 11 256Gb",
+      "price": 22000000,
+      "quantity": 3,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719629020/developer/variant-M%C3%A0u%20%C4%91en-632460.jpg",
+      "variant": "Màu đen ",
+      "id": 13
+    },
+    {
+      "orderId": 3,
+      "name": "iPhone 8 Plus",
+      "price": 5000000,
+      "quantity": 3,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719628720/developer/variant-v%C3%A0ng%20%C4%91%E1%BB%93ng-447507.jpg",
+      "variant": "vàng đồng ",
+      "id": 14
     }
   ],
   "users": [
