@@ -20,6 +20,7 @@ export default function ListOrder() {
     (async() => {
         const response = await axios.get('http://localhost:3000/orders');
         setDataItem(response.data);
+        // console
     } )();
   }, [])
  
