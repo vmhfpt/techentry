@@ -37,6 +37,9 @@ body {
 .layout-dashboard .ant-layout-sider.sider-primary .brand img {
   height: 30px;
 }
+.ant-input-number .ant-input-number-input{
+  padding: 8px 12px !important;
+}
 .layout-dashboard .ant-layout-sider.sider-primary hr {
   margin: 18px 0;
   border: none;

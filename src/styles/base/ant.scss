@@ -35,3 +35,14 @@
         }
     }
 }
+.app__select--input {
+   
+    .ant-select-show-arrow {
+        width: 100% !important;
+        height: 45px;
+        
+    }
+    .ant-select-selector {
+        border-radius: 1rem !important;
+    }
+}

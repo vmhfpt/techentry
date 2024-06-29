@@ -6,19 +6,21 @@ export interface NcInputNumberProps {
   defaultValue?: number;
   min?: number;
   max?: number;
-  onChange?: (value: number) => void;
+  onChange?: any;
   label?: string;
   desc?: string;
+  id ?: number;
 }
 
 const NcInputNumber: FC<NcInputNumberProps> = ({
   className = "w-full",
   defaultValue = 1,
   min = 1,
-  max = 99,
+  max = 30,
   onChange,
   label,
   desc,
+  id
 }) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -31,14 +33,15 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
     setValue((state) => {
       return state - 1;
     });
-    onChange && onChange(value - 1);
+    onChange && onChange(value - 1, id);
   };
+
   const handleClickIncrement = () => {
     if (max && max <= value) return;
     setValue((state) => {
       return state + 1;
     });
-    onChange && onChange(value + 1);
+    onChange && onChange(value + 1, id);
   };
 
   const renderLabel = () => {

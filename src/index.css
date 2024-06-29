@@ -3,6 +3,3 @@
 @tailwind utilities;
 @tailwind variants;
 
-*{
-    scrollbar-width: none;
-}

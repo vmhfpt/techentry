@@ -1,4 +1,65 @@
 {
+  "orders": [
+    {
+      "first_name": "1111",
+      "last_name": "2222",
+      "phone_number": "3333",
+      "provinces": "An Giang-89",
+      "district": "Châu Đốc-884",
+      "ward": "Vĩnh Mỹ",
+      "address": "3333",
+      "note": "4444",
+      "order_date": "2024-06-29T13:05:25.820Z",
+      "id": 1
+    }
+  ],
+  "orderDetails": [
+    {
+      "orderId": 1,
+      "name": "iPhone 14 pro max",
+      "price": 23800000,
+      "quantity": 3,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719581281/developer/variant-Tr%E1%BA%AFng-626586.jpg",
+      "variant": "Trắng | 8Gb",
+      "id": 1
+    },
+    {
+      "orderId": 1,
+      "name": "iPhone 15 pro max",
+      "price": 19000000,
+      "quantity": 2,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719586635/developer/variant-white-316444.jpg",
+      "variant": "white ",
+      "id": 2
+    },
+    {
+      "orderId": 1,
+      "name": "iPhone 8 Plus",
+      "price": 5000000,
+      "quantity": 1,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719628720/developer/variant-v%C3%A0ng%20%C4%91%E1%BB%93ng-447507.jpg",
+      "variant": "vàng đồng ",
+      "id": 3
+    },
+    {
+      "orderId": 1,
+      "name": "iPhone 11 256Gb",
+      "price": 22000000,
+      "quantity": 1,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719629020/developer/variant-M%C3%A0u%20%C4%91en-632460.jpg",
+      "variant": "Màu đen ",
+      "id": 4
+    },
+    {
+      "orderId": 1,
+      "name": "iPhone 14 pro max",
+      "price": 19000000,
+      "quantity": 2,
+      "image": "https://res.cloudinary.com/debwqiusa/image/upload/v1719581573/developer/variant-%C4%90en-336265.jpg",
+      "variant": "Đen | 8Gb",
+      "id": 5
+    }
+  ],
   "users": [
     {
       "name": "newest update 1232",

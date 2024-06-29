@@ -12,11 +12,11 @@ export const productsApi = apiWithTag.injectEndpoints({
   
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => 'products?_expand=category',
+      query: () => 'product',
       providesTags: (result) =>
       result
         ? [
-            ...result.map(({ id } : {id : number | string}) => ({ type: 'Products' as const, id })),
+            ...result?.data?.map(({ id } : {id : number | string}) => ({ type: 'Products' as const, id })),
             { type: 'Products', id: 'LIST' },
           ]
         : [{ type: 'Products', id: 'LIST' }],
@@ -27,9 +27,10 @@ export const productsApi = apiWithTag.injectEndpoints({
     }),
     createProduct: builder.mutation({
       query: (newProduct) => ({
-        url: 'products',
+        url: 'product',
         method: 'POST',
         body: newProduct,
+        formData: true,
       }),
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),

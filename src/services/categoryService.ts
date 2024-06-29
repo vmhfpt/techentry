@@ -10,7 +10,7 @@ export const getCategory = (id: string) => {
 }
 
 export const createCategory = (payload : any) => {
-  return instance.post(`category/create`, payload, {
+  return instanceTest.post(`category`, payload, {
     headers: {
       'Content-Type': 'multipart/form-data',
     }

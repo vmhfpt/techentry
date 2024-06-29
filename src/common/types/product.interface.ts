@@ -11,9 +11,10 @@ export interface IProduct {
   total_review?: number
   brandId: number
   avg_stars?: number
-  in_active: any
+  is_active: any
   upload?: [File]
-  category?: ICategory
+  category?: any;
+  products : any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sales_information?: any[]
 }

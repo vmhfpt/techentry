@@ -10,8 +10,13 @@ import Input from "../shared/Input/Input";
 import ContactInfo from "./ContactInfo";
 import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
-
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { ICart } from "@/common/types/cart.interface";
+import { VND } from "@/utils/formatVietNamCurrency";
+import { getTotalPriceCart } from "@/utils/handleCart";
+import { Form } from "antd";
 const CheckoutPage = () => {
+  const [carts, setCart] = useLocalStorage('carts', [] as ICart[]);
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
@@ -23,8 +28,8 @@ const CheckoutPage = () => {
     }, 80);
   };
 
-  const renderProduct = (item: Product, index: number) => {
-    const { image, price, name } = item;
+  const renderProduct = (item: ICart, index: number) => {
+    const { image, price, name, price_sale, quantity, variant, id} = item;
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
@@ -46,176 +51,60 @@ const CheckoutPage = () => {
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
                   <div className="flex items-center space-x-1.5">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M7.01 18.0001L3 13.9901C1.66 12.6501 1.66 11.32 3 9.98004L9.68 3.30005L17.03 10.6501C17.4 11.0201 17.4 11.6201 17.03 11.9901L11.01 18.0101C9.69 19.3301 8.35 19.3301 7.01 18.0001Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.35 1.94995L9.69 3.28992"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M2.07 11.92L17.19 11.26"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 22H16"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M18.85 15C18.85 15 17 17.01 17 18.24C17 19.26 17.83 20.09 18.85 20.09C19.87 20.09 20.7 19.26 20.7 18.24C20.7 17.01 18.85 15 18.85 15Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                  
 
-                    <span>{`Black`}</span>
+                    <span>{variant}</span>
                   </div>
-                  <span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>
-                  <div className="flex items-center space-x-1.5">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M21 9V3H15"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M3 15V21H9"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M21 3L13.5 10.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M10.5 13.5L3 21"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-
-                    <span>{`2XL`}</span>
-                  </div>
+                  
                 </div>
 
-                <div className="mt-3 flex justify-between w-full sm:hidden relative">
-                  <select
-                    name="qty"
-                    id="qty"
-                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800 "
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                  </select>
-                  <Prices
-                    contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
-                    price={price}
-                  />
-                </div>
+                
               </div>
 
               <div className="hidden flex-1 sm:flex justify-end">
-                <Prices price={price} className="mt-0.5" />
+                
+              <div className="hidden flex-1 sm:flex justify-end">
+              <div className='mt-0.5'>
+                <div className={` flex flex-col justify-between  w-full gap-[10px]`}>
+                  <div className={`flex items-center border-2 border-green-500 rounded-lg px-2 py-2`}>
+                    <span className='text-green-500 !leading-none'>
+                       {VND(price_sale)}
+                    </span>
+                  </div>
+
+                  <div className={` flex items-center border-2 border-gray-300 rounded-lg`}>
+                    <span className='text-gray-300 !text-[14px] !leading-none line-through px-2 py-2'>
+                    {VND(price)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              </div>
               </div>
             </div>
           </div>
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             <div className="hidden sm:block text-center relative">
-              <NcInputNumber className="relative z-10" />
+               &times; {quantity}
+            </div>
+            <div className="hidden sm:block text-center relative">
+               {VND(quantity * price_sale)}
             </div>
 
-            <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-            >
-              <span>Remove</span>
-            </a>
+           
           </div>
         </div>
       </div>
     );
   };
 
-  const renderLeft = () => {
-    return (
-      <div className="space-y-8">
-        <div id="ContactInfo" className="scroll-mt-24">
-          <ContactInfo
-            isActive={tabActive === "ContactInfo"}
-            onOpenActive={() => {
-              setTabActive("ContactInfo");
-              handleScrollToEl("ContactInfo");
-            }}
-            onCloseActive={() => {
-              setTabActive("ShippingAddress");
-              handleScrollToEl("ShippingAddress");
-            }}
-          />
-        </div>
+ 
+  const [form] = Form.useForm()
 
-        <div id="ShippingAddress" className="scroll-mt-24">
-          <ShippingAddress
-            isActive={tabActive === "ShippingAddress"}
-            onOpenActive={() => {
-              setTabActive("ShippingAddress");
-              handleScrollToEl("ShippingAddress");
-            }}
-            onCloseActive={() => {
-              setTabActive("PaymentMethod");
-              handleScrollToEl("PaymentMethod");
-            }}
-          />
-        </div>
-
-        <div id="PaymentMethod" className="scroll-mt-24">
-          <PaymentMethod
-            isActive={tabActive === "PaymentMethod"}
-            onOpenActive={() => {
-              setTabActive("PaymentMethod");
-              handleScrollToEl("PaymentMethod");
-            }}
-            onCloseActive={() => setTabActive("PaymentMethod")}
-          />
-        </div>
-      </div>
-    );
-  };
-
+  const handleOrder = () => {
+    form.submit();
+  }
   return (
     <div className="nc-CheckoutPage">
       <Helmet>
@@ -241,14 +130,67 @@ const CheckoutPage = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row">
-          <div className="flex-1">{renderLeft()}</div>
+
+
+
+
+          <div className="flex-1">
+
+
+
+  <div className="space-y-8">
+        {/* <div id="ContactInfo" className="scroll-mt-24">
+          <ContactInfo
+            isActive={tabActive === "ContactInfo"}
+            onOpenActive={() => {
+              setTabActive("ContactInfo");
+              handleScrollToEl("ContactInfo");
+            }}
+            onCloseActive={() => {
+              setTabActive("ShippingAddress");
+              handleScrollToEl("ShippingAddress");
+            }}
+          />
+        </div> */}
+
+        <div id="ShippingAddress" className="scroll-mt-24">
+          <ShippingAddress
+            isActive={tabActive === "ShippingAddress"}
+            onOpenActive={() => {
+              setTabActive("ShippingAddress");
+              handleScrollToEl("ShippingAddress");
+            }}
+            onCloseActive={() => {
+              setTabActive("PaymentMethod");
+              handleScrollToEl("PaymentMethod");
+            }}
+            form={form}
+          />
+        </div>
+
+        {/* <div id="PaymentMethod" className="scroll-mt-24">
+          <PaymentMethod
+            isActive={tabActive === "PaymentMethod"}
+            onOpenActive={() => {
+              setTabActive("PaymentMethod");
+              handleScrollToEl("PaymentMethod");
+            }}
+            onCloseActive={() => setTabActive("PaymentMethod")}
+          />
+        </div> */}
+      </div>
+
+
+
+
+          </div>
 
           <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16 "></div>
 
           <div className="w-full lg:w-[36%] ">
             <h3 className="text-lg font-semibold">Order summary</h3>
             <div className="mt-8 divide-y divide-slate-200/70 dark:divide-slate-700 ">
-              {[PRODUCTS[0], PRODUCTS[2], PRODUCTS[3]].map(renderProduct)}
+              {carts.map(renderProduct)}
             </div>
 
             <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
@@ -265,28 +207,28 @@ const CheckoutPage = () => {
               <div className="mt-4 flex justify-between py-2.5">
                 <span>Subtotal</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $249.00
+                  {VND(getTotalPriceCart(carts))}
                 </span>
               </div>
               <div className="flex justify-between py-2.5">
                 <span>Shipping estimate</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $5.00
+                  0đ
                 </span>
               </div>
               <div className="flex justify-between py-2.5">
                 <span>Tax estimate</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  $24.90
+                0đ
                 </span>
               </div>
               <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                 <span>Order total</span>
-                <span>$276.00</span>
+                <span>{VND(getTotalPriceCart(carts))}</span>
               </div>
             </div>
-            <ButtonPrimary href="/account-my-order" className="mt-8 w-full">
-              Confirm order
+            <ButtonPrimary onClick={() => handleOrder()}  className="mt-8 w-full">
+               Confirm order
             </ButtonPrimary>
             <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">
               <p className="block relative pl-5">

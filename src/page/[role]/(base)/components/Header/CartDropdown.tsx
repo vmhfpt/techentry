@@ -5,16 +5,21 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
-
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { ICart } from "@/common/types/cart.interface";
+import { getTotalIconCart , getTotalPriceCart, deleteCart} from "@/utils/handleCart";
+import { VND } from "@/utils/formatVietNamCurrency";
 export default function CartDropdown() {
-  const renderProduct = (item: Product, index: number, close: () => void) => {
-    const { name, price, image } = item;
+  const [carts, setCart] = useLocalStorage("carts",[] as ICart[]);
+
+  const renderProduct = (item: ICart, index: number, close: () => void) => {
+
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
-            alt={name}
+            src={item.image}
+            alt={item.name}
             className="h-full w-full object-contain object-center"
           />
           <Link
@@ -30,23 +35,37 @@ export default function CartDropdown() {
               <div>
                 <h3 className="text-base font-medium ">
                   <Link onClick={close} to={"/product-detail"}>
-                    {name}
+                     {item.name}
                   </Link>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{`Natural`}</span>
-                  <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{"XL"}</span>
+                  <span>{item.variant}</span>
+                  
                 </p>
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <div className='mt-0.5'>
+                <div className={` flex flex-col justify-between  w-full gap-[10px]`}>
+                  <div className={`flex items-center border-2 border-green-500 rounded-lg px-2 py-2`}>
+                    <span className='text-green-500 !leading-none'>
+                       {VND(item.price_sale)}
+                    </span>
+                  </div>
+
+                  <div className={` flex items-center border-2 border-gray-300 rounded-lg`}>
+                    <span className='text-gray-300 !text-[14px] !leading-none line-through px-2 py-2'>
+                    {VND(item.price)}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty 1`}</p>
+          <div className="mt-2 flex flex-1 items-end justify-between text-sm">
+            <p className="text-gray-500 dark:text-slate-400">{`Qty x ${item.quantity}`}</p>
 
             <div className="flex">
               <button
+                onClick={() => setCart(deleteCart(carts, Number(item.id as number))) }
                 type="button"
                 className="font-medium text-primary-6000 dark:text-primary-500 "
               >
@@ -69,7 +88,7 @@ export default function CartDropdown() {
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
           >
             <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
-              <span className="mt-[1px]">3</span>
+              <span className="mt-[1px]">{getTotalIconCart(carts)}</span>
             </div>
             <svg
               className="w-6 h-6"
@@ -128,8 +147,8 @@ export default function CartDropdown() {
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
                     <h3 className="text-xl font-semibold">Shopping cart</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                      {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(
-                        (item, index) => renderProduct(item, index, close)
+                      {carts.map(
+                        (item, index) => renderProduct(item , index, close)
                       )}
                     </div>
                   </div>
@@ -141,7 +160,7 @@ export default function CartDropdown() {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="">$299.00</span>
+                      <span className="">{VND(getTotalPriceCart(carts))}</span>
                     </p>
                     <div className="flex space-x-2 mt-5">
                       <ButtonSecondary

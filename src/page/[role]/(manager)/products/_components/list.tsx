@@ -9,6 +9,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { useState } from 'react';
 import { popupSuccess } from '@/page/[role]/shared/Toast';
 import Title from 'antd/es/typography/Title';
+import { VND } from '@/utils/formatVietNamCurrency';
 
 export default function ListProduct(){
 
@@ -36,7 +37,9 @@ export default function ListProduct(){
       }
     })
   };
-    const dataItem = data?.map((item : IProduct, key : number) => {
+
+   console.log(data)
+    const dataItem = data?.data.map((item : IProduct, key : number) => {
       return {
         ...item,
         key : key
@@ -53,13 +56,21 @@ export default function ListProduct(){
         },
         {
           title: 'Price',
-          dataIndex: 'price',
-          key: 'price',
+          dataIndex: 'products',
+            key: 'products',
+            render: (products) => {
+              console.log(products)
+              return <span> {VND(products[0].price)}</span>
+            }
         },
         {
             title: 'Discount',
-            dataIndex: 'discount',
-            key: 'discount',
+            dataIndex: 'products',
+            key: 'products',
+            render: (products) => {
+              console.log(products)
+              return <span> {VND(products[0].price_sale)}</span>
+            }
         },
         {
           title: 'Image',
@@ -75,16 +86,16 @@ export default function ListProduct(){
             title: 'Category',
             dataIndex: 'category',
             key: 'category',
-            render: (category: { name: string }) => category.name,
+            render: (category) => <span>{category.name}</span>,
         },
         {
           title: 'Active',
           key: 'in_active',
           dataIndex: 'in_active',
-          render: (_, { in_active  }) => (
+          render: (_, { is_active  }) => (
             <>
-              <Tag color={in_active ? 'green' : 'red'} >
-                  {in_active ? 'Active' : 'InActive'}
+              <Tag color={is_active == 1 ? 'green' : 'red'} >
+                  {is_active == 1 ? 'Active' : 'InActive'}
               </Tag>
             </>
           )
@@ -95,19 +106,21 @@ export default function ListProduct(){
           render: (data: IProduct) => (
             <Flex wrap="wrap" gap="small">
               
-               <Link to={String(data?.id)}>   <Button type="primary"  >
-                  Edit
-                </Button> </Link>
+               <Link to={String(data?.id)}>   
+                  <Button type="primary"  >
+                    Edit
+                  </Button> 
+                </Link>
                 <Popconfirm
-                    disabled={isHiddenProduct}
-                    title="Hidden the product"
-                    description={`Are you sure to hidden product "${data.name}" ?`}
-                    onConfirm={() => confirm(String(data.id))}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                {data.in_active && <Button danger loading={isHiddenProduct && data.id == id} >Disable</Button>} 
-                  </Popconfirm>
+                  disabled={isHiddenProduct}
+                  title="Hidden the product"
+                  description={`Are you sure to hidden product "${data.name}" ?`}
+                  onConfirm={() => confirm(String(data.id))}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  {data.in_active && <Button danger loading={isHiddenProduct && data.id == id} >Disable</Button>} 
+                </Popconfirm>
           </Flex>
           ),
         },
