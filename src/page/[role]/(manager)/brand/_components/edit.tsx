@@ -1,20 +1,16 @@
-import { Modal, Upload } from 'antd'
+import { Flex, Image, Modal, Upload } from 'antd'
 import { Button, Form, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { useLazyGetDistrictsQuery, useGetProvincesQuery } from '../../../../../utils/addressRTKQuery'
-import { Select } from 'antd'
-import type { SelectProps } from 'antd'
+import { useNavigate, useParams } from 'react-router-dom'
+
 
 import LoadingUser from '../../user/util/Loading'
 import ErrorLoad from '../../components/util/ErrorLoad'
 import { useEffect, useState } from 'react'
-import { Iuser } from '../../../../../common/types/user.interface'
 
-
-import { popupSuccess, popupError } from '@/page/[role]/shared/Toast'
+import { popupSuccess } from '@/page/[role]/shared/Toast'
 //
 import { UploadOutlined } from '@ant-design/icons'
-import { useCreateBrandMutation } from '../BrandEndpoints'
+import { useGetBrandQuery, useUpdateBrandMutation } from '../BrandEndpoints'
 import { IBrand } from '@/common/types/brand.interface'
 const layout = {
   labelCol: { span: 8 },
@@ -33,12 +29,15 @@ const validateMessages = {
 }
 /* eslint-enable no-template-curly-in-string */
 
-export default function AddBrand() {
-  const [createBrand, {isLoading : isLoadingCreateBrand, isError}] = useCreateBrandMutation();
+export default function EditBrand() {
+    const param = useParams();
   const [file, setFile] = useState({ 
     data: {},
     loading: false
   })
+
+  const {data: dataItem, isLoading : dataLoading, isError : isErrorDataItem} = useGetBrandQuery(param.id)
+  const [uploadBrand, {isLoading : isLoadingUploadBrand}] = useUpdateBrandMutation();
   const handleUpload = async (options: any) => {
     const { onSuccess, file } = options
     setFile({
@@ -63,40 +62,45 @@ export default function AddBrand() {
         loading: true
       }
     })
-    
     const formData = new FormData()
 
-    formData.append('logo', values?.upload[0].originFileObj)
-    formData.append('name', values.name)
    
-     try {
-      await createBrand(formData).unwrap();
-      popupSuccess('Create brand success');
-      handleCancel();
-     } catch (error) {
-         popupError('Create brand error');
-     }
-
+    formData.append('name', values.name)
+    if(values.upload){
+        formData.append('logo', values.upload[0].originFileObj)
+    }
+    try {
+        const payload = {
+            id : param.id,
+            data : formData
+        }
+        await uploadBrand(payload).unwrap();
+        handleCancel();
+        popupSuccess('Updated brand')
+    } catch (error) {
+        popupSuccess('Updated brand error')
+    }
   
   }
 
   
  
 
-
+ 
   const navigate = useNavigate()
 
   const handleCancel = () => {
     navigate('..')
   }
 
- 
-  if (isError) return <ErrorLoad />
+  if (dataLoading) return <LoadingUser />
+  if (isErrorDataItem) return <ErrorLoad />
   return (
     <>
-      <Modal okButtonProps={{ hidden: true }}  title='Add brand' open={true} onCancel={handleCancel}>
+      <Modal okButtonProps={{ hidden: true }}  title='Edit brand' open={true} onCancel={handleCancel}>
         <Form
-        layout="vertical"
+         initialValues={dataItem?.data}
+          layout="vertical"
           form={form}
           {...layout}
           name='nest-messages'
@@ -115,20 +119,25 @@ export default function AddBrand() {
             label='Upload'
             valuePropName='fileList'
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-            rules={[{ required: true }]}
+ 
           >
             <Upload name='image' listType='picture' customRequest={handleUpload}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           </Form.Item>
 
-       
+          <Flex justify="flex-start">
+              <Image
+                width={150}
+                src={dataItem?.data.logo}
+              />
+          </Flex>
 
       
 
-          <Form.Item>
-            <Button loading={isLoadingCreateBrand || file.loading} disabled={isLoadingCreateBrand || file.loading} type='primary' htmlType='submit'>
-              Create
+          <Form.Item  className='mt-4'>
+            <Button loading={isLoadingUploadBrand} disabled={isLoadingUploadBrand} type='primary' htmlType='submit'>
+              Update
             </Button>
           </Form.Item>
         </Form>

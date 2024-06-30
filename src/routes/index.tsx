@@ -51,6 +51,8 @@ import ProductManagement from "@/page/[role]/(manager)/products";
 import AddProduct from "@/page/[role]/(manager)/products/_components/add";
 import ColorManagement from "@/page/[role]/(manager)/color";
 import OrderManagement from "@/page/[role]/(manager)/order";
+import AddBrand from "@/page/[role]/(manager)/brand/_components/add";
+import EditBrand from "@/page/[role]/(manager)/brand/_components/edit";
 export default function Router() {
   return (
     <>
@@ -118,7 +120,7 @@ export default function Router() {
 
             <Route path='voucher' element={<VoucherManagement />}></Route>
             <Route path='color' element={<ColorManagement />}></Route>
-            <Route path='brand' element={<BrandManagement />}></Route>
+          
 
 
                <Route path="banner" element={<BannerManagement />}>
@@ -131,9 +133,9 @@ export default function Router() {
 
 
              
-            <Route path='banner' element={<BannerManagement />}>
-              <Route path='add' element={<AddBanner />} />
-              <Route path=':id' element={<EditBanner />} />
+            <Route path='brand' element={<BrandManagement />}>
+              <Route path='add' element={<AddBrand />} />
+              <Route path=':id' element={<EditBrand />} />
             </Route>
 
             <Route path='categories' element={<CategoryManagement />}>

@@ -1,6 +1,6 @@
 export interface Iuser {
     id ?: number;
-    name : string;
+    username?: string;
     email : string;
     password : string;
     image : {file : File};
@@ -10,7 +10,7 @@ export interface Iuser {
     country : string;
     district : string;
     city : string;
-    role_id : number;
+    role_id : number | string;
     in_active: number;
     virtual: number;
 }
