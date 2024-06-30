@@ -2,7 +2,11 @@ import { Flex, Form, InputNumber, Segmented, Select, Slider, SliderSingleProps, 
 import React, { useEffect, useState } from 'react'
 import { CloudUploadOutlined, DeleteOutlined, PlusOutlined} from '@ant-design/icons';
 import axios from 'axios';
-
+import { useGetBrandsQuery } from '../../../brand/BrandEndpoints';
+import { IBrand } from '@/common/types/brand.interface';
+import LoadingPage from '../../../components/util/LoadingPage';
+import { useGetCategoriesQuery } from '../../../category/CategoryEndpoints';
+import { ICategory } from '@/common/types/category.interface';
 interface option{
     setImageUrl: React.Dispatch<React.SetStateAction<any>>
     discount: {
@@ -13,18 +17,27 @@ interface option{
 }
 
 export default function Option({setImageUrl, discount, setDetails}: option) {
-
+    const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
+    const {data : dataBrands, isLoading : isLoadingBrand} = useGetBrandsQuery({});
     const [DisplayPic, setDisplayPic] = useState<string>();
     const formatter: NonNullable<SliderSingleProps['tooltip']>['formatter'] = (value) => `${value}%`;
-    const [categories, setCategories] = useState([]);
-    const [brands, setBrands] = useState([
-        {
-            label : 'Iphone',
-            value : 1
-        }
-    ]);
+   
 
-    const selectedImg = (e) => {
+    const brands = dataBrands ? dataBrands?.data?.map((item : IBrand) => {
+        return {
+            label : item.name,
+            value : item.id
+        }
+    }) : [];
+
+    const categories  = dataCategories ? dataCategories?.data?.map((item : ICategory) => {
+        return {
+            label : item.name,
+            value : item.id
+        }
+    }) : [];
+
+    const selectedImg = (e : any) => {
 
         const types = [
             'jpeg',
@@ -50,22 +63,10 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
         setDetails(data.data)
     }
 
-    useEffect( ()=>{
-        (async()=>{
-            const {data: categories} = await axios.get('http://127.0.0.1:8000/api/category');
-            setCategories(categories.data.map((item)=>({
-                value: item.id,
-                label: item.name
-            })));
-            const {data: brands} = await axios.get('http://127.0.0.1:8000/api/brand');
-            
-            setBrands(brands.brands.map((item)=>({
-                value: item.id,
-                label: item.name
-            })))
-        })()
-    }, [])
 
+    if(isLoadingBrand || isLoadingCategory){
+        return <LoadingPage />
+    }
     return (
         <Flex vertical gap={30}>
 

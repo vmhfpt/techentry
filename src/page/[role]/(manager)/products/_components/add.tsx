@@ -124,7 +124,7 @@ function AddProduct() {
         
     //const data = await axios.post('http://127.0.0.1:8000/api/product', formdata);
     try {
-      await addProduct(formdata);
+      await addProduct(formdata).unwrap();
       popupSuccess('Add product success');
       navigate('..');
     } catch (error) {
