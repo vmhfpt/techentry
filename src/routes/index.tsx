@@ -62,6 +62,10 @@ export default function Router() {
             <Route index element={<PageHome />} />
             <Route path='' element={<ProductDetailPage />} />
           </Route>
+          <Route path='home' element={<Base />}>
+            <Route index element={<PageHome />} />
+            <Route path='' element={<ProductDetailPage />} />
+          </Route>
 
           <Route path='' element={<Base />}>
             <Route path='login' element={<PageLogin />} />
@@ -84,7 +88,7 @@ export default function Router() {
             <Route path='search' element={<PageSearch />} />
             <Route path='category' element={<PageCategory />} />
             <Route path='category/:slug' element={<PageCategory />} />
-            <Route path=':slug' element={<ProductDetailPage />} />
+            <Route path='product-detail/:slug' element={<ProductDetailPage />} />
           </Route>
 
           <Route path='admin/login' element={<Login />} />

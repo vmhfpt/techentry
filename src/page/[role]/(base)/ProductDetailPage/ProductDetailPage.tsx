@@ -24,6 +24,8 @@ import ButtonSecondary from "../shared/Button/ButtonSecondary";
 import SectionPromo2 from "../components/SectionPromo2";
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../components/NotifyAddTocart";
+import { useGetProductQuery } from "../../(manager)/products/ProductsEndpoints";
+import { useParams } from 'react-router-dom';
 
 
 
@@ -44,6 +46,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
   const [qualitySelected, setQualitySelected] = React.useState(1);
   const [isOpenModalViewAllReviews, setIsOpenModalViewAllReviews] =
     useState(false);
+  const { slug } = useParams();
+  const {data : dataItem, isLoading } = useGetProductQuery(slug);
 
   const notifyAddTocart = () => {
     toast.custom(
@@ -71,24 +75,24 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
           <span className="text-sm font-medium">
             Color:
             <span className="ml-1 font-semibold">
-              {variants[variantActive].name}
+              {dataItem?.data.products[variantActive].variants[0].name}
             </span>
           </span>
         </label>
         <div className="flex mt-3">
-          {variants.map((variant, index) => (
+          {dataItem?.data.products.map((variant, index) => (
             <div
               key={index}
               onClick={() => setVariantActive(index)}
-              className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ${
+              className={`relative flex-1 max-w-[75px] h-20 sm:h-21 border-2 cursor-pointer ${
                 variantActive === index
                   ? "border-primary-6000 dark:border-primary-500"
                   : "border-transparent"
               }`}
             >
-              <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
+              <div className="absolute inset-0.5 overflow-hidden z-0">
                 <img
-                  src={variant.thumbnail}
+                  src={variant.image}
                   alt=""
                   className="absolute w-full h-full object-cover"
                 />
@@ -202,14 +206,14 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl sm:text-3xl font-semibold">
-            Heavy Weight Shoes
+            {dataItem?.data.name}
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              productVariantDetail={dataItem?.data.products[variantActive]}
             />
 
             <div className="h-7 border-l border-slate-300 dark:border-slate-700"></div>
@@ -274,30 +278,13 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
   };
 
   const renderDetailSection = () => {
+    function createMarkup() {
+      return {__html: dataItem?.data.content};
+    }
     return (
       <div className="">
         <h2 className="text-2xl font-semibold">Product Details</h2>
-        <div className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7">
-          <p>
-            The patented eighteen-inch hardwood Arrowhead deck --- finely
-            mortised in, makes this the strongest and most rigid canoe ever
-            built. You cannot buy a canoe that will afford greater satisfaction.
-          </p>
-          <p>
-            The St. Louis Meramec Canoe Company was founded by Alfred Wickett in
-            1922. Wickett had previously worked for the Old Town Canoe Co from
-            1900 to 1914. Manufacturing of the classic wooden canoes in Valley
-            Park, Missouri ceased in 1978.
-          </p>
-          <ul>
-            <li>Regular fit, mid-weight t-shirt</li>
-            <li>Natural color, 100% premium combed organic cotton</li>
-            <li>
-              Quality cotton grown without the use of herbicides or pesticides -
-              GOTS certified
-            </li>
-            <li>Soft touch water based printed in the USA</li>
-          </ul>
+        <div className="prose prose-sm sm:prose dark:prose-invert sm:max-w-4xl mt-7" dangerouslySetInnerHTML={createMarkup()}>
         </div>
       </div>
     );
@@ -367,7 +354,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
             <div className="relative">
               <div className="aspect-w-16 aspect-h-16">
                 <img
-                  src={LIST_IMAGES_DEMO[0]}
+                  src={dataItem?.data.products[variantActive].image}
                   className="w-full rounded-2xl object-cover"
                   alt="product detail 1"
                 />
@@ -377,14 +364,14 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
               <LikeButton className="absolute right-3 top-3 " />
             </div>
             <div className="grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-8 xl:mt-8">
-              {[LIST_IMAGES_DEMO[1], LIST_IMAGES_DEMO[2]].map((item, index) => {
+              {dataItem?.data.products.map((item, index) => {
                 return (
                   <div
                     key={index}
                     className="aspect-w-11 xl:aspect-w-10 2xl:aspect-w-11 aspect-h-16"
                   >
                     <img
-                      src={item}
+                      src={item.image}
                       className="w-full rounded-2xl object-cover"
                       alt="product detail 1"
                     />

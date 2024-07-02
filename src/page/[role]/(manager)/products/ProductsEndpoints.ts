@@ -22,7 +22,7 @@ export const productsApi = apiWithTag.injectEndpoints({
         : [{ type: 'Products', id: 'LIST' }],
     }),
     getProduct: builder.query({
-      query: (id) => `products/${id}?_embed=galleries`,
+      query: (id) => `product/${id}`,
       providesTags: (id) => [{ type: 'Products', id }],
     }),
     createProduct: builder.mutation({
