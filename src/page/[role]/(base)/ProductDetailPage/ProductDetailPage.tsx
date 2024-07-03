@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import ButtonPrimary from "../shared/Button/ButtonPrimary";
 import LikeButton from "../components/LikeButton";
 import AccordionInfo from "./AccordionInfo";
@@ -25,7 +25,7 @@ import SectionPromo2 from "../components/SectionPromo2";
 import ModalViewAllReviews from "./ModalViewAllReviews";
 import NotifyAddTocart from "../components/NotifyAddTocart";
 import { useGetProductQuery } from "../../(manager)/products/ProductsEndpoints";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 
@@ -48,6 +48,13 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
     useState(false);
   const { slug } = useParams();
   const {data : dataItem, isLoading } = useGetProductQuery(slug);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!isLoading && dataItem && dataItem.data == null){
+      navigate("/page404");
+    }
+  }, [isLoading]);
 
   const notifyAddTocart = () => {
     toast.custom(
@@ -75,12 +82,12 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
           <span className="text-sm font-medium">
             Color:
             <span className="ml-1 font-semibold">
-              {dataItem?.data.products[variantActive].variants[0].name}
+              {dataItem?.data?.products[variantActive].variants[0].name}
             </span>
           </span>
         </label>
         <div className="flex mt-3">
-          {dataItem?.data.products.map((variant, index) => (
+          {dataItem?.data?.products.map((variant, index) => (
             <div
               key={index}
               onClick={() => setVariantActive(index)}
@@ -206,14 +213,14 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl sm:text-3xl font-semibold">
-            {dataItem?.data.name}
+            {dataItem?.data?.name}
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              productVariantDetail={dataItem?.data.products[variantActive]}
+              productVariantDetail={dataItem?.data?.products[variantActive]}
             />
 
             <div className="h-7 border-l border-slate-300 dark:border-slate-700"></div>
@@ -279,7 +286,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
 
   const renderDetailSection = () => {
     function createMarkup() {
-      return {__html: dataItem?.data.content};
+      return {__html: dataItem?.data?.content};
     }
     return (
       <div className="">
@@ -354,7 +361,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
             <div className="relative">
               <div className="aspect-w-16 aspect-h-16">
                 <img
-                  src={dataItem?.data.products[variantActive].image}
+                  src={dataItem?.data?.products[variantActive].image}
                   className="w-full rounded-2xl object-cover"
                   alt="product detail 1"
                 />
@@ -364,7 +371,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
               <LikeButton className="absolute right-3 top-3 " />
             </div>
             <div className="grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-8 xl:mt-8">
-              {dataItem?.data.products.map((item, index) => {
+              {dataItem?.data?.products.map((item, index) => {
                 return (
                   <div
                     key={index}
