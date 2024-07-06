@@ -35,7 +35,7 @@ const ProductCard: FC<ProductCardProps> = ({ className = '', data }) => {
       price_sale: Number(item.price_sale),
       name: name ? name : '',
       quantity: 1,
-      variant: `${item.variants[0].name} ${item.variants[1] ? `| ${item.variants[1].name}` : ''}`
+      variant: `${item.variants[0]?.name} ${item.variants[1] ? `| ${item.variants[1]?.name}` : ''}`
     }
     setCart(addToCartFc(carts, itemCart))
     notifyAddTocart(itemCart)
@@ -128,7 +128,7 @@ const ProductCard: FC<ProductCardProps> = ({ className = '', data }) => {
                 ? 'border-black dark:border-slate-300'
                 : 'border-transparent'
             }`}
-            title={variant.variants[0].name}
+            title={variant.variants[0]?.name}
           >
             {variant.variants[1] && (
               <div className='h-[15px] flex items-center absolute z-[999999] bg-red-600 text-[8px] text-white rounded-[3px] px-[2px] !py-0 !my-0'>
@@ -163,7 +163,7 @@ const ProductCard: FC<ProductCardProps> = ({ className = '', data }) => {
                     handleAddToCart(item, data?.name)
                   }}
                 >
-                  <span> {item.variants[0].name} </span>
+                  <span> {item.variants[0]?.name} </span>
 
                   <span className=' !text-[8px]'> {item.variants[1] && item.variants[1].name} </span>
                 </div>

@@ -3,6 +3,7 @@ import HeaderFilterSection from "./components/HeaderFilterSection";
 import ProductCard from "./components/ProductCard";
 import ButtonPrimary from "./shared/Button/ButtonPrimary";
 import { Product, PRODUCTS } from "../../../data/data";
+import { useFilterProductQuery } from "../(manager)/products/ProductsEndpoints";
 
 //
 export interface SectionGridFeatureItemsProps {
@@ -12,13 +13,15 @@ export interface SectionGridFeatureItemsProps {
 const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
   data = PRODUCTS,
 }) => {
+  const [filter, setFilter] = React.useState('is_hot_deal');
+  const {data : dataItem, isLoading } = useFilterProductQuery(filter);
   return (
     <div className="nc-SectionGridFeatureItems relative">
-      <HeaderFilterSection />
+      <HeaderFilterSection handleFilter={setFilter}/>
       <div
         className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 `}
       >
-        {data.map((item, index) => (
+        {dataItem?.data?.map((item, index) => (
           <ProductCard data={item} key={index} />
         ))}
       </div>

@@ -25,6 +25,10 @@ export const productsApi = apiWithTag.injectEndpoints({
       query: (id) => `product/${id}`,
       providesTags: (id) => [{ type: 'Products', id }],
     }),
+    filterProduct: builder.query({
+      query: (feat) => `product/home/${feat}`,
+      providesTags: () => [{ type: 'Products', id: 'FEAT' }],
+    }),
     createProduct: builder.mutation({
       query: (newProduct) => ({
         url: 'product',
@@ -55,6 +59,7 @@ export const productsApi = apiWithTag.injectEndpoints({
 export const {
   useGetProductsQuery,
   useGetProductQuery,
+  useFilterProductQuery,
   useUpdateProductMutation,
   useDeleteProductMutation,
   useCreateProductMutation
