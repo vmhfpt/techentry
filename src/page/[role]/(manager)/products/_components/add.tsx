@@ -118,13 +118,17 @@ function AddProduct() {
     formdata.append('is_show_home', is_show_home);
     formdata.append('type_discount', typeDiscount);
     formdata.append('discount', typeDiscount == 'percentage' ? percentage : typeDiscount == 'fixed' ? fixed : '');
+    console.log(detailsAttr);
+    
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
     formdata.append('variants', JSON.stringify(newVariant));
         
     //const data = await axios.post('http://127.0.0.1:8000/api/product', formdata);
     try {
-      await addProduct(formdata).unwrap();
+      const data = await addProduct(formdata).unwrap();
+      console.log(data);
+      
       popupSuccess('Add product success');
       navigate('..');
     } catch (error) {
@@ -390,7 +394,7 @@ function AddProduct() {
                                             if (index === existingAttrIndex) {
                                               return {
                                                 ...item,
-                                                value: e
+                                                values: e
                                               };
                                             }
                                             return item;

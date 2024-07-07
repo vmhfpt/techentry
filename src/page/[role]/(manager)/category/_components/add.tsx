@@ -1,17 +1,16 @@
 
-import { createNewCategory } from '@/app/slices/categorySlice'
 import { useNavigate } from 'react-router-dom'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
 import { Flex, Form, Input, Modal, Button, Switch, Select, Drawer } from 'antd';
 import { useState } from 'react';
-import { Typography } from 'antd';
 import ButtonEdit from '../../shared/ButtonEdit/ButtonEdit';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 import { useCreateCategoryMutation, useGetCategoriesQuery } from '../CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
-import axios from 'axios';
+
 export default function AddCategory() {
   const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
+  
   const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
   const navigate = useNavigate()
   const [form] = Form.useForm()
@@ -117,7 +116,7 @@ export default function AddCategory() {
     const formData = new FormData();
     
     formData.append('name', name);
-    formData.append('active', active);
+    formData.append('is_active', active);
     formData.append('parent_id', parent_id);
     formData.append('detail', JSON.stringify(detail));
     if(imageUrl){      
@@ -126,7 +125,7 @@ export default function AddCategory() {
 
     try {
       
-      await createCategory(formData).unwrap();;
+      await createCategory(formData).unwrap();
       popupSuccess('Add category success')
       navigate('..')
      
