@@ -9,6 +9,9 @@ body {
   font-family: open sans, Helvetica, Arial, sans-serif;
   overflow: hidden;
 }
+aside::-webkit-scrollbar{
+  display: none;
+}
 .ant-layout.ant-layout-has-sider {
   flex-direction: row;
 }
