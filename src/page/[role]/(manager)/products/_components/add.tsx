@@ -85,22 +85,20 @@ function AddProduct() {
     for(const key in product_item){      
       const id = key.split('-');
       const image = variant[0].attribute.find(item => item.id === id[0])?.image;
-      
+      const newVariant = variant.map((item, key)=>({
+        variant: item.name,
+        attribute: item.attribute.find(item => item.id == id[key])?.value 
+      }));
+
       newProductItem.push({
         id: id[0],
         image,
+        variants: newVariant,
         ...product_item[key]
       });
-    }
-    
-    const newVariant = variant.map(item => ({
-      name: item.name,
-      attribute: item.attribute.slice(0, item.attribute.length-1).map(item=>{
-        return item.value
-      })
-    }));
+    }    
 
-  
+    console.log(newProductItem);
     
 
     const formdata = new FormData();
@@ -118,17 +116,11 @@ function AddProduct() {
     formdata.append('is_show_home', is_show_home);
     formdata.append('type_discount', typeDiscount);
     formdata.append('discount', typeDiscount == 'percentage' ? percentage : typeDiscount == 'fixed' ? fixed : '');
-    console.log(detailsAttr);
-    
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
-    formdata.append('variants', JSON.stringify(newVariant));
         
-    //const data = await axios.post('http://127.0.0.1:8000/api/product', formdata);
     try {
-      const data = await addProduct(formdata).unwrap();
-      console.log(data);
-      
+      await addProduct(formdata).unwrap();
       popupSuccess('Add product success');
       navigate('..');
     } catch (error) {

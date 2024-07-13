@@ -1,42 +1,49 @@
-import { ICart } from "@/common/types/cart.interface";
+import { ICart } from '@/common/types/cart.interface'
 
-export const addToCartFc = ( carts : ICart[], itemCart : ICart) => {
-   
-  if(carts.some(item => item.id == itemCart.id)){
-     return carts.map((item) => {
-        if(item.id == itemCart.id){
-            return {
-                ...item,
-                quantity : item.quantity + 1
-            }
-        }else {
-            return item;
-        }
-     })
-  }else {
-    return [...carts, itemCart];
-  }
-
-}
-export const getTotalIconCart = (carts : ICart[]) => {
-  return carts.reduce((accumulator : number, item : ICart) => accumulator + item.quantity, 0);
-}
-export const getTotalPriceCart = (carts : ICart[]) => {
-     return carts.reduce((accumulator, item) => accumulator + (item.quantity * item.price_sale), 0);
-}
-export const deleteCart = (carts : ICart[], id : number) => {
-     return carts.filter((item) => item.id != id);
-}
-
-export const setQuantityCart = (carts : ICart[], id : number, quantity : number) => {
+export const addToCartFc = (carts: ICart[], itemCart: ICart) => {
+  if (carts.some((item) => item.id == itemCart.id)) {
     return carts.map((item) => {
-        if(item.id == id){
-            return {
-                ...item,
-                quantity : quantity
-            }
-        }else {
-            return item;
+      if (item.id == itemCart.id) {
+        return {
+          ...item,
+          quantity: item.quantity + 1
         }
-     })
+      } else {
+        return item
+      }
+    })
+  } else {
+    return [...carts, itemCart]
+  }
+}
+export const getTotalIconCart = (carts: ICart[]) => {
+  return carts.reduce((accumulator: number, item: ICart) => accumulator + item.quantity, 0)
+}
+export const getTotalPriceCart = (carts: ICart[]) => {
+  return carts.reduce((accumulator, item) => accumulator + item.quantity * item.price_sale, 0)
+}
+export const deleteCart = (carts: ICart[], id: number) => {
+  return carts.filter((item) => item.id != id)
+}
+
+export const setQuantityCart = (carts: ICart[], id: number, quantity: number) => {
+  return carts.map((item) => {
+    if (item.id == id) {
+      return {
+        ...item,
+        quantity: quantity
+      }
+    } else {
+      return item
+    }
+  })
+}
+
+export const getQuantityCart = (carts: ICart[], product_item_id: number) => {
+  const data = carts.find((item) => item?.product_item_id == product_item_id)
+  if (data) {
+    return data?.quantity
+  } else {
+    return 0
+  }
 }

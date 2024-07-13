@@ -15,9 +15,15 @@ import ModalQuickView from './ModalQuickView'
 import ProductStatus from './ProductStatus'
 import { IProduct } from '@/common/types/product.interface'
 import { useLocalStorage } from '@uidotdev/usehooks'
-import { ICart } from '@/common/types/cart.interface'
-import { addToCartFc } from '@/utils/handleCart'
+import { IAddCart, ICart } from '@/common/types/cart.interface'
+import { addToCartFc, getQuantityCart, setQuantityCart } from '@/utils/handleCart'
 import { VND } from '@/utils/formatVietNamCurrency'
+import { useSelector } from 'react-redux'
+import { setLoading } from '@/app/webSlice'
+import { popupError, popupSuccess } from '../../shared/Toast'
+import { addCartService } from '@/services/CartService'
+import { AddAllCart, GetAllCart, getAllSuccess } from '@/app/slices/cartSlide'
+import { useAppDispatch } from '@/app/hooks'
 export interface ProductCardProps {
   className?: string
   data?: IProduct
@@ -26,8 +32,10 @@ export interface ProductCardProps {
 const ProductCard: FC<ProductCardProps> = ({ className = '', data }) => {
   const [carts, setCart] = useLocalStorage('carts', [] as ICart[])
   const [productVariantDetail, setProductVariantDetail] = useState<any>(data?.products ? data?.products[0] : false)
-
+  const cartsUser = useSelector((state: any) => state.carts.carts)
+  const dispatch = useAppDispatch()
   const handleAddToCart = (item: any, name: string | undefined) => {
+    const access_token = localStorage.getItem('access_token')
     const itemCart = {
       id: item.id,
       image: item.image,
@@ -37,9 +45,48 @@ const ProductCard: FC<ProductCardProps> = ({ className = '', data }) => {
       quantity: 1,
       variant: `${item.variants[0].name} ${item.variants[1] ? `| ${item.variants[1].name}` : ''}`
     }
-    setCart(addToCartFc(carts, itemCart))
-    notifyAddTocart(itemCart)
-    setProductVariantDetail(item)
+    if (!access_token) {
+      setCart(addToCartFc(carts, itemCart))
+      notifyAddTocart(itemCart)
+      setProductVariantDetail(item)
+    } else {
+      addCartUser(item?.variants?.[0].pivot?.product_item_id)
+      notifyAddTocart(itemCart)
+    }
+  }
+
+  const addCartUser = async (productItemId: number) => {
+    try {
+      const access_token = localStorage.getItem('access_token')
+      const params: IAddCart = {
+        // quantity: getQuantityCart(cartsUser, productItemId) + 1,
+        quantity: 1,
+        product_item_id: productItemId,
+        token: access_token
+      }
+      const result = await dispatch(AddAllCart(params))
+      if (result?.success == false) {
+        popupError(result?.result?.message)
+      } else {
+        popupSuccess(result?.result?.message)
+        const allCart = await dispatch(GetAllCart(access_token as string))
+        const data = allCart?.data?.map((item: any) => {
+          return {
+            id: item?.id,
+            name: 'string',
+            variant: 'string',
+            quantity: item?.quantity,
+            image: item?.product?.image,
+            price: item?.product?.price,
+            price_sale: item?.product?.price_sale,
+            product_item_id: item?.product_item_id
+          }
+        })
+        dispatch(getAllSuccess(data))
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const notifyAddTocart = (itemCart: ICart) => {
@@ -86,14 +133,12 @@ const ProductCard: FC<ProductCardProps> = ({ className = '', data }) => {
               <div className='mt-0.5'>
                 <div className={` flex flex-col justify-between  w-full gap-[10px]`}>
                   <div className={`flex items-center border-2 border-green-500 rounded-lg px-2 py-2`}>
-                    <span className='text-green-500 !leading-none'>
-                       {VND(itemCart.price_sale)}
-                    </span>
+                    <span className='text-green-500 !leading-none'>{VND(itemCart.price_sale)}</span>
                   </div>
 
                   <div className={` flex items-center border-2 border-gray-300 rounded-lg`}>
                     <span className='text-gray-300 !text-[14px] !leading-none line-through px-2 py-2'>
-                    {VND(itemCart.price)}
+                      {VND(itemCart.price)}
                     </span>
                   </div>
                 </div>
