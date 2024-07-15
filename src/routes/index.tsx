@@ -53,6 +53,7 @@ import ColorManagement from "@/page/[role]/(manager)/color";
 import OrderManagement from "@/page/[role]/(manager)/order";
 import AddBrand from "@/page/[role]/(manager)/brand/_components/add";
 import EditBrand from "@/page/[role]/(manager)/brand/_components/edit";
+import ProductDetailPage2 from "@/page/[role]/(base)/ProductDetailPage/ProductDetailPage2";
 export default function Router() {
   return (
     <>
@@ -88,7 +89,7 @@ export default function Router() {
             <Route path='search' element={<PageSearch />} />
             <Route path='category' element={<PageCategory />} />
             <Route path='category/:slug' element={<PageCategory />} />
-            <Route path='product-detail/:slug' element={<ProductDetailPage />} />
+            <Route path='product-detail/:slug' element={<ProductDetailPage2 />} />
           </Route>
 
           <Route path='admin/login' element={<Login />} />

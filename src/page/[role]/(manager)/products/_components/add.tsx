@@ -1,12 +1,10 @@
 import { Col, Flex, Row, Button, Form, Input, Drawer, Select, UploadProps, GetProp } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import React, {  useEffect, useRef, useState } from 'react'
-import { IProduct } from '@/common/types/product.interface'
 import { CloudUploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import Variant from './Variant/variant';
 import getRandomNumber from '@/utils/randomNumber';
 import TableVariant from './Variant/TableVariant'
-import axios from 'axios'
 import Option from './Option/Option'
 import TextEditor from './TextEditor/TextEditor';
 import { useCreateProductMutation } from '../ProductsEndpoints';
@@ -46,7 +44,7 @@ function AddProduct() {
   const navigate = useNavigate()
   const fileInputRef = useRef<any>(null);
   const numberFile = useRef<number>(0);
-  const [typeDiscount, setTypeDiscount] = useState<string>('');
+  const [typeDiscount, setTypeDiscount] = useState<number>(0);
   const [details, setDetails] = useState({});
   const [detailsAttr, setDetailsAttr] = useState<detailsAtrr[]>([]);
 
@@ -109,13 +107,13 @@ function AddProduct() {
     formdata.append('content', content);
     formdata.append('category_id', category_id);
     formdata.append('brand_id', brand_id);
-    formdata.append('is_active', is_active);
-    formdata.append('is_hot_deal', is_hot_deal);
-    formdata.append('is_good_deal', is_good_deal);
-    formdata.append('is_new', is_new);
-    formdata.append('is_show_home', is_show_home);
-    formdata.append('type_discount', typeDiscount);
-    formdata.append('discount', typeDiscount == 'percentage' ? percentage : typeDiscount == 'fixed' ? fixed : '');
+    formdata.append('is_active', String(is_active));
+    formdata.append('is_hot_deal', String(is_hot_deal));
+    formdata.append('is_good_deal', String(is_good_deal));
+    formdata.append('is_new', String(is_new));
+    formdata.append('is_show_home', String(is_show_home));
+    formdata.append('type_discount', String(typeDiscount));
+    formdata.append('discount', typeDiscount == 1 ? percentage : typeDiscount == 2 ? fixed : '');
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
