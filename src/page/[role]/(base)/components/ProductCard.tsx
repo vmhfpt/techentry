@@ -4,7 +4,6 @@ import NcImage from '../shared/NcImage/NcImage'
 import LikeButton from './LikeButton'
 import Prices from './Prices'
 import { ArrowsPointingOutIcon } from '@heroicons/react/24/outline'
-import { Product, PRODUCTS } from '../../../../data/data'
 import { StarIcon } from '@heroicons/react/24/solid'
 import ButtonPrimary from '../shared/Button/ButtonPrimary'
 import ButtonSecondary from '../shared/Button/ButtonSecondary'
@@ -14,9 +13,9 @@ import { Transition } from '@headlessui/react'
 import ModalQuickView from './ModalQuickView'
 import ProductStatus from './ProductStatus'
 import { IProduct, IProductItem } from '@/common/types/product.interface'
-import { useLocalStorage } from '@uidotdev/usehooks'
-import { ICart } from '@/common/types/cart.interface'
-import { addToCartFc } from '@/utils/handleCart'
+import { IAddCart, ICart } from '@/common/types/cart.interface'
+import { useAppDispatch } from '@/app/hooks'
+import { AddToCart } from '@/app/slices/cartSlide'
 export interface ProductCardProps {
   className?: string;
   data: IProduct;
@@ -37,6 +36,8 @@ const ProductCard: FC<ProductCardProps> = ({
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
   const [image, setImage] = React.useState(thumbnail);
+
+  const dispatch = useAppDispatch();
 
   const prices = products.map((product: IProductItem) => parseFloat(product.price));
   const maxPrice = Math.max(...prices);
@@ -59,7 +60,24 @@ const ProductCard: FC<ProductCardProps> = ({
   
 
   const notifyAddTocart = ({ second }: { second?: string | null }) => {
+    const access_token = localStorage.getItem('access_token')
+
+    const cart = products.find((item) => {
+      return !second ? item.variants[0].name == firstVariantArray[variantActive] : item.variants[0].name == firstVariantArray[variantActive] && item.variants[1].name == second
+    });
+
+    if(cart?.id){
+      const payload: IAddCart = {
+        quantity: 1,
+        product_item_id: cart.id,
+        token: access_token
+      }
+
+      
+      dispatch(AddToCart(payload));
+    }
     
+
     toast.custom(
       (t) => (
         <Transition
@@ -186,7 +204,7 @@ const ProductCard: FC<ProductCardProps> = ({
           onClick={() => notifyAddTocart({ second: null })}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-          <span className="ml-1">Add to bag</span>
+          <span className="ml-1">Add to Cart</span>
         </ButtonPrimary>
         <ButtonSecondary
           className="ml-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"

@@ -28,8 +28,8 @@ export interface IGallery {
 
 export interface IProductItem {
   id?: number | string
-  price: number
-  price_sale: number
+  price: number | string
+  price_sale: number | string
   quantity: number
   sku: number
   image: string
@@ -39,3 +39,4 @@ export interface IProductItem {
 export interface Ivariant {
   name: string
 }
+

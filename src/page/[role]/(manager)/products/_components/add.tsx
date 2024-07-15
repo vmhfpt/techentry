@@ -44,7 +44,7 @@ function AddProduct() {
   const navigate = useNavigate()
   const fileInputRef = useRef<any>(null);
   const numberFile = useRef<number>(0);
-  const [typeDiscount, setTypeDiscount] = useState<number>(0);
+  const [typeDiscount, setTypeDiscount] = useState<string>('');
   const [details, setDetails] = useState({});
   const [detailsAttr, setDetailsAttr] = useState<detailsAtrr[]>([]);
 
@@ -113,7 +113,7 @@ function AddProduct() {
     formdata.append('is_new', String(is_new));
     formdata.append('is_show_home', String(is_show_home));
     formdata.append('type_discount', String(typeDiscount));
-    formdata.append('discount', typeDiscount == 1 ? percentage : typeDiscount == 2 ? fixed : '');
+    formdata.append('discount', typeDiscount == 'percentage' ? percentage : typeDiscount == 'fixed' ? fixed : '');
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         

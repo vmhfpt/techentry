@@ -10,8 +10,8 @@ import { ICategory } from '@/common/types/category.interface';
 interface option{
     setImageUrl: React.Dispatch<React.SetStateAction<any>>
     discount: {
-        typeDiscount: number;
-        setTypeDiscount: React.Dispatch<React.SetStateAction<number>>
+        typeDiscount: string;
+        setTypeDiscount: React.Dispatch<React.SetStateAction<string>>
     };
     setDetails: React.Dispatch<React.SetStateAction<any>>
 }
@@ -281,9 +281,9 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     <Segmented
                     className='w-full flex justify-center items-center'
                     options={[
-                        { label: 'none', value: null },
-                        { label: '%', value: 0 },
-                        { label: 'Cố định', value: 1},
+                        { label: 'none', value: '' },
+                        { label: '%', value: 'percentage' },
+                        { label: 'Cố định', value: 'fixed'},
                     ]}
                     block
                     onChange={(e)=>{
@@ -293,7 +293,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     />
                 </Form.Item>  
                 {
-                    discount.typeDiscount == 1
+                    discount.typeDiscount == 'percentage'
                     ?
                     <>
                     <Form.Item
@@ -311,7 +311,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     </Form.Item>
                     </>
                     :
-                    discount.typeDiscount == 2
+                    discount.typeDiscount == "fixed"
                     ?
                     <>
                     <Form.Item
