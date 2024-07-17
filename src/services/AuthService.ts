@@ -7,9 +7,12 @@ export const SigninService = (payload: ISignin) => {
 }
 
 export const SignupService = (payload: ISignup) => {
-    return instanceTest.post('auth/signup', payload)
+    return instance.post('auth/signup', payload)
 }
 
+export const VerifyToken = (otp : string, email : string) => {
+    return instance.post('auth/verifyOTP', {OTP : otp, email : email});
+}
 export const LogoutService = (payload: string) => {
     return instanceTest.post('auth/logout', {}, {
         headers: {

@@ -20,8 +20,10 @@ export default function AvatarDropdown() {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm()
   const {isAuthenticated} = useAppSelector(state => state.auth);  
+ 
   const {openModalLogin} = useAppSelector(state => state.web);
 
+  
   // const [open, setOpen] = useState(false);
   // const [checked, setChecked] = useState(true);
 
@@ -215,9 +217,10 @@ export default function AvatarDropdown() {
                               />
                             </svg>
                           </div>
-                          <div className="ml-4">
-                            <p className="text-sm font-medium ">{"Signin"}</p>
-                          </div>
+                          <Link to="/signup" >  <div className="ml-4"> <p className="text-sm font-medium ">{"SignUp"}</p>   </div> </Link>
+                        
+                           
+                       
                         </button>
                       </>
                       :
@@ -604,7 +607,7 @@ export default function AvatarDropdown() {
                     </Button>
                   </Form.Item>
                   <div className="flex justify-center">
-                    <span>Bạn chưa có tài khoản? <Link to={''}>Đăng kí ngay</Link></span>
+                    <span>Bạn chưa có tài khoản? <Link to={'signup'}>Đăng kí ngay</Link></span>
                   </div>
                 </Form>
             </Flex>

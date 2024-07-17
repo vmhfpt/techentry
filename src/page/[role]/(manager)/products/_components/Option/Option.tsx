@@ -64,9 +64,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
     }
 
 
-    if(isLoadingBrand || isLoadingCategory){
-        return <LoadingPage />
-    }
+    
     return (
         <Flex vertical gap={30}>
 
@@ -136,6 +134,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     }
                 >
                     <Select
+                        loading={isLoadingCategory}
                         className='h-[40px] relative'
                         options={categories}
                         onChange={getDetails}
@@ -167,6 +166,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     }
                 >
                     <Select
+                     loading={isLoadingBrand}
                     className='h-[40px] relative'
                     options={brands}
                     />
