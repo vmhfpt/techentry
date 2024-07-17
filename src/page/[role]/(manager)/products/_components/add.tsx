@@ -85,7 +85,7 @@ function AddProduct() {
       const image = variant[0].attribute.find(item => item.id === id[0])?.image;
       const newVariant = variant.map((item, key)=>({
         variant: item.name,
-        attribute: item.attribute.find(item => item.id == id[key])?.value 
+        attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value 
       }));
 
       newProductItem.push({
@@ -95,7 +95,8 @@ function AddProduct() {
         ...product_item[key]
       });
     }    
-
+    console.log(variant);
+    
     console.log(newProductItem);
     
 

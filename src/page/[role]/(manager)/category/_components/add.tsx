@@ -1,15 +1,12 @@
 
-import { createNewCategory } from '@/app/slices/categorySlice'
 import { useNavigate } from 'react-router-dom'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
 import { Flex, Form, Input, Modal, Button, Switch, Select, Drawer } from 'antd';
 import { useState } from 'react';
-import { Typography } from 'antd';
 import ButtonEdit from '../../shared/ButtonEdit/ButtonEdit';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 import { useCreateCategoryMutation, useGetCategoriesQuery } from '../CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
-import axios from 'axios';
 export default function AddCategory() {
   const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
   const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
@@ -102,7 +99,6 @@ export default function AddCategory() {
   }
 
   const handleSubmit = async (values) => {
-    // console.log(values);
     
     const name = form.getFieldValue('name');
     const active = form.getFieldValue('active');
@@ -117,7 +113,7 @@ export default function AddCategory() {
     const formData = new FormData();
     
     formData.append('name', name);
-    formData.append('active', active);
+    formData.append('is_active', active);
     formData.append('parent_id', parent_id);
     formData.append('detail', JSON.stringify(detail));
     if(imageUrl){      
@@ -144,6 +140,7 @@ export default function AddCategory() {
       'png',
       'jpg',
       'gif',
+      'webp'
     ]
 
     const fileSelected = e.target.files[0];    
@@ -160,7 +157,7 @@ export default function AddCategory() {
    
 
   }
-  console.log(details)
+
   return (
     <>
        <Drawer width={'70%'} loading={isLoadingCategories} title="Create new category" onClose={() => handleCancel()} open={true}>

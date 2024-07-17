@@ -1,12 +1,8 @@
-import { createSlice, Dispatch, ThunkDispatch, ThunkAction } from '@reduxjs/toolkit'
-import { ISignin, ISignup } from '@/common/types/Auth.interface'
-import { LogoutService, SigninService } from '@/services/AuthService'
+import { createSlice, Dispatch } from '@reduxjs/toolkit'
 import { AxiosError } from 'axios'
 import { ErrorResponse } from 'react-router-dom'
 import { addCartService, deleteCartService, GetAllCartService, updateCartService } from '@/services/CartService'
 import { IAddCart } from '@/common/types/cart.interface'
-import { AnyAction } from 'redux'
-import { RootState } from '../store'
 interface ICart {
   id: number
   user_id: number
@@ -27,28 +23,7 @@ const cartSlice = createSlice({
   name: 'carts',
   initialState,
   reducers: {
-    getAllSuccess: (state, { payload }) => {
-      state.carts = payload
-    },
-    login: (state, { payload }) => {
-      localStorage.setItem('user', JSON.stringify(payload?.result?.data))
-      localStorage.setItem('access_token', payload.result?.access_token)
-      localStorage.setItem('token_type', payload.result?.token_type)
-      // state.isAuthenticated = true;
-    },
-    logout: (state) => {
-      localStorage.removeItem('user')
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('token_type')
-      // state.isAuthenticated = false;
-    },
-    loadAuthState: (state, { payload }) => {
-      localStorage.setItem('user', JSON.stringify(payload?.result?.data))
-      // state.isAuthenticated = true;
-    },
-    setIsAuthenticated: (state) => {
-      // state.isAuthenticated = !state.isAuthenticated
-    }
+    
   }
 })
 
@@ -128,7 +103,5 @@ export const DeleteCart = (payload: { id: number; token: string }) => async (dis
     }
   }
 }
-
-export const { getAllSuccess, login, logout, loadAuthState, setIsAuthenticated } = cartSlice.actions
 
 export default cartSlice.reducer

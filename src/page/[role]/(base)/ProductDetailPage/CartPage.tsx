@@ -19,11 +19,9 @@ const CartPage = () => {
     (async ()=>{
       const access_token = localStorage.getItem('access_token') || '';
       const carts =  await dispatch(GetAllCart(access_token))
-      setCarts(carts.data);      
-      console.log(carts);
-      
+      setCarts(carts.data);            
     })()
-  },[]);
+  },[dispatch]);
 
   const iconVariants = [
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
@@ -143,13 +141,13 @@ const CartPage = () => {
                 </h3>
                 <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
                   {variants.map((item, index) => (
-                    <>
+                    <div className="flex" key={index}>
                       {index !== variants.length && index > 0 ? (<span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>) : ''}
                       <div className="flex items-center space-x-1.5">
                         {iconVariants[index]}
                         <span>{item.name}</span>
                       </div>
-                    </>
+                    </div>
                   ))}
                   {/* <div className="flex items-center space-x-1.5">
                     <span>{`Black`}</span>
