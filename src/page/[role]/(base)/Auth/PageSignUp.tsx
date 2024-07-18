@@ -16,6 +16,9 @@ import { SignupService, VerifyToken} from "@/services/AuthService";
 import { popupError, popupSuccess } from "../../shared/Toast";
 import { useAppDispatch } from "@/app/hooks";
 import { login } from "@/app/slices/authSlide";
+import { Statistic } from 'antd';
+
+const { Countdown } = Statistic;
 export interface PageSignUpProps {
   className?: string;
 }
@@ -124,6 +127,10 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
   <>  
   <Modal title="Enter OTP" open={isModalOpen} footer={false} closeIcon={false}>
   <p>OTP sent to <span className="text-red-500">"{watch('email')}"</span> within 1 minute, please check your email !</p>
+ 
+  <div className="my-3">
+    <Countdown title="OTP will expired" value={Date.now() + 60 * 1000} />
+  </div>
   <div className="mt-5">
     <INPUTANT.OTP  length={4} mask="🔒" {...sharedProps} />
   </div>

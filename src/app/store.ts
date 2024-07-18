@@ -19,6 +19,7 @@ import { productsApi } from '@/page/[role]/(manager)/products/ProductsEndpoints'
 import { brandsApi } from '@/page/[role]/(manager)/brand/BrandEndpoints'
 import { bannersApi } from '@/page/[role]/(manager)/banner/BannerEndpoints'
 import { CartsApi } from '@/services/CartEndPoinst'
+import { ordersApi } from '@/services/OrderEndPoints'
 export const store = configureStore({
   reducer: {
     web: webReducer,
@@ -39,11 +40,12 @@ export const store = configureStore({
     [categoriesApi.reducerPath] : categoriesApi.reducer,
     [brandsApi.reducerPath] : brandsApi.reducer,
     [bannersApi.reducerPath] : bannersApi.reducer,
-    [CartsApi.reducerPath] : CartsApi.reducer
+    [CartsApi.reducerPath] : CartsApi.reducer,
+    [ordersApi.reducerPath] : ordersApi.reducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
   middleware: (getDefaultMiddleware) => //attributesApi.middleware
-  getDefaultMiddleware({ serializableCheck: false }).concat(usersApi.middleware, addressApi.middleware, attributesApi.middleware, categoryAttributesApi.middleware, valueAttributesApi.middleware, privilegeGroupApi.middleware, privilegeApi.middleware, privilegeUsersApi.middleware, productsApi.middleware, categoriesApi.middleware, brandsApi.middleware, bannersApi.middleware, CartsApi.middleware),
+  getDefaultMiddleware({ serializableCheck: false }).concat(usersApi.middleware, addressApi.middleware, attributesApi.middleware, categoryAttributesApi.middleware, valueAttributesApi.middleware, privilegeGroupApi.middleware, privilegeApi.middleware, privilegeUsersApi.middleware, productsApi.middleware, categoriesApi.middleware, brandsApi.middleware, bannersApi.middleware, CartsApi.middleware, ordersApi.middleware),
 });
 
 

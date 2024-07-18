@@ -15,8 +15,9 @@ import { ICart } from "@/common/types/cart.interface";
 import { VND } from "@/utils/formatVietNamCurrency";
 import { getTotalPriceCart } from "@/utils/handleCart";
 import { Form } from "antd";
+import { useGetCartsQuery } from "@/services/CartEndPoinst";
 const CheckoutPage = () => {
-  const [carts, setCart] = useLocalStorage('carts', [] as ICart[]);
+  const {data: carts} = useGetCartsQuery({});
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
@@ -53,7 +54,7 @@ const CheckoutPage = () => {
                   <div className="flex items-center space-x-1.5">
                   
 
-                    <span>{variant}</span>
+                    <span>{ item.variants[0].name} {item.variants[1] && `| ${item.variants[1].name}`} </span>
                   </div>
                   
                 </div>
@@ -105,6 +106,7 @@ const CheckoutPage = () => {
   const handleOrder = () => {
     form.submit();
   }
+  console.log(carts)
   return (
     <div className="nc-CheckoutPage">
       <Helmet>
@@ -190,7 +192,7 @@ const CheckoutPage = () => {
           <div className="w-full lg:w-[36%] ">
             <h3 className="text-lg font-semibold">Order summary</h3>
             <div className="mt-8 divide-y divide-slate-200/70 dark:divide-slate-700 ">
-              {carts.map(renderProduct)}
+            {carts?.data.map(renderProduct)} 
             </div>
 
             <div className="mt-10 pt-6 text-sm text-slate-500 dark:text-slate-400 border-t border-slate-200/70 dark:border-slate-700 ">
@@ -207,7 +209,7 @@ const CheckoutPage = () => {
               <div className="mt-4 flex justify-between py-2.5">
                 <span>Subtotal</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  {VND(getTotalPriceCart(carts))}
+                  {carts && VND(getTotalPriceCart(carts.data))}
                 </span>
               </div>
               <div className="flex justify-between py-2.5">
@@ -224,7 +226,7 @@ const CheckoutPage = () => {
               </div>
               <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
                 <span>Order total</span>
-                <span>{VND(getTotalPriceCart(carts))}</span>
+                <span>{carts && VND(getTotalPriceCart(carts.data))}</span>
               </div>
             </div>
             <ButtonPrimary onClick={() => handleOrder()}  className="mt-8 w-full">
