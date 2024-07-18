@@ -197,7 +197,7 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant}) => {
                             </Flex>
                             </th>
                         {
-                            variant.length < 2
+                            variant.length <= 2
                             ?
                             <>
                                 <td className="px-6 py-4">
@@ -230,9 +230,20 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant}) => {
                                 <td className="px-6 py-4">
                                     <Form.Item
                                         name={[parent.id, 'price_sale']}
-                                        className='m-0' 
+                                        className='m-0'
+                                        dependencies={[`${parent.id}.price`]}
                                         rules={[
                                             { required: true, message: 'Nhập giá sale!' },
+                                            ({ getFieldValue }) => ({
+                                                validator(_, value) {
+                                                    
+                                                  if (!value || getFieldValue(['variant',parent.id, 'price']) > value) {
+                                                    
+                                                    return Promise.resolve();
+                                                  }
+                                                  return Promise.reject(new Error('the price sale must be smaller than the price'));
+                                                },
+                                              }),
                                         ]}
                                         >
                                         <InputNumber 
