@@ -23,7 +23,8 @@ export default function AvatarDropdown() {
  
   const {openModalLogin} = useAppSelector(state => state.web);
 
-  
+  const user = localStorage.getItem('user') ;
+
   // const [open, setOpen] = useState(false);
   // const [checked, setChecked] = useState(true);
 
@@ -137,10 +138,10 @@ export default function AvatarDropdown() {
                         (
                           <>
                             <div className="flex items-center space-x-3">
-                              <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
-                              <div className="flex-grow">
-                                <h4 className="font-semibold">Eden Smith</h4>
-                                <p className="text-xs mt-0.5">Los Angeles, CA</p>
+                              <Avatar imgUrl={JSON.parse(String(user)).image ? JSON.parse(String(user)).image : avatarImgs[7] } sizeClass="w-12 h-12" />
+                              <div className="flex-grow truncate break-all">
+                                <h4 className="font-semibold">{  JSON.parse(String(user)).username}</h4>
+                                <p className="text-xs mt-0.5 ">{  JSON.parse(String(user)).email}</p>
                               </div>
                             </div>
 

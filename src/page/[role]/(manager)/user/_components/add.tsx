@@ -60,7 +60,7 @@ export default function AddUser() {
         formData.append(key,values[key][0].originFileObj);
         continue;
        }
-       if(String(key) == 'in_active'){
+       if(String(key) == 'is_active'){
         if(values[key]){
            formData.append(key,'1')
         }else {
@@ -71,7 +71,7 @@ export default function AddUser() {
        formData.append(key,values[key])
        
     }
-    formData.append('virtual','1');
+    formData.append('is_virtual','0');
     try {
       await createUser(formData).unwrap();
       popupSuccess('Add user success');
@@ -207,7 +207,7 @@ export default function AddUser() {
           <Form.Item 
                     className='m-0' 
                     label='Active'
-                    name='in_active' 
+                    name='is_active' 
                     valuePropName="checked"
                 >
                     <Switch />

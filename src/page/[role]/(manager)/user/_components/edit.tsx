@@ -71,7 +71,7 @@ export default function EditUser() {
        
         continue;
        }
-       if(String(key) == 'in_active'){
+       if(String(key) == 'is_active'){
         if(values[key]){
            formData.append(key,'1')
         }else {
@@ -82,7 +82,7 @@ export default function EditUser() {
        formData.append(key,values[key])
        
     }
-    formData.append('virtual','1');
+    formData.append('is_virtual','0');
     try {
       const payload = {
         id : params.id,
@@ -280,7 +280,7 @@ export default function EditUser() {
           <Form.Item 
                     className='m-0' 
                     label='Active'
-                    name='in_active' 
+                    name='is_active' 
                     valuePropName="checked"
                 >
                     <Switch />

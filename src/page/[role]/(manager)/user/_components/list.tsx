@@ -109,12 +109,12 @@ export default function ListUser(){
         },
         {
           title: 'Active',
-          key: 'in_active',
-          dataIndex: 'in_active',
-          render: (_, { in_active }) => (
+          key: 'is_active',
+          dataIndex: 'is_active',
+          render: (_, { is_active }) => (
             <>
-                  <Tag color={in_active == 1 ? 'green' : 'red'} >
-                      {in_active == 1 ? 'Active' : 'InActive'}
+                  <Tag color={is_active == 1 ? 'green' : 'red'} >
+                      {is_active == 1 ? 'Active' : 'InActive'}
                   </Tag>
             </>
           )

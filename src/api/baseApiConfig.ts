@@ -9,7 +9,7 @@ export const baseApiConfig = {
             //const token = getState().auth.token;
            
             //console.log('token will prepare in here')
-            headers.set('authorization', `Bearer tokenhere`);
+            headers.set('authorization', `Bearer ${localStorage.getItem('access_token')}`);
             
             return headers;
         },

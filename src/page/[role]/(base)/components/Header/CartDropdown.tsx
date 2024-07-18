@@ -9,9 +9,10 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { ICart } from "@/common/types/cart.interface";
 import { getTotalIconCart , getTotalPriceCart, deleteCart} from "@/utils/handleCart";
 import { VND } from "@/utils/formatVietNamCurrency";
+import { useDeleteCartMutation, useGetCartsQuery } from "@/services/CartEndPoinst";
 export default function CartDropdown() {
-  const [carts, setCart] = useLocalStorage("carts",[] as ICart[]);
-
+  const {data: carts} = useGetCartsQuery({});
+  const [deleteCart] = useDeleteCartMutation();
   const renderProduct = (item: ICart, index: number, close: () => void) => {
 
     return (
@@ -39,7 +40,7 @@ export default function CartDropdown() {
                   </Link>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{item.variant}</span>
+                  <span>{ item.variants[0].name} {item.variants[1] && `| ${item.variants[1].name}`} </span>
                   
                 </p>
               </div>
@@ -65,7 +66,7 @@ export default function CartDropdown() {
 
             <div className="flex">
               <button
-                onClick={() => setCart(deleteCart(carts, Number(item.id as number))) }
+                onClick={() => deleteCart(item.product_item_id) }
                 type="button"
                 className="font-medium text-primary-6000 dark:text-primary-500 "
               >
@@ -88,7 +89,7 @@ export default function CartDropdown() {
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
           >
             <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
-              <span className="mt-[1px]">{getTotalIconCart(carts)}</span>
+              <span className="mt-[1px]">{carts && getTotalIconCart(carts?.data)}</span>
             </div>
             <svg
               className="w-6 h-6"
@@ -147,8 +148,8 @@ export default function CartDropdown() {
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
                     <h3 className="text-xl font-semibold">Shopping cart</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
-                      {carts.map(
-                        (item, index) => renderProduct(item , index, close)
+                      {carts?.data?.map(
+                        (item : any, index : any) => renderProduct(item , index, close)
                       )}
                     </div>
                   </div>
@@ -160,7 +161,7 @@ export default function CartDropdown() {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="">{VND(getTotalPriceCart(carts))}</span>
+                      <span className="">{carts && VND(getTotalPriceCart(carts?.data))}</span>
                     </p>
                     <div className="flex space-x-2 mt-5">
                       <ButtonSecondary

@@ -16,6 +16,8 @@ import { IProduct, IProductItem } from '@/common/types/product.interface'
 import { IAddCart, ICart } from '@/common/types/cart.interface'
 import { useAppDispatch } from '@/app/hooks'
 import { AddToCart } from '@/app/slices/cartSlide'
+import { useAddToCartMutation } from '@/services/CartEndPoinst'
+import { popupError } from '../../shared/Toast'
 export interface ProductCardProps {
   className?: string;
   data: IProduct;
@@ -33,6 +35,7 @@ const ProductCard: FC<ProductCardProps> = ({
     slug,
     products,
   } = data;
+  const [addToCart, {isLoading}] = useAddToCartMutation();
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
   const [image, setImage] = React.useState(thumbnail);
@@ -59,47 +62,47 @@ const ProductCard: FC<ProductCardProps> = ({
   const secondVariantArray: string[] = [...secondVariantGroup];
   
 
-  const notifyAddTocart = ({ second }: { second?: string | null }) => {
-    const access_token = localStorage.getItem('access_token')
-
+  const notifyAddTocart = async ({ second }: { second?: string | null }) => {
     const cart = products.find((item) => {
       return !second ? item.variants[0].name == firstVariantArray[variantActive] : item.variants[0].name == firstVariantArray[variantActive] && item.variants[1].name == second
     });
 
     if(cart?.id){
-      const payload: IAddCart = {
-        quantity: 1,
-        product_item_id: cart.id,
-        token: access_token
-      }
-
       
-      dispatch(AddToCart(payload));
+      try {
+        const payload: IAddCart = {
+          quantity: 1,
+          product_item_id: cart.id,
+        }
+        await addToCart(payload).unwrap();
+        toast.custom(
+          (t) => (
+            <Transition
+              appear
+              show={t.visible}
+              className="p-4 max-w-md w-full bg-white dark:bg-slate-800 shadow-lg rounded-2xl pointer-events-auto ring-1 ring-black/5 dark:ring-white/10 text-slate-900 dark:text-slate-200"
+              enter="transition-all duration-150"
+              enterFrom="opacity-0 translate-x-20"
+              enterTo="opacity-100 translate-x-0"
+              leave="transition-all duration-150"
+              leaveFrom="opacity-100 translate-x-0"
+              leaveTo="opacity-0 translate-x-20"
+            >
+              <p className="block text-base font-semibold leading-none">
+                Added to cart!
+              </p>
+              <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
+              {renderProductCartOnNotify({ second })}
+            </Transition>
+          ),
+          { position: "top-right", id: "nc-product-notify", duration: 3000 }
+        );
+      } catch (error) {
+          popupError('Add to cart error!');
+      }
+    
     }
     
-
-    toast.custom(
-      (t) => (
-        <Transition
-          appear
-          show={t.visible}
-          className="p-4 max-w-md w-full bg-white dark:bg-slate-800 shadow-lg rounded-2xl pointer-events-auto ring-1 ring-black/5 dark:ring-white/10 text-slate-900 dark:text-slate-200"
-          enter="transition-all duration-150"
-          enterFrom="opacity-0 translate-x-20"
-          enterTo="opacity-100 translate-x-0"
-          leave="transition-all duration-150"
-          leaveFrom="opacity-100 translate-x-0"
-          leaveTo="opacity-0 translate-x-20"
-        >
-          <p className="block text-base font-semibold leading-none">
-            Added to cart!
-          </p>
-          <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
-          {renderProductCartOnNotify({ second })}
-        </Transition>
-      ),
-      { position: "top-right", id: "nc-product-notify", duration: 3000 }
-    );
   };
 
   const renderProductCartOnNotify = ({ second }: { second?: string | null }) => {

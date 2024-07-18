@@ -11,6 +11,6 @@ export interface Iuser {
     district : string;
     city : string;
     role_id : number | string;
-    in_active: number;
-    virtual: number;
+    is_active: number;
+    is_virtual: number;
 }
