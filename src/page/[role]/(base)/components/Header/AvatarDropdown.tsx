@@ -76,11 +76,7 @@ export default function AvatarDropdown() {
       const result = await dispatch(Logout(access_token));
       dispatch(setLoading(false));
 
-      if(result?.success == false){
-        popupError(result?.result?.message);
-      }else{
-        popupSuccess(result?.result?.message);
-      }
+      popupSuccess(result?.result?.message);
 
     }
     

@@ -25,7 +25,6 @@ const CheckoutPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const [discount, setDiscount] = useState<string>('');
-  const [url, setUrl] = useState<string>('')
 
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
@@ -46,7 +45,7 @@ const CheckoutPage = () => {
     }    
     
     const checkOut = await dispatch(AddOrder(payload))
-
+    
     if(checkOut && checkOut.url){
       window.location.href = checkOut.url
     }

@@ -167,8 +167,13 @@ aside::-webkit-scrollbar{
   fill: #ffff
 }
 
+.ant-layout-sider.sider-primary .ant-menu-item.ant-menu-item-selected.ant-menu-item-only-child .ant-menu-title-content .children-menu span{
+  font-weight: 700;
+  color:rgb(52 71 103 / var(--tw-text-opacity));
+}
+
 .ant-layout-sider.sider-primary .ant-menu-submenu-selected .ant-menu-submenu-title .ant-menu-title-content .icon svg path,
-.ant-layout-sider.sider-primary .ant-menu-item.ant-menu-item-selected  .ant-menu-title-content .icon svg path{
+.ant-layout-sider.sider-primary .ant-menu-item.ant-menu-item-selected .ant-menu-title-content .icon svg path{
   fill: #ffff
 }
 
