@@ -9,7 +9,7 @@ import { popupError } from "@/page/[role]/shared/Toast";
 export const getUser = (payload: string) => async (dispatch: Dispatch) => {
     try{
         const {data} = await profileService(payload);
-
+        
         if(data.success === true){
             dispatch(loadAuthState(data));
         }

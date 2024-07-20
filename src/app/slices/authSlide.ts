@@ -17,7 +17,7 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         login: (state, {payload}) => {
-            localStorage.setItem('user', JSON.stringify(payload?.data));
+            localStorage.setItem('user', JSON.stringify(payload?.user));
             localStorage.setItem('access_token', payload?.access_token)
             localStorage.setItem('token_type', payload?.token_type)   
             state.isAuthenticated = true;
@@ -29,7 +29,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
         },
         loadAuthState: (state, {payload}) => {
-            localStorage.setItem('user', JSON.stringify(payload?.data));            
+            localStorage.setItem('user', JSON.stringify(payload?.user));            
             state.isAuthenticated = true;
         },
         setIsAuthenticated: (state) => {

@@ -1,5 +1,4 @@
 import Label from "../components/Label/Label";
-import NcInputNumber from "../components/NcInputNumber";
 import Prices from "../components/Prices";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -12,9 +11,6 @@ import { VND } from "@/utils/formatVietNamCurrency";
 import { getTotalPriceCart } from "@/utils/handleCart";
 import { Form } from "antd";
 import { useGetCartsQuery } from "@/services/CartEndPoinst";
-
- 
-import { GetAllCart } from "@/app/slices/cartSlide";
 import { useAppDispatch } from "@/app/hooks";
 import { AddOrder } from "@/app/slices/OrderSlice";
 import { popupSuccess } from "../../shared/Toast";
@@ -41,19 +37,18 @@ const CheckoutPage = () => {
   };
 
   const onFinish = async (values : IOrder) => {
-    alert(1)
-    // const payload:IOrder = {
-    //   ...values,
-    //   discount_code: discount
-    // }    
+    const payload:IOrder = {
+      ...values,
+      discount_code: discount
+    }    
     
-    // const checkOut = await dispatch(AddOrder(payload))
+    const checkOut = await dispatch(AddOrder(payload))
     
-    // if(checkOut && checkOut.url){
-    //   window.location.href = checkOut.url
-    // }
+    if(checkOut && checkOut.url){
+      window.location.href = checkOut.url
+    }
     
-    // popupSuccess('order success');
+    popupSuccess('order success');
 
   };
 
