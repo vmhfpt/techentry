@@ -4,10 +4,9 @@ import ButtonPrimary from '../shared/Button/ButtonPrimary'
 import ButtonSecondary from '../shared/Button/ButtonSecondary'
 import Input from '../shared/Input/Input'
 import Radio from '../shared/Radio/Radio'
-
 import { useGetProvincesQuery, useLazyGetDistrictsQuery, useLazyGetWardsQuery } from '@/utils/addressRTKQuery'
 
-import { Button, Descriptions, Form, Modal, Result, Select, SelectProps } from 'antd'
+import { Button, Descriptions, Modal, Result } from 'antd'
 import axios from 'axios'
 import { useLocalStorage } from '@uidotdev/usehooks'
 import { ICart } from '@/common/types/cart.interface'
@@ -18,6 +17,9 @@ import { VND } from '@/utils/formatVietNamCurrency'
 import { useGetCartsQuery } from '@/services/CartEndPoinst'
 import { getTotalPriceCart } from '@/utils/handleCart'
 import { useAddOrderMutation } from '@/services/OrderEndPoints'
+import { Form, Select, SelectProps } from 'antd'
+import { IOrder } from '@/common/types/Order.interface'
+
 interface Props {
   isActive: boolean
   onCloseActive: () => void
@@ -195,9 +197,11 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
         receiver_district: values?.district.split('-')[0],
         receiver_ward: values?.ward.split('-')[0],
         receiver_address: values?.address,
-        pick_up_required: 1
+        pick_up_required: 1,
+        note : values?.note,
+        discount_code : ''
       }
-
+   
       try {
         const response = await addOrder(payload).unwrap();
         console.log(response)

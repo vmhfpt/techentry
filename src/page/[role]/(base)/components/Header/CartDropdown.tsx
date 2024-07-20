@@ -1,11 +1,10 @@
 import { Popover, Transition } from "@headlessui/react";
 import Prices from "../Prices";
 import { Product, PRODUCTS } from "../../../../../data/data";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../../shared/Button/ButtonPrimary";
 import ButtonSecondary from "../../shared/Button/ButtonSecondary";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import { ICart } from "@/common/types/cart.interface";
 import { getTotalIconCart , getTotalPriceCart, deleteCart} from "@/utils/handleCart";
 import { VND } from "@/utils/formatVietNamCurrency";
@@ -15,12 +14,13 @@ export default function CartDropdown() {
   const [deleteCart] = useDeleteCartMutation();
   const renderProduct = (item: ICart, index: number, close: () => void) => {
 
+    const { image, price, name, slug, thumbnail, quantity, user_id, product_item_id, price_sale, variants} = item;
     return (
       <div key={index} className="flex py-5 last:pb-0">
         <div className="relative h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={item.image}
-            alt={item.name}
+            src={image || thumbnail}
+            alt={name}
             className="h-full w-full object-contain object-center"
           />
           <Link
@@ -36,7 +36,7 @@ export default function CartDropdown() {
               <div>
                 <h3 className="text-base font-medium ">
                   <Link onClick={close} to={"/product-detail"}>
-                     {item.name}
+                    {name}
                   </Link>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -44,25 +44,11 @@ export default function CartDropdown() {
                   
                 </p>
               </div>
-              <div className='mt-0.5'>
-                <div className={` flex flex-col justify-between  w-full gap-[10px]`}>
-                  <div className={`flex items-center border-2 border-green-500 rounded-lg px-2 py-2`}>
-                    <span className='text-green-500 !leading-none'>
-                       {VND(item.price_sale)}
-                    </span>
-                  </div>
-
-                  <div className={` flex items-center border-2 border-gray-300 rounded-lg`}>
-                    <span className='text-gray-300 !text-[14px] !leading-none line-through px-2 py-2'>
-                    {VND(item.price)}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <Prices price={parseFloat(price)} className="mt-0.5" />
             </div>
           </div>
-          <div className="mt-2 flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">{`Qty x ${item.quantity}`}</p>
+          <div className="flex flex-1 items-end justify-between text-sm">
+            <p className="text-gray-500 dark:text-slate-400">{`Qty ${quantity}`}</p>
 
             <div className="flex">
               <button

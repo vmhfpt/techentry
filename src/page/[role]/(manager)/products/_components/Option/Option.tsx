@@ -282,7 +282,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     className='w-full flex justify-center items-center'
                     options={[
                         { label: 'none', value: '' },
-                        { label: '%', value: 'percentage' },
+                        { label: '%', value: 'percent' },
                         { label: 'Cố định', value: 'fixed'},
                     ]}
                     block
@@ -293,11 +293,11 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                     />
                 </Form.Item>  
                 {
-                    discount.typeDiscount == 'percentage'
+                    discount.typeDiscount == 'percent'
                     ?
                     <>
                     <Form.Item
-                        name={'percentage'}
+                        name={'percent'}
                         rules={[
                         {
                             required: true,

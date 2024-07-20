@@ -17,9 +17,9 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         login: (state, {payload}) => {
-            localStorage.setItem('user', JSON.stringify(payload?.result?.data));
-            localStorage.setItem('access_token', payload.result?.access_token)
-            localStorage.setItem('token_type', payload.result?.token_type)   
+            localStorage.setItem('user', JSON.stringify(payload?.data));
+            localStorage.setItem('access_token', payload?.access_token)
+            localStorage.setItem('token_type', payload?.token_type)   
             state.isAuthenticated = true;
         },
         logout: (state) => {            
@@ -65,6 +65,7 @@ export const Signin = (payload: ISignin) => async (dispatch: Dispatch) => {
 export const Logout = (payload: string) => async (dispatch: Dispatch) => {
     try{
         const {data} = await LogoutService(payload)
+        console.log(data);
         
         if(data && data.success == true){         
 

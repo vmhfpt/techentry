@@ -4,9 +4,9 @@ import ListOrder from "./_components/list";
 
 export default function OrderManagement(){
     return (
-        <div>
+        <>
             <ListOrder />
             <Outlet />  
-        </div>
+        </>
     )
 }

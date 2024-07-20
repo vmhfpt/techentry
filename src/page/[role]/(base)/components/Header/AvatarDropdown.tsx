@@ -1,7 +1,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import { avatarImgs } from "../../../../../contains/fakeData";
 import { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../shared/Avatar/Avatar";
 import SwitchDarkMode2 from "../../shared/SwitchDarkMode/SwitchDarkMode2";
 import { Button, Checkbox, Flex, Form, Input, Modal, Select } from "antd";
@@ -17,6 +17,7 @@ type FieldType = {
 };
 
 export default function AvatarDropdown() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm()
   const {isAuthenticated} = useAppSelector(state => state.auth);  
@@ -61,7 +62,8 @@ export default function AvatarDropdown() {
       ])
       dispatch(login(result))
       dispatch(setOpenModalLogin(false))
-      popupSuccess(result?.result?.message);
+      popupSuccess("Hello " + result.data.username);
+      navigate('/')
     }
   }  
 
@@ -79,11 +81,7 @@ export default function AvatarDropdown() {
       const result = await dispatch(Logout(access_token));
       dispatch(setLoading(false));
 
-      if(result?.success == false){
-        popupError(result?.result?.message);
-      }else{
-        popupSuccess(result?.result?.message);
-      }
+      popupSuccess(result?.result?.message);
 
     }
     

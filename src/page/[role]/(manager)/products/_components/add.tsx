@@ -85,7 +85,7 @@ function AddProduct() {
       const image = variant[0].attribute.find(item => item.id === id[0])?.image;
       const newVariant = variant.map((item, key)=>({
         variant: item.name,
-        attribute: item.attribute.find(item => item.id == id[key])?.value 
+        attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value 
       }));
 
       newProductItem.push({
@@ -95,7 +95,8 @@ function AddProduct() {
         ...product_item[key]
       });
     }    
-
+    console.log(variant);
+    
     console.log(newProductItem);
     
 
@@ -113,7 +114,7 @@ function AddProduct() {
     formdata.append('is_new', String(is_new));
     formdata.append('is_show_home', String(is_show_home));
     formdata.append('type_discount', String(typeDiscount));
-    formdata.append('discount', typeDiscount == 'percentage' ? percentage : typeDiscount == 'fixed' ? fixed : '');
+    formdata.append('discount', typeDiscount == 'percent' ? percentage : typeDiscount == 'fixed' ? fixed : '');
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
@@ -124,8 +125,6 @@ function AddProduct() {
     } catch (error) {
       popupError('Add product error');
     }
-
-    
     
   }
 

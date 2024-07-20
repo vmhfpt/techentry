@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import NcImage from '../shared/NcImage/NcImage'
 import LikeButton from './LikeButton'
@@ -39,6 +39,14 @@ const ProductCard: FC<ProductCardProps> = ({
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
   const [image, setImage] = React.useState(thumbnail);
+  const blocksRef = useRef([]);
+  const [maxWidth, setMaxWidth] = useState(0);
+
+  useEffect(() => {
+    const widths = blocksRef.current.map(block => block.offsetWidth);
+    const max = Math.max(...widths);
+    setMaxWidth(max);
+  }, []);
 
   const dispatch = useAppDispatch();
 
@@ -177,7 +185,7 @@ const ProductCard: FC<ProductCardProps> = ({
               
               setVariantActive(index)
             }}
-            className={`relative px-6 border-[1px] overflow-hidden z-10 cursor-pointer nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors flex items-center justify-center uppercase font-semibold tracking-tight text-sm  ${
+            className={`relative border-[1px] overflow-hidden z-10 cursor-pointer nc-shadow-lg text-center w-[22%] text-nowrap py-[0.7rem] px-1 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors flex items-center justify-center uppercase font-semibold tracking-tight text-sm  ${
                 variantActive === index
                   ? "text-red-400 dark:border-slate-300"
                   : "text-slate-900 border-gray"
@@ -190,9 +198,10 @@ const ProductCard: FC<ProductCardProps> = ({
               `}
             title={item}
           >
-            <span>{item}</span>
+            <div className='overflow-hidden w-full'>{item}</div>
           </div>
         ))}
+        
       </div>
     );
   };
@@ -228,16 +237,18 @@ const ProductCard: FC<ProductCardProps> = ({
     }
 
     return (
-      <div className="absolute bottom-0 inset-x-1 space-x-1.5 flex justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
+      <div className="absolute bottom-0 inset-x-1  flex flex-wrap gap-2 justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
         {secondVariantArray.map((second, index) => {
           return (
             <div
               key={index}
-              className={`nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900
+              className={`nc-shadow-lg rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900 text-center w-[20%] text-nowrap py-[0.7rem] px-1
                 ${inStockVariant(second) < 1 ? 'pointer-events-none text-gray-200' : ''}`}
               onClick={() => notifyAddTocart({ second })}
             >
-              {second}
+              <div className='overflow-hidden w-full'>
+                {second}
+              </div>
             </div> 
           );
         })}

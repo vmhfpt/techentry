@@ -1,12 +1,10 @@
 import { NoSymbolIcon, CheckIcon } from "@heroicons/react/24/outline";
 import NcInputNumber from "../components/NcInputNumber";
 import Prices from "../components/Prices";
-import { Product,PRODUCTS  } from "../../../../data/data";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import ButtonPrimary from "../shared/Button/ButtonPrimary";
 import { ICart } from "@/common/types/cart.interface";
-import { VND } from "@/utils/formatVietNamCurrency";
 import { useAppDispatch } from "@/app/hooks";
 import { useEffect, useState } from "react";
 import { GetAllCart } from "@/app/slices/cartSlide";
@@ -14,6 +12,7 @@ import { useDeleteCartMutation, useGetCartsQuery } from "@/services/CartEndPoins
 import { popupError } from "../../shared/Toast";
 import { getTotalPriceCart } from "@/utils/handleCart";
 import { Button, Result } from "antd";
+import { VND } from "@/utils/formatVietNamCurrency";
 
 const CartPage = () => {
  const {data : carts , isLoading} = useGetCartsQuery({});

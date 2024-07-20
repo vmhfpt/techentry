@@ -28,8 +28,8 @@ export interface IGallery {
 
 export interface IProductItem {
   id?: number | string
-  price: number | string
-  price_sale: number | string
+  price: string
+  price_sale: string
   quantity: number
   sku: number
   image: string
