@@ -53,6 +53,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
   const [isRunning, toggleIsRunning] = useBoolean(true)
   const { data } = useGetBannersQuery({})
   const bannersList = data && data.length ? data : DATA
+  console.log('banner list: ', bannersList)
 
   useInterval(
     () => {
