@@ -1,13 +1,13 @@
-import { Button, Form, Input, Modal, Switch, Upload, message } from 'antd'
+import { Button, Form, Input, Modal, Switch, Upload } from 'antd'
 
+import { popupError, popupSuccess } from '@/page/[role]/shared/Toast'
 import { useNavigate } from 'react-router-dom'
 import { useCreateBannerMutation } from '../BannerEndpoints'
-import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 
 const { Dragger } = Upload
 
 export default function AddBanner() {
-  const [createBanner, {isLoading : isLoadingCreateBanner}] = useCreateBannerMutation();
+  const [createBanner, { isLoading: isLoadingCreateBanner }] = useCreateBannerMutation()
   const navigate = useNavigate()
   const [form] = Form.useForm()
 
@@ -22,25 +22,26 @@ export default function AddBanner() {
     const is_active = form.getFieldValue('status') ? 1 : 0
     const image = form.getFieldValue('img').file.originFileObj
     const image_url = form.getFieldValue('url')
-  
+
     const formData = new FormData()
     formData.append('image_title', image_title)
-    formData.append('is_active', String(is_active));
+    formData.append('is_active', String(is_active))
     formData.append('image', image)
     formData.append('image_url', image_url)
     try {
-      await createBanner(formData).unwrap();
-      popupSuccess('Create banner success');
-      handleCancel();
+      console.log('>>>> ', formData)
+      await createBanner(formData).unwrap()
+
+      popupSuccess('Create banner success')
+      handleCancel()
     } catch (error) {
-      popupError('Create banner success');
+      popupError('Create banner success')
     }
   }
   const handleUpload = async (options: any) => {
     const { onSuccess, file } = options
-  
+
     onSuccess('Upload successful', file)
- 
   }
   return (
     <>
@@ -76,7 +77,7 @@ export default function AddBanner() {
             className='w-full'
             rules={[{ required: true, message: 'Vui lòng chọn Ảnh banner!' }]}
           >
-            <Dragger listType='picture' customRequest={handleUpload}  >
+            <Dragger listType='picture' customRequest={handleUpload}>
               <Button>Upload</Button>
             </Dragger>
           </Form.Item>
