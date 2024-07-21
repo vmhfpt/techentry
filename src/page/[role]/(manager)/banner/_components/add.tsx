@@ -29,7 +29,7 @@ export default function AddBanner() {
     formData.append('image', image)
     formData.append('image_url', image_url)
     try {
-      console.log('>>>> ', formData)
+      // console.log('>>>> ', formData)
       await createBanner(formData).unwrap()
 
       popupSuccess('Create banner success')
