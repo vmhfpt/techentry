@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import imageRightPng2 from '../../../../../assets/images/base/hero-right-2.png'
 import imageRightPng3 from '../../../../../assets/images/base/hero-right-3.png'
 import imageRightPng from '../../../../../assets/images/base/hero-right.png'
@@ -52,8 +52,15 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
   const [indexActive, setIndexActive] = useState(0)
   const [isRunning, toggleIsRunning] = useBoolean(true)
   const { data } = useGetBannersQuery({})
-  const bannersList = data && data.length ? data : DATA
-  console.log('banner list: ', bannersList)
+  const [bannersList, setBannersList] = useState([])
+
+  useEffect(()=>{
+    if(data){
+      let aciveBanner = data?.filter((item:any)=>item.is_active == 1);
+      aciveBanner = aciveBanner?.length > 3 ? aciveBanner.splice(0, 3) : aciveBanner;
+      setBannersList(aciveBanner?.length > 0 ? aciveBanner : DATA);
+    }
+  }, [data])
 
   useInterval(
     () => {
@@ -156,26 +163,26 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
         {/* BG */}
         <div className='absolute inset-0 bg-[#E3FFE6]'>
           {/* <div className="absolute inset-0 bg-[#F7F0EA]"> */}
-          <img className='absolute w-full h-full object-contain' src={backgroundLineSvg} alt='hero' />
+          <img className={`absolute w-full h-full ${item?.image_url ? "" : "object-contain"}`} src={item?.image_url ?? backgroundLineSvg} alt='hero' />
         </div>
 
         <div className='relative container pb-0 pt-14 sm:pt-20 lg:py-44'>
           <div className={`relative z-[1] w-full max-w-3xl space-y-8 sm:space-y-14 nc-SectionHero2Item__left`}>
             <div className='space-y-5 sm:space-y-6'>
               <span className='nc-SectionHero2Item__subheading block text-base md:text-xl text-slate-700 font-medium'>
-                {item?.subHeading}
+                In this season, find the best 🔥
               </span>
               <h2 className='nc-SectionHero2Item__heading font-semibold text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl !leading-[114%] text-slate-900'>
-                {item?.heading}
+                Exclusive collection for everyone
               </h2>
             </div>
 
             <ButtonPrimary
               className='nc-SectionHero2Item__button dark:bg-slate-900'
               sizeClass='py-3 px-6 sm:py-5 sm:px-9'
-              href={item?.btnLink ?? '/'}
+              href="#"
             >
-              <span>{item?.btnText}</span>
+              <span>Explore now</span>
               <span>
                 <svg className='w-5 h-5 ml-2.5' viewBox='0 0 24 24' fill='none'>
                   <path
@@ -196,13 +203,15 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
               </span>
             </ButtonPrimary>
           </div>
-          <div className='mt-10 lg:mt-0 lg:absolute right-0 bottom-0 top-0 w-full max-w-2xl xl:max-w-3xl 2xl:max-w-4xl'>
+          {item?.image && (
+            <div className='mt-10 lg:mt-0 lg:absolute right-0 bottom-0 top-0 w-full max-w-2xl xl:max-w-3xl 2xl:max-w-4xl'>
             <img
               className='w-full h-full object-contain object-right-bottom nc-SectionHero2Item__image'
               src={item?.image}
               alt={item?.heading}
             />
           </div>
+          )}
         </div>
       </div>
     )
