@@ -9,16 +9,16 @@ const apiWithTag = emptySplitApi.enhanceEndpoints({addTagTypes: ['Orders']});
 export const ordersApi = apiWithTag.injectEndpoints({
   
   endpoints: (builder) => ({
-    // getOrders: builder.query({
-    //   query: () => 'cart',
-    //   providesTags: (result) =>
-    //   result
-    //     ? [
-    //         ...result.data.map(({ id } : {id : number | string}) => ({ type: 'Orders' as const, id })),
-    //         { type: 'Orders', id: 'LIST' },
-    //       ]
-    //     : [{ type: 'Orders', id: 'LIST' }],
-    // }),
+    getOrders: builder.query({
+      query: () => 'order',
+      providesTags: (result) =>
+      result
+        ? [
+            ...result?.data.map(({ id } : {id : number | string}) => ({ type: 'Orders' as const, id })),
+            { type: 'Orders', id: 'LIST' },
+          ]
+        : [{ type: 'Orders', id: 'LIST' }],
+    }),
     addOrder: builder.mutation({
       query: (payload) => ({
         url: 'order',
@@ -27,6 +27,10 @@ export const ordersApi = apiWithTag.injectEndpoints({
       
       }),
       invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+    getOrder: builder.query({
+      query: (id) => `order/${id}`,
+      providesTags: (id) => [{ type: 'Orders', id }],
     }),
     // updateCart: builder.mutation({
     //   query: (payload) => ({
@@ -48,5 +52,7 @@ export const ordersApi = apiWithTag.injectEndpoints({
 
 export const {
   useAddOrderMutation,
-  usePrefetch
+  useGetOrdersQuery,
+  usePrefetch,
+  useGetOrderQuery
 } = ordersApi;

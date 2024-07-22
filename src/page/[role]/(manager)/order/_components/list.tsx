@@ -1,82 +1,172 @@
 import type { TableProps } from 'antd'
-import { Button, Flex, Input, Popconfirm, Segmented, Space, Table, Typography, message } from 'antd'
+import { Button, Card, Col, Flex, Input, Popconfirm, Row, Segmented, Space, Table, Typography, message } from 'antd'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { getAllBanner, removeBanner, searchBanners } from '@/app/slices/bannerSlice'
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { useCallback } from 'react'
+
+
 import { IBanner } from '@/common/types/banner.interface'
-import useDebounce from '@/hooks/useDebounce'
-import axios from 'axios'
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
 
+import { Breadcrumb, Layout, Menu, theme } from 'antd'
+import { CloseSquareOutlined, CheckSquareOutlined, ScheduleOutlined } from '@ant-design/icons'
+import { useGetOrdersQuery } from '@/services/OrderEndPoints'
+import { VND } from '@/utils/formatVietNamCurrency'
+import { formatTimestamp } from '@/utils/formatDate'
+import useQuerySearch from '../../hooks/useQuerySearch'
+import { getColumnSearchProps } from '../../components/util/SortHandle'
+import { exportToExcel } from '@/utils/exportExcelFile'
 export default function ListOrder() {
-  const dispatch = useAppDispatch()
-  const [searchValue, setSearchValue] = useState('')
-  const debouncedValue = useDebounce(searchValue, 600)
-  const [dataItem, setDataItem] = useState<any>([]);
-  const { banners, isLoading } = useAppSelector((state) => state.banner)
-
-  const { Header, Content, Footer } = Layout;
 
 
-  useEffect(() => {
-    (async() => {
-        const response = await axios.get('http://localhost:3000/orders');
-        setDataItem(response.data);
-        // console
-    } )();
-  }, [])
- 
+  const {searchText,setSearchText,setSearchedColumn, searchedColumn, searchInput, handleSearch, handleReset } = useQuerySearch();
 
-  useEffect(() => {
-    if (!debouncedValue.trim()) {
-      dispatch(getAllBanner())
-    } else {
-      dispatch(searchBanners(debouncedValue))
+
+  
+
+  const {  Content } = Layout
+  const {data : dataItem, isLoading : isLoadingOrders} = useGetOrdersQuery({})
+
+  const handleTotalSuccess = useCallback((typeOfStatus : number) => {
+
+    if(dataItem){
+      let total = 0;
+      for (const item of dataItem?.data) {
+       if(item.order_status_id == typeOfStatus){
+         total ++;
+       }
+      }
+      const percent = (total / dataItem?.data?.length) * 100;
+      return [total, percent];
+    }else {
+      return [0, 0]
     }
-  }, [debouncedValue, dispatch])
+  
+  }, [])
+
 
   const columns: TableProps<IBanner>['columns'] = [
     {
-      title: '#',
-      dataIndex: 'key',
-      key: 'key',
-      width: 40,
-      align: 'center'
+      title: 'Đơn hàng',
+      dataIndex: 'sku',
+      key: 'sku',
+      width: 150,
+      align: 'center',
+      ...getColumnSearchProps(
+        'sku',
+         handleSearch,
+         handleReset,
+         searchText,
+         setSearchText,
+         searchedColumn,
+         setSearchedColumn,
+         searchInput
+        ),
     },
     {
-      title: 'Name',
-     
+      title: 'Ngày giờ tạo',
+      dataIndex: 'created_at',
+      key: 'created_at',
       align: 'center',
       width: 160,
-      render: (text) => <a>{text.last_name} {text.first_name} </a>
+      render: (text) => (
+        <a>
+          {formatTimestamp(text)}
+        </a>
+      )
     },
     {
-      title: 'Phone number',
-      dataIndex: 'phone_number',
-      key: 'phone_number',
+      title: 'Khách hàng',
+      dataIndex: 'receiver_name',
+      key: 'receiver_name',
       align: 'center',
       width: 160,
-      render: (text) => <>{text}</>
+      render: (text) => <>{text}</>,
+      ...getColumnSearchProps(
+        'receiver_name',
+         handleSearch,
+         handleReset,
+         searchText,
+         setSearchText,
+         searchedColumn,
+         setSearchedColumn,
+         searchInput
+        ),
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Số điện thoại',
+      dataIndex: 'receiver_phone',
+      key: 'receiver_phone',
       align: 'center',
+      width: 160,
+      render: (text) => <>{text}</>,
+      ...getColumnSearchProps(
+        'receiver_phone',
+         handleSearch,
+         handleReset,
+         searchText,
+         setSearchText,
+         searchedColumn,
+         setSearchedColumn,
+         searchInput
+        ),
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'order_status_id',
+      key: 'order_status_id',
       width: 100,
-      render: (text) => <>{text}</>
+      align: 'center',
+      filters: [
+        {
+          text: <Button className='!bg-red-500' type="primary"> Chờ xử lý</Button>,
+          value: '1',
+        },
+        {
+          text:  <Button className=' !bg-orange-400' type="primary"> Đang chuẩn bị</Button>,
+          value: '2',
+        },
+        {
+          text: <Button className=' !bg-green-400' type="primary"> Đang vận chuyển</Button>,
+          value: '3',
+        },
+        {
+          text: <Button className=' !bg-blue-400' type="primary"> Đang giao hàng</Button>,
+          value: '4',
+        },
+        {
+          text: <Button type="primary"> Đã giao hàng</Button>,
+          value: '5',
+        },
+        {
+          text: <Button className='!bg-black' type="primary"> Đơn hàng bị hủy</Button>,
+          value: '6',
+        },
+        {
+          text:<Button className='!bg-[#178352]' type="primary"> Hoàn thành</Button>,
+          value: '7',
+        },
+      ],
+      onFilter: (value, record : any) => String(record.order_status_id).startsWith(value as string),
+      
+      render: (order_status_id) => {
+        console.log(order_status_id)
+        if(order_status_id == '1') return  <Button className='!bg-red-500' type="primary"> Chờ xử lý</Button>
+        if(order_status_id == '2') return  <Button className=' !bg-orange-400' type="primary"> Đang chuẩn bị</Button>
+        if(order_status_id == '3') return  <Button className=' !bg-green-400' type="primary"> Đang vận chuyển</Button>
+        if(order_status_id == '4') return  <Button className=' !bg-blue-400' type="primary"> Đang giao hàng</Button>
+        if(order_status_id == '5') return  <Button type="primary"> Đã giao hàng</Button>
+        if(order_status_id == '6') return  <Button className='!bg-black' type="primary"> Đơn hàng bị hủy</Button>
+        if(order_status_id == '7') return  <Button className='!bg-[#178352]' type="primary"> Hoàn thành</Button>
+        return <></>
+      }
     },
     {
-      title: 'Date order',
-      dataIndex: 'order_date',
-      key: 'order_date',
+      title: 'Tổng tiền',
+      dataIndex: 'total_price',
+      key: 'total_price',
       align: 'center',
-      width: 140,
-      render: (text) => <>{text}</>
+      width: 160,
+      render: (text) => <>{VND(text)}</>
     },
-  
     {
       title: 'Action',
       key: 'action',
@@ -85,23 +175,24 @@ export default function ListOrder() {
       render: (record) => (
         <Space size={'middle'}>
           <Link to={'' + record?.id}>
-            <Button type='primary'>Show</Button>
+            <Button type='primary'>Chi tiết</Button>
           </Link>
-         
         </Space>
       )
     }
   ]
 
-  const newData = dataItem?.map((item: any, index: number) => ({
+  const newData = dataItem?.data?.map((item: any, index: number) => ({
     ...item,
     key: item.id
   }))
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
+    token: { colorBgContainer, borderRadiusLG }
+  } = theme.useToken()
+  const handleExportExcelFile = () => {
+    exportToExcel(newData, 'report-order');
+  }
   return (
     <>
       <Content
@@ -113,59 +204,57 @@ export default function ListOrder() {
         }}
         className='h-full'
       >
-      <Flex justify='space-between' className='mb-10'>
-        <div className='lable font-bold text-[24px] text-[#344767]'>
-          List Product
-        </div>
-        <Flex gap={10}>
-          <Button>
-            Xuất
-          </Button>
-          <Button className='bg-[#344767] text-white'>
-            Thêm order
-          </Button>
-        </Flex>
-      </Flex>
-
-      <Flex gap={20} vertical>
-        <Flex justify='space-between'>
-          <Input
-            className='header-search w-[250px]'
-            prefix={
-              <div className=' px-2'>
-                <SearchRoundedIcon />
+        <div className='lable font-bold text-[24px] text-[#344767]'>Đơn hàng</div>
+        <Row gutter={16} className='my-4'>
+          <Col span={8}>
+            <Card title='Tổng đơn đã hủy' bordered={false} extra={<CloseSquareOutlined />}>
+              <div className='text-[25px]'>
+                <b> {handleTotalSuccess(6)[0]} </b>
               </div>
-            }
-            value={searchValue}
-            spellCheck={false}
-            allowClear
-            size='small'
-            placeholder={'search'}
-            style={{
-              borderRadius: '0.375rem',
-            }}
-          />
-          <Segmented
-            default={true}
-            options={[{
-              label: 'hello',
-              children: <>hello</>
-            }]}
+              <span className=''>{handleTotalSuccess(6)[1]}% trên tổng đơn</span>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title='Tổng đơn đã hoàn thành' bordered={false} extra={<CheckSquareOutlined />}>
+              <div className='text-[25px]'>
+                <b> 0 </b>
+              </div>
+              <span className=''>0% trên tổng đơn</span>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title='Tổng đơn hàng' bordered={false} extra={<ScheduleOutlined />}>
+              <div className='text-[25px]'>
+                <b> {dataItem?.data.length} </b>
+               
+              </div>
+             
+            </Card>
+          </Col>
+        </Row>
+
+        <Flex justify='space-between' className='my-5'>
+        <div className='lable font-bold text-[17px] text-[#344767]'>Danh sách đơn hàng</div>
+          <Flex gap={10}>
+            <Button onClick={() => handleExportExcelFile()} >Xuất</Button>
+            <Button className='bg-[#344767] text-white'>Thêm order</Button>
+          </Flex>
+        </Flex>
+
+        <Flex gap={20} vertical>
+        
+          <Table
+            
+            pagination={{ pageSize: 8 }}
+            columns={columns}
             size='middle'
-            className='flex items-center px-2'
+            scroll={{ x: 1000, y: 500 }}
+            sticky={{ offsetHeader: 0 }}
+            dataSource={newData}
+            loading={isLoadingOrders}
+            className='border-2 rounded-md'
           />
         </Flex>
-        <Table
-          pagination={{ pageSize: 8 }}
-          columns={columns}
-          size='middle'
-          scroll={{ x: 1000, y: 500 }}
-          sticky={{ offsetHeader: 0 }}
-          dataSource={newData}
-          loading={isLoading}
-          className='border-2 rounded-md'
-        />
-      </Flex>
       </Content>
     </>
   )

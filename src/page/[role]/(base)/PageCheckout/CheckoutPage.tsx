@@ -12,14 +12,15 @@ import { getTotalPriceCart } from "@/utils/handleCart";
 import { Form } from "antd";
 import { useGetCartsQuery } from "@/services/CartEndPoinst";
 import { useAppDispatch } from "@/app/hooks";
-import { AddOrder } from "@/app/slices/OrderSlice";
-import { popupSuccess } from "../../shared/Toast";
+
+import { popupError, popupSuccess } from "../../shared/Toast";
 import { useNavigate } from 'react-router-dom'
 import { IOrder } from "@/common/types/Order.interface";
+import { useAddOrderMutation } from "@/services/OrderEndPoints";
 
 
 const CheckoutPage = () => {
-  
+  const [addOrder, {isLoading : isLoadingOrder}] = useAddOrderMutation();
   const {data: carts} = useGetCartsQuery({});
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
@@ -36,19 +37,34 @@ const CheckoutPage = () => {
     }, 80);
   };
 
-  const onFinish = async (values : IOrder) => {
-    const payload:IOrder = {
-      ...values,
+  const onFinish = async (values : IOrder | any) => {
+    console.log(values)
+    const payload = {
+      receiver_name : `${values.receiver_name} `,
+      receiver_email: values.receiver_email,
+      receiver_phone: values.receiver_phone,
+      receiver_pronvinces: values?.receiver_pronvinces.split('-')[0],
+      receiver_district: values?.receiver_district.split('-')[0],
+      receiver_ward: values?.receiver_ward.split('-')[0],
+      receiver_address: values?.receiver_address,
+      pick_up_required: "false",
+      note : values?.note,
       discount_code: discount
-    }    
-    
-    const checkOut = await dispatch(AddOrder(payload))
-    
-    if(checkOut && checkOut.url){
-      window.location.href = checkOut.url
     }
+   
     
-    popupSuccess('order success');
+ 
+   
+ 
+
+    try {
+      const response = await addOrder(payload).unwrap();
+      if(response && response.url){
+        window.location.href = response.url
+      }
+    } catch (error) {
+      popupError('Order error');
+    }
 
   };
 
@@ -188,6 +204,7 @@ const CheckoutPage = () => {
                   }}
                   form={form}
                   onFinish={onFinish}
+                  isLoadingOrder={isLoadingOrder}
                 />
               </div>
 
@@ -246,7 +263,7 @@ const CheckoutPage = () => {
                 <span>{carts && VND(getTotalPriceCart(carts.data))}</span>
               </div>
             </div>
-            <ButtonPrimary onClick={() => handleOrder()}  className="mt-8 w-full">
+            <ButtonPrimary loading={isLoadingOrder} onClick={() => handleOrder()}  className="mt-8 w-full">
                Confirm order
             </ButtonPrimary>
             <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">

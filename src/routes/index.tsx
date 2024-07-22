@@ -54,6 +54,7 @@ import OrderManagement from "@/page/[role]/(manager)/order";
 import AddBrand from "@/page/[role]/(manager)/brand/_components/add";
 import EditBrand from "@/page/[role]/(manager)/brand/_components/edit";
 import ProductDetailPage2 from "@/page/[role]/(base)/ProductDetailPage/ProductDetailPage2";
+import EditOrder from "@/page/[role]/(manager)/order/_components/edit";
 export default function Router() {
   return (
     <>
@@ -109,8 +110,9 @@ export default function Router() {
 
             <Route path='order' element={<OrderManagement />}>
               <Route path='add' element={<AddProduct />} />
-              
             </Route>
+            <Route path='order/:id' element={<EditOrder />} />
+
             <Route path='products' element={<ProductManagement />}>
               <Route path='add' element={<AddProduct />} />
               
