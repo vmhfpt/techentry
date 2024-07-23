@@ -54,11 +54,11 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
   const { data } = useGetBannersQuery({})
   const [bannersList, setBannersList] = useState([])
 
-  useEffect(()=>{
-    if(data){
-      let aciveBanner = data?.filter((item:any)=>item.is_active == 1);
-      aciveBanner = aciveBanner?.length > 3 ? aciveBanner.splice(0, 3) : aciveBanner;
-      setBannersList(aciveBanner?.length > 0 ? aciveBanner : DATA);
+  useEffect(() => {
+    if (data) {
+      let aciveBanner = data?.filter((item: any) => item.is_active == 1)
+      aciveBanner = aciveBanner?.length > 3 ? aciveBanner.splice(0, 3) : aciveBanner
+      setBannersList(aciveBanner?.length > 0 ? aciveBanner : DATA)
     }
   }, [data])
 
@@ -116,6 +116,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
     if (!isActive) {
       return null
     }
+
     return (
       <div
         className={`nc-SectionHero2Item nc-SectionHero2Item--animation flex flex-col-reverse lg:flex-col relative overflow-hidden ${className}`}
@@ -163,61 +164,73 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
         {/* BG */}
         <div className='absolute inset-0 bg-[#E3FFE6]'>
           {/* <div className="absolute inset-0 bg-[#F7F0EA]"> */}
-          <img className={`absolute w-full h-full ${item?.image_url ? "" : "object-contain"}`} src={item?.image_url ?? backgroundLineSvg} alt='hero' />
+          <img
+            className={`absolute w-full h-full ${item?.image_url ? '' : 'object-contain'}`}
+            src={item?.image_url ?? backgroundLineSvg}
+            alt='hero'
+          />
         </div>
 
-        <div className='relative container pb-0 pt-14 sm:pt-20 lg:py-44'>
+        <div className='relative container pb-0 pt-14 sm:pt-20 lg:py-44 md:min-h-[30rem]'>
           <div className={`relative z-[1] w-full max-w-3xl space-y-8 sm:space-y-14 nc-SectionHero2Item__left`}>
-            <div className='space-y-5 sm:space-y-6'>
-              <span className='nc-SectionHero2Item__subheading block text-base md:text-xl text-slate-700 font-medium'>
-                In this season, find the best 🔥
-              </span>
-              <h2 className='nc-SectionHero2Item__heading font-semibold text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl !leading-[114%] text-slate-900'>
-                Exclusive collection for everyone
-              </h2>
-            </div>
+            {data && data.length > 0 ? (
+              ''
+            ) : (
+              <div className='space-y-5 sm:space-y-6'>
+                <span className='nc-SectionHero2Item__subheading block text-base md:text-xl text-slate-700 font-medium'>
+                  In this season, find the best 🔥
+                </span>
+                <h2 className='nc-SectionHero2Item__heading font-semibold text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl !leading-[114%] text-slate-900'>
+                  Exclusive collection for everyone
+                </h2>
+              </div>
+            )}
 
-            <ButtonPrimary
-              className='nc-SectionHero2Item__button dark:bg-slate-900'
-              sizeClass='py-3 px-6 sm:py-5 sm:px-9'
-              href="#"
-            >
-              <span>Explore now</span>
-              <span>
-                <svg className='w-5 h-5 ml-2.5' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z'
-                    stroke='currentColor'
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                  <path
-                    d='M22 22L20 20'
-                    stroke='currentColor'
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
-              </span>
-            </ButtonPrimary>
+            {data && data.length > 0 ? (
+              <></>
+            ) : (
+              <ButtonPrimary
+                className='nc-SectionHero2Item__button dark:bg-slate-900'
+                sizeClass='py-3 px-6 sm:py-5 sm:px-9'
+                href='#'
+              >
+                <span>Explore now</span>
+                <span>
+                  <svg className='w-5 h-5 ml-2.5' viewBox='0 0 24 24' fill='none'>
+                    <path
+                      d='M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                    <path
+                      d='M22 22L20 20'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                  </svg>
+                </span>
+              </ButtonPrimary>
+            )}
           </div>
           {item?.image && (
             <div className='mt-10 lg:mt-0 lg:absolute right-0 bottom-0 top-0 w-full max-w-2xl xl:max-w-3xl 2xl:max-w-4xl'>
-            <img
-              className='w-full h-full object-contain object-right-bottom nc-SectionHero2Item__image'
-              src={item?.image}
-              alt={item?.heading}
-            />
-          </div>
+              <img
+                className='w-full h-full object-contain object-right-bottom nc-SectionHero2Item__image'
+                src={item?.image}
+                alt={item?.heading}
+              />
+            </div>
           )}
         </div>
       </div>
     )
   }
 
-  return <>{bannersList.map((_: any, index: number) => renderItem(index))}</>
+  return <>{bannersList.map((banner: any, index: number) => renderItem(index))}</>
 }
 
 export default SectionHero2
