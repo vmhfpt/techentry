@@ -15,6 +15,8 @@ export default function EditOrder(){
   const dataItem = data?.order_detail;
   const dataOrderDetail = data?.order_detail.order_details;
   console.log(dataItem)
+
+
     const handleExportBill = async  () => {
         await exportToWord([
             {
@@ -98,7 +100,7 @@ export default function EditOrder(){
           </Button>
       </div>
       <Row gutter={16}>
-    <Col span={8}>
+    <Col span={12}>
       <Card title="Thông tin đơn hàng" bordered={false}  extra={<> <Badge color="green" text={dataItem?.order_status} /></>}>
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Mã đơn hàng : </b>
@@ -115,7 +117,7 @@ export default function EditOrder(){
           </div>
       </Card>
     </Col>
-    <Col span={8}>
+    <Col span={12}>
       <Card title="Thông tin khách hàng" bordered={false}>
       <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Tên: </b>
@@ -136,8 +138,52 @@ export default function EditOrder(){
           </div>
       </Card>
     </Col>
-    <Col span={8}>
-    <div className="p-4 max-w-md mx-auto flow-root">
+  
+
+
+    <Col className="mb-5" span={24}>
+    <div className='lable font-bold text-[17px] text-[#344767] my-5'>Danh sách sản phẩm đặt hàng</div>
+    <Table
+            pagination={{ pageSize: 8 }}
+            columns={columns}
+            size='middle'
+            scroll={{ x: 1000, y: 500 }}
+            sticky={{ offsetHeader: 0 }}
+            dataSource={dataOrderDetail}
+            loading={false}
+            className='border-2 rounded-md'
+          />
+    </Col>
+
+    <Col span={12}>
+      <Card title="Thanh toán" bordered={false} extra={<> <Tag color="#f50">{dataItem?.payment_status}</Tag></>}>
+          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <b className="">Tổng tiền sản phẩm : </b>
+              <span className="">{VND(dataItem?.total_price)}</span>
+          </div>
+
+          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <b className="">Giảm giá : </b>
+              <span className="">{VND(Number(dataItem?.total_price) - Number(dataItem?.discount_price))}</span>
+          </div>
+          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <b className="">Kiểu thanh toán : </b>
+              <span className="">{dataItem?.payment_methods}</span>
+          </div>
+          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <b className="">Phí vận chuyển : </b>
+              <span className="">0đ</span>
+          </div>
+          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <b className="text-[19px]">Tổng cộng : </b>
+              <b className="text-[19px] text-red-500">{ VND(Number(dataItem?.discount_price))}</b>
+          </div>
+      </Card>
+    </Col>
+    <Col span={12}>
+      <Card title="Giao hàng" bordered={false}>
+    
+    <div className="">
   <ul role="list" className="-mb-8">
     <li>
       <div className="relative pb-8">
@@ -315,54 +361,7 @@ export default function EditOrder(){
   </ul>
 </div>
     
-    </Col>
-
-
-    <Col className="mb-5" span={24}>
-    <div className='lable font-bold text-[17px] text-[#344767] my-5'>Danh sách sản phẩm đặt hàng</div>
-    <Table
-            pagination={{ pageSize: 8 }}
-            columns={columns}
-            size='middle'
-            scroll={{ x: 1000, y: 500 }}
-            sticky={{ offsetHeader: 0 }}
-            dataSource={dataOrderDetail}
-            loading={false}
-            className='border-2 rounded-md'
-          />
-    </Col>
-
-    <Col span={12}>
-      <Card title="Thanh toán" bordered={false} extra={<> <Tag color="#f50">{dataItem.payment_status}</Tag></>}>
-          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="">Tổng tiền sản phẩm : </b>
-              <span className="">{VND(dataItem.total_price)}</span>
-          </div>
-
-          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="">Giảm giá : </b>
-              <span className="">{VND(Number(dataItem.total_price) - Number(dataItem.discount_price))}</span>
-          </div>
-          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="">Kiểu thanh toán : </b>
-              <span className="">{dataItem.payment_methods}</span>
-          </div>
-          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="">Phí vận chuyển : </b>
-              <span className="">0đ</span>
-          </div>
-          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="text-[19px]">Tổng cộng : </b>
-              <b className="text-[19px] text-red-500">{ VND(Number(dataItem.discount_price))}</b>
-          </div>
-      </Card>
-    </Col>
-    <Col span={12}>
-      <Card title="Giao hàng" bordered={false}>
-      <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="">Trạng thái: </b>
-              <span className="">Đã giao</span>
-          </div>
+ 
 
          
       </Card>

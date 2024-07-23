@@ -10,6 +10,8 @@ import TextEditor from './TextEditor/TextEditor';
 import { useCreateProductMutation } from '../ProductsEndpoints';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 
+
+
 interface gallery{
   image: File | string
   displayPic: string
@@ -111,17 +113,17 @@ function AddProduct() {
     formdata.append('is_new', String(is_new));
     formdata.append('is_show_home', String(is_show_home));
     formdata.append('type_discount', String(typeDiscount));
-    formdata.append('discount', typeDiscount == 'percent' ? percentage : typeDiscount == 'fixed' ? fixed : '');
+    formdata.append('discount', fixed);
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
-    // try {
-    //   await addProduct(formdata).unwrap();
-    //   popupSuccess('Add product success');
-    //   navigate('..');
-    // } catch (error) {
-    //   popupError('Add product error');
-    // }
+    try {
+      await addProduct(formdata).unwrap();
+      popupSuccess('Add product success');
+      navigate('..');
+    } catch (error) {
+      popupError('Add product error');
+    }
     
   }
 
