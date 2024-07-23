@@ -12,7 +12,8 @@ import { formatTimestamp } from "@/utils/formatDate";
 export default function EditOrder(){
   const params = useParams();
   const {data} = useGetOrderQuery(params.id);
-  const dataItem = data?.order_detail
+  const dataItem = data?.order_detail;
+  const dataOrderDetail = data?.order_detail.order_details;
   console.log(dataItem)
     const handleExportBill = async  () => {
         await exportToWord([
@@ -38,15 +39,26 @@ export default function EditOrder(){
          
         },
         {
+          title: 'Image',
+          width: 160,
+          render: (data) => (
+            <div className=' rounded-md w-[40px] h-[40px] overflow-hidden ' style={{boxShadow: 'rgba(1, 1, 1, 0.06) 1rem 1.25rem 1.6875rem 1rem'}}>
+              <img src={data.image ? data.image : data.thumbnail} alt="" width={110} className=' object-cover object-center'/>
+            </div>
+          )
+        },
+        {
           title: 'Biến thể',
           align: 'center',
           width: 160,
-          render: (text) => (
-            <a>
-              {text}
-            </a>
-          )
+          render: (text) =>{
+            return  <a>
+            {text?.varians[0]?.name}
+            {text?.varians[1] && ` | ${text?.varians[1].name}`}
+          </a>
+          }
         },
+
         {
             title: 'Số lượng',
             align: 'center',
@@ -67,17 +79,15 @@ export default function EditOrder(){
             width: 160,
             render: (text) => (
               <a>
-                {text}
+                {VND(text)}
               </a>
             )
           },
         {
           title: 'Tổng tiền',
-          dataIndex: 'total_price',
-          key: 'total_price',
           align: 'center',
           width: 160,
-          render: (text) => <>{VND(1234567)}</>
+          render: (data) => <>{VND(data.quantity * Number(data.price))}</>
         },
        
       ]
@@ -316,30 +326,34 @@ export default function EditOrder(){
             size='middle'
             scroll={{ x: 1000, y: 500 }}
             sticky={{ offsetHeader: 0 }}
-            dataSource={[]}
+            dataSource={dataOrderDetail}
             loading={false}
             className='border-2 rounded-md'
           />
     </Col>
 
     <Col span={12}>
-      <Card title="Thanh toán" bordered={false} extra={<> <Badge color="green" text="Đã thanh toán" /></>}>
+      <Card title="Thanh toán" bordered={false} extra={<> <Tag color="#f50">{dataItem.payment_status}</Tag></>}>
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Tổng tiền sản phẩm : </b>
-              <span className="">200000 đ</span>
+              <span className="">{VND(dataItem.total_price)}</span>
           </div>
 
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Giảm giá : </b>
-              <span className="">200000 đ</span>
+              <span className="">{VND(Number(dataItem.total_price) - Number(dataItem.discount_price))}</span>
+          </div>
+          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <b className="">Kiểu thanh toán : </b>
+              <span className="">{dataItem.payment_methods}</span>
           </div>
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Phí vận chuyển : </b>
               <span className="">0đ</span>
           </div>
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
-              <b className="">Tổng cộng : </b>
-              <b className="">0đ</b>
+              <b className="text-[19px]">Tổng cộng : </b>
+              <b className="text-[19px] text-red-500">{ VND(Number(dataItem.discount_price))}</b>
           </div>
       </Card>
     </Col>
