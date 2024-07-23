@@ -41,7 +41,6 @@ const CheckoutPage = () => {
     console.log(values)
     const payload = {
       receiver_name : `${values.receiver_name} `,
-      receiver_email: values.receiver_email,
       receiver_phone: values.receiver_phone,
       receiver_pronvinces: values?.receiver_pronvinces.split('-')[0],
       receiver_district: values?.receiver_district.split('-')[0],
@@ -204,7 +203,6 @@ const CheckoutPage = () => {
                   }}
                   form={form}
                   onFinish={onFinish}
-                  isLoadingOrder={isLoadingOrder}
                 />
               </div>
 

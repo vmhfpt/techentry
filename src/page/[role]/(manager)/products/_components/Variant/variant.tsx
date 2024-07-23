@@ -110,6 +110,7 @@ export default function Variant({keyValue, detail, show, setDetail, handleRemove
             });  
             setDetail(newFields)
             setinputField(inputField-1)
+            form.resetFields(['variant'])
         }          
     }
 

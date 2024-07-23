@@ -78,7 +78,7 @@ function AddProduct() {
     const is_new = form.getFieldValue('is_new') ? 1 : 0;
     const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;
     
-    const newProductItem = [];
+    const newProductItem = [];    
 
     for(const key in product_item){      
       const id = key.split('-');
@@ -95,9 +95,6 @@ function AddProduct() {
         ...product_item[key]
       });
     }    
-    console.log(variant);
-    
-    console.log(newProductItem);
     
 
     const formdata = new FormData();
@@ -118,13 +115,13 @@ function AddProduct() {
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
-    try {
-      await addProduct(formdata).unwrap();
-      popupSuccess('Add product success');
-      navigate('..');
-    } catch (error) {
-      popupError('Add product error');
-    }
+    // try {
+    //   await addProduct(formdata).unwrap();
+    //   popupSuccess('Add product success');
+    //   navigate('..');
+    // } catch (error) {
+    //   popupError('Add product error');
+    // }
     
   }
 
