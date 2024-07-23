@@ -193,19 +193,6 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           </div>
 
           {/* ============ */}
-
-          <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
-            <div className='w-full'>
-              
-              <Form.Item name='receiver_email' label='Email' rules={[{ required: true }]}>
-                <Input  placeholder='Nhập email' />
-              </Form.Item>
-              
-            </div>
-            
-          </div>
-
-          {/* ============ */}
           
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
