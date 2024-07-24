@@ -32,14 +32,14 @@ export const ordersApi = apiWithTag.injectEndpoints({
       query: (id) => `order/${id}`,
       providesTags: (id) => [{ type: 'Orders', id }],
     }),
-    // updateCart: builder.mutation({
-    //   query: (payload) => ({
-    //     url: `cart/${payload.id}`,
-    //     method: 'PUT',
-    //     body: {quantity : payload.quantity},
-    //   }),
-    //   invalidatesTags: (id) => [{ type: 'Orders', id },  { type: 'Orders', id: 'LIST' }],
-    // }),
+    changeStatusOrder: builder.mutation({
+      query: (payload) => ({
+        url: `order/update/status/${payload.id}`,
+        method: 'PUT',
+        body: {status : payload.status},
+      }),
+      invalidatesTags: (id) => [{ type: 'Orders', id },  { type: 'Orders', id: 'LIST' }],
+    }),
     // deleteCart: builder.mutation({
     //   query: (id) => ({
     //     url: `cart/${id}`,
@@ -54,5 +54,6 @@ export const {
   useAddOrderMutation,
   useGetOrdersQuery,
   usePrefetch,
-  useGetOrderQuery
+  useGetOrderQuery,
+  useChangeStatusOrderMutation
 } = ordersApi;

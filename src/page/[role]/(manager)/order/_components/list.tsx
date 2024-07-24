@@ -1,5 +1,5 @@
 import type { TableProps } from 'antd'
-import { Button, Card, Col, Flex, Input, Popconfirm, Row, Segmented, Space, Table, Typography, message } from 'antd'
+import { Button, Card, Col, Flex, Input, Popconfirm, Row, Segmented, Select, Space, Table, Tag, Typography, message } from 'antd'
 import { Link } from 'react-router-dom'
 import { useCallback } from 'react'
 
@@ -8,18 +8,19 @@ import { IBanner } from '@/common/types/banner.interface'
 
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import { CloseSquareOutlined, CheckSquareOutlined, ScheduleOutlined } from '@ant-design/icons'
-import { useGetOrdersQuery } from '@/services/OrderEndPoints'
+import { useChangeStatusOrderMutation, useGetOrdersQuery } from '@/services/OrderEndPoints'
 import { VND } from '@/utils/formatVietNamCurrency'
 import { formatTimestamp } from '@/utils/formatDate'
 import useQuerySearch from '../../hooks/useQuerySearch'
 import { getColumnSearchProps } from '../../components/util/SortHandle'
 import { exportToExcel } from '@/utils/exportExcelFile'
+import { popupError, popupSuccess } from '@/page/[role]/shared/Toast'
 export default function ListOrder() {
 
-
+  const [changeStatus] = useChangeStatusOrderMutation();
   const {searchText,setSearchText,setSearchedColumn, searchedColumn, searchInput, handleSearch, handleReset } = useQuerySearch();
 
-
+   
   
 
   const {  Content } = Layout
@@ -42,6 +43,25 @@ export default function ListOrder() {
   
   }, [])
 
+  const handleDisableSelect = (statusCurrent: number, statusOrder: number) => {
+    if(statusOrder === 8 || (statusCurrent === 8 && statusOrder === 7)) return true;
+    if(statusOrder === 3 && statusCurrent === 7) return false;
+    if(statusCurrent === 8 && statusOrder === 1) return false;
+     if(statusOrder + 1 === statusCurrent) return false;
+     return true;
+  }
+  const handleOnChangeStatus = async (status: number, order_id: number) => {
+    const payload = {
+      id : order_id,
+      status: status
+    }
+    try {
+      await changeStatus(payload).unwrap();
+      popupSuccess('Cập nhật trạng thái đơn hàng thành công')
+    } catch (error) {
+      popupError('Cập nhật trạng thái đơn hàng thất bại');
+    }
+  }
 
   const columns: TableProps<IBanner>['columns'] = [
     {
@@ -111,52 +131,61 @@ export default function ListOrder() {
     },
     {
       title: 'Trạng thái',
-      dataIndex: 'order_status_id',
-      key: 'order_status_id',
-      width: 100,
+      width: 150,
       align: 'center',
       filters: [
         {
-          text: <Button className='!bg-red-500' type="primary"> Chờ xử lý</Button>,
+          text:  <Tag color="red">Chờ xử lý</Tag>,
           value: '1',
         },
         {
-          text:  <Button className=' !bg-orange-400' type="primary"> Đang chuẩn bị</Button>,
+          text: <Tag color="orange">Đang chuẩn bị</Tag> ,
           value: '2',
         },
         {
-          text: <Button className=' !bg-green-400' type="primary"> Đang vận chuyển</Button>,
+          text: <Tag color="green">Đơn hàng sẵn sàng</Tag> ,
           value: '3',
         },
         {
-          text: <Button className=' !bg-blue-400' type="primary"> Đang giao hàng</Button>,
+          text: <Tag color="cyan">Đang vận chuyển</Tag>,
           value: '4',
         },
         {
-          text: <Button type="primary"> Đã giao hàng</Button>,
+          text: <Tag color="blue"> Đang giao hàng</Tag>,
           value: '5',
         },
         {
-          text: <Button className='!bg-black' type="primary"> Đơn hàng bị hủy</Button>,
+          text: <Tag color="geekblue"> Đã giao hàng</Tag>,
           value: '6',
         },
         {
-          text:<Button className='!bg-[#178352]' type="primary"> Hoàn thành</Button>,
+          text: <Tag color="success"> Hoàn thành</Tag>,
           value: '7',
+        },
+        {
+          text: <Tag color="#000000"> Đơn hàng bị hủy</Tag>,
+          value: '8',
         },
       ],
       onFilter: (value, record : any) => String(record.order_status_id).startsWith(value as string),
       
-      render: (order_status_id) => {
-        console.log(order_status_id)
-        if(order_status_id == '1') return  <Button className='!bg-red-500' type="primary"> Chờ xử lý</Button>
-        if(order_status_id == '2') return  <Button className=' !bg-orange-400' type="primary"> Đang chuẩn bị</Button>
-        if(order_status_id == '3') return  <Button className=' !bg-green-400' type="primary"> Đang vận chuyển</Button>
-        if(order_status_id == '4') return  <Button className=' !bg-blue-400' type="primary"> Đang giao hàng</Button>
-        if(order_status_id == '5') return  <Button type="primary"> Đã giao hàng</Button>
-        if(order_status_id == '6') return  <Button className='!bg-black' type="primary"> Đơn hàng bị hủy</Button>
-        if(order_status_id == '7') return  <Button className='!bg-[#178352]' type="primary"> Hoàn thành</Button>
-        return <></>
+      render: (item : any) => {
+        return (<div className='w-[150px]'><Select
+          defaultValue={String(item.order_status_id)}
+          style={{ width: 150 }}
+          onChange={(e) => { handleOnChangeStatus(Number(e), Number(item.id)) }}
+          options={[
+            { value: '1', label: <Tag color="red">Chờ xử lý</Tag>, disabled: handleDisableSelect(1, Number(item.order_status_id))},
+            { value: '2', label: <Tag color="orange">Đang chuẩn bị</Tag>, disabled: handleDisableSelect(2, Number(item.order_status_id))},
+            { value: '3', label: <Tag color="green">Đơn hàng sẵn sàng</Tag>, disabled: handleDisableSelect(3, Number(item.order_status_id))},
+            { value: '4', label: <Tag color="cyan">Đang vận chuyển</Tag>, disabled: handleDisableSelect(4, Number(item.order_status_id))},
+            { value: '5', label: <Tag color="blue"> Đang giao hàng</Tag>, disabled: handleDisableSelect(5, Number(item.order_status_id))},
+            { value: '6', label: <Tag color="geekblue"> Đã giao hàng</Tag>, disabled: handleDisableSelect(6, Number(item.order_status_id))},
+            { value: '7', label: <Tag color="success"> Hoàn thành</Tag>, disabled: handleDisableSelect(7, Number(item.order_status_id))},
+            { value: '8', label: <Tag color="#000000"> Đơn hàng bị hủy</Tag>, disabled: handleDisableSelect(8, Number(item.order_status_id))},
+          ]}
+        /></div>)
+        
       }
     },
     {
