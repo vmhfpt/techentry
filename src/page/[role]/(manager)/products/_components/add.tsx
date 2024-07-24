@@ -115,13 +115,13 @@ function AddProduct() {
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
-    // try {
-    //   await addProduct(formdata).unwrap();
-    //   popupSuccess('Add product success');
-    //   navigate('..');
-    // } catch (error) {
-    //   popupError('Add product error');
-    // }
+    try {
+      await addProduct(formdata).unwrap();
+      popupSuccess('Add product success');
+      navigate('..');
+    } catch (error) {
+      popupError('Add product error');
+    }
     
   }
 

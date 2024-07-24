@@ -1,4 +1,4 @@
-  import React, { FC, useState } from "react";
+  import React, { FC, useEffect, useMemo, useRef, useState } from "react";
   import {
     NoSymbolIcon,
     ClockIcon,
@@ -28,29 +28,41 @@
   import 'swiper/css';
   import SwiperCore from 'swiper';
   import '../../../../styles/base/ant.scss'
+  import { useGetProductQuery } from '../../(manager)/products/ProductsEndpoints';
+  import { useParams } from 'react-router-dom';
+import { VND } from "@/utils/formatVietNamCurrency";
+import { useAddToCartMutation } from '@/services/CartEndPoinst'
+import { IAddCart } from "@/common/types/cart.interface";
   export interface ProductDetailPage2Props {
     className?: string;
+  }
+
+  type GroupedVariants = {
+    name: string;
+    attribute: string[];
+  };
+
+  type variantActive = {
+    [key: string]: string
   }
 
   const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     className = "",
   }) => {
+    const {slug} = useParams()
+    
+    const {data, isLoading} = useGetProductQuery(slug);        
+    
     const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
-    const LIST_IMAGES_DEMO: string[] = [
-      detail21JPG,
-      detail22JPG,
-      detail23JPG,
-      detail24JPG,
-      detail24JPG,
-      detail24JPG,
-      detail24JPG,
-    ];
-    const PRICE = 108;
 
     const [variantActive, setVariantActive] = React.useState(0);
     const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
+    const [variantActives, setVariantActives] = React.useState<Array<variantActive>>([])
     const [qualitySelected, setQualitySelected] = React.useState(1);
     const [activeThumb, setActiveThumb] = React.useState<SwiperCore | null>();
+    const [thumb, setThumb] = useState('');
+    const swiperRef = useRef(null);
+    const [addToCart, {isLoading: LoadingCart}] = useAddToCartMutation();
 
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenModalViewAllReviews, setIsOpenModalViewAllReviews] =
@@ -64,88 +76,91 @@
 
     const handleCloseModal = () => setIsOpen(false);
 
-    //
-    const renderVariants = () => {
-      if (!variants || !variants.length) {
-        return null;
+    const groupVariant = () => {
+      const {products} = data.data;
+      const groupedVariants: { [key: string]: Set<string> } = {};
+
+      products.forEach(product => {
+          product.variants.forEach(variant => {
+              const { variant_name, name } = variant;
+              if (!groupedVariants[variant_name]) {
+                  groupedVariants[variant_name] = new Set();
+              }
+              groupedVariants[variant_name].add(name);
+          });
+      });
+
+      const result = Object.keys(groupedVariants).map(variant_name => {
+        return {
+          name: variant_name,
+          attribute: Array.from(groupedVariants[variant_name])
+        }
+      });
+      
+      return result
+    }
+
+    useEffect(()=>{
+      if(data){
+        const newVariantActives = groupVariant().map(item => ({
+          [item.name]: item.attribute[0]
+        }));
+  
+        setVariantActives(newVariantActives)    
+        setThumb(data.data.thumbnail)            
       }
+      
+    }, [isLoading, data])
 
-      return (
-        <div>
-          <label htmlFor="">
-            <span className="text-sm font-medium">
-              Color:
-              <span className="ml-1 font-semibold">
-                {variants[variantActive].name}
-              </span>
-            </span>
-          </label>
-          <div className="flex mt-3">
-            {variants.map((variant, index) => (
-              <div
-                key={index}
-                onClick={() => setVariantActive(index)}
-                className={`relative flex-1 max-w-[75px] h-10 sm:h-11 rounded-full border-2 cursor-pointer ${
-                  variantActive === index
-                    ? "border-primary-6000 dark:border-primary-500"
-                    : "border-transparent"
-                }`}
-              >
-                <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-                  <img
-                    src={variant.thumbnail}
-                    alt=""
-                    className="absolute w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    };
-
-    const notifyAddTocart = () => {
+    const notifyAddTocart = async () => {
+      const {products, thumbnail, name} = data.data
+      const product = findProductVariant()(products, variantActives)
+      const {image, id} = product
+      
+      const payload: IAddCart = {
+        quantity: qualitySelected,
+        product_item_id: id,
+      }
+      await addToCart(payload).unwrap();
       toast.custom(
         (t) => (
           <NotifyAddTocart
-            productImage={LIST_IMAGES_DEMO[0]}
+            productImage={image || thumbnail}
             qualitySelected={qualitySelected}
             show={t.visible}
-            sizeSelected={sizeSelected}
-            variantActive={variantActive}
+            product={product}
+            name={name}
           />
         ),
         { position: "top-right", id: "nc-product-notify", duration: 3000 }
       );
     };
 
-    const renderSizeList = () => {
-      if (!allOfSizes || !sizes || !sizes.length) {
+    const renderVariants = (variant: GroupedVariants, key: number) => {
+      if (!variant || !variant || !variant.attribute.length) {
         return null;
       }
+
+      if(!data && !isLoading){
+        return null
+      }
+
+      const {products} = data.data
+      
       return (
         <div>
-          <div className="flex justify-between font-medium text-sm">
+          <div className="flex justify-between font-medium text-lg">
             <label htmlFor="">
               <span className="">
-                Size:
-                <span className="ml-1 font-semibold">{sizeSelected}</span>
+                {variant.name}:
+                <span className="ml-1 font-semibold">{variantActives[key][variant.name]}</span>
               </span>
             </label>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="##"
-              className="text-primary-6000 hover:text-primary-500"
-            >
-              See sizing chart
-            </a>
           </div>
           <div className="grid grid-cols-4 gap-2 mt-3">
-            {allOfSizes.map((size, index) => {
-              const isActive = size === sizeSelected;
-              const sizeOutStock = !sizes.includes(size);
+            {variant.attribute.map((item, index) => {
+              const isActive = item === variantActives[key][variant.name];
+              const sizeOutStock = !variant.attribute.includes(item);
               return (
                 <div
                   key={index}
@@ -163,10 +178,26 @@
                     if (sizeOutStock) {
                       return;
                     }
-                    setSizeSelected(size);
+                    setVariantActives(
+                      variantActives.map(i=>{
+                        if(i[variant.name]){
+                          return {
+                            [variant.name]: item
+                          }
+                        }
+                        return i
+                      })
+                    );
+
+                    const {image} = findProductVariant()(products, variantActives)
+
+                    setThumb(image || thumb)
+                    if (swiperRef.current && swiperRef.current.swiper) {
+                      swiperRef.current.swiper.slideTo(0);
+                    }
                   }}
                 >
-                  {size}
+                  {item}
                 </div>
               );
             })}
@@ -174,6 +205,37 @@
         </div>
       );
     };
+
+    const findProductVariant = () => {
+
+      // Chuyển đổi targetArray thành định dạng dễ so sánh
+      function transformTargetArray(targetArray) {
+        return targetArray.map(item => {
+          const key = Object.keys(item)[0];
+          return { variant_name: key, name: item[key] };
+        });
+      }
+
+      // So sánh hai đối tượng
+      function objectsEqual(obj1, obj2) {
+        return obj1.variant_name === obj2.variant_name && obj1.name === obj2.name;
+      }
+
+      // So sánh hai mảng
+      function arraysEqual(arr1, arr2) {
+        if (arr1.length !== arr2.length) return false;
+        return arr1.every((item, index) => objectsEqual(item, arr2[index]));
+      }
+
+      // Tìm mảng trùng khớp trong arrayList
+      function findMatchingArray(arrayList, targetArray) {
+        const transformedTargetArray = transformTargetArray(targetArray);
+        return arrayList.find(arr => arraysEqual(arr.variants, transformedTargetArray));
+      }
+
+      return findMatchingArray
+
+    }
 
     const renderStatus = () => {
       if (!status) {
@@ -216,7 +278,22 @@
       return null;
     };
 
-    const renderSectionSidebar = () => {
+    const renderSectionSidebar = useMemo(() => {
+
+      if(!data && isLoading){
+        return null
+      }
+
+      const {products} = data.data      
+
+      if(!variantActives || variantActives.length == 0 ){
+        return false
+      }
+
+      const product = findProductVariant()(products, variantActives);      
+      
+      const {price} = product   
+            
       return (
         <div className="listingSectionSidebar__wrap lg:shadow-lg">
           <div className="space-y-7 lg:space-y-8">
@@ -225,7 +302,7 @@
               {/* ---------- 1 HEADING ----------  */}
               <div className="flex items-center justify-between space-x-5">
                 <div className="flex text-2xl font-semibold">
-                  ${PRICE.toFixed(2)}
+                  {VND(parseFloat(price))}
                 </div>
 
                 <a
@@ -247,8 +324,11 @@
 
               {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
               <div className="mt-6 space-y-7 lg:space-y-8">
-                <div className="">{renderVariants()}</div>
-                <div className="">{renderSizeList()}</div>
+                {
+                groupVariant().map((item, key)=>(
+                  <div key={key} className="">{renderVariants(item, key)}</div>
+                ))
+                }
               </div>
             </div>
             {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
@@ -273,35 +353,35 @@
               <div className="space-y-2.5">
                 <div className="flex justify-between text-slate-600 dark:text-slate-300">
                   <span className="flex">
-                    <span>{`$${PRICE.toFixed(2)}  `}</span>
+                    <span>{`${VND(parseFloat(price))}  `}</span>
                     <span className="mx-2">x</span>
                     <span>{`${qualitySelected} `}</span>
                   </span>
 
-                  <span>{`$${(PRICE * qualitySelected).toFixed(2)}`}</span>
+                  <span>{`${VND((price * qualitySelected))}`}</span>
                 </div>
                 <div className="flex justify-between text-slate-600 dark:text-slate-300">
-                  <span>Tax estimate</span>
-                  <span>$0</span>
+                  <span>Thuế giá trị gia tăng</span>
+                  <span>0</span>
                 </div>
               </div>
               <div className="border-b border-slate-200 dark:border-slate-700"></div>
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>{`$${(PRICE * qualitySelected).toFixed(2)}`}</span>
+              <div className="flex justify-between font-semibold text-[24px]">
+                <span>Tổng tiền</span>
+                <span>{`${VND((price * qualitySelected))}`}</span>
               </div>
             </div>
           </div>
         </div>
       );
-    };
+    }, [variantActives, qualitySelected])
 
     const renderSection1 = () => {
       return (
         <div >
           
           {/*  */}
-          <div className="block lg:hidden">{renderSectionSidebar()}</div>
+          <div className="block lg:hidden">{renderSectionSidebar}</div>
 
           {/*  */}
           {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
@@ -370,6 +450,123 @@
       );
     };
 
+    const Gallery = () => {
+      return (
+        <div className="lg:space-y-3 space-y-2">
+          <div className="relative border-2 rounded-[0.75rem]">
+              <div
+                className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer h-[250px] md:h-[400px]"
+              >
+                <Swiper
+                  ref={swiperRef}
+                  loop={true}
+                  modules={[Navigation, Thumbs, Controller]}
+                  slidesPerView={1}
+                  thumbs={{ swiper: activeThumb && !activeThumb.destroyed ? activeThumb : null }}
+                  navigation={true}
+                  grabCursor={true}
+                  pagination={{ clickable: true }}
+                  scrollbar={{ draggable: true }}
+                  className="product-images-slider"
+                >
+                  {
+                    [thumb, ...data.data.galleries.map(item => item.image)].map((item, key)=>(
+                      <SwiperSlide key={key}>
+                        <NcImage
+                            containerClassName="flex items-center justify-center h-full"
+                            className=" rounded-md sm:rounded-xl h-full "
+                            src={item}
+                          />
+                      </SwiperSlide>
+                    ))
+                  }
+                </Swiper>
+              </div>
+
+              {/*  */}
+
+            <div
+              className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
+              onClick={() => handleOpenModal(0)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                />
+              </svg>
+              <span className="ml-2 text-neutral-800 text-sm font-medium">
+                Show all photos
+              </span>
+            </div>
+          </div>
+          <div className="">
+            <Swiper
+              onSwiper={setActiveThumb}
+              modules={[Navigation, Thumbs, Controller]}
+              watchSlidesProgress
+              spaceBetween={10}
+              breakpoints={{
+                1420: {
+                  slidesPerView: 11,
+                  spaceBetween: 10
+                },
+                320:{
+                  slidesPerView: 7,
+                  spaceBetween: 10
+                },
+                640: {
+                  slidesPerView: 8,
+                  spaceBetween: 10
+                },
+                770:{
+                  slidesPerView: 10,
+                  spaceBetween: 10
+                },
+                1024: {
+                  slidesPerView: 8,
+                  spaceBetween: 10
+                }
+              }}
+              className="product-images-slider product-slide-thumbs"
+            >
+              {
+                [thumb, ...data.data.galleries.map(item => item.image)].map((item, index)=>(
+                  <SwiperSlide key={index}>
+                      <NcImage
+                        containerClassName="flex items-center justify-center border-[2px] rounded-md sm:rounded-xl p-1 cursor-pointer "
+                        className=" rounded-sm sm:rounded-md h-[50px] object-cover w-[50px] "
+                        src={item}
+                      />
+                  </SwiperSlide>
+                ))
+              }
+            </Swiper>
+          </div>
+          {/* MODAL PHOTOS */}
+          <ModalPhotos
+            imgs={[thumb, ...data.data.galleries.map(item => item.image)]}
+            isOpen={isOpen}
+            onClose={handleCloseModal}
+            initFocus={openFocusIndex}
+            uniqueClassName="nc-ProductDetailPage2__modalPhotos"
+          />
+        </div>
+      )
+    }
+
+    if(!data && isLoading){
+      return null
+    }
+
     return (
       <div
         className={`ListingDetailPage nc-ProductDetailPage2 ${className}`}
@@ -380,133 +577,31 @@
           <header className="container mt-8 sm:mt-10">
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold">
-              Heavy Weight Hoodie
+              {data.data.name}
             </h2>
           </div>
           </header>
-          {/* MODAL PHOTOS */}
-          <ModalPhotos
-            imgs={LIST_IMAGES_DEMO}
-            isOpen={isOpen}
-            onClose={handleCloseModal}
-            initFocus={openFocusIndex}
-            uniqueClassName="nc-ProductDetailPage2__modalPhotos"
-          />
         </>
 
         {/* MAIn */}
         <main className="container relative z-10 mt-9 sm:mt-11 flex ">
           {/* CONTENT */}
           <div className="w-full lg:w-3/5 xl:w-2/3 space-y-10 lg:pr-14 lg:space-y-14">
-            <div className="lg:space-y-3 space-y-2">
-              <div className="relative border-2 rounded-[0.75rem]">
-                  <div
-                    className="col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer h-[250px] md:h-[400px]"
-                  >
-                    <Swiper
-                      loop={true}
-                      modules={[Navigation, Thumbs, Controller]}
-                      slidesPerView={1}
-                      thumbs={{ swiper: activeThumb && !activeThumb.destroyed ? activeThumb : null }}
-                      navigation={true}
-                      grabCursor={true}
-                      pagination={{ clickable: true }}
-                      scrollbar={{ draggable: true }}
-                      className="product-images-slider"
-                    >
-                      {
-                        LIST_IMAGES_DEMO.map((item, key)=>(
-                          <SwiperSlide key={key}>
-                            <NcImage
-                                containerClassName="flex items-center justify-center h-full"
-                                className=" rounded-md sm:rounded-xl h-full "
-                                src={item}
-                              />
-                          </SwiperSlide>
-                        ))
-                      }
-                    </Swiper>
-                  </div>
-                  
-                  {/*  */}
-                
-                <div
-                  className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-white text-slate-500 cursor-pointer hover:bg-slate-200 z-10"
-                  onClick={() => handleOpenModal(0)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                    />
-                  </svg>
-                  <span className="ml-2 text-neutral-800 text-sm font-medium">
-                    Show all photos
-                  </span>
-                </div>
-              </div>
-              <div className="">
-                <Swiper
-                  onSwiper={setActiveThumb}
-                  modules={[Navigation, Thumbs, Controller]}
-                  watchSlidesProgress
-                  spaceBetween={10}
-                  breakpoints={{
-                    1420: {
-                      slidesPerView: 11,
-                      spaceBetween: 10
-                    },
-                    320:{
-                      slidesPerView: 7,
-                      spaceBetween: 10
-                    },
-                    640: {
-                      slidesPerView: 8,
-                      spaceBetween: 10
-                    },
-                    770:{
-                      slidesPerView: 10,
-                      spaceBetween: 10
-                    },
-                    1024: {
-                      slidesPerView: 8,
-                      spaceBetween: 10
-                    }
-                  }}
-                  className="product-images-slider product-slide-thumbs"
-                >
-                  {
-                    LIST_IMAGES_DEMO.map((item, index)=>(
-                      <SwiperSlide key={index}>
-                          <NcImage
-                            containerClassName="flex items-center justify-center border-[2px] rounded-md sm:rounded-xl p-1 cursor-pointer "
-                            className=" rounded-sm sm:rounded-md h-[50px] object-cover w-[50px] "
-                            src={item}
-                          />
-                      </SwiperSlide>
-                    ))
-                  }
-                </Swiper>
-              </div>
-            </div>
+            
+            {Gallery()}
             
             {renderSection1()}
 
             {renderSection2()}
+            
           </div>
 
           {/* SIDEBAR */}
           <div className="flex-grow">
             <div className="hidden lg:block sticky top-28">
-              {renderSectionSidebar()}
+              {
+                renderSectionSidebar
+              }
             </div>
           </div>
         </main>

@@ -31,8 +31,8 @@ export interface IProductItem {
   price: string
   price_sale: string
   quantity: number
-  sku: number
-  image: string
+  sku?: number
+  image: string | null
   variants: Ivariant[]
 }
 
