@@ -336,6 +336,7 @@ function AddProduct() {
                         rules={[
                           { required: true, message: 'Vui lòng nhập tên sản phẩm!' },
                           { max: 120, message: 'Tên không vượt quá 120 ký tự' },
+                          { min: 10, message: 'Tên không nhập nhỏ hơn 10 ký tự' },
                           {
                             whitespace: true,
                             message: 'Tên sản phẩm không được để trống!'

@@ -20,6 +20,7 @@ import { brandsApi } from '@/page/[role]/(manager)/brand/BrandEndpoints'
 import { bannersApi } from '@/page/[role]/(manager)/banner/BannerEndpoints'
 import { CartsApi } from '@/services/CartEndPoinst'
 import { ordersApi } from '@/services/OrderEndPoints'
+import cartSlide from './slices/cartSlide'
 export const store = configureStore({
   reducer: {
     web: webReducer,
@@ -28,6 +29,7 @@ export const store = configureStore({
     postCategory: postCategorySlice,
     post: postSlice,
     auth: authSlice,
+    carts:cartSlide,
     [usersApi.reducerPath]: usersApi.reducer,
     [addressApi.reducerPath]: addressApi.reducer,
     [attributesApi.reducerPath]: attributesApi.reducer,

@@ -10,18 +10,18 @@ import { RadioChangeEvent } from "antd/lib";
 import NcImage from "../shared/NcImage/NcImage";
 import LoadingProduct from "./LoadingProduct";
 export interface SectionSliderProductCardProps {
-  className?: string;
-  itemClassName?: string;
-  heading?: string;
-  headingFontClassName?: string;
-  headingClassName?: string;
-  subHeading?: string;
-  data?: Product[];
+  className?: string
+  itemClassName?: string
+  heading?: string
+  headingFontClassName?: string
+  headingClassName?: string
+  subHeading?: string
+  data?: Product[]
 }
 
 const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
-  className = "",
-  itemClassName = "",
+  className = '',
+  itemClassName = '',
   headingFontClassName,
   headingClassName,
   heading,
@@ -35,7 +35,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
 
   useEffect(() => {
     if (!sliderRef.current) {
-      return () => {};
+      return () => {}
     }
 
     // @ts-ignore
@@ -45,33 +45,33 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
       bound: true,
       breakpoints: {
         1280: {
-          perView: 4 - 1,
+          perView: 4 - 1
         },
         1024: {
           gap: 20,
-          perView: 4 - 1,
+          perView: 4 - 1
         },
         768: {
           gap: 20,
-          perView: 4 - 2,
+          perView: 4 - 2
         },
         640: {
           gap: 20,
-          perView: 1.5,
+          perView: 1.5
         },
         500: {
           gap: 20,
-          perView: 1.3,
-        },
-      },
-    };
+          perView: 1.3
+        }
+      }
+    }
 
     const slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
     slider.mount();
     return () => {
-      slider.destroy();
-    };
-  }, [sliderRef, UNIQUE_CLASS, dataItem]);
+      slider.destroy()
+    }
+  }, [sliderRef, UNIQUE_CLASS, dataItem])
 
   return (
     <>

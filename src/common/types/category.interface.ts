@@ -22,7 +22,7 @@ export interface ICategory {
   parent_id?: string | number
   image ?: string
   public_id : string;
-  active : string | number;
+  is_active : string | number;
   deleted_at : string | null;
   created_at : string;
   updated_at : string;
