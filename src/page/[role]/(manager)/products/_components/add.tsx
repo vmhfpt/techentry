@@ -80,14 +80,14 @@ function AddProduct() {
     const is_new = form.getFieldValue('is_new') ? 1 : 0;
     const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;
     
-    const newProductItem = [];    
+    const newProductItem = [];
 
     for(const key in product_item){      
       const id = key.split('-');
       const image = variant[0].attribute.find(item => item.id === id[0])?.image;
       const newVariant = variant.map((item, key)=>({
         variant: item.name,
-        attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value 
+        attribute: item.attribute.find(item => item.id == id[key])?.value 
       }));
 
       newProductItem.push({
@@ -97,6 +97,8 @@ function AddProduct() {
         ...product_item[key]
       });
     }    
+
+    console.log(newProductItem);
     
 
     const formdata = new FormData();
@@ -107,13 +109,13 @@ function AddProduct() {
     formdata.append('content', content);
     formdata.append('category_id', category_id);
     formdata.append('brand_id', brand_id);
-    formdata.append('is_active', String(is_active));
-    formdata.append('is_hot_deal', String(is_hot_deal));
-    formdata.append('is_good_deal', String(is_good_deal));
-    formdata.append('is_new', String(is_new));
-    formdata.append('is_show_home', String(is_show_home));
-    formdata.append('type_discount', String(typeDiscount));
-    formdata.append('discount', fixed);
+    formdata.append('is_active', is_active);
+    formdata.append('is_hot_deal', is_hot_deal);
+    formdata.append('is_good_deal', is_good_deal);
+    formdata.append('is_new', is_new);
+    formdata.append('is_show_home', is_show_home);
+    formdata.append('type_discount', typeDiscount);
+    formdata.append('discount', typeDiscount == 'percentage' ? percentage : typeDiscount == 'fixed' ? fixed : '');
     formdata.append('product_details', JSON.stringify(detailsAttr));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
@@ -124,6 +126,8 @@ function AddProduct() {
     } catch (error) {
       popupError('Add product error');
     }
+
+    
     
   }
 
