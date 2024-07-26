@@ -33,6 +33,7 @@ import product21 from "../assets/images/base/products/21.png";
 import product22 from "../assets/images/base/products/22.png";
 import product23 from "../assets/images/base/products/23.png";
 import product24 from "../assets/images/base/products/24.png";
+import user from "../assets/images/base/avatars/user.png"
 //
 export const productImgs = [
   product1,
@@ -104,6 +105,7 @@ export const avatarImgs = [
   avatar8,
   avatar9,
   avatar10,
+  user
 ];
 
 export const personNames = [

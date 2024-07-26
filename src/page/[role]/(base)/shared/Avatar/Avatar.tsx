@@ -44,8 +44,6 @@ const Avatar: FC<AvatarProps> = ({
           alt={name}
         />
       )}
-      <span className="wil-avatar__name">{name[0]}</span>
-
       {hasChecked && (
         <span className={`  text-white  absolute  ${hasCheckedClass}`}>
           <VerifyIcon className="" />

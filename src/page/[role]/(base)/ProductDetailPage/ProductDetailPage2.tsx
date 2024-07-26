@@ -9,10 +9,6 @@
   import NcImage from "../shared/NcImage/NcImage";
   import ModalPhotos from "./ModalPhotos";
   import ReviewItem from "../components/ReviewItem";
-  import detail21JPG from "../../../../assets/images/base/products/detail3-1.webp";
-  import detail22JPG from "../../../../assets/images/base/products/detail3-2.webp";
-  import detail23JPG from "../../../../assets/images/base/products/detail3-3.webp";
-  import detail24JPG from "../../../../assets/images/base/products/detail3-4.webp";
   import { PRODUCTS } from "../../../../data/data";
   import IconDiscount from "../components/IconDiscount";
   import NcInputNumber from "../components/NcInputNumber";
@@ -33,6 +29,10 @@
 import { VND } from "@/utils/formatVietNamCurrency";
 import { useAddToCartMutation } from '@/services/CartEndPoinst'
 import { IAddCart } from "@/common/types/cart.interface";
+import { Button, Card, Col, Flex, List, Modal, Row, Skeleton, Typography } from "antd";
+import Meta from "antd/es/card/Meta";
+import { divide } from "lodash";
+import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/product.interface";
   export interface ProductDetailPage2Props {
     className?: string;
   }
@@ -55,13 +55,14 @@ import { IAddCart } from "@/common/types/cart.interface";
     
     const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
 
-    const [variantActive, setVariantActive] = React.useState(0);
-    const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
     const [variantActives, setVariantActives] = React.useState<Array<variantActive>>([])
     const [qualitySelected, setQualitySelected] = React.useState(1);
     const [activeThumb, setActiveThumb] = React.useState<SwiperCore | null>();
     const [thumb, setThumb] = useState('');
     const swiperRef = useRef(null);
+    const [openDetail, setOpenDetail] = useState(false)
+    const [openContent, setOpenContent] = useState(false)
+
     const [addToCart, {isLoading: LoadingCart}] = useAddToCartMutation();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +81,7 @@ import { IAddCart } from "@/common/types/cart.interface";
       const {products} = data.data;
       const groupedVariants: { [key: string]: Set<string> } = {};
 
-      products.forEach(product => {
+      products.forEach((product: IProductItem) => {
           product.variants.forEach(variant => {
               const { variant_name, name } = variant;
               if (!groupedVariants[variant_name]) {
@@ -111,6 +112,17 @@ import { IAddCart } from "@/common/types/cart.interface";
       }
       
     }, [isLoading, data])
+
+    useEffect(()=>{
+      if(data && variantActives.length != 0){
+        const {products} = data.data
+        
+        const {image} = findProductVariant()(products, variantActives)        
+                    
+        setThumb(image || data.data.thumbnail)   
+        
+      }
+    }, [variantActives])
 
     const notifyAddTocart = async () => {
       const {products, thumbnail, name} = data.data
@@ -160,18 +172,18 @@ import { IAddCart } from "@/common/types/cart.interface";
           <div className="grid grid-cols-4 gap-2 mt-3">
             {variant.attribute.map((item, index) => {
               const isActive = item === variantActives[key][variant.name];
-              const sizeOutStock = !variant.attribute.includes(item);
+              const sizeOutStock = !findProductVariant()(products, variantActives).quantity
               return (
                 <div
                   key={index}
                   className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
-                  text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
+                  text-sm sm:text-base uppercase font-semibold select-none overflow-hidden border-2 z-0 ${
                     sizeOutStock
                       ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
                       : "cursor-pointer"
                   } ${
                     isActive
-                      ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
+                      ? "border-red-500 hover:bg-gray"
                       : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
                   }`}
                   onClick={() => {
@@ -187,11 +199,8 @@ import { IAddCart } from "@/common/types/cart.interface";
                         }
                         return i
                       })
-                    );
-
-                    const {image} = findProductVariant()(products, variantActives)
-
-                    setThumb(image || thumb)
+                    );                 
+                    
                     if (swiperRef.current && swiperRef.current.swiper) {
                       swiperRef.current.swiper.slideTo(0);
                     }
@@ -360,10 +369,10 @@ import { IAddCart } from "@/common/types/cart.interface";
 
                   <span>{`${VND((price * qualitySelected))}`}</span>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-slate-300">
+                {/* <div className="flex justify-between text-slate-600 dark:text-slate-300">
                   <span>Thuế giá trị gia tăng</span>
                   <span>0</span>
-                </div>
+                </div> */}
               </div>
               <div className="border-b border-slate-200 dark:border-slate-700"></div>
               <div className="flex justify-between font-semibold text-[24px]">
@@ -564,8 +573,82 @@ import { IAddCart } from "@/common/types/cart.interface";
     }
 
     if(!data && isLoading){
-      return null
-    }
+      return (
+        <div
+          className={`ListingDetailPage nc-ProductDetailPage2 mb-9 ${className}`}
+          data-nc-id="ProductDetailPage2"
+        >
+          {/* SINGLE HEADER */}
+          <>
+            <header className="container mt-8 sm:mt-10">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-semibold">
+                <Skeleton.Input active size={'large'} style={{width: 400}}/>
+              </h2>
+            </div>
+            </header>
+          </>
+
+          {/* MAIn */}
+          <main className="container relative z-10 mt-9 sm:mt-11 flex">
+            {/* CONTENT */}
+            <div className="w-full lg:w-3/5 xl:w-2/3 space-y-10 lg:pr-14 lg:space-y-14">
+              
+              <div className="lg:space-y-3 space-y-2">
+                <div className="relative border-2 rounded-[0.75rem]">
+                    <div
+                      className="thumbnail_product col-span-2 md:col-span-1 row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer h-[250px] md:h-[400px]"
+                    >
+                      <Skeleton.Image
+                        style={{ width: '100%', height: '100%' }} // Skeleton.Image chiếm toàn bộ chiều rộng và chiều cao của Card
+                        active 
+                      />
+                    </div>
+
+                    {/*  */}
+                </div>
+              </div>
+              
+            </div>
+
+            {/* SIDEBAR */}
+            <div className="flex-grow">
+              <div className="hidden lg:block sticky top-28">
+                <div className="listingSectionSidebar__wrap lg:shadow-lg">
+                  <div className="space-y-7 lg:space-y-8">
+                    {/* PRICE */}
+                    <div className="">
+                      {/* ---------- 1 HEADING ----------  */}
+                     
+
+                      {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
+                      <div className="mt-6 space-y-7 lg:space-y-8">
+                        <Skeleton active />
+                      </div>
+                    </div>
+
+                    {/* SUM */}
+                    <div className="hidden sm:flex flex-col space-y-4 ">
+                      
+                      <div className="border-b border-slate-200 dark:border-slate-700"></div>
+                      <div className="flex justify-between font-semibold text-[24px]">
+                        <span><Skeleton.Input active size={'default'}/></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          <div className="container pt-14 space-y-14">
+            <Skeleton active />
+          </div>
+        </div>
+      )
+    }    
+
+    const {details, name} = data.data
 
     return (
       <div
@@ -577,7 +660,7 @@ import { IAddCart } from "@/common/types/cart.interface";
           <header className="container mt-8 sm:mt-10">
           <div>
             <h2 className="text-2xl md:text-3xl font-semibold">
-              {data.data.name}
+              {name}
             </h2>
           </div>
           </header>
@@ -605,6 +688,100 @@ import { IAddCart } from "@/common/types/cart.interface";
             </div>
           </div>
         </main>
+
+        {/* OTHER SECTION */}
+        <div className="container pt-14 space-y-14">
+          <hr className="border-slate-200 dark:border-slate-700" />
+
+          <Row gutter={[32, 24]}>
+            <Col className="gutter-row " span={16}>
+              <div className="border-2 rounded-md relative min-h-[32rem] max-h-[32rem] lg:shadow-lg p-4 overflow-hidden">
+                <div dangerouslySetInnerHTML={{ __html: data.data.content }} />
+                <div style={{background: 'linear-gradient(180deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, .91) 50%, #fff 55%)'}} className=" absolute bottom-0 left-0 p-2 flex justify-center items-center w-full">
+                  <Button onClick={()=>setOpenContent(true)}>
+                    Xem thêm
+                  </Button>
+                </div>
+              </div>
+              <Modal 
+                footer={''}
+                open={openContent}
+                onCancel={()=>setOpenContent(false)}
+                width={1240}
+              >
+                <div className="rounded-md relative min-h-[32rem] p-4 overflow-hidden">
+                  <div dangerouslySetInnerHTML={{ __html: data.data.content }} />
+                
+                </div>
+              </Modal>
+            </Col>
+            <Col className="gutter-row " span={8}>
+              <div className="">
+                <List
+                  header={<div className="text-[20px] font-bold">Thông số kĩ thuật</div>}
+                  footer={<div><Button onClick={()=>setOpenDetail(true)} className="w-full">Xem cấu hình chi tiết</Button></div>}
+                  bordered
+                  dataSource={details.flatMap((item: IDetail) => item.attributes).slice(0,13)}
+                  renderItem={(item: IAttribute) => (
+                    <List.Item className=" flex justify-between">
+                      
+                        <div>{item.name}</div> 
+                        <div>
+                          <ul>
+                            {item.values.map((item, key)=>(
+                              <li key={key}>
+                                {item.name}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                    </List.Item>
+                  )}
+                  className="lg:shadow-lg"
+                />
+                <Modal 
+                  title={
+                    <div >
+                      <div className="text-[24px] font-bold mb-2">Thông số kĩ thuật</div>
+                      <hr className="border-slate-200 dark:border-slate-700" />
+                    </div>
+                  } 
+                  footer={''}
+                  open={openDetail}
+                  onCancel={()=>setOpenDetail(false)}
+                >
+                  {details.map((item: IDetail, key: number)=>(
+                    <div key={key} className=" mt-4">
+                      <h2 className="font-bold mb-1">{item.name}</h2>
+                      <List
+                        bordered
+                        dataSource={item.attributes}
+                        renderItem={(item) => (
+                          <List.Item className=" flex justify-between">
+                            
+                              <div>{item.name}</div>
+                              <div>
+                                <ul>
+                                  {item.values.map((item, key)=>(
+                                    <li key={key}>
+                                      {item.name}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                          </List.Item>
+                        )}
+                        className="lg:shadow-lg"
+                      />
+                    </div>
+                  ))}
+                </Modal>
+              </div>
+            </Col>
+          </Row>
+        </div>
 
         {/* OTHER SECTION */}
         <div className="container pb-24 lg:pb-28 pt-14 space-y-14">
