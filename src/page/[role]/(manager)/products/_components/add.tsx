@@ -33,12 +33,6 @@ interface detailsAtrr{
   values: Array<string>
 }
 
-interface DataItem {
-  id: string|number;
-  idDetail: number;
-  values: string[];
-}
-
 interface Attribute {
   id: string|number;
   values: string[];
