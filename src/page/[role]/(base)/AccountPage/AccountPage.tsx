@@ -4,7 +4,6 @@ import ButtonPrimary from "../shared/Button/ButtonPrimary";
 import Input from "../shared/Input/Input";
 import Select from "../shared/Select/Select";
 import Textarea from "../shared/Textarea/Textarea";
-import CommonLayout from "./CommonLayout";
 import { Helmet } from "react-helmet-async";
 import { avatarImgs } from "../../../../contains/fakeData";
 
@@ -18,7 +17,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
       <Helmet>
         <title>Account || Ciseco ecommerce React Template</title>
       </Helmet>
-      <CommonLayout>
         <div className="space-y-10 sm:space-y-12">
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">
@@ -142,7 +140,6 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
             </div>
           </div>
         </div>
-      </CommonLayout>
     </div>
   );
 };

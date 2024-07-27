@@ -9,6 +9,20 @@ const apiWithTag = emptySplitApi.enhanceEndpoints({addTagTypes: ['Orders']});
 export const ordersApi = apiWithTag.injectEndpoints({
   
   endpoints: (builder) => ({
+    getUserOrderDetail: builder.query({
+      query: (id) => `order/detail/${id}`,
+      providesTags: (id) => [{ type: 'Orders', id }],
+    }),
+    getUserOrder: builder.query({
+      query: () => 'order/user',
+      providesTags: (result) =>
+      result
+        ? [
+            ...result?.data.map(({ id } : {id : number | string}) => ({ type: 'Orders' as const, id })),
+            { type: 'Orders', id: 'LIST' },
+          ]
+        : [{ type: 'Orders', id: 'LIST' }],
+    }),
     getOrders: builder.query({
       query: () => 'order',
       providesTags: (result) =>
@@ -51,6 +65,8 @@ export const ordersApi = apiWithTag.injectEndpoints({
 });
 
 export const {
+  useGetUserOrderDetailQuery,
+  useGetUserOrderQuery,
   useAddOrderMutation,
   useGetOrdersQuery,
   usePrefetch,

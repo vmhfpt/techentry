@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate();
   const [discount, setDiscount] = useState<string>('');
-
+  
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
@@ -38,7 +38,6 @@ const CheckoutPage = () => {
   };
 
   const onFinish = async (values : IOrder | any) => {
-    console.log(values)
     const payload = {
       receiver_name : `${values.receiver_name} `,
       receiver_phone: values.receiver_phone,
@@ -51,11 +50,6 @@ const CheckoutPage = () => {
       discount_code: discount
     }
    
-    
- 
-   
- 
-
     try {
       const response = await addOrder(payload).unwrap();
       if(response && response.url){
@@ -67,10 +61,8 @@ const CheckoutPage = () => {
 
   };
 
-
-
   const renderProduct = (item: ICart, index: number) => {
-    const { image, price, thumbnail, slug, name, price_sale, quantity, variants, id} = item;
+    const { image, price, thumbnail, slug, name} = item;
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
@@ -253,7 +245,7 @@ const CheckoutPage = () => {
               <div className="flex justify-between py-2.5">
                 <span>Tax estimate</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-200">
-                0đ
+                  0đ
                 </span>
               </div>
               <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">

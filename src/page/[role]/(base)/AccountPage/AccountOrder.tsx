@@ -2,15 +2,37 @@ import Prices from "../components/Prices";
 import { PRODUCTS } from "../../../../data/data";
 import ButtonSecondary from "../shared/Button/ButtonSecondary";
 import CommonLayout from "./CommonLayout";
+import { useGetUserOrderQuery } from "@/services/OrderEndPoints";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { formatDate } from "@/utils/convertCreatedLaravel";
+import { Segmented, Tabs } from "antd";
 
 const AccountOrder = () => {
+
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'Tab 1',
+    },
+    {
+      key: '2',
+      label: 'Tab 2',
+    },
+    {
+      key: '3',
+      label: 'Tab 3',
+    },
+  ];
+
+  const {data, isLoading} = useGetUserOrderQuery({})  
+
   const renderProductItem = (product: any, index: number) => {
-    const { image, name } = product;
+    const { image, thumbnail, name, price, quantity } = product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
         <div className="h-24 w-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={image}
+            src={image || thumbnail}
             alt={name}
             className="h-full w-full object-cover object-center"
           />
@@ -27,68 +49,111 @@ const AccountOrder = () => {
                   <span>{"XL"}</span>
                 </p>
               </div>
-              <Prices className="mt-0.5 ml-2" />
+              <Prices price={price} className="mt-0.5 ml-2"/>
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
             <p className="text-gray-500 dark:text-slate-400 flex items-center">
               <span className="hidden sm:inline-block">Qty</span>
               <span className="inline-block sm:hidden">x</span>
-              <span className="ml-2">1</span>
+              <span className="ml-2">{quantity}</span>
             </p>
-
-            <div className="flex">
-              <button
-                type="button"
-                className="font-medium text-indigo-600 dark:text-primary-500 "
-              >
-                Leave review
-              </button>
-            </div>
           </div>
         </div>
       </div>
     );
   };
 
-  const renderOrder = () => {
+  const renderOrder = (order, key) => {
+    const {id, code, created_at, order_status, order_details} = order
     return (
-      <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden z-0">
+      <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden z-0" key={key}>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-500/5">
           <div>
-            <p className="text-lg font-semibold">#WU3746HGG12</p>
+            <p className="text-lg font-semibold">{code}</p>
             <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
-              <span>Aug 8, 2023</span>
+              <span>{formatDate(created_at)}</span>
               <span className="mx-2">·</span>
-              <span className="text-primary-500">Delivered</span>
+              <span className="text-primary-500">{order_status}</span>
             </p>
           </div>
           <div className="mt-3 sm:mt-0">
-            <ButtonSecondary
-              sizeClass="py-2.5 px-4 sm:px-6"
-              fontSize="text-sm font-medium"
-            >
-              View Order
-            </ButtonSecondary>
+            <Link to={`detail/${id}`}>
+              <ButtonSecondary
+                sizeClass="py-2.5 px-4 sm:px-6"
+                fontSize="text-sm font-medium"
+              >
+                View Order
+              </ButtonSecondary>
+            </Link>
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(renderProductItem)}
+          {order_details.map(renderProductItem)}
         </div>
       </div>
     );
   };
 
-  return (
-    <div>
-      <CommonLayout>
+  if(!data && isLoading){
+    return (
         <div className="space-y-10 sm:space-y-12">
           {/* HEADING */}
           <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
-          {renderOrder()}
-          {renderOrder()}
+          <div className="">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
+              {[
+                {
+                  name: "Account info",
+                  link: "/account",
+                },
+                {
+                  name: " My order",
+                  link: "/account-my-order",
+                },
+                {
+                  name: "Change password",
+                  link: "/account-change-password",
+                },
+              ].map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.link}
+                  className={({ isActive }) =>
+                    `block py-5 md:py-8 border-b-2 border-transparent flex-shrink-0  text-sm sm:text-base ${
+                      isActive
+                        ? "border-primary-500 font-medium text-slate-900 dark:text-slate-200"
+                        : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              ))}
+            </div>
+            <hr className="border-slate-200 dark:border-slate-700"></hr>
+          </div>
         </div>
-      </CommonLayout>
+        </div>
+    )
+  }
+
+  const order = data.data
+
+  return (
+    <div>
+      <div className="space-y-10 sm:space-y-12">
+        {/* HEADING */}
+        <div className="">
+          <div className="max-w-4xl mx-auto">
+            <Tabs defaultActiveKey="1" items={items}/>
+          </div>
+        </div>
+        {order.map((item, key)=>(
+          renderOrder(item, key)
+        ))}
+      </div>
     </div>
   );
 };
