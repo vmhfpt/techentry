@@ -9,6 +9,7 @@ import { useCreateCategoryMutation, useGetCategoriesQuery } from '../CategoryEnd
 import { ICategory } from '@/common/types/category.interface';
 export default function AddCategory() {
   const {data :listCategory, isLoading : isLoadingCategories} = useGetCategoriesQuery({});
+  
   const [createCategory, {isLoading : isLoadingCreateCategory}] = useCreateCategoryMutation();
   const navigate = useNavigate()
   const [form] = Form.useForm()
@@ -122,7 +123,7 @@ export default function AddCategory() {
 
     try {
       
-      await createCategory(formData).unwrap();;
+      await createCategory(formData).unwrap();
       popupSuccess('Add category success')
       navigate('..')
      

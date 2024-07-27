@@ -149,7 +149,9 @@ function AddProduct() {
     formdata.append('product_items', JSON.stringify(newProductItem));
         
     try {
-      await addProduct(formdata).unwrap();
+      const data = await addProduct(formdata).unwrap();
+      console.log(data);
+      
       popupSuccess('Add product success');
       navigate('..');
     } catch (error) {

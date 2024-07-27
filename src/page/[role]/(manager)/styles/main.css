@@ -15,6 +15,9 @@ aside::-webkit-scrollbar{
 .ant-layout.ant-layout-has-sider {
   flex-direction: row;
 }
+aside::-webkit-scrollbar{
+  display: none;
+}
 .layout-dashboard {
   background: transparent;
   text-align: left;
