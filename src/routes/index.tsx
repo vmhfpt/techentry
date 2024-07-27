@@ -55,6 +55,9 @@ import AddBrand from "@/page/[role]/(manager)/brand/_components/add";
 import EditBrand from "@/page/[role]/(manager)/brand/_components/edit";
 import ProductDetailPage2 from "@/page/[role]/(base)/ProductDetailPage/ProductDetailPage2";
 import EditOrder from "@/page/[role]/(manager)/order/_components/edit";
+import CommonLayout from "@/page/[role]/(base)/AccountPage/CommonLayout";
+import DetailOrder from "@/page/[role]/(base)/AccountPage/DetailOrder";
+
 export default function Router() {
   return (
     <>
@@ -79,11 +82,18 @@ export default function Router() {
             <Route path='blog' element={<BlogPage />} />
             <Route path='blog/:slug' element={<BlogSingle />} />
 
-            <Route path='account' element={<AccountPage />} />
-            <Route path='account-savelists' element={<AccountSavelists />} />
-            <Route path='account-change-password' element={<AccountPass />} />
-            <Route path='account-billing' element={<AccountBilling />} />
-            <Route path='account-my-order' element={<AccountOrder />} />
+            <Route path='account' element={<CommonLayout/>}>
+              <Route index element={<AccountPage />}/>
+              <Route path='savelists' element={<AccountSavelists />} />
+              <Route path='change-password' element={<AccountPass />} />
+              <Route path='billing' element={<AccountBilling />} />
+              <Route path='my-order'>
+                <Route index element={<AccountOrder />}/>
+                <Route path="detail/:id" element={<DetailOrder/>}/>
+              </Route>
+              
+            </Route>
+            
 
             <Route path='cart' element={<CartPage />} />
             <Route path='checkout' element={<CheckoutPage />} />

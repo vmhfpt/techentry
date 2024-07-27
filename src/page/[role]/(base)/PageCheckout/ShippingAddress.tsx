@@ -34,6 +34,8 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
   const { data: provinces, isLoading : isLoadingProvinces, isError } = useGetProvincesQuery({})
   const [getWard, { data: dataWards, isLoading: wardLoading }] = useLazyGetWardsQuery()
   const [getDistrict, { data: dataDistricts, isLoading: districtLoading }] = useLazyGetDistrictsQuery()
+  const user = JSON.parse(localStorage.getItem('user') || '');
+
 
   const options: SelectProps['options'] = []
   const validateMessages = {
@@ -185,7 +187,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             <div className='w-full'>
               
               <Form.Item name='receiver_name' label='User name' rules={[{ required: true }]}>
-                <Input  placeholder='Nhập tên' />
+                <Input  placeholder='Nhập tên' defaultValue={user ? user?.name : ''}/>
               </Form.Item>
               
             </div>
@@ -198,7 +200,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             <div className='w-full'>
               
               <Form.Item name='receiver_phone' label='Phone number' rules={[{ required: true }]}>
-                <Input  placeholder='03456789' />
+                <Input  placeholder='03456789' defaultValue={user ? user?.phone : ''}/>
               </Form.Item>
             </div>
           </div>
@@ -214,6 +216,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
                   placeholder='Select province'
                   options={options}
                   onChange={(value) => onChangeProvince(value)}
+                  defaultValue={user ? user?.city : ''}
                 />
               </Form.Item>
               
@@ -225,6 +228,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
                   onChange={(value) => onChangeDistrict(value)}
                   placeholder='Enter name district'
                   options={optionsDistrict}
+                  defaultValue={user ? user?.county : ''}
                 />
               </Form.Item>
             </div>
@@ -237,6 +241,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
                   loading={wardLoading}
                   placeholder='Enter name ward'
                   options={optionsWard}
+                  defaultValue={user ? user?.address : ''}
                 />
               </Form.Item>
             </div>

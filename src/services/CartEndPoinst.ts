@@ -24,7 +24,6 @@ export const CartsApi = apiWithTag.injectEndpoints({
         url: 'cart/add',
         method: 'POST',
         body: payload,
-      
       }),
       invalidatesTags: [{ type: 'Carts', id: 'LIST' }],
     }),
