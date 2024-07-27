@@ -15,6 +15,9 @@ import useQuerySearch from '../../hooks/useQuerySearch'
 import { getColumnSearchProps } from '../../components/util/SortHandle'
 import { exportToExcel } from '@/utils/exportExcelFile'
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast'
+import CancelAnimationIcon from '@/page/[role]/components/icon/OrderIcon/Cancel'
+import SuccessAnimationIcon from '@/page/[role]/components/icon/OrderIcon/Success'
+import OrderAnimationIcon from '@/page/[role]/components/icon/OrderIcon/Order'
 export default function ListOrder() {
 
   const [changeStatus] = useChangeStatusOrderMutation();
@@ -236,7 +239,7 @@ export default function ListOrder() {
         <div className='lable font-bold text-[24px] text-[#344767]'>Đơn hàng</div>
         <Row gutter={16} className='my-4'>
           <Col span={8}>
-            <Card title='Tổng đơn đã hủy' bordered={false} extra={<CloseSquareOutlined />}>
+            <Card title='Tổng đơn đã hủy' bordered={false} extra={<CancelAnimationIcon width={70} height={70} />}>
               <div className='text-[25px]'>
                 <b> {handleTotalSuccess(6)[0]} </b>
               </div>
@@ -244,7 +247,7 @@ export default function ListOrder() {
             </Card>
           </Col>
           <Col span={8}>
-            <Card title='Tổng đơn đã hoàn thành' bordered={false} extra={<CheckSquareOutlined />}>
+            <Card title='Tổng đơn đã hoàn thành' bordered={false} extra={<SuccessAnimationIcon width={70} height={70} />}>
               <div className='text-[25px]'>
                 <b> 0 </b>
               </div>
@@ -252,7 +255,7 @@ export default function ListOrder() {
             </Card>
           </Col>
           <Col span={8}>
-            <Card title='Tổng đơn hàng' bordered={false} extra={<ScheduleOutlined />}>
+            <Card title='Tổng đơn hàng' bordered={false} extra={<OrderAnimationIcon width={70} height={70}/>} className='h-full'>
               <div className='text-[25px]'>
                 <b> {dataItem?.data.length} </b>
                

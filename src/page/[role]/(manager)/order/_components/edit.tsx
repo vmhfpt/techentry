@@ -10,7 +10,25 @@ import { useChangeStatusOrderMutation, useGetOrderQuery } from "@/services/Order
 import { useParams } from "react-router-dom";
 import { formatTimestamp } from "@/utils/formatDate";
 import { popupError, popupSuccess } from "@/page/[role]/shared/Toast";
+import HandleAnimationIcon from "@/page/[role]/components/icon/OrderIcon/Handle";
+import PrepareSuccessAnimationIcon from "@/page/[role]/components/icon/OrderIcon/PrepareSuccess";
+import DeliverAnimationIcon from "@/page/[role]/components/icon/OrderIcon/DeliverSuccess";
+import PrepareAnimationIcon from "@/page/[role]/components/icon/OrderIcon/Prepare";
+import DoneOrderAnimationIcon from "@/page/[role]/components/icon/OrderIcon/DoneOrder";
+import OrderCancelAnimationIcon from "@/page/[role]/components/icon/OrderIcon/OrderCancel";
+import DeliveringAnimationIcon from "@/page/[role]/components/icon/OrderIcon/Delivering";
+import PickupAnimationIcon from "@/page/[role]/components/icon/OrderIcon/PickUp";
 export default function EditOrder(){
+  const orderIcon = [
+    <HandleAnimationIcon width={60} height={60} />,
+    <PrepareAnimationIcon width={60} height={60}/>,
+    <PrepareSuccessAnimationIcon width={60} height={60}/>,
+    <PickupAnimationIcon  width={60} height={60} />,
+    <DeliveringAnimationIcon  width={60} height={60}  />,
+    <DeliverAnimationIcon width={60} height={60}  />,
+    <DoneOrderAnimationIcon width={60} height={60}  />,
+    <OrderCancelAnimationIcon width={60} height={60}  />,
+  ]
   const [changeStatus, {isLoading : isLoadingChangeStatus}] = useChangeStatusOrderMutation();
   const params = useParams();
   const {data, refetch} = useGetOrderQuery(params.id);
@@ -139,7 +157,7 @@ export default function EditOrder(){
       </div>
       <Row gutter={16}>
     <Col span={12}>
-      <Card title="Thông tin đơn hàng" bordered={false}  extra={<> <Badge color="green" text={dataItem?.order_status?.status} /></>}>
+      <Card className='h-full' title="Thông tin đơn hàng" bordered={false}  extra={<> <Badge color="green" text={dataItem?.order_status?.status} /></>}>
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Mã đơn hàng : </b>
               <span className="">{dataItem?.code}</span>
@@ -194,7 +212,7 @@ export default function EditOrder(){
     </Col>
 
     <Col span={12}>
-      <Card title="Thanh toán" bordered={false} extra={<> <Tag color="#f50">{dataItem?.payment_status}</Tag></>}>
+      <Card className='h-full' title="Thanh toán" bordered={false} extra={<> <Tag color="#f50">{dataItem?.payment_status}</Tag></>}>
           <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
               <b className="">Tổng tiền sản phẩm : </b>
               <span className="">{VND(dataItem?.total_price)}</span>
@@ -227,12 +245,12 @@ export default function EditOrder(){
     {dataOrderStatus?.map((item: any, key: number) => (
  <li key={key}>
  <div className="relative pb-8">
-   <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+    {key !== 7 && <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>}
    <div className="relative flex space-x-3">
-     <div>
-       <span className="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
-         <HourglassOutlined  />
-       </span>
+     <div  className="flex items-center justify-center w-[50px] h-full">
+       <div className="h-auto w-auto rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
+          {orderIcon[key]}
+       </div>
      </div>
      <div className="flex min-w-0 flex-1 justify-between space-x-4 ">
 
