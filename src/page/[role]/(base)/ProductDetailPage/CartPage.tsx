@@ -15,8 +15,9 @@ import { Button, Result } from "antd";
 import { VND } from "@/utils/formatVietNamCurrency";
 
 const CartPage = () => {
- const {data : carts , isLoading} = useGetCartsQuery({});
- const [deleteCart] = useDeleteCartMutation();
+  const {data : carts , isLoading} = useGetCartsQuery({});
+  const [deleteCart] = useDeleteCartMutation();
+
   const iconVariants = [
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
       <path
@@ -112,13 +113,21 @@ const CartPage = () => {
   const renderProduct = (item: ICart) => {
    
     const { image, price, name, slug, thumbnail, quantity, user_id, product_item_id, price_sale, variants} = item;
-     const handleDelete = (id : number) => {
-        try {
-          deleteCart(id).unwrap();
-        } catch (error) {
-          popupError('Delete cart success');
-        }
-     }
+    const product = {
+      id: product_item_id,
+      price,
+      price_sale,
+      quantity,
+      image,
+      variants
+    }
+    const handleDelete = (id : number) => {
+      try {
+        deleteCart(id).unwrap();
+      } catch (error) {
+        popupError('Delete cart success');
+      }
+    }
     return (
       <div
         key={item.id}
@@ -175,7 +184,7 @@ const CartPage = () => {
               </div>
 
               <div className="hidden sm:block text-center relative">
-                <NcInputNumber className="relative z-10" defaultValue={quantity} item={item} />
+                <NcInputNumber className="relative z-10" defaultValue={quantity} item={product}/>
               </div>
 
               <div className="hidden flex-1 sm:flex justify-end">
@@ -200,8 +209,6 @@ const CartPage = () => {
       </div>
     );
   };
-
-
   
   return (
     <div className="nc-CartPage">
@@ -228,14 +235,16 @@ const CartPage = () => {
         </div>
 
         <hr className="border-slate-200 dark:border-slate-700 my-10 xl:my-12" />
-        {!isLoading &&  !Boolean(carts?.data.length) &&   <Result
-    title="Cart is empty"
-    extra={
-      <Link to="/"><Button type="primary" key="console">
-      Go back home
-    </Button> </Link>
-    }
-  />}
+        {!isLoading &&  !carts?.data.length &&   
+        <Result
+          title="Cart is empty"
+          extra={
+            <Link to="/"><Button type="primary" key="console">
+              Go back home
+            </Button> </Link>
+          }
+        />
+      }
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
             {isLoading ? <h1> Loading</h1> : carts?.data?.map(renderProduct)}
@@ -261,7 +270,7 @@ const CartPage = () => {
                 <div className="flex justify-between py-4">
                   <span>Tax estimate</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
-                  0đ
+                    0đ
                   </span>
                 </div>
                 <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
@@ -328,8 +337,6 @@ const CartPage = () => {
           </div></>}
           
         </div>
-
-
         
       </main>
     </div>

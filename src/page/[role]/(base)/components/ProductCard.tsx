@@ -48,8 +48,6 @@ const ProductCard: FC<ProductCardProps> = ({
     setMaxWidth(max);
   }, []);
 
-  const dispatch = useAppDispatch();
-
   const prices = products.map((product: IProductItem) => parseFloat(product.price));
   const maxPrice = Math.max(...prices);
   // const minPrice = Math.min(...prices);  

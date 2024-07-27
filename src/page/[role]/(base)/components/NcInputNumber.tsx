@@ -2,28 +2,27 @@ import React, { FC, useEffect, useState } from "react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useUpdateCartMutation } from "@/services/CartEndPoinst";
 import { popupError } from "../../shared/Toast";
+import { IProductItem } from "@/common/types/product.interface";
 
 export interface NcInputNumberProps {
   className?: string;
   defaultValue?: number;
   min?: number;
   max?: number;
-  onChange?: any;
+  onChange?: (value: number) => void;
   label?: string;
   desc?: string;
-  id ?: number;
-  item : any;
+  item?: IProductItem;
 }
 
 const NcInputNumber: FC<NcInputNumberProps> = ({
   className = "w-full",
   defaultValue = 1,
   min = 1,
-  max = 30,
+  max = 99,
   onChange,
   label,
   desc,
-  id,
   item
 }) => {
   const [changeCart] = useUpdateCartMutation();
@@ -35,33 +34,31 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
 
   const handleClickDecrement = async () => {
     if (min >= value) return;
-    try {
-      await changeCart({id : item.product_item_id, quantity : value - 1 });
-      setValue((state) => {
-        return state - 1;
-      });
-      onChange && onChange(value - 1, id);
-    } catch (error) {
-     popupError('Update cart error');
+    setValue((state) => {
+      return state - 1;
+    });
+    onChange && onChange(value - 1);
+
+    try{
+      console.log(item);
+      
+      item && await changeCart({id : item.id, quantity : value - 1 });
+    }catch(error){
+      popupError('Update cart error');
     }
-    
   };
-
   const handleClickIncrement = async () => {
-   
-     
     if (max && max <= value) return;
-
-    try {
-      await changeCart({id : item.product_item_id, quantity : value + 1 });
-      setValue((state) => {
-        return state + 1;
-      });
-      onChange && onChange(value + 1, id);
-    } catch (error) {
-     popupError('Update cart error');
+    setValue((state) => {
+      return state + 1;
+    });
+    onChange && onChange(value + 1);
+    
+    try{
+      item && await changeCart({id : item.id, quantity : value + 1 });
+    }catch(error){
+      popupError('Update cart error');
     }
-  
   };
 
   const renderLabel = () => {

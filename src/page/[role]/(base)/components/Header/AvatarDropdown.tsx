@@ -136,7 +136,7 @@ export default function AvatarDropdown() {
                         (
                           <>
                             <div className="flex items-center space-x-3">
-                              <Avatar imgUrl={JSON.parse(String(user)).image ? JSON.parse(String(user)).image : avatarImgs[7] } sizeClass="w-12 h-12" />
+                              <Avatar imgUrl={JSON.parse(String(user)).image ? JSON.parse(String(user)).image : avatarImgs[10] } sizeClass="w-12 h-12" />
                               <div className="flex-grow truncate break-all">
                                 <h4 className="font-semibold">{  JSON.parse(String(user)).username}</h4>
                                 <p className="text-xs mt-0.5 ">{  JSON.parse(String(user)).email}</p>

@@ -19,6 +19,7 @@ export interface IProduct {
   public_id: string,
   slug: string,
   products: IProductItem[]
+  details: IDetail[]
 }
 export interface IGallery {
   id?: number | string
@@ -26,17 +27,32 @@ export interface IGallery {
   image: string
 }
 
+export interface IDetail {
+  name: string,
+  attributes: IAttribute[]
+}
+
+export interface IAttribute{
+  name:string
+  values: IValue[]
+}
+
+export interface IValue{
+  name: string
+}
+
 export interface IProductItem {
   id?: number | string
   price: string
   price_sale: string
   quantity: number
-  sku: number
-  image: string
+  sku?: number
+  image: string | null
   variants: Ivariant[]
 }
 
 export interface Ivariant {
   name: string
+  variant_name: string
 }
 

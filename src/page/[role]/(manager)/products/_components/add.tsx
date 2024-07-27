@@ -30,9 +30,25 @@ interface variant{
 }
 
 interface detailsAtrr{
-  id: string,
+  id: string | number,
   idDetail: string
   values: Array<string>
+}
+
+interface DataItem {
+  id: string|number;
+  idDetail: number;
+  values: string[];
+}
+
+interface Attribute {
+  id: string|number;
+  values: string[];
+}
+
+interface ResultItem {
+  id: string|number;
+  attributes: Attribute[];
 }
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -98,6 +114,23 @@ function AddProduct() {
       });
     }    
     
+    const details = detailsAttr.reduce((acc, item) => {
+      // Tìm đối tượng idDetail hiện có trong acc hoặc tạo mới nếu không tồn tại
+        let detail = acc.find(d => d.id === item.idDetail);
+        if (!detail) {
+            detail = { id: item.idDetail, attributes: [] };
+            acc.push(detail);
+        }
+    
+        // Thêm thuộc tính vào detail
+        detail.attributes.push({
+            id: item.id,
+            values: item.values
+        });
+    
+        return acc;
+    }, [] as ResultItem[]);    
+  
 
     const formdata = new FormData();
 
@@ -113,8 +146,8 @@ function AddProduct() {
     formdata.append('is_new', String(is_new));
     formdata.append('is_show_home', String(is_show_home));
     formdata.append('type_discount', String(typeDiscount));
-    formdata.append('discount', fixed);
-    formdata.append('product_details', JSON.stringify(detailsAttr));
+    formdata.append('discount', typeDiscount == 'percent' ? percentage : typeDiscount == 'fixed' ? fixed : '');
+    formdata.append('product_details', JSON.stringify(details));
     formdata.append('product_items', JSON.stringify(newProductItem));
         
     try {
