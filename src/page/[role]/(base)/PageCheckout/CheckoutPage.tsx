@@ -9,7 +9,7 @@ import ShippingAddress from './ShippingAddress'
 import { ICart } from '@/common/types/cart.interface'
 import { VND } from '@/utils/formatVietNamCurrency'
 import { getTotalPriceCart } from '@/utils/handleCart'
-import { Form } from 'antd'
+import { Button, Form, Result } from 'antd'
 import { useGetCartsQuery } from '@/services/CartEndPoinst'
 import { useAppDispatch } from '@/app/hooks'
 
@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import { IOrder } from '@/common/types/Order.interface'
 import { useAddOrderMutation } from '@/services/OrderEndPoints'
 import { useCheckVoucherMutation } from '../../(manager)/voucher/VoucherEndpoint'
+import CartEmptyAnimationIcon from '../components/Icon/Cart/CartEmpty'
 
 const CheckoutPage = () => {
   const [dataVoucher, setVoucher] = useState<any>({
@@ -190,7 +191,8 @@ const CheckoutPage = () => {
         <title>Checkout || Ciseco Ecommerce Template</title>
       </Helmet>
 
-      <main className='container py-16 lg:pb-28 lg:pt-20 '>
+
+      {Boolean(carts?.data?.length) ? <main className='container py-16 lg:pb-28 lg:pt-20 '>
         <div className='mb-16'>
           <h2 className='block text-2xl sm:text-3xl lg:text-4xl font-semibold '>Checkout</h2>
           <div className='block mt-3 sm:mt-5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400'>
@@ -380,7 +382,16 @@ const CheckoutPage = () => {
             </div>
           </div>
         </div>
-      </main>
+      </main>:  <Result
+          icon={<CartEmptyAnimationIcon width="200px" height="200px" />}
+          title="Giỏ hàng trống"
+          extra={
+            <Link to="/"><Button type="primary" key="console" className=" bg-black !rounded-[20px]">
+              Quay về trang chủ
+            </Button> </Link>
+          }
+        />}
+      
     </div>
   )
 }

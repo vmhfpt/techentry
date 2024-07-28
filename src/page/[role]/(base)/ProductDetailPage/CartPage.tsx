@@ -10,9 +10,11 @@ import { popupError } from "../../shared/Toast";
 import { getTotalPriceCart } from "@/utils/handleCart";
 import { Button, Result } from "antd";
 import { VND } from "@/utils/formatVietNamCurrency";
+import CartEmptyAnimationIcon from "../components/Icon/Cart/CartEmpty";
 
 const CartPage = () => {
   const {data : carts , isLoading} = useGetCartsQuery({});
+
   const [deleteCart] = useDeleteCartMutation();
 
   const iconVariants = [
@@ -234,10 +236,11 @@ const CartPage = () => {
         <hr className="border-slate-200 dark:border-slate-700 my-10 xl:my-12" />
         {!isLoading &&  !carts?.data.length &&   
         <Result
-          title="Cart is empty"
+          icon={<CartEmptyAnimationIcon width="200px" height="200px" />}
+          title="Giỏ hàng trống"
           extra={
-            <Link to="/"><Button type="primary" key="console">
-              Go back home
+            <Link to="/"><Button type="primary" key="console" className=" bg-black !rounded-[20px]">
+              Quay về trang chủ
             </Button> </Link>
           }
         />

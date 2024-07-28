@@ -19,6 +19,7 @@ export const addToCartFc = ( carts : ICart[], itemCart : ICart) => {
 
 }
 export const getTotalIconCart = (carts : ICart[]) => {
+    if(!carts) return 0;
   return carts.reduce((accumulator : number, item : ICart) => accumulator + item.quantity, 0);
 }
 export const getTotalPriceCart = (carts : ICart[]) => {

@@ -57,6 +57,7 @@ import ProductDetailPage2 from "@/page/[role]/(base)/ProductDetailPage/ProductDe
 import EditOrder from "@/page/[role]/(manager)/order/_components/edit";
 import CommonLayout from "@/page/[role]/(base)/AccountPage/CommonLayout";
 import DetailOrder from "@/page/[role]/(base)/AccountPage/DetailOrder";
+import GuardPage from "@/middleware/GuardPage";
 
 export default function Router() {
   return (
@@ -87,16 +88,20 @@ export default function Router() {
               <Route path='savelists' element={<AccountSavelists />} />
               <Route path='change-password' element={<AccountPass />} />
               <Route path='billing' element={<AccountBilling />} />
-              <Route path='my-order'>
-                <Route index element={<AccountOrder />}/>
-                <Route path="detail/:id" element={<DetailOrder/>}/>
-              </Route>
+           
               
             </Route>
             
+     
+            <Route path='cart' element={<GuardPage><CartPage /></GuardPage>} />
 
-            <Route path='cart' element={<CartPage />} />
-            <Route path='checkout' element={<CheckoutPage />} />
+               <Route path='checkout' element={<GuardPage><CheckoutPage /></GuardPage>} />
+
+               <Route path='my-order'>
+                <Route index element={<GuardPage><AccountOrder /></GuardPage>}/>
+                <Route path="detail/:id" element={<GuardPage><DetailOrder/></GuardPage>}/>
+              </Route>
+            
             <Route path='search' element={<PageSearch />} />
             <Route path='category' element={<PageCategory />} />
             <Route path='category/:slug' element={<PageCategory />} />

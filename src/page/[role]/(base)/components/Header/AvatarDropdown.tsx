@@ -10,6 +10,9 @@ import { login, logout, Logout, Signin } from "@/app/slices/authSlide";
 import { ISignin } from "@/common/types/Auth.interface";
 import { setLoading, setOpenModalLogin } from "@/app/webSlice";
 import { popupSuccess, popupError } from "@/page/[role]/shared/Toast";
+import { useGetCartsQuery } from "@/services/CartEndPoinst";
+import { useLazyGetCartsQuery } from "@/services/ProductEndPoinst";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 type FieldType = {
   email?: string;
@@ -17,6 +20,8 @@ type FieldType = {
 };
 
 export default function AvatarDropdown() {
+  const [_, setUser] = useLocalStorage('user', undefined);
+  const {refetch} = useGetCartsQuery({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm()
@@ -62,7 +67,8 @@ export default function AvatarDropdown() {
       ])
       dispatch(login(result))
       dispatch(setOpenModalLogin(false))
-      popupSuccess("Hello " + result.data.username);
+      popupSuccess("Hello " + result.user.username);
+      refetch();
       navigate('/')
     }
   }  
@@ -70,7 +76,7 @@ export default function AvatarDropdown() {
   const onLogout = async () => {
     const access_token = localStorage.getItem('access_token');
     dispatch(logout());
-
+    dispatch(setOpenModalLogin(false))
     if(!access_token){
 
       popupError('unAuth');
@@ -78,11 +84,12 @@ export default function AvatarDropdown() {
     }else{
 
       dispatch(setLoading(true));
-      const result = await dispatch(Logout(access_token));
+       await dispatch(Logout(access_token));
+       
       dispatch(setLoading(false));
-
-      popupSuccess(result?.result?.message);
-
+      setUser(undefined);
+      popupSuccess("Đăng xuất thành công");
+      navigate('/')
     }
     
   }
