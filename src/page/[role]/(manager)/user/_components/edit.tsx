@@ -82,7 +82,7 @@ export default function EditUser() {
        formData.append(key,values[key])
        
     }
-    formData.append('is_virtual','0');
+    
     try {
       const payload = {
         id : params.id,
@@ -207,20 +207,15 @@ export default function EditUser() {
              />
           </Form.Item>
 
-          <Form.Item name="address_line1" label='Address1' rules={[{required: true }]}>
+          <Form.Item name="address" label='Address' rules={[{required: true }]}>
              <Input  
                 type="text" 
-                placeholder="Enter your address "
+                placeholder="Enter your address"
              />
           </Form.Item>
 
 
-          <Form.Item name="address_line2" label='Address2' rules={[{required: true }]}>
-             <Input  
-                type="text" 
-                placeholder="Enter your address temporate"
-             />
-          </Form.Item>
+         
 
           <Form.Item name="county" label='County' rules={[{required: true }]}>
                

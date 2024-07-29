@@ -695,7 +695,7 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
 
           <Row gutter={[32, 24]}>
             <Col className="gutter-row " span={16}>
-              <div className="border-2 rounded-md relative min-h-[32rem] max-h-[32rem] lg:shadow-lg p-4 overflow-hidden">
+              <div className="py-5 border-2 rounded-md relative max-h-[450px] lg:shadow-lg p-4 overflow-hidden">
                 <div dangerouslySetInnerHTML={{ __html: data.data.content }} />
                 <div style={{background: 'linear-gradient(180deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, .91) 50%, #fff 55%)'}} className=" absolute bottom-0 left-0 p-2 flex justify-center items-center w-full">
                   <Button onClick={()=>setOpenContent(true)}>

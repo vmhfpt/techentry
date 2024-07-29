@@ -19,6 +19,8 @@ import { IOrder } from '@/common/types/Order.interface'
 import { useAddOrderMutation } from '@/services/OrderEndPoints'
 import { useCheckVoucherMutation } from '../../(manager)/voucher/VoucherEndpoint'
 import CartEmptyAnimationIcon from '../components/Icon/Cart/CartEmpty'
+import PaymentMethod from './PaymentMethod'
+import { useLocalStorage } from '@uidotdev/usehooks'
 
 const CheckoutPage = () => {
   const [dataVoucher, setVoucher] = useState<any>({
@@ -26,6 +28,8 @@ const CheckoutPage = () => {
     error: '',
     data: {}
   })
+  const dataUser = useLocalStorage('user', undefined)
+  const user : any = dataUser[0];
   const [priceAfterApply, setPriceAfterApply] = useState(0)
   const [checkVoucherData] = useCheckVoucherMutation()
   const [addOrder, { isLoading: isLoadingOrder }] = useAddOrderMutation()
@@ -48,14 +52,19 @@ const CheckoutPage = () => {
     const payload = {
       receiver_name: `${values.receiver_name} `,
       receiver_phone: values.receiver_phone,
-      receiver_pronvinces: values?.receiver_pronvinces.split('-')[0],
+
+      ...(!Boolean(user.address) ? {  receiver_pronvinces: values?.receiver_pronvinces.split('-')[0],
       receiver_district: values?.receiver_district.split('-')[0],
       receiver_ward: values?.receiver_ward.split('-')[0],
-      receiver_address: values?.receiver_address,
+      receiver_address: values?.receiver_address} :{  receiver_pronvinces: user.city,
+      receiver_district: user.district,
+      receiver_ward: user.county,
+      receiver_address: user.address} ),
       pick_up_required: 'false',
       note: values?.note,
       discount_code: dataVoucher.apply ? dataVoucher.code : ''
     }
+  
 
     try {
       const response = await addOrder(payload).unwrap()
@@ -119,14 +128,6 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          <div className='flex mt-auto pt-4 items-end justify-between text-sm'>
-            <a
-              href='##'
-              className='relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm '
-            >
-              <span>Remove</span>
-            </a>
-          </div>
         </div>
       </div>
     )
@@ -241,7 +242,7 @@ const CheckoutPage = () => {
                 />
               </div>
 
-              {/* <div id="PaymentMethod" className="scroll-mt-24">
+             <div id="PaymentMethod" className="scroll-mt-24">
                 <PaymentMethod
                   isActive={tabActive === "PaymentMethod"}
                   onOpenActive={() => {
@@ -250,7 +251,7 @@ const CheckoutPage = () => {
                   }}
                   onCloseActive={() => setTabActive("PaymentMethod")}
                 />
-              </div> */}
+              </div>
             </div>
           </div>
 

@@ -18,7 +18,9 @@ import { useGetCartsQuery } from '@/services/CartEndPoinst'
 import { getTotalPriceCart } from '@/utils/handleCart'
 import { useAddOrderMutation } from '@/services/OrderEndPoints'
 import { Form, Select, SelectProps } from 'antd'
+
 import { IOrder } from '@/common/types/Order.interface'
+import { EditOutlined } from '@ant-design/icons'
 
 interface Props {
   isActive: boolean
@@ -34,8 +36,8 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
   const { data: provinces, isLoading : isLoadingProvinces, isError } = useGetProvincesQuery({})
   const [getWard, { data: dataWards, isLoading: wardLoading }] = useLazyGetWardsQuery()
   const [getDistrict, { data: dataDistricts, isLoading: districtLoading }] = useLazyGetDistrictsQuery()
-  const user = JSON.parse(localStorage.getItem('user') || '');
-
+  const dataUser  = useLocalStorage('user', undefined)
+   const user : any = dataUser[0];
 
   const options: SelectProps['options'] = []
   const validateMessages = {
@@ -172,7 +174,9 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
         onFinish={onFinish}
         initialValues={
            {
-            pick_up_required: 'false'
+            pick_up_required: 'false',
+            receiver_name: user.username,
+            receiver_phone: user?.phone,
            }
         }
       >
@@ -187,7 +191,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             <div className='w-full'>
               
               <Form.Item name='receiver_name' label='User name' rules={[{ required: true }]}>
-                <Input  placeholder='Nhập tên' defaultValue={user ? user?.name : ''}/>
+                <Input  placeholder='Nhập tên'  />
               </Form.Item>
               
             </div>
@@ -200,13 +204,26 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             <div className='w-full'>
               
               <Form.Item name='receiver_phone' label='Phone number' rules={[{ required: true }]}>
-                <Input  placeholder='03456789' defaultValue={user ? user?.phone : ''}/>
+                <Input  placeholder='03456789'/>
               </Form.Item>
             </div>
           </div>
 
           {/* ============ */}
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3'>
+
+          {
+            Boolean(user.address) && <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
+            <div className='w-full'>
+
+              <Form.Item  label={<div className='flex gap-3'><span>Address</span> <Link to="/account"><EditOutlined /> </Link></div>} >
+                 <Input  placeholder={user.address} readOnly  />
+              </Form.Item>
+            
+            </div>
+          </div>}
+          
+          {!Boolean(user.address) && <>  
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3'>
             <div className='app__select--input'>
 
               <Form.Item name='receiver_pronvinces' label='Pronvinces' rules={[{ required: true }]}>
@@ -216,7 +233,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
                   placeholder='Select province'
                   options={options}
                   onChange={(value) => onChangeProvince(value)}
-                  defaultValue={user ? user?.city : ''}
+                  
                 />
               </Form.Item>
               
@@ -228,7 +245,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
                   onChange={(value) => onChangeDistrict(value)}
                   placeholder='Enter name district'
                   options={optionsDistrict}
-                  defaultValue={user ? user?.county : ''}
+                  
                 />
               </Form.Item>
             </div>
@@ -241,7 +258,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
                   loading={wardLoading}
                   placeholder='Enter name ward'
                   options={optionsWard}
-                  defaultValue={user ? user?.address : ''}
+                 // defaultValue={user ? user?.address : ''}
                 />
               </Form.Item>
             </div>
@@ -256,6 +273,10 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             
             </div>
           </div>
+
+          </>}
+         
+
 
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>

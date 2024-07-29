@@ -41,17 +41,14 @@ export default function AvatarDropdown() {
 
     if(result?.success == false){
       form.setFields([
-        {
-          name: 'email',
-          errors: ['Email is required']
-        },
+
         {
           name: 'password',
           value: '',
           errors: ['Password is required']
         }
       ])
-      popupError(result?.result?.message);
+      popupError("Email hoặc mật khẩu không chính xác");
     }else{
       form.setFields([
         {
