@@ -10,6 +10,7 @@ import { login, logout, Logout, Signin } from "@/app/slices/authSlide";
 import { ISignin } from "@/common/types/Auth.interface";
 import { setLoading, setOpenModalLogin } from "@/app/webSlice";
 import { popupSuccess, popupError } from "@/page/[role]/shared/Toast";
+import { useGetUserQuery } from "@/page/[role]/(manager)/user/UsersEndpoints";
 
 type FieldType = {
   email?: string;
@@ -24,7 +25,8 @@ export default function AvatarDropdown() {
  
   const {openModalLogin} = useAppSelector(state => state.web);
 
-  const user = localStorage.getItem('user') ;
+  const user = JSON.parse(String(localStorage.getItem('user')));
+  const {data : dataItem, isLoading : dataLoading } = useGetUserQuery(user?.id);
 
   // const [open, setOpen] = useState(false);
   // const [checked, setChecked] = useState(true);
@@ -136,10 +138,10 @@ export default function AvatarDropdown() {
                         (
                           <>
                             <div className="flex items-center space-x-3">
-                              <Avatar imgUrl={JSON.parse(String(user)).image ? JSON.parse(String(user)).image : avatarImgs[10] } sizeClass="w-12 h-12" />
+                              <Avatar imgUrl={dataItem?.data.image ? dataItem?.data.image : avatarImgs[10] } sizeClass="w-12 h-12" />
                               <div className="flex-grow truncate break-all">
-                                <h4 className="font-semibold">{  JSON.parse(String(user)).username}</h4>
-                                <p className="text-xs mt-0.5 ">{  JSON.parse(String(user)).email}</p>
+                                <h4 className="font-semibold">{  dataItem?.data.username}</h4>
+                                <p className="text-xs mt-0.5 ">{  dataItem?.data.email}</p>
                               </div>
                             </div>
 
