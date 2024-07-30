@@ -54,6 +54,13 @@ const AccountPage: FC<AccountPageProps> = ({ className = "" }) => {
   const [updateUser, { isLoading : loadingUpdateUser }] = useUpdateUserMutation();
   const [form] = Form.useForm();
   const [optionsDistrict, setOptionDistrict] = useState<SelectProps['options']>([])
+
+  useEffect(() => {
+    if(dataItem?.data){
+      localStorage.removeItem('user')
+      localStorage.setItem('user', JSON.stringify(dataItem.data));
+    }
+ }, [dataItem])
   
   const onFinish = async (values: Iuser | any) => {
     console.log(values);
