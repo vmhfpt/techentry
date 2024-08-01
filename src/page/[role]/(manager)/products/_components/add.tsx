@@ -360,7 +360,7 @@ function AddProduct() {
                   
                   {/* General */}
                   <div className=' p-[2rem] sm:rounded-lg h-full' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
-                    <h2 className='mb-5 font-bold text-[16px]'>Tông quát</h2>
+                    <h2 className='mb-5 font-bold text-[16px]'>Tổng quát</h2>
                     <Flex vertical  gap={20}>
                       <Form.Item
                         name='name'

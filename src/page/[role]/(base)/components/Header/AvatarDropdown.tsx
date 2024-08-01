@@ -564,7 +564,7 @@ export default function AvatarDropdown() {
                     </Form.Item>
                   </div>
                   <div>
-                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Password</label>
+                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Mật khẩu</label>
                     <Form.Item<FieldType>
                       name="password"
                       rules={[

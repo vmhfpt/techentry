@@ -34,11 +34,11 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   
     <div className={`nc-PageLogin ${className}`} data-nc-id="PageLogin">
       <Helmet>
-        <title>Login || Ciseco React Template</title>
+        <title>Đăng nhập</title>
       </Helmet>
       <div className="container mb-24 lg:mb-32">
         <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-          Login
+          Đăng nhập
         </h2>
         <div className="max-w-md mx-auto space-y-6">
           <div className="grid gap-3">
@@ -70,7 +70,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           <form className="grid grid-cols-1 gap-6" action="#" method="post">
             <label className="block">
               <span className="text-neutral-800 dark:text-neutral-200">
-                Email address
+                Địa chỉ email
               </span>
               <Input
                 type="email"
