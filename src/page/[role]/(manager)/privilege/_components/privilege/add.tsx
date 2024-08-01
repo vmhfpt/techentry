@@ -38,15 +38,15 @@ export default function AddPrivilege(){
   
       <Row gutter={16}>
       <Col span={24}>
-        <Form.Item label="Name privilege" name="name"  rules={[{ required: true }]}>
+        <Form.Item label="Tên quyền hạn" name="name"  rules={[{ required: true }]}>
            <Input placeholder="VD : Xem tin tức, Sửa sản phẩm, Thống kê, Tư vấn ..." />
         </Form.Item>
         </Col>
         <Col span={12}>
   
-        <Form.Item label="Privilege Group" name="privilege_groupId"  rules={[{ required: true }]}>
+        <Form.Item label="Nhóm quyền hạn" name="privilege_groupId"  rules={[{ required: true }]}>
         <Select
-            placeholder="Enter privilege group"
+            placeholder="Nhập nhóm quyền hạns"
             loading={isLoading}
             style={{ width: '100%' }}
             options={dataPrivilegeGroups}
@@ -56,7 +56,7 @@ export default function AddPrivilege(){
   
         </Col>
         <Col span={12}>
-        <Form.Item label="Url allow access" name="url_match"  rules={[{ required: true }]}>
+        <Form.Item label="Url được phép truy cập" name="url_match"  rules={[{ required: true }]}>
            <Input placeholder="VD : admin\/users\/add$ ..." />
         </Form.Item>
         </Col>
@@ -66,7 +66,7 @@ export default function AddPrivilege(){
   
         <Form.Item >
               <Button loading={loadingCreate} disabled={loadingCreate} type='primary' htmlType='submit'>
-                Add
+                Thêm
               </Button>
             </Form.Item>
   

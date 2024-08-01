@@ -108,7 +108,7 @@ const LangDropdown: FC<LangDropdownProps> = ({ panelClassName = "" }) => {
              group h-10 sm:h-12 px-3 py-1.5 inline-flex items-center text-sm text-gray-800 dark:text-neutral-200 font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <GlobeAltIcon className="w-[18px] h-[18px] opacity-80" />
-              <span className="ml-2">Language</span>
+              <span className="ml-2">Ngôn ngữ</span>
               <ChevronDownIcon
                 className={`${open ? "-rotate-180" : "text-opacity-70"}
                   ml-1 h-4 w-4  group-hover:text-opacity-80 transition ease-in-out duration-150`}
@@ -130,7 +130,7 @@ const LangDropdown: FC<LangDropdownProps> = ({ panelClassName = "" }) => {
                 <div className="p-6 rounded-2xl bg-white dark:bg-neutral-800 shadow-lg ring-1 ring-black ring-opacity-5">
                   <Tab.Group>
                     <Tab.List className="flex space-x-1 rounded-full bg-gray-100 dark:bg-slate-700 p-1">
-                      {["Language", "Currency"].map((category) => (
+                      {["Ngôn ngữ", "Tiền tệ"].map((category) => (
                         <Tab
                           key={category}
                           className={({ selected }) =>

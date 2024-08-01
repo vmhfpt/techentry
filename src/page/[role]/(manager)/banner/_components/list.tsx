@@ -34,7 +34,7 @@ export default function ListBanner() {
       align: 'center'
     },
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'image_title',
       key: 'image_title',
       align: 'center',
@@ -43,7 +43,7 @@ export default function ListBanner() {
     },
    
     {
-      title: 'Img',
+      title: 'Ảnh',
       dataIndex: 'image_url',
       key: 'image_url',
       align: 'center',
@@ -51,21 +51,21 @@ export default function ListBanner() {
       render: (img) => <img src={img || ''} className='mx-auto w-16' alt='' />
     },
     {
-      title: 'Active',
+      title: 'Trạng thái',
       key: 'is_active',
       dataIndex: 'is_active',
       width: 100,
       render: (_, { is_active }) => (
         <>
               <Tag color={is_active == 1 ? 'green' : 'red'} >
-                  {is_active == 1 ? 'Active' : 'InActive'}
+                  {is_active == 1 ? 'Đang hoạt động' : 'không hoạt động'}
               </Tag>
         </>
       )
     
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       width: 100,
       align: 'center',
@@ -101,7 +101,7 @@ export default function ListBanner() {
     <>
       <div className='flex items-center justify-between my-2'>
         <Typography.Title editable level={2} style={{ margin: 0 }}>
-          List Banner
+          Danh sách banner
         </Typography.Title>
       
       </div>
@@ -118,7 +118,7 @@ export default function ListBanner() {
 
       <Flex className='mt-3' wrap='wrap' gap='small'>
         <Link to='add'>
-          <Button type='primary'>Add Banner</Button>
+          <Button type='primary'>Thêm Banner</Button>
         </Link>
       </Flex>
     </>

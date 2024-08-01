@@ -51,7 +51,7 @@ export default function ListPosts() {
       align: 'center'
     },
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'title',
       key: 'title',
       align: 'center',
@@ -60,7 +60,7 @@ export default function ListPosts() {
     },
     Table.EXPAND_COLUMN,
     {
-      title: 'Content',
+      title: 'Nội dung',
       dataIndex: 'content',
       key: 'content',
       align: 'center',
@@ -69,7 +69,7 @@ export default function ListPosts() {
       render: (text) => <span className='ellipsis'>{text}</span>
     },
     {
-      title: 'Thumbnail',
+      title: 'Hình thu nhỏ',
       dataIndex: 'thumbnail',
       key: 'thumbnail',
       align: 'center',
@@ -77,7 +77,7 @@ export default function ListPosts() {
       render: (url) => <img src={url || ''} className='mx-auto w-14' alt='' />
     },
     {
-      title: 'Category',
+      title: 'Danh mục',
       dataIndex: 'postCategory',
       key: 'postCategory',
       align: 'center',
@@ -85,27 +85,27 @@ export default function ListPosts() {
       render: (postCategory) => <span>{postCategory?.name || 'No Category'}</span>
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
       align: 'center',
       width: 80
     },
     {
-      title: 'Active',
+      title: 'Trạng thái kích hoạt',
       dataIndex: 'isActive',
       key: 'isActive',
       align: 'center',
       width: 100,
       render: (isActive) => {
         const color = !isActive ? 'volcano' : 'green'
-        const text = !isActive ? 'No Active' : 'Active'
+        const text = !isActive ? 'Đanh hoạt động' : 'Không hoạt động'
 
         return <Tag color={color}>{text.toUpperCase()}</Tag>
       }
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       width: 100,
       align: 'center',
@@ -140,7 +140,7 @@ export default function ListPosts() {
     <>
       <div className='flex items-center justify-between my-2'>
         <Typography.Title editable level={2} style={{ margin: 0 }}>
-          List Posts
+          Danh sách bài viết
         </Typography.Title>
 
         <Input
@@ -155,7 +155,7 @@ export default function ListPosts() {
           allowClear
           onChange={handleChangeSearch}
           size='small'
-          placeholder={'search'}
+          placeholder={'Tìm kiếm'}
           style={{
             borderRadius: '2rem',
             border: 'none',

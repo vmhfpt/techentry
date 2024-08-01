@@ -29,7 +29,7 @@ export default function AddPrivilegeGroup(){
      <Row gutter={16}>
        <Col span={24}>
  
-       <Form.Item rules={[{ required: true }]} name="name" label="Group name" >
+       <Form.Item rules={[{ required: true }]} name="name" label="Tên nhóm" >
           <Input placeholder="VD : Quản lý đơn hàng ... " />
        </Form.Item>
  
@@ -40,7 +40,7 @@ export default function AddPrivilegeGroup(){
  
        <Form.Item >
              <Button loading={loadingCreate} disabled={loadingCreate} type='primary' htmlType='submit'>
-               Add
+               Thêm
              </Button>
            </Form.Item>
  

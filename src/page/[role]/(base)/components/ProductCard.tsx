@@ -95,7 +95,7 @@ const ProductCard: FC<ProductCardProps> = ({
               leaveTo="opacity-0 translate-x-20"
             >
               <p className="block text-base font-semibold leading-none">
-                Added to cart!
+                Đã thêm vào giỏ hàng!
               </p>
               <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
               {renderProductCartOnNotify({ second })}
@@ -157,7 +157,7 @@ const ProductCard: FC<ProductCardProps> = ({
                 to={"/cart"}
                 className="font-medium text-primary-6000 dark:text-primary-500 "
               >
-                View cart
+                Xem giỏ hàng
               </Link>
             </div>
           </div>
@@ -214,7 +214,7 @@ const ProductCard: FC<ProductCardProps> = ({
           onClick={() => notifyAddTocart({ second: null })}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-          <span className="ml-1">Add to Cart</span>
+          <span className="ml-1">Thêm vào giỏ hàng</span>
         </ButtonPrimary>
         <ButtonSecondary
           className="ml-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"

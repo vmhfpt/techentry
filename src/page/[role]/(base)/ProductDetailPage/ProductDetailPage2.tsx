@@ -353,7 +353,7 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
                 onClick={notifyAddTocart}
               >
                 <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-                <span className="ml-3">Add to cart</span>
+                <span className="ml-3">Thêm vào giỏ</span>
               </ButtonPrimary>
             </div>
 
@@ -513,7 +513,7 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
                 />
               </svg>
               <span className="ml-2 text-neutral-800 text-sm font-medium">
-                Show all photos
+                Hiện tất cả ảnh
               </span>
             </div>
           </div>
@@ -792,7 +792,7 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
           <hr className="border-slate-200 dark:border-slate-700" />
 
           <SectionSliderProductCard
-            heading="Customers also purchased"
+            heading="SẢN PHẨM TƯƠNG TỰ"
             subHeading=""
             headingFontClassName="text-2xl font-semibold"
             headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"

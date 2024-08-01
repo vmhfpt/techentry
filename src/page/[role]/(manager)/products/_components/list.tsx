@@ -48,14 +48,14 @@ export default function ListProduct(){
     
     const columns: TableProps<IProduct>['columns'] = [
         {
-          title: 'Name',
+          title: 'Tên sản phẩm',
           dataIndex: 'name',
           key: 'name',
           showSorterTooltip: { target: 'full-header' },
           render: (text) => <a>{text}</a>,
         },
         {
-          title: 'Price',
+          title: 'Giá',
           dataIndex: 'products',
             key: 'products',
             render: (products) => {
@@ -64,7 +64,7 @@ export default function ListProduct(){
             }
         },
         {
-            title: 'Discount',
+            title: 'Giảm giá',
             dataIndex: 'products',
             key: 'products',
             render: (products) => {
@@ -73,7 +73,7 @@ export default function ListProduct(){
             }
         },
         {
-          title: 'Image',
+          title: 'Ảnh',
           dataIndex: 'thumbnail',
           key: 'thumbnail',
           render: (thumbnail) => (
@@ -83,19 +83,19 @@ export default function ListProduct(){
           )
         },
         {
-            title: 'Category',
+            title: 'Danh mục',
             dataIndex: 'category',
             key: 'category',
             render: (category) => <span>{category.name}</span>,
         },
         {
-          title: 'Active',
+          title: 'Trạng thái',
           key: 'in_active',
           dataIndex: 'in_active',
           render: (_, { is_active  }) => (
             <>
               <Tag color={is_active == 1 ? 'green' : 'red'} >
-                  {is_active == 1 ? 'Active' : 'InActive'}
+                  {is_active == 1 ? 'Đang hoạt động' : 'Không hoạt động'}
               </Tag>
             </>
           )
@@ -108,7 +108,7 @@ export default function ListProduct(){
               
                <Link to={String(data?.id)}>   
                   <Button type="primary"  >
-                    Edit
+                    Sửa
                   </Button> 
                 </Link>
                 <Popconfirm
@@ -137,7 +137,7 @@ export default function ListProduct(){
    
       <div className='flex items-center justify-between my-2'>
         <Title editable level={2} style={{ margin: 0 }}>
-          List Product
+          Danh sách sản phẩm
         </Title>
       </div>
 
@@ -155,13 +155,13 @@ export default function ListProduct(){
             allowClear
             onChange={handleChangeSearch}
             size='small'
-            placeholder={'search'}
+            placeholder={'Tìm kiếm'}
             style={{
               borderRadius: '2rem',
             }}
           />
           <Link to='add'>
-            <Button type='primary'>Add Product</Button>
+            <Button type='primary'>Thêm sản phẩm</Button>
           </Link>
         </Flex>
 

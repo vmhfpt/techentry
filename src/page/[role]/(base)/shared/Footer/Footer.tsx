@@ -12,42 +12,40 @@ export interface WidgetFooterMenu {
 const widgetMenus: WidgetFooterMenu[] = [
   {
     id: '5',
-    title: 'Getting started',
+    title: 'Hỗ trợ miễn phí',
     menus: [
-      { href: '#', label: 'Release Notes' },
-      { href: '#', label: 'Upgrade Guide' },
-      { href: '#', label: 'Browser Support' },
-      { href: '#', label: 'Dark Mode' }
+      { href: '#', label: 'Gọi mua hàng 0123456789' },
+      { href: '#', label: 'Gọi khiếu nại 123456789' },
+      { href: '#', label: 'Gọi bảo hành 123456789' },
+  
     ]
   },
   {
     id: '1',
-    title: 'Explore',
+    title: 'Thông tin và chính sách',
     menus: [
-      { href: '#', label: 'Prototyping' },
-      { href: '#', label: 'Design systems' },
-      { href: '#', label: 'Pricing' },
-      { href: '#', label: 'Security' }
+      { href: '#', label: 'Mua hàng và thanh toán Online' },
+      { href: '#', label: 'Chính sách giao hàng' },
+      { href: '#', label: 'Thông tin hoá đơn mua hàng' },
+      { href: '#', label: 'Mua hàng và thanh toán Online' }
     ]
   },
   {
     id: '2',
-    title: 'Resources',
+    title: 'Dịch vụ và thông tin khác',
     menus: [
-      { href: '#', label: 'Best practices' },
-      { href: '#', label: 'Support' },
+      { href: '#', label: 'Ưu đãi thanh toán' },
+      { href: '#', label: 'Chính sách Bảo hành' },
       { href: '#', label: 'Developers' },
       { href: '#', label: 'Learn design' }
     ]
   },
   {
     id: '4',
-    title: 'Community',
+    title: 'Giới thiệu',
     menus: [
-      { href: '#', label: 'Discussion Forums' },
-      { href: '#', label: 'Code of Conduct' },
-      { href: '#', label: 'Contributing' },
-      { href: '#', label: 'API Reference' }
+      { href: '#', label: 'Tuyển dụng' },
+
     ]
   }
 ]

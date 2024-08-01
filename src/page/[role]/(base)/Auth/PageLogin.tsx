@@ -80,9 +80,9 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
             </label>
             <label className="block">
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-                Password
+                Mật khẩu
                 <Link to="/forgot-pass" className="text-sm text-green-600">
-                  Forgot password?
+                Quên mật khẩu?
                 </Link>
               </span>
               <Input type="password" className="mt-1" />
@@ -94,7 +94,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
           <span className="block text-center text-neutral-700 dark:text-neutral-300">
             New user? {` `}
             <Link className="text-green-600" to="/signup">
-              Create an account
+              Tạo tài khoản
             </Link>
           </span>
         </div>
