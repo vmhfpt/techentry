@@ -109,7 +109,7 @@ export default function EditBrand() {
           validateMessages={validateMessages}
         >
           <Form.Item name='name' label='Name' rules={[{ required: true }]}>
-            <Input type='text' placeholder='Enter your name' />
+            <Input type='text' placeholder='Nhập tên thương hiệu' />
           </Form.Item>
         
 
@@ -122,7 +122,7 @@ export default function EditBrand() {
  
           >
             <Upload name='image' listType='picture' customRequest={handleUpload}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Button icon={<UploadOutlined />}>Nhấn để tải lên</Button>
             </Upload>
           </Form.Item>
 
@@ -137,7 +137,7 @@ export default function EditBrand() {
 
           <Form.Item  className='mt-4'>
             <Button loading={isLoadingUploadBrand} disabled={isLoadingUploadBrand} type='primary' htmlType='submit'>
-              Update
+              Cập nhật
             </Button>
           </Form.Item>
         </Form>

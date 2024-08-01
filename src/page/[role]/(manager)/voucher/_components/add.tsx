@@ -40,7 +40,7 @@ export default function ModalCreateVoucher({
   return (
     <>
       <Modal
-        title={isEdit ? 'Edit Voucher' : "Add Voucher"}
+        title={isEdit ? 'Sửa mã giảm giá' : "Thêm mã giảm giá"}
         open={visible}
         onCancel={onCancelModalCreate}
         footer={null}
@@ -64,19 +64,19 @@ export default function ModalCreateVoucher({
 
           <Form.Item
             name={'name'}
-            label='Name'
+            label='Mã'
             rules={[
               { required: true, message: 'Please enter the voucher name' },
               { max: 120, message: 'Voucher name must be at most 120 characters' },
             ]}
           >
-            <Input placeholder='Nhập tên Voucher' />
+            <Input placeholder='Nhập mã giản giá' />
           </Form.Item>
 
           <Form.Item
             name={'discount_amount'}
-            label='Discount Amount'
-            rules={[{ required: true, type: 'number', message: 'Please enter the discount amount' }]}
+            label='Số tiền giảm giá'
+            rules={[{ required: true, type: 'number', message: 'Vui lòng nhập số tiền giảm giá' }]}
           >
             <InputNumber placeholder='Nhập số tiền giảm giá' style={{ width: '100%' }} />
           </Form.Item>
@@ -137,8 +137,8 @@ export default function ModalCreateVoucher({
 
           <Form.Item
             name={'usage_limit'}
-            label='Usage Limit'
-            rules={[{ required: true, type: 'number', message: 'Please enter the usage limit' }]}
+            label='Giới hạn sử dụng'
+            rules={[{ required: true, type: 'number', message: 'Vui lòng nhập giới hạn sử dụng' }]}
           >
             <InputNumber placeholder='Nhập giới hạn sử dụng' style={{ width: '100%' }} min={1} />
           </Form.Item>

@@ -76,7 +76,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                 style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1rem'}}
             >
                 <Flex vertical gap={20}>
-                    <h2 className='font-bold text-[16px]'>Thumbnail</h2>
+                    <h2 className='font-bold text-[16px]'>Ảnh nhỏ</h2>
                     <div style={{ height: '12vw', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}} className='border-none rounded-[12px]  ' >
                         {
                         DisplayPic
@@ -271,7 +271,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
             {/* Discount */}
             <div className='sm:rounded-lg flex-1 p-2 relative' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
                 <div className='p-2'>
-                    <h2 className='font-bold'>Discount</h2>
+                    <h2 className='font-bold'>Giảm giá</h2>
                 </div>
                 <Flex justify='center' align='' vertical className='p-2' gap={10} >
                 <Form.Item 

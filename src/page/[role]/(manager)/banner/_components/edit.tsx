@@ -96,7 +96,7 @@ export default function EditBanner() {
            
           >
             <Dragger listType='picture' customRequest={handleUpload}  >
-              <Button>Upload</Button>
+              <Button>Tải lên</Button>
             </Dragger>
           </Form.Item>
 

@@ -40,7 +40,7 @@ export default function ModalCreateColor({
   return (
     <>
       <Modal
-        title={isEdit ? 'Edit Color' : "Add Color"}
+        title={isEdit ? 'Sửa màu sắc' : "Thêm màu sắc"}
         open={visible}
         onCancel={onCancelModalCreate}
         footer={null}
@@ -64,13 +64,13 @@ export default function ModalCreateColor({
 
           <Form.Item
             name={'name'}
-            label='Name'
+            label='Tên'
             rules={[
-              { required: true, message: 'Please enter the Color name' },
-              { max: 120, message: 'Color name must be at most 120 characters' },
+              { required: true, message: 'Vui lòng nhập tên màu' },
+              { max: 120, message: 'Tên màu phải dài tối đa 120 ký tự' },
             ]}
           >
-            <Input placeholder='Nhập tên Color' />
+            <Input placeholder='Nhập tên màu sắc' />
           </Form.Item>
 
           {/* <Form.Item

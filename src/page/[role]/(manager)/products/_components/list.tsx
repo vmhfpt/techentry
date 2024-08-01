@@ -101,7 +101,7 @@ export default function ListProduct(){
           )
         },
         {
-          title: 'Action',
+          title: 'Hành động',
           key: 'action',
           render: (data: IProduct) => (
             <Flex wrap="wrap" gap="small">

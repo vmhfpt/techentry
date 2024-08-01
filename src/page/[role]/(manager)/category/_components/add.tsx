@@ -161,7 +161,7 @@ export default function AddCategory() {
 
   return (
     <>
-       <Drawer width={'70%'} loading={isLoadingCategories} title="Create new category" onClose={() => handleCancel()} open={true}>
+       <Drawer width={'70%'} loading={isLoadingCategories} title="Tạo danh mục mới" onClose={() => handleCancel()} open={true}>
        <Form 
           
           form={form} 
@@ -176,9 +176,9 @@ export default function AddCategory() {
         >
           <Form.Item>
             <Flex justify='space-between' className='pb-4' align='center'>
-              <h2 className=' font-bold text-[24px]'>Create new category</h2>
+              <h2 className=' font-bold text-[24px]'>Tạo danh mục mới</h2>
               <Button loading={isLoadingCreateCategory} disabled={isLoadingCategories} type="primary" htmlType="submit" className=" w-[100px] p-5">
-                Create
+                
               </Button>
             </Flex>
           </Form.Item>
@@ -192,7 +192,7 @@ export default function AddCategory() {
                   style={{boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)'}}
                 >
                   <div>
-                  <h2 className='font-bold mb-2 text-[16px]'>Thumbnail</h2>
+                  <h2 className='font-bold mb-2 text-[16px]'>Ảnh nhỏ</h2>
                   <div style={{ flex: 5, height: '200px', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }} className='border-none rounded-[12px]  ' >
                     {
                       imageUrl && DisplayPic
@@ -232,12 +232,12 @@ export default function AddCategory() {
               </Flex>
               <div className='border border-1 rounded-md overflow-hidden flex-1 ' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
                 <div className='p-2'>
-                  <h2>Setting</h2>
+                  <h2>Cài đặt</h2>
                 </div>
                 <hr />
                 <div className='flex justify-between items-center p-2'>
                   
-                      <h2>active</h2>
+                      <h2>Kích hoạt</h2>
                       <Form.Item 
                         className='m-0' 
                         label=''
@@ -252,12 +252,12 @@ export default function AddCategory() {
             </Flex>
             <Flex vertical className='flex-[6]'>
               <div className='  border-[1px] p-[50px] rounded-md' style={{boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)'}}>
-                <h2 className='mb-5 font-bold text-[16px]'>General</h2>
+                <h2 className='mb-5 font-bold text-[16px]'>Tổng quan</h2>
                 <Flex vertical  gap={20}>
                   <Flex gap={30}>
                     <Form.Item
                       name='name'
-                      label='Name'
+                      label='Tên'
                       className='w-full'
                       rules={[
                         { required: true, message: 'Vui lòng nhập tên danh mục!' },
