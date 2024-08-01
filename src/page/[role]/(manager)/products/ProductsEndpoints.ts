@@ -22,12 +22,21 @@ export const productsApi = apiWithTag.injectEndpoints({
         : [{ type: 'Products', id: 'LIST' }],
     }),
     getProduct: builder.query({
-      query: (slug) => `product/${slug}`,
-      providesTags: (slug) => [{ type: 'Products', slug }],
+      query: (id) => `product/${id}`,
+      providesTags: (id) => [{ type: 'Products', id }],
     }),
     filterProduct: builder.query({
       query: (feat) => `product/home/${feat}`,
       providesTags: () => [{ type: 'Products', id: 'FEAT' }],
+    }),
+    searchProduct: builder.mutation({
+      query: (params) => ({
+        url: 'product',
+        method: 'POST',
+        params: params,
+        formData: true,
+      }),
+      invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),
     createProduct: builder.mutation({
       query: (newProduct) => ({
@@ -60,6 +69,7 @@ export const {
   useGetProductsQuery,
   useGetProductQuery,
   useFilterProductQuery,
+  useSearchProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
   useCreateProductMutation

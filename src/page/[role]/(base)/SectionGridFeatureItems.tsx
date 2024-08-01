@@ -21,7 +21,7 @@ const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
   return (
     <>
       <div className="nc-SectionGridFeatureItems relative">
-        <HeaderFilterSection title="What's hot now" handleFilter={setFilter}/>
+        <HeaderFilterSection title="Sản phẩm bán chạy" handleFilter={setFilter}/>
         <div
           className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 `}
         >
@@ -30,11 +30,11 @@ const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
           ))}
         </div>
         <div className="flex mt-16 justify-center items-center">
-          <ButtonPrimary loading>Show me more</ButtonPrimary>
+          <ButtonPrimary loading>Xem thêm</ButtonPrimary>
         </div>
       </div>
       <div className="nc-SectionGridFeatureItems relative">
-        <HeaderFilterSection title="What's good now" handleFilter={setFilter}/>
+        <HeaderFilterSection title="Ưu đãi hấp dẫn" handleFilter={setFilter}/>
         <div
           className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 `}
         >
@@ -43,11 +43,11 @@ const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
           ))}
         </div>
         <div className="flex mt-16 justify-center items-center">
-          <ButtonPrimary loading>Show me more</ButtonPrimary>
+          <ButtonPrimary loading>Xem thêm</ButtonPrimary>
         </div>
       </div>
       <div className="nc-SectionGridFeatureItems relative">
-        <HeaderFilterSection title="What's new" handleFilter={setFilter}/>
+        <HeaderFilterSection title="Sản phẩm mới" handleFilter={setFilter}/>
         <div
           className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 `}
         >
@@ -56,11 +56,11 @@ const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
           ))}
         </div>
         <div className="flex mt-16 justify-center items-center">
-          <ButtonPrimary loading>Show me more</ButtonPrimary>
+          <ButtonPrimary loading>Xem thêm</ButtonPrimary>
         </div>
       </div>
       <div className="nc-SectionGridFeatureItems relative">
-        <HeaderFilterSection title="What's show home" handleFilter={setFilter}/>
+        <HeaderFilterSection title="Khuyến mãi hấp dẫn" handleFilter={setFilter}/>
         <div
           className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 `}
         >
@@ -69,7 +69,7 @@ const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
           ))}
         </div>
         <div className="flex mt-16 justify-center items-center">
-          <ButtonPrimary loading>Show me more</ButtonPrimary>
+          <ButtonPrimary loading>Xem thêm</ButtonPrimary>
         </div>
       </div>
     </>

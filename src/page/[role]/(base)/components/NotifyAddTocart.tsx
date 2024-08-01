@@ -68,7 +68,7 @@ const NotifyAddTocart: FC<Props> = ({
                 to={"/cart"}
                 className="font-medium text-primary-6000 dark:text-primary-500 "
               >
-                View cart
+                Xem giỏ hàng
               </Link>
             </div>
           </div>

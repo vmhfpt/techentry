@@ -223,7 +223,7 @@ export default function EditCategory() {
   }
   return (
     <>
-    <Drawer width={'70%'} loading={isLoadingGetCategory || isLoadingCategories} title="Create new category" onClose={() => handleCancel()} open={true}>
+    <Drawer width={'70%'} loading={isLoadingGetCategory || isLoadingCategories} title="Tạo danh mục mới" onClose={() => handleCancel()} open={true}>
     {dataItem &&  <Form 
           form={form} 
           name='category' 
@@ -238,9 +238,9 @@ export default function EditCategory() {
         >
           <Form.Item>
             <Flex justify='space-between' className='pb-4' align='center'>
-              <h2 className=' font-bold text-[24px]'>Update category "{dataItem?.data?.name}"</h2>
+              <h2 className=' font-bold text-[24px]'>Cập nhật danh mục "{dataItem?.data?.name}"</h2>
               <Button loading={loadingUpdateCategory} disabled={loadingUpdateCategory} type="primary" htmlType="submit" className=" w-[100px] p-5">
-                Update
+                cập nhật
               </Button>
             </Flex>
           </Form.Item>
@@ -254,7 +254,7 @@ export default function EditCategory() {
                   style={{boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)'}}
                 >
                   <div>
-                  <h2 className='font-bold mb-2 text-[16px]'>Thumbnail</h2>
+                  <h2 className='font-bold mb-2 text-[16px]'>Ảnh nhỏ</h2>
                   <div style={{ flex: 5, height: '200px', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }} className='border-none rounded-[12px]  ' >
                     {
                        DisplayPic
@@ -314,7 +314,7 @@ export default function EditCategory() {
             </Flex>
             <Flex vertical className='flex-[6]'>
               <div className='  border-[1px] p-[50px] rounded-md' style={{boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)'}}>
-                <h2 className='mb-5 font-bold text-[16px]'>General</h2>
+                <h2 className='mb-5 font-bold text-[16px]'>Tổng quan</h2>
                 <Flex vertical  gap={20}>
                   <Flex gap={30}>
                     <Form.Item

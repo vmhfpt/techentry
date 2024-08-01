@@ -140,7 +140,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
 
         <div className='sm:ml-8'>
           <h3 className=' text-slate-700 dark:text-slate-300 flex '>
-            <span className='uppercase'>SHIPPING ADDRESS</span>
+            <span className='uppercase'>Địa chỉ giao hàng</span>
             <svg
               fill='none'
               viewBox='0 0 24 24'
@@ -158,7 +158,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           className='bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg'
           onClick={onOpenActive}
         >
-          Change
+          Thay đổi
         </ButtonSecondary>
       </div>
       
@@ -285,10 +285,10 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           {/* ============ */}
           <div className='flex flex-col sm:flex-row pt-6'>
             <ButtonPrimary className='sm:!px-7 shadow-none' onClick={onCloseActive}>
-              Save and next to Payment
+            Lưu và tiếp tục đến Thanh toán
             </ButtonPrimary>
             <ButtonSecondary className='mt-3 sm:mt-0 sm:ml-3' onClick={onCloseActive}>
-              Cancel
+            Hủy bỏ
             </ButtonSecondary>
           </div>
         </div>

@@ -254,7 +254,7 @@ function AddProduct() {
         open={true}
         title={
         <>
-          <h2 className=' font-bold text-[24px]'>Create new product</h2>
+          <h2 className=' font-bold text-[24px]'>Tạo sản phẩm mới</h2>
         </>
         }
         width={'85%'}
@@ -278,10 +278,10 @@ function AddProduct() {
         >
           <Flex className='fixed z-[10000000] top-[15px] right-10' gap={20}>
             <Button  loading={isLoadingAddProduct} disabled={isLoadingAddProduct} htmlType='submit' type='primary' className=' '>
-              Create
+              Tạo
             </Button>
             <Button type='dashed'>
-              Reset
+              Đặt lại
             </Button>
           </Flex>
           <Flex vertical gap={30}>
@@ -299,7 +299,7 @@ function AddProduct() {
                     style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1rem'}}
                   >
                     <Flex vertical gap={20}>
-                    <h2 className='font-bold text-[16px]'>Gallery</h2>
+                    <h2 className='font-bold text-[16px]'>Hình Ảnh</h2>
                     <div style={{ flex: 5, overflow: 'hidden',  boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}} className='border-none rounded-[12px] relative' >
                         <Flex className='border-dashed border-2 p-5 relative hover:bg-gray-100 hover:border-solid  ' vertical gap={10} justify='center' align='center' style={{ width: '100%', height: "7.5vw", borderRadius: '12px' }}>
                             {
@@ -360,11 +360,11 @@ function AddProduct() {
                   
                   {/* General */}
                   <div className=' p-[2rem] sm:rounded-lg h-full' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
-                    <h2 className='mb-5 font-bold text-[16px]'>General</h2>
+                    <h2 className='mb-5 font-bold text-[16px]'>Tổng quát</h2>
                     <Flex vertical  gap={20}>
                       <Form.Item
                         name='name'
-                        label='Name'
+                        label='Tên'
                         className='w-full'
                         rules={[
                           { required: true, message: 'Vui lòng nhập tên sản phẩm!' },

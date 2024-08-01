@@ -106,7 +106,7 @@ function Header() {
           className="header-search w-[250px]"
           prefix={<div className=" px-2"><SearchRoundedIcon /></div>}
           size="small"
-          placeholder={'search'}
+          placeholder={'Tìm kiếm'}
           style={{ borderRadius: '2rem', border: 'none', backgroundColor: '#ffff', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}
         />
         <Flex align="center" gap={20}>

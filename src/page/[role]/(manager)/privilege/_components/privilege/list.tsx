@@ -42,18 +42,18 @@ export default function ListPrivilege(){
           dataIndex: 'id',
         },
         {
-          title: 'Name',
+          title: 'Tên',
           width: 50,
           fixed: 'left',
           dataIndex: 'name',
         },
         {
-            title: 'Url allow access',
+            title: 'Url được phép truy cập',
             width: 100,
             dataIndex: 'url_match',
         },
         {
-            title: 'Privilege group',
+            title: 'Nhóm quyền hạn',
             width: 100,
             dataIndex: 'privilege_group',
             fixed: 'right',
@@ -61,7 +61,7 @@ export default function ListPrivilege(){
         },
        
         {
-          title: 'Action',
+          title: 'Hành động',
           width: 90,
           fixed: 'right',
           render: (data : IPrivilege) => (
@@ -94,7 +94,7 @@ export default function ListPrivilege(){
     
     return (<>
    
-    <Title level={2}>List privilege </Title>
+    <Title level={2}>Danh sách quyền hạn </Title>
    
     <Table loading={isLoading}  columns={columnsPrivilege} dataSource={dataItem}  
       

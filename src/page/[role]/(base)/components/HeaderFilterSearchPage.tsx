@@ -23,7 +23,7 @@ const HeaderFilterSearchPage: FC<HeaderFilterSearchPageProps> = ({
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
-          {["All items", "Women", "Man", "Jewels", "Kids"].map(
+          {["Tất cả danh mục", "Diện thoại", "máy tính", "sạc pin"].map(
             (item, index) => (
               <NavItem
                 key={index}
@@ -72,7 +72,7 @@ const HeaderFilterSearchPage: FC<HeaderFilterSearchPageProps> = ({
               />
             </svg>
 
-            <span className="block truncate ml-2.5">Filter</span>
+            <span className="block truncate ml-2.5">Bộ lọc</span>
             <span className="absolute top-1/2 -translate-y-1/2 right-5">
               <ChevronDownIcon
                 className={`w-4 h-4 sm:w-5 sm:h-5 ${

@@ -45,13 +45,12 @@ const DATA_colors = [
 ];
 
 const DATA_sizes = [
-  { name: "XXS" },
-  { name: "XS" },
-  { name: "S" },
-  { name: "M" },
-  { name: "L" },
-  { name: "XL" },
-  { name: "2XL" },
+  { name: "3GB" },
+  { name: "4GB" },
+  { name: "6GB" },
+  { name: "8GB" },
+  { name: "12GB" },
+
 ];
 
 const DATA_sortOrderRadios = [
@@ -187,7 +186,7 @@ const TabFilters = () => {
                 />
               </svg>
 
-              <span className="ml-2">Categories</span>
+              <span className="ml-2">Danh mục</span>
               {!categoriesState.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
               ) : (
@@ -240,13 +239,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Xóa
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={close}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Áp dụng
                     </ButtonPrimary>
                   </div>
                 </div>
@@ -321,7 +320,7 @@ const TabFilters = () => {
                   ? DATA_sortOrderRadios.filter(
                       (i) => i.id === sortOrderStates
                     )[0].name
-                  : "Sort order"}
+                  : "Sắp xếp"}
               </span>
               {!sortOrderStates.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
@@ -362,13 +361,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Xóa
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={close}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Áp dụng
                     </ButtonPrimary>
                   </div>
                 </div>
@@ -443,7 +442,7 @@ const TabFilters = () => {
                 />
               </svg>
 
-              <span className="ml-2">Colors</span>
+              <span className="ml-2">Màu sắc</span>
               {!colorsState.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
               ) : (
@@ -483,13 +482,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Xóa
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={close}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Áp dụng
                     </ButtonPrimary>
                   </div>
                 </div>
@@ -553,7 +552,7 @@ const TabFilters = () => {
                 />
               </svg>
 
-              <span className="ml-2">Sizes</span>
+              <span className="ml-2">Ram</span>
               {!sizesState.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
               ) : (
@@ -593,13 +592,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Xóa
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={close}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Áp dụng
                     </ButtonPrimary>
                   </div>
                 </div>
@@ -690,7 +689,7 @@ const TabFilters = () => {
                           htmlFor="minPrice"
                           className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                         >
-                          Min price
+                          Giá tối thiểu
                         </label>
                         <div className="mt-1 relative rounded-md">
                           <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-neutral-500 sm:text-sm">
@@ -711,7 +710,7 @@ const TabFilters = () => {
                           htmlFor="maxPrice"
                           className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
                         >
-                          Max price
+                          Giá tối đa
                         </label>
                         <div className="mt-1 relative rounded-md">
                           <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-neutral-500 sm:text-sm">
@@ -737,13 +736,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Xóa
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={close}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Áp dụng
                     </ButtonPrimary>
                   </div>
                 </div>
@@ -802,7 +801,7 @@ const TabFilters = () => {
           />
         </svg>
 
-        <span className="line-clamp-1 ml-2">On sale</span>
+        <span className="line-clamp-1 ml-2">Đang giảm giá</span>
         {isOnSale && renderXClear()}
       </div>
     );
@@ -967,7 +966,7 @@ const TabFilters = () => {
                       {/* --------- */}
                       {/* ---- */}
                       <div className="py-7">
-                        <h3 className="text-xl font-medium">Categories</h3>
+                        <h3 className="text-xl font-medium">Danh mục</h3>
                         <div className="mt-6 relative ">
                           {renderMoreFilterItem(DATA_categories)}
                         </div>
@@ -1064,7 +1063,7 @@ const TabFilters = () => {
                       {/* --------- */}
                       {/* ---- */}
                       <div className="py-7">
-                        <h3 className="text-xl font-medium">Sort Order</h3>
+                        <h3 className="text-xl font-medium">Sắp xếp</h3>
                         <div className="mt-6 relative ">
                           <div className="relative flex flex-col space-y-5">
                             {DATA_sortOrderRadios.map((item) => (
@@ -1108,13 +1107,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Xóa
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={closeModalMoreFilter}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Áp dụng
                     </ButtonPrimary>
                   </div>
                 </div>
