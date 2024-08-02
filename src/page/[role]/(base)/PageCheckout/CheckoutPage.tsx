@@ -2,7 +2,7 @@ import Label from '../components/Label/Label'
 import Prices from '../components/Prices'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import ButtonPrimary from '../shared/Button/ButtonPrimary'
 import Input from '../shared/Input/Input'
 import ShippingAddress from './ShippingAddress'
@@ -16,26 +16,52 @@ import { useAppDispatch } from '@/app/hooks'
 import { popupError, popupSuccess } from '../../shared/Toast'
 import { useNavigate } from 'react-router-dom'
 import { IOrder } from '@/common/types/Order.interface'
-import { useAddOrderMutation } from '@/services/OrderEndPoints'
+import { useAddOrderMutation, useMomoPaymentMutation, useStripePaymentMutation, useVnPaymentMutation } from '@/services/OrderEndPoints'
 import { useCheckVoucherMutation } from '../../(manager)/voucher/VoucherEndpoint'
 import CartEmptyAnimationIcon from '../components/Icon/Cart/CartEmpty'
 import PaymentMethod from './PaymentMethod'
 import { useLocalStorage } from '@uidotdev/usehooks'
-
+import Joi from 'joi'
+import { useForm } from 'react-hook-form'
+import isEmpty from 'lodash/isEmpty';
+import { joiResolver } from '@hookform/resolvers/joi'
+const schema = Joi.object({
+  card_number: Joi.string().required(),
+  card_exp_month: Joi.string().required(),
+  card_exp_year: Joi.string().required(),
+  card_cvc: Joi.string().required()
+})
 const CheckoutPage = () => {
+  const navigate = useNavigate();
+  const [mothodActive, setMethodActive] = useState<
+    "Stripe" | "Momo-Banking" | "VNPay" | null
+  >(null);
+  const {register, handleSubmit,
+    getValues,
+    trigger,
+    formState: { errors, isValid }} = useForm<any>({
+    resolver : joiResolver(schema),
+    mode: 'onChange',  // Validate on change
+  })
+
   const [dataVoucher, setVoucher] = useState<any>({
     apply: false,
     error: '',
     data: {}
   })
+  useEffect(() => {
+    trigger();
+  }, [trigger]);
+  const [momoPayment, {isLoading: loadingMomo}] = useMomoPaymentMutation();
+  const [stripePayment, {isLoading: loadingStripe}] = useStripePaymentMutation();
+  const [vnPayment, {isLoading: loadingVnPay}] = useVnPaymentMutation();
   const dataUser = useLocalStorage('user', undefined)
   const user : any = dataUser[0];
   const [priceAfterApply, setPriceAfterApply] = useState(0)
   const [checkVoucherData] = useCheckVoucherMutation()
   const [addOrder, { isLoading: isLoadingOrder }] = useAddOrderMutation()
   const { data: carts } = useGetCartsQuery({})
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+
   const [discount, setDiscount] = useState<string>('')
 
   const [tabActive, setTabActive] = useState<'ContactInfo' | 'ShippingAddress' | 'PaymentMethod'>('ShippingAddress')
@@ -46,9 +72,10 @@ const CheckoutPage = () => {
       element?.scrollIntoView({ behavior: 'smooth' })
     }, 80)
   }
-
+ 
   const onFinish = async (values: IOrder | any) => {
   
+    
     const payload = {
       receiver_name: `${values.receiver_name} `,
       receiver_phone: values.receiver_phone,
@@ -60,22 +87,79 @@ const CheckoutPage = () => {
       receiver_district: user.district,
       receiver_ward: user.county,
       receiver_address: user.address} ),
-      pick_up_required: 'false',
+      pick_up_required: false,
       note: values?.note,
-      discount_code: dataVoucher.apply ? dataVoucher.code : ''
+      discount_code: dataVoucher.apply ? dataVoucher.code : '',
+      payment_method_id : 2
     }
-  
+
 
     try {
-      const response = await addOrder(payload).unwrap()
-      if (response && response.url) {
-        window.location.href = response.url
+     
+      if(!mothodActive){
+        setTabActive('PaymentMethod')
+        handleScrollToEl('PaymentMethod')
+        popupError('Bạn cần phải lựa chọn phương thức thanh toán trước')
+        return false;
       }
+      if(mothodActive === 'Stripe'){
+        
+        if(!isEmpty(errors)) {
+          setTabActive('PaymentMethod')
+          handleScrollToEl('PaymentMethod')
+          return false;
+        }
+      }
+      const response = await addOrder(payload).unwrap();
+      const orderId = response.order_id;
+
+    
+      if(mothodActive === 'Momo-Banking'){
+         try {
+            const responseMomoPayment = await momoPayment(orderId).unwrap();
+            window.location.href = responseMomoPayment.url;
+            //window.open(responseMomoPayment.url, "MoMoPayment", "width=600, height=800");
+         } catch (error) {
+            popupError('Lỗi thanh toán qua Momo')
+         }
+         return true;
+      }
+
+      if(mothodActive === 'Stripe'){
+       
+               const valuesStripeForm : any = getValues();
+          const payload = {
+            data : valuesStripeForm,
+            id: orderId
+          }
+          try {
+             await stripePayment(payload).unwrap();
+             navigate(`/account/my-order/detail/${orderId}`);
+             popupSuccess('Đặt hàng thành công');
+          } catch (error) {
+             popupError('Lỗi thanh toán thông qua Stripe')
+          }
+          return true;
+       
+     }
+
+     if(mothodActive === 'VNPay'){
+     
+      try {
+         const responseVnPayment : any = await vnPayment(orderId).unwrap();
+        // console.log(responseVnPayment);
+        window.location.href = responseVnPayment.data.data;
+        // window.open(responseVnPayment.data.data, "MoMoPayment", "width=600, height=800");
+      } catch (error) {
+         popupError('Lỗi thanh toán thông qua VNPay')
+      }
+      return true;
+   }
     } catch (error) {
       popupError('Order error')
     }
   }
-
+  
   const renderProduct = (item: ICart, index: number) => {
     const { image, price, thumbnail, slug, name, price_sale, quantity, variants, id } = item
 
@@ -250,6 +334,11 @@ const CheckoutPage = () => {
                     handleScrollToEl("PaymentMethod");
                   }}
                   onCloseActive={() => setTabActive("PaymentMethod")}
+                  errors={errors}
+                  register={register}
+                  handleSubmit={handleSubmit}
+                  mothodActive={mothodActive}
+                  setMethodActive={setMethodActive}
                 />
               </div>
             </div>
@@ -330,7 +419,7 @@ const CheckoutPage = () => {
                {carts && !dataVoucher.apply && <span> {VND(getTotalPriceCart(carts?.data))}</span>}
               </div>
             </div>
-            <ButtonPrimary loading={isLoadingOrder} onClick={() => handleOrder()} className='mt-8 w-full'>
+            <ButtonPrimary loading={isLoadingOrder || loadingMomo || loadingStripe || loadingVnPay} onClick={() => handleOrder()} className='mt-8 w-full'>
               Confirm order
             </ButtonPrimary>
             <div className='mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center'>

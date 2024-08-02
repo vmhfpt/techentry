@@ -9,31 +9,39 @@ interface Props {
   isActive: boolean;
   onCloseActive: () => void;
   onOpenActive: () => void;
+  errors: any;
+  register: any;
+  handleSubmit: any;
+  mothodActive: any;
+  setMethodActive: any
 }
 
 const PaymentMethod: FC<Props> = ({
   isActive,
   onCloseActive,
   onOpenActive,
+  errors,
+  register,
+  handleSubmit,
+  mothodActive,
+  setMethodActive
 }) => {
-  const [mothodActive, setMethodActive] = useState<
-    "Credit-Card" | "Internet-banking" | "Wallet"
-  >("Credit-Card");
+  
 
   const renderDebitCredit = () => {
-    const active = mothodActive === "Credit-Card";
+    const active = mothodActive === "Stripe";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
-          id="Credit-Card"
+          id="Stripe"
           defaultChecked={active}
           onChange={(e) => setMethodActive(e as any)}
         />
         <div className="flex-1">
           <label
-            htmlFor="Credit-Card"
+            htmlFor="Stripe"
             className="flex items-center space-x-4 sm:space-x-6"
           >
             <div
@@ -48,49 +56,55 @@ const PaymentMethod: FC<Props> = ({
             <p className="font-medium">Stripe</p>
           </label>
 
-          <div
+          <form
+           onSubmit={handleSubmit(() => {})}
             className={`mt-6 mb-4 space-y-3 sm:space-y-5 ${
               active ? "block" : "hidden"
             }`}
           >
             <div className="max-w-lg">
-              <Label className="text-sm">Card number</Label>
-              <Input className="mt-1.5" type={"text"} />
+              <Label className="text-sm">Số thẻ</Label>
+              <Input {...register('card_number')} className="mt-1.5" type={"text"} />
+
+              {errors.card_number && <span className="text-red-500">Số thẻ bắt buộc nhập</span>}
             </div>
             <div className="max-w-lg">
-              <Label className="text-sm">Name on Card</Label>
-              <Input className="mt-1.5" />
+              <Label className="text-sm">Tháng hết hạn</Label>
+              <Input {...register('card_exp_month')} className="mt-1.5" />
+              {errors.card_exp_month && <span className="text-red-500">* bắt buộc nhập</span>}
             </div>
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
               <div className="sm:w-2/3">
-                <Label className="text-sm">Expiration date (MM/YY)</Label>
-                <Input className="mt-1.5" placeholder="MM/YY" />
+                <Label className="text-sm">Năm hết hạn (MM/YY)</Label>
+                <Input {...register('card_exp_year')} className="mt-1.5" placeholder="MM/YY" />
+                {errors.card_exp_year && <span className="text-red-500">* bắt buộc nhập</span>}
               </div>
               <div className="flex-1">
                 <Label className="text-sm">CVC</Label>
-                <Input className="mt-1.5" placeholder="CVC" />
+                <Input {...register('card_cvc')} className="mt-1.5" placeholder="CVC" />
+                {errors.card_cvc && <span className="text-red-500">* bắt buộc nhập</span>}
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
   };
 
   const renderInterNetBanking = () => {
-    const active = mothodActive === "Internet-banking";
+    const active = mothodActive === "Momo-Banking";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
-          id="Internet-banking"
+          id="Momo-Banking"
           defaultChecked={active}
           onChange={(e) => setMethodActive(e as any)}
         />
         <div className="flex-1">
           <label
-            htmlFor="Internet-banking"
+            htmlFor="Momo-Banking"
             className="flex items-center space-x-4 sm:space-x-6"
           >
             <div
@@ -156,20 +170,20 @@ const PaymentMethod: FC<Props> = ({
     );
   };
 
-  const renderWallet = () => {
-    const active = mothodActive === "Wallet";
+  const renderVNPay = () => {
+    const active = mothodActive === "VNPay";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
-          id="Wallet"
+          id="VNPay"
           defaultChecked={active}
           onChange={(e) => setMethodActive(e as any)}
         />
         <div className="flex-1">
           <label
-            htmlFor="Wallet"
+            htmlFor="VNPay"
             className="flex items-center space-x-4 sm:space-x-6 "
           >
             <div
@@ -266,7 +280,7 @@ const PaymentMethod: FC<Props> = ({
               </svg>
             </h3>
             {/* <div className="font-semibold mt-1 text-sm">
-              <span className="">Google / Apple Wallet</span>
+              <span className="">Google / Apple VNPay</span>
               <span className="ml-3">xxx-xxx-xx55</span>
             </div> */}
           </div>
@@ -292,19 +306,9 @@ const PaymentMethod: FC<Props> = ({
           <div>{renderInterNetBanking()}</div>
 
           {/* ==================== */}
-          <div>{renderWallet()}</div>
+          <div>{renderVNPay()}</div>
 
-          <div className="flex pt-6">
-            <ButtonPrimary
-              className="w-full max-w-[240px]"
-              onClick={onCloseActive}
-            >
-              Confirm order
-            </ButtonPrimary>
-            <ButtonSecondary className="ml-3" onClick={onCloseActive}>
-              Cancel
-            </ButtonSecondary>
-          </div>
+         
         </div>
       </div>
     );

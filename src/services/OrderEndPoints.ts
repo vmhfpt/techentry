@@ -54,14 +54,35 @@ export const ordersApi = apiWithTag.injectEndpoints({
       }),
       invalidatesTags: (id) => [{ type: 'Orders', id },  { type: 'Orders', id: 'LIST' }],
     }),
-    // deleteCart: builder.mutation({
-    //   query: (id) => ({
-    //     url: `cart/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
-    // }),
+    momoPayment: builder.mutation({
+      query: (id) => ({
+        url: `payment/momo/${id}`,
+        method: 'POST',
+      }),
+      invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+    stripePayment: builder.mutation({
+      query: (payload) => ({
+        url: `payment/stripe/${payload.id}`,
+        method: 'POST',
+        body: payload.data,
+      }),
+      invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+    vnPayment: builder.mutation({
+      query: (id) => ({
+        url: `payment/vnpay/${id}`,
+        method: 'POST',
+      }),
+      invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+
+
+
   }),
+
+
+
 });
 
 export const {
@@ -71,5 +92,8 @@ export const {
   useGetOrdersQuery,
   usePrefetch,
   useGetOrderQuery,
-  useChangeStatusOrderMutation
+  useChangeStatusOrderMutation,
+  useMomoPaymentMutation,
+  useStripePaymentMutation,
+  useVnPaymentMutation
 } = ordersApi;

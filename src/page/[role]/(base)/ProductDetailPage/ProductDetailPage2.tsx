@@ -29,10 +29,37 @@
 import { VND } from "@/utils/formatVietNamCurrency";
 import { useAddToCartMutation } from '@/services/CartEndPoinst'
 import { IAddCart } from "@/common/types/cart.interface";
-import { Button, Card, Col, Flex, List, Modal, Row, Skeleton, Typography } from "antd";
+import { Button, Card, Col, Flex, List, Modal, Rate, Row, Skeleton, Typography } from "antd";
 import Meta from "antd/es/card/Meta";
 import { divide } from "lodash";
+import Joi from 'joi';
+interface CommentFormValues {
+  content: string;
+  rate: number;
+}
+
+ const commentSchema = Joi.object({
+  content: Joi.string().min(5).max(500).required().messages({
+      'string.empty': 'Nội dung không được để trống',
+      'string.min': 'Nôi dung tối thiểu 5 ký tự',
+      'string.max': 'Nội dung tối đa 5 ký tự',
+  }),
+  rate: Joi.number().min(1).max(5).required().messages({
+      'number.empty': 'Vui lòng đánh giá sản phẩm',
+      'number.min': 'Vui lòng đánh giá sản phẩm',
+      'number.max': 'Vui lòng đánh giá sản phẩm',
+      'any.required': 'Vui lòng đánh giá sản phẩm' 
+  }),
+});
 import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/product.interface";
+import Textarea from "../shared/Textarea/Textarea";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { useGetCommentsQuery, usePostCommentMutation } from "@/services/CommentEndPoints";
+import { popupError } from "../../shared/Toast";
+import { formatDate } from "@/utils/convertCreatedLaravel";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
   export interface ProductDetailPage2Props {
     className?: string;
   }
@@ -49,10 +76,19 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
   const ProductDetailPage2: FC<ProductDetailPage2Props> = ({
     className = "",
   }) => {
+    const [user] = useLocalStorage('user', null);
+    const { register, handleSubmit, setValue, reset,watch, formState: { errors } } = useForm<CommentFormValues>({
+      resolver: joiResolver(commentSchema),
+  })
+  const rateCurrent = watch('rate');
+
+    const [postComment] = usePostCommentMutation();
     const {slug} = useParams()
     
-    const {data, isLoading} = useGetProductQuery(slug);        
-    
+    const {data, isLoading} = useGetProductQuery(slug);     
+    const {data: listComments} = useGetCommentsQuery(2);   
+
+    const dataProduct = data?.data;
     const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
 
     const [variantActives, setVariantActives] = React.useState<Array<variantActive>>([])
@@ -147,7 +183,21 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
         { position: "top-right", id: "nc-product-notify", duration: 3000 }
       );
     };
+    const onSubmit = async (data: CommentFormValues) => {
+      try {
+        const payload = {
+          product_id: dataProduct.id,
+          content: data.content,
+          rating: data.rate
 
+        }
+          await postComment(payload).unwrap();
+          reset();
+          setValue('rate', 0)
+      } catch (error) {
+          popupError('* Lỗi bình luận sản phẩm')
+      }
+  };
     const renderVariants = (variant: GroupedVariants, key: number) => {
       if (!variant || !variant || !variant.attribute.length) {
         return null;
@@ -318,18 +368,17 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
                   href="#reviews"
                   className="flex items-center text-sm font-medium"
                 >
-                  <div className="">
-                    <StarIcon className="w-5 h-5 pb-[1px] text-orange-400" />
-                  </div>
+                  
                   <span className="ml-1.5 flex">
-                    <span>4.9 </span>
-                    <span className="mx-1.5">·</span>
+                 
                     <span className="text-slate-700 dark:text-slate-400 underline">
-                      142 reviews
+                      {listComments?.length} đánh giá
                     </span>
                   </span>
                 </a>
               </div>
+
+            
 
               {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
               <div className="mt-6 space-y-7 lg:space-y-8">
@@ -411,49 +460,53 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
         <div id="reviews" className="scroll-mt-[150px]">
           {/* HEADING */}
           <h2 className="text-2xl font-semibold flex items-center">
-            <StarIcon className="w-7 h-7 mb-0.5" />
-            <span className="ml-1.5"> 4,87 · 142 Reviews</span>
+            
+            <span className="ml-1.5">  {listComments?.length} đánh giá</span>
           </h2>
+
+
+          <div className="w-full py-5">
+      
+        {user ? <form onSubmit={handleSubmit(onSubmit)} className="nc-SingleCommentForm mt-5">
+          <div className="mb-5">
+             <Rate value={rateCurrent} onChange={(value) => setValue('rate', value)}  className="mr-5"/>
+             {errors.rate && (
+                    <span style={{ color: 'red' }}>{errors.rate.message}</span>
+                )}
+          </div>
+          <Textarea {...register('content')} />
+          {errors.content && (
+                    <span style={{ color: 'red' }}>{errors.content.message}</span>
+                )}
+          <div className="mt-5 space-x-3">
+            <ButtonPrimary>Gửi</ButtonPrimary>
+       
+          </div>
+        </form> : <span> Vui lòng đăng nhập để bình luận</span>}
+      </div>
+
+
+
 
           {/* comment */}
           <div className="mt-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-11 gap-x-28">
-              <ReviewItem />
-              <ReviewItem
-                data={{
-                  comment: `I love the charcoal heavyweight hoodie. Still looks new after plenty of washes. 
-                    If you’re unsure which hoodie to pick.`,
-                  date: "December 22, 2021",
-                  name: "Stiven Hokinhs",
-                  starPoint: 5,
-                }}
-              />
-              <ReviewItem
-                data={{
-                  comment: `The quality and sizing mentioned were accurate and really happy with the purchase. Such a cozy and comfortable hoodie. 
-                  Now that it’s colder, my husband wears his all the time. I wear hoodies all the time. `,
-                  date: "August 15, 2022",
-                  name: "Gropishta keo",
-                  starPoint: 5,
-                }}
-              />
-              <ReviewItem
-                data={{
-                  comment: `Before buying this, I didn't really know how I would tell a "high quality" sweatshirt, but after opening, I was very impressed. 
-                  The material is super soft and comfortable and the sweatshirt also has a good weight to it.`,
-                  date: "December 12, 2022",
-                  name: "Dahon Stiven",
-                  starPoint: 5,
-                }}
-              />
+              {listComments?.map((item : any, key : any) => (
+  <ReviewItem
+  data={{
+    comment: item.content,
+    date: formatDate(item.created_at),
+    name: item.user_name,
+    starPoint: item.rating,
+  }}
+/>
+              ))}
+            
+          
+             
             </div>
 
-            <ButtonSecondary
-              onClick={() => setIsOpenModalViewAllReviews(true)}
-              className="mt-10 border border-slate-300 dark:border-slate-700 "
-            >
-              Show me all 142 reviews
-            </ButtonSecondary>
+          
           </div>
         </div>
       );

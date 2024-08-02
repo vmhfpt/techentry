@@ -310,10 +310,10 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
 
           {/* ============ */}
           <div className='flex flex-col sm:flex-row pt-6'>
-            <ButtonPrimary className='sm:!px-7 shadow-none' onClick={onCloseActive}>
+            <ButtonPrimary  type="button" className='sm:!px-7 shadow-none' onClick={onCloseActive}>
               Save and next to Payment
             </ButtonPrimary>
-            <ButtonSecondary className='mt-3 sm:mt-0 sm:ml-3' onClick={onCloseActive}>
+            <ButtonSecondary type="button" className='mt-3 sm:mt-0 sm:ml-3' onClick={onCloseActive}>
               Cancel
             </ButtonSecondary>
           </div>

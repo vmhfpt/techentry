@@ -27,6 +27,7 @@ const ReviewItem: FC<ReviewItemProps> = ({
   className = "",
   data = DEMO_DATA,
 }) => {
+
   return (
     <div
       className={`nc-ReviewItem flex flex-col ${className}`}
@@ -51,11 +52,10 @@ const ReviewItem: FC<ReviewItemProps> = ({
           </div>
 
           <div className="mt-0.5 flex text-yellow-500">
-            <StarIcon className="w-5 h-5" />
-            <StarIcon className="w-5 h-5" />
-            <StarIcon className="w-5 h-5" />
-            <StarIcon className="w-5 h-5" />
-            <StarIcon className="w-5 h-5" />
+   
+           {[...Array(data.starPoint)].map((_, i) => (
+    <StarIcon key={i} className="w-5 h-5" />
+))}
           </div>
         </div>
       </div>
