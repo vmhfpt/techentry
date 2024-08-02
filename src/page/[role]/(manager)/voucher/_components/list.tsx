@@ -8,10 +8,19 @@ import ModalCreateVoucher from './add';
 import useVoucher from '../utils/brand.hooks';
 import { IVoucher } from '@/common/types/voucher.interface copy';
 import ConfirmModal from '@/page/[role]/(base)/brand/confirm.modal';
+import { useGetVouchersQuery } from '../VoucherEndpoint';
+import { VND } from '@/utils/formatVietNamCurrency';
 
 
 
 export default function ListVoucher() {
+  const {data: dataItem, isLoading } = useGetVouchersQuery({});
+  const listVoucers = dataItem?.data.map((item : any, key : number) => {
+    return {
+      ...item,
+      key : key
+    }
+  })
   const hooks = useVoucher();
   const columns: TableProps<IVoucher>['columns'] = [
     {
@@ -32,19 +41,16 @@ export default function ListVoucher() {
       },
     },
     {
-      title: 'Tên Mã giảm giá',
-      dataIndex: 'age',
-      key: 'age',
+      title: 'Tên mã giảm giá',
       render: (_: any, item: IVoucher) => {
         return item.name;
       },
     },
     {
       title: 'Số tiền chiết khấu ',
-      dataIndex: 'discount_amount',
-      key: 'discount_amount',
-      render: (_: any, item: IVoucher) => {
-        return item.discount_amount;
+    
+      render: (_: any, item: any) => {
+        return item.type == 'percent' ? `${item.value}%` : VND(item.value);
       },
     },
 
@@ -55,7 +61,7 @@ export default function ListVoucher() {
       render: (_: any, item: IVoucher) => {
         // print(item.create_at);
         return <>
-          <p>{moment(item.start_date).format("YYYY-MM-DD")}</p>
+          <p>{item.start_date}</p>
         </>
           ;
       },
@@ -68,7 +74,7 @@ export default function ListVoucher() {
       render: (_: any, item: IVoucher) => {
         // print(item.create_at);
         return <>
-          <p>{moment(item.end_date).format("YYYY-MM-DD")}</p>
+          <p>{item.end_date}</p>
         </>
           ;
       },
@@ -106,7 +112,7 @@ export default function ListVoucher() {
 
     </Typography.Title>
 
-    <Table columns={columns} dataSource={hooks.dataList} loading={hooks.loading} />
+    <Table columns={columns} dataSource={listVoucers} loading={isLoading} />
 
 
 

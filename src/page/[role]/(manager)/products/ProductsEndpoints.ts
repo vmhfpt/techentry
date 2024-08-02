@@ -31,10 +31,10 @@ export const productsApi = apiWithTag.injectEndpoints({
     }),
     searchProduct: builder.mutation({
       query: (params) => ({
-        url: 'product',
+        url: 'product/filter',
         method: 'POST',
         params: params,
-        formData: true,
+        
       }),
       invalidatesTags: [{ type: 'Products', id: 'LIST' }],
     }),

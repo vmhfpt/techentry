@@ -18,7 +18,9 @@ import { useGetCartsQuery } from '@/services/CartEndPoinst'
 import { getTotalPriceCart } from '@/utils/handleCart'
 import { useAddOrderMutation } from '@/services/OrderEndPoints'
 import { Form, Select, SelectProps } from 'antd'
+
 import { IOrder } from '@/common/types/Order.interface'
+import { EditOutlined } from '@ant-design/icons'
 
 interface Props {
   isActive: boolean
@@ -34,6 +36,8 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
   const { data: provinces, isLoading : isLoadingProvinces, isError } = useGetProvincesQuery({})
   const [getWard, { data: dataWards, isLoading: wardLoading }] = useLazyGetWardsQuery()
   const [getDistrict, { data: dataDistricts, isLoading: districtLoading }] = useLazyGetDistrictsQuery()
+  const dataUser  = useLocalStorage('user', undefined)
+   const user : any = dataUser[0];
 
   const options: SelectProps['options'] = []
   const validateMessages = {
@@ -170,7 +174,9 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
         onFinish={onFinish}
         initialValues={
            {
-            pick_up_required: 'false'
+            pick_up_required: 'false',
+            receiver_name: user.username,
+            receiver_phone: user?.phone,
            }
         }
       >
@@ -184,8 +190,8 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
               
-              <Form.Item name='receiver_name' label='User name' rules={[{ required: true }]}>
-                <Input  placeholder='Nhập tên' />
+              <Form.Item name='receiver_name' label='Tên khách hàng' rules={[{ required: true }]}>
+                <Input  placeholder='Nhập tên'  />
               </Form.Item>
               
             </div>
@@ -197,34 +203,49 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
               
-              <Form.Item name='receiver_phone' label='Phone number' rules={[{ required: true }]}>
-                <Input  placeholder='03456789' />
+              <Form.Item name='receiver_phone' label='Số điện thoại' rules={[{ required: true }]}>
+                <Input  placeholder='03456789'/>
               </Form.Item>
             </div>
           </div>
 
           {/* ============ */}
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3'>
+
+          {
+            Boolean(user.address) && <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
+            <div className='w-full'>
+
+              <Form.Item  label={<div className='flex gap-3'><span>Địa chỉ</span> <Link to="/account"><EditOutlined /> </Link></div>} >
+                 <Input  placeholder={user.address} readOnly  />
+              </Form.Item>
+            
+            </div>
+          </div>}
+          
+          {!Boolean(user.address) && <>  
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3'>
             <div className='app__select--input'>
 
-              <Form.Item name='receiver_pronvinces' label='Pronvinces' rules={[{ required: true }]}>
+              <Form.Item name='receiver_pronvinces' label='Tỉnh' rules={[{ required: true }]}>
                 <Select
                   loading={isLoadingProvinces}
                   
-                  placeholder='Select province'
+                  placeholder='Lựa chọn'
                   options={options}
                   onChange={(value) => onChangeProvince(value)}
+                  
                 />
               </Form.Item>
               
             </div>
             <div className="app__select--input">
-              <Form.Item name='receiver_district' label='District' rules={[{ required: true }]}>
+              <Form.Item name='receiver_district' label='Quận/ huyện' rules={[{ required: true }]}>
                 <Select
                   loading={districtLoading}
                   onChange={(value) => onChangeDistrict(value)}
-                  placeholder='Enter name district'
+                  placeholder='Lựa chọn'
                   options={optionsDistrict}
+                  
                 />
               </Form.Item>
             </div>
@@ -232,11 +253,12 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
 
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full app__select--input'>
-              <Form.Item name='receiver_ward' label='Ward' rules={[{ required: true }]}>
+              <Form.Item name='receiver_ward' label='Xã/phường/thị trấn' rules={[{ required: true }]}>
                 <Select
                   loading={wardLoading}
-                  placeholder='Enter name ward'
+                  placeholder='Lựa chọn'
                   options={optionsWard}
+                 // defaultValue={user ? user?.address : ''}
                 />
               </Form.Item>
             </div>
@@ -245,17 +267,21 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
 
-              <Form.Item name='receiver_address' label='Address' rules={[{ required: true }]}>
+              <Form.Item name='receiver_address' label='Địa chỉ' rules={[{ required: true }]}>
                 <Input  placeholder='56 Tran Duy Hung' />
               </Form.Item>
             
             </div>
           </div>
 
+          </>}
+         
+
+
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
 
-              <Form.Item name='note' label='Note' rules={[{ required: true }]}>
+              <Form.Item name='note' label='Ghi chú' rules={[{ required: true }]}>
                 <Input  placeholder='...' />
               </Form.Item>
         
@@ -284,11 +310,11 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
 
           {/* ============ */}
           <div className='flex flex-col sm:flex-row pt-6'>
-            <ButtonPrimary className='sm:!px-7 shadow-none' onClick={onCloseActive}>
-            Lưu và tiếp tục đến Thanh toán
+            <ButtonPrimary  type="button" className='sm:!px-7 shadow-none' onClick={onCloseActive}>
+              Lưu và chuyển đến thanh toán
             </ButtonPrimary>
-            <ButtonSecondary className='mt-3 sm:mt-0 sm:ml-3' onClick={onCloseActive}>
-            Hủy bỏ
+            <ButtonSecondary type="button" className='mt-3 sm:mt-0 sm:ml-3' onClick={onCloseActive}>
+              Hủy
             </ButtonSecondary>
           </div>
         </div>

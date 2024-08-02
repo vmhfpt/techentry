@@ -6,8 +6,12 @@ import { IVoucher, IVoucherEdit, IVoucherCreate } from "@/common/types/voucher.i
 import instance from "@/api/axios";
 import moment from "moment";
 import dayjs from "dayjs";
+import { useCreateVoucherMutation, useDeleteVoucherMutation, useUpdateVoucherMutation } from "../VoucherEndpoint";
 
 export default function useVoucher() {
+    const [createVoucher] = useCreateVoucherMutation();
+    const [updateVoucher] = useUpdateVoucherMutation();
+    const [deleteVoucer] = useDeleteVoucherMutation();
     const [form] = Form.useForm();
     const [dataList, setDataList] = useState<IVoucher[]>([]);
     const [test, setTest] = useState([]);
@@ -18,12 +22,10 @@ export default function useVoucher() {
     const [modalParams, setModalParams] = useState<ConfirmModalParams>(DefaultConfirmModalParams);
     const [dataIndex, setDataIndex] = useState<number>();
     const [visibleModalVoucherDetail, setVisibleModalVoucherDetail] = useState<boolean>(false);
-    console.log(visibleModalVoucherDetail);
+ 
 
 
-    useEffect(() => {
-        fetchData();
-    }, [refresh]);
+  
 
 
     const fetchData = async () => {
@@ -46,23 +48,26 @@ export default function useVoucher() {
         form.setFieldsValue({
             name: values.name,
             code: values.code,
-            discount_amount: values.discount_amount,
+            value: values.value,
             start_date: dayjs(values.start_date),
             end_date: dayjs(values.end_date),
-            usage_limit: values.usage_limit
+            quantity: values.quantity,
+            discount_max: values.discount_max,
+            is_activate: String(values.is_activate) ,
+            status: values.status,
+            type: values.type
         })
     }
 
     const onDelete = async () => {
-        const res = await instance.delete(`voucher/${dataIndex}`)
-        if (!res) {
-            showAlertError('Xóa không thành công');;
-            return;
-        }
-
+       try {
+        await deleteVoucer(dataIndex).unwrap();
         showAlertSuccess('Xóa thành công');
         setRefresh((prev) => !prev);
         onHideConfirmPopup();
+       } catch (error) {
+        showAlertError('Xóa không thành công');;
+       }
     };
 
     const onShowDeletePopup = (item: IVoucher) => {
@@ -111,58 +116,59 @@ export default function useVoucher() {
     };
 
     const onSubmit = async (values: any) => {
+       
         try {
+          
             setLoading(true);
             if (Index) {
-                const bodyEdit: IVoucherEdit = {
-                    name: values.name,
-                    code: generateVoucherCode(),
-                    discount_amount: values.discount_amount,
-                    start_date: values.start_date,
-                    end_date: values.end_date,
-                    usage_limit: values.usage_limit
-                }
-                // const res = await axios.put(`http://localhost:3000/Voucher/${Index}`, bodyEdit, {
-
-                // });
-
-                const res = await instance.put(`voucher/${Index}`, bodyEdit)
-
-                console.log("body", res);
-
-                if (res.statusText !== 'OK') {
-                    showAlertError('Sửa thất bại');
+                try {
+                    const payload = {
+                        id: Index,
+                        data : {
+                            ...values,
+                            start_date: values.start_date.format("YYYY-MM-DD HH:mm:ss"),
+                            end_date: values.end_date.format("YYYY-MM-DD HH:mm:ss"),
+                        }
+                    }
+                    await updateVoucher(payload).unwrap();
+                    setLoading(false);
+                    showAlertSuccess('Sửa thành công');
+                    setRefresh((prev) => !prev);
+                    form.resetFields();
+                    onCancelModalDetail();
+                } catch (error) {
+                             showAlertError('Sửa thất bại');
                     onCancelModalDetail
                     setLoading(false);
                     return;
                 }
-                setLoading(false);
-                showAlertSuccess('Sửa thành công');
-                setRefresh((prev) => !prev);
-                form.resetFields();
-                onCancelModalDetail();
+
+        
+               
             } else {
-                const bodyCreate: IVoucherCreate = {
-                    name: values.name,
+                const payload = {
+                    ...values,
                     code: generateVoucherCode(),
-                    discount_amount: values.discount_amount,
-                    start_date: values.start_date,
-                    end_date: values.end_date,
-                    usage_limit: values.usage_limit
+                    start_date: values.start_date.format("YYYY-MM-DD HH:mm:ss"),
+                    end_date: values.end_date.format("YYYY-MM-DD HH:mm:ss"),
                 }
-                console.log("bodyCreate", bodyCreate);
-                const res = await instance.post(`voucher`, bodyCreate)
-                if (res.statusText !== 'Created') {
-                    showAlertError('Thêm mới thất bại');
+              
+                try {
+                    await createVoucher(payload).unwrap();
+                    setLoading(false);
+                    showAlertSuccess('Thêm mới thành công');
+                    setRefresh((prev) => !prev);
+                    form.resetFields();
+                    onCancelModalDetail();
+                } catch (error) {
+                           showAlertError('Thêm mới thất bại');
                     onCancelModalDetail
                     setLoading(false);
                     return;
+                    
                 }
-                setLoading(false);
-                showAlertSuccess('Thêm mới thành công');
-                setRefresh((prev) => !prev);
-                form.resetFields();
-                onCancelModalDetail();
+           
+               
             }
 
         } catch (error) {

@@ -8,6 +8,9 @@ import CardCategory3, {
   CardCategory3Props,
 } from "./CardCategories/CardCategory3";
 import Glide from "@glidejs/glide";
+import { useGetValueAttributeQuery } from "../../(manager)/attribute/_components/value_attribute/ValueAttributeEndPoints";
+import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
+import { Item } from "rc-menu";
 
 export const CATS_DISCOVER: CardCategory3Props[] = [
   {
@@ -39,9 +42,9 @@ export const CATS_DISCOVER: CardCategory3Props[] = [
 const DiscoverMoreSlider = () => {
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
-
-  useEffect(() => {
-    const OPTIONS: Glide.Options = {
+ const {data, isLoading } = useGetVouchersQuery({});
+useEffect(() => {
+    const OPTIONS: any = {
       perView: 2.8,
       gap: 32,
       bound: true,
@@ -74,27 +77,24 @@ const DiscoverMoreSlider = () => {
     return () => {
       slider.destroy();
     };
-  }, [UNIQUE_CLASS]);
+  }, [UNIQUE_CLASS, isLoading]);
 
   return (
     <div className={`nc-DiscoverMoreSlider nc-p-l-container ${UNIQUE_CLASS} `}>
       <Heading
         className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
         desc=""
-        rightDescText="Good things are waiting for you"
+        rightDescText=""
         hasNextPrev
       >
-        Discover more
+        Phiếu mua hàng
       </Heading>
       <div className="" data-glide-el="track">
         <ul className="glide__slides">
-          {CATS_DISCOVER.map((item, index) => (
+          {data?.data.map((item : any, index : any) => (
             <li key={index} className={`glide__slide`}>
               <CardCategory3
-                name={item.name}
-                desc={item.desc}
-                featuredImage={item.featuredImage}
-                color={item.color}
+                item={item}
               />
             </li>
           ))}

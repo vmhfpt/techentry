@@ -7,7 +7,6 @@ import { useCallback } from 'react'
 import { IBanner } from '@/common/types/banner.interface'
 
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
-import { CloseSquareOutlined, CheckSquareOutlined, ScheduleOutlined } from '@ant-design/icons'
 import { useChangeStatusOrderMutation, useGetOrdersQuery } from '@/services/OrderEndPoints'
 import { VND } from '@/utils/formatVietNamCurrency'
 import { formatTimestamp } from '@/utils/formatDate'
@@ -22,9 +21,6 @@ export default function ListOrder() {
 
   const [changeStatus] = useChangeStatusOrderMutation();
   const {searchText,setSearchText,setSearchedColumn, searchedColumn, searchInput, handleSearch, handleReset } = useQuerySearch();
-
-   
-  
 
   const {  Content } = Layout
   const {data : dataItem, isLoading : isLoadingOrders} = useGetOrdersQuery({})

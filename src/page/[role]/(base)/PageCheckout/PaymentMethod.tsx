@@ -9,31 +9,39 @@ interface Props {
   isActive: boolean;
   onCloseActive: () => void;
   onOpenActive: () => void;
+  errors: any;
+  register: any;
+  handleSubmit: any;
+  mothodActive: any;
+  setMethodActive: any
 }
 
 const PaymentMethod: FC<Props> = ({
   isActive,
   onCloseActive,
   onOpenActive,
+  errors,
+  register,
+  handleSubmit,
+  mothodActive,
+  setMethodActive
 }) => {
-  const [mothodActive, setMethodActive] = useState<
-    "Credit-Card" | "Internet-banking" | "Wallet"
-  >("Credit-Card");
+  
 
   const renderDebitCredit = () => {
-    const active = mothodActive === "Credit-Card";
+    const active = mothodActive === "Stripe";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
-          id="Credit-Card"
+          id="Stripe"
           defaultChecked={active}
           onChange={(e) => setMethodActive(e as any)}
         />
         <div className="flex-1">
           <label
-            htmlFor="Credit-Card"
+            htmlFor="Stripe"
             className="flex items-center space-x-4 sm:space-x-6"
           >
             <div
@@ -43,97 +51,60 @@ const PaymentMethod: FC<Props> = ({
                   : "border-gray-200 dark:border-slate-600"
               }`}
             >
-              <svg
-                className="w-6 h-6 sm:w-7 sm:h-7"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M2 12.6101H19"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19 10.28V17.43C18.97 20.28 18.19 21 15.22 21H5.78003C2.76003 21 2 20.2501 2 17.2701V10.28C2 7.58005 2.63 6.71005 5 6.57005C5.24 6.56005 5.50003 6.55005 5.78003 6.55005H15.22C18.24 6.55005 19 7.30005 19 10.28Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M22 6.73V13.72C22 16.42 21.37 17.29 19 17.43V10.28C19 7.3 18.24 6.55 15.22 6.55H5.78003C5.50003 6.55 5.24 6.56 5 6.57C5.03 3.72 5.81003 3 8.78003 3H18.22C21.24 3 22 3.75 22 6.73Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5.25 17.8101H6.96997"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9.10986 17.8101H12.5499"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+               <img className="w-[40px] h-[40px]" src="https://icons.veryicon.com/png/o/business/online-payment/payment-platform-stripe.png" alt="" />
             </div>
-            <p className="font-medium">Debit / Credit Card</p>
+            <p className="font-medium">Stripe</p>
           </label>
 
-          <div
+          <form
+           onSubmit={handleSubmit(() => {})}
             className={`mt-6 mb-4 space-y-3 sm:space-y-5 ${
               active ? "block" : "hidden"
             }`}
           >
             <div className="max-w-lg">
-              <Label className="text-sm">Card number</Label>
-              <Input className="mt-1.5" type={"text"} />
+              <Label className="text-sm">Số thẻ</Label>
+              <Input {...register('card_number')} className="mt-1.5" type={"text"} />
+
+              {errors.card_number && <span className="text-red-500">Số thẻ bắt buộc nhập</span>}
             </div>
             <div className="max-w-lg">
-              <Label className="text-sm">Name on Card</Label>
-              <Input className="mt-1.5" />
+              <Label className="text-sm">Tháng hết hạn</Label>
+              <Input {...register('card_exp_month')} className="mt-1.5" />
+              {errors.card_exp_month && <span className="text-red-500">* bắt buộc nhập</span>}
             </div>
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
               <div className="sm:w-2/3">
-                <Label className="text-sm">Expiration date (MM/YY)</Label>
-                <Input className="mt-1.5" placeholder="MM/YY" />
+                <Label className="text-sm">Năm hết hạn (MM/YY)</Label>
+                <Input {...register('card_exp_year')} className="mt-1.5" placeholder="MM/YY" />
+                {errors.card_exp_year && <span className="text-red-500">* bắt buộc nhập</span>}
               </div>
               <div className="flex-1">
                 <Label className="text-sm">CVC</Label>
-                <Input className="mt-1.5" placeholder="CVC" />
+                <Input {...register('card_cvc')} className="mt-1.5" placeholder="CVC" />
+                {errors.card_cvc && <span className="text-red-500">* bắt buộc nhập</span>}
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
   };
 
   const renderInterNetBanking = () => {
-    const active = mothodActive === "Internet-banking";
+    const active = mothodActive === "Momo-Banking";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
-          id="Internet-banking"
+          id="Momo-Banking"
           defaultChecked={active}
           onChange={(e) => setMethodActive(e as any)}
         />
         <div className="flex-1">
           <label
-            htmlFor="Internet-banking"
+            htmlFor="Momo-Banking"
             className="flex items-center space-x-4 sm:space-x-6"
           >
             <div
@@ -143,52 +114,11 @@ const PaymentMethod: FC<Props> = ({
                   : "border-gray-200 dark:border-slate-600"
               }`}
             >
-              <svg
-                className="w-6 h-6 sm:w-7 sm:h-7"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.99998 3H8.99998C7.04998 8.84 7.04998 15.16 8.99998 21H7.99998"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M15 3C16.95 8.84 16.95 15.16 15 21"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M3 16V15C8.84 16.95 15.16 16.95 21 15V16"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M3 9.0001C8.84 7.0501 15.16 7.0501 21 9.0001"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+               <img className="w-[40px] h-[40px]" src="https://developers.momo.vn/v3/assets/images/brand-d8cdb07bcd21d30e67592a1cd6f8c6c6.png" alt="" />
             </div>
-            <p className="font-medium">Internet banking</p>
+            <p className="font-medium">Momo</p>
           </label>
-          <div className={`mt-6 mb-4 ${active ? "block" : "hidden"}`}>
+          {/* <div className={`mt-6 mb-4 ${active ? "block" : "hidden"}`}>
             <p className="text-sm dark:text-slate-300">
               Your order will be delivered to you after you transfer to:
             </p>
@@ -234,26 +164,26 @@ const PaymentMethod: FC<Props> = ({
                 </span>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     );
   };
 
-  const renderWallet = () => {
-    const active = mothodActive === "Wallet";
+  const renderVNPay = () => {
+    const active = mothodActive === "VNPay";
     return (
       <div className="flex items-start space-x-4 sm:space-x-6">
         <Radio
           className="pt-3.5"
           name="payment-method"
-          id="Wallet"
+          id="VNPay"
           defaultChecked={active}
           onChange={(e) => setMethodActive(e as any)}
         />
         <div className="flex-1">
           <label
-            htmlFor="Wallet"
+            htmlFor="VNPay"
             className="flex items-center space-x-4 sm:space-x-6 "
           >
             <div
@@ -263,44 +193,11 @@ const PaymentMethod: FC<Props> = ({
                   : "border-gray-200 dark:border-slate-600"
               }`}
             >
-              <svg
-                className="w-6 h-6 sm:w-7 sm:h-7"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M18.04 13.55C17.62 13.96 17.38 14.55 17.44 15.18C17.53 16.26 18.52 17.05 19.6 17.05H21.5V18.24C21.5 20.31 19.81 22 17.74 22H6.26C4.19 22 2.5 20.31 2.5 18.24V11.51C2.5 9.44001 4.19 7.75 6.26 7.75H17.74C19.81 7.75 21.5 9.44001 21.5 11.51V12.95H19.48C18.92 12.95 18.41 13.17 18.04 13.55Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2.5 12.4101V7.8401C2.5 6.6501 3.23 5.59006 4.34 5.17006L12.28 2.17006C13.52 1.70006 14.85 2.62009 14.85 3.95009V7.75008"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M22.5588 13.9702V16.0302C22.5588 16.5802 22.1188 17.0302 21.5588 17.0502H19.5988C18.5188 17.0502 17.5288 16.2602 17.4388 15.1802C17.3788 14.5502 17.6188 13.9602 18.0388 13.5502C18.4088 13.1702 18.9188 12.9502 19.4788 12.9502H21.5588C22.1188 12.9702 22.5588 13.4202 22.5588 13.9702Z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7 12H14"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+               <img className="w-[40px] h-[40px]" src="https://vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png" alt="" />
             </div>
-            <p className="font-medium">Google / Apple Wallet</p>
+            <p className="font-medium">VN Pay</p>
           </label>
-          <div className={`mt-6 mb-4 space-y-6 ${active ? "block" : "hidden"}`}>
+          {/* <div className={`mt-6 mb-4 space-y-6 ${active ? "block" : "hidden"}`}>
             <div className="text-sm prose dark:prose-invert">
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
@@ -308,7 +205,7 @@ const PaymentMethod: FC<Props> = ({
                 ducimus libero explicabo?
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     );
@@ -367,7 +264,7 @@ const PaymentMethod: FC<Props> = ({
           </span>
           <div className="sm:ml-8">
             <h3 className=" text-slate-700 dark:text-slate-400 flex ">
-              <span className="uppercase tracking-tight">PAYMENT METHOD</span>
+              <span className="uppercase tracking-tight">Phương thức thanh toán</span>
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
@@ -382,10 +279,10 @@ const PaymentMethod: FC<Props> = ({
                 />
               </svg>
             </h3>
-            <div className="font-semibold mt-1 text-sm">
-              <span className="">Google / Apple Wallet</span>
+            {/* <div className="font-semibold mt-1 text-sm">
+              <span className="">Google / Apple VNPay</span>
               <span className="ml-3">xxx-xxx-xx55</span>
-            </div>
+            </div> */}
           </div>
           <ButtonSecondary
             sizeClass="py-2 px-4 "
@@ -409,19 +306,9 @@ const PaymentMethod: FC<Props> = ({
           <div>{renderInterNetBanking()}</div>
 
           {/* ==================== */}
-          <div>{renderWallet()}</div>
+          <div>{renderVNPay()}</div>
 
-          <div className="flex pt-6">
-            <ButtonPrimary
-              className="w-full max-w-[240px]"
-              onClick={onCloseActive}
-            >
-              Confirm order
-            </ButtonPrimary>
-            <ButtonSecondary className="ml-3" onClick={onCloseActive}>
-              Cancel
-            </ButtonSecondary>
-          </div>
+         
         </div>
       </div>
     );

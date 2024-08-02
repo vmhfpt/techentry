@@ -2,14 +2,14 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { PathName } from "routers/types";
+
 
 interface SolutionItem {
   name: string;
   description: string;
-  href?: PathName;
+ 
   icon: any;
-  active?: boolean;
+
 }
 
 const CATEGORIES: SolutionItem[] = [
@@ -73,17 +73,7 @@ export default function DropdownCategories() {
       <Popover className="relative">
         {({ open, close }) => (
           <>
-            <Popover.Button
-              className={`${open ? "" : "text-opacity-90"}
-                group py-2 h-10 sm:h-12 flex items-center rounded-md text-sm sm:text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-0 `}
-            >
-              <span>Danh mục</span>
-              <ChevronDownIcon
-                className={`${open ? "-rotate-180" : "text-opacity-70 "}
-                  ml-2 h-5 w-5 text-neutral-700 group-hover:text-opacity-80 transition ease-in-out duration-150 `}
-                aria-hidden="true"
-              />
-            </Popover.Button>
+            <Link to="/category"><span>Shops</span> </Link>
             <Transition
               as={Fragment}
               enter="transition ease-out duration-200"
@@ -99,11 +89,9 @@ export default function DropdownCategories() {
                     {CATEGORIES.map((item, index) => (
                       <Link
                         key={index}
-                        to={"/page-collection"}
+                        to=""
                         onClick={() => close()}
-                        className={`flex items-center focus:outline-none focus-visible:ring-0 ${
-                          item.active ? "" : ""
-                        }`}
+                        className={`flex items-center focus:outline-none focus-visible:ring-0`}
                       >
                         <div
                           dangerouslySetInnerHTML={{ __html: item.icon }}

@@ -1,4 +1,8 @@
 import React from "react";
+import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
+import SalePercentAnimationIcon from "../components/Icon/Voucher/SalePercent";
+import FreeShipAnimationIcon from "../components/Icon/Voucher/FreeShip";
+import SalePriceAnimationIcon from "../components/Icon/Voucher/SalePrice";
 
 const Policy = () => {
   const A_FEATURES = [
@@ -61,19 +65,23 @@ const Policy = () => {
       `,
     },
   ];
-
+  
+  const {data : listVouchers } = useGetVouchersQuery({});
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative">
-      {A_FEATURES.map((item, index) => {
+      {listVouchers?.data?.map((item : any, index: number) => {
         return (
           <div
             key={index}
-            className={`flex flex-col p-5 rounded-2xl ${item.color} dark:bg-opacity-90`}
+            className={`flex flex-col p-5 rounded-2xl bg-red-50 dark:bg-opacity-90`}
           >
-            <div dangerouslySetInnerHTML={{ __html: item.svg }}></div>
+              {item.type === 'percent' && <SalePercentAnimationIcon width={60} height={60} />}
+           {item.type === 'free_ship' && <FreeShipAnimationIcon width={60} height={60} />}
+           {item.type === 'number' && <SalePriceAnimationIcon width={60} height={60} />}
             <div className="mt-2.5">
               <p className="font-semibold text-slate-900">{item.name}</p>
-              <p className="text-slate-500 mt-0.5 text-sm">{item.desc}</p>
+            
+              <p className="text-slate-500 mt-0.5 text-sm">Còn: <span className="text-red-500"> {item.quantity - item.used_count} </span> phiếu</p>
             </div>
           </div>
         );

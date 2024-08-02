@@ -9,6 +9,20 @@ const apiWithTag = emptySplitApi.enhanceEndpoints({addTagTypes: ['Orders']});
 export const ordersApi = apiWithTag.injectEndpoints({
   
   endpoints: (builder) => ({
+    getUserOrderDetail: builder.query({
+      query: (id) => `order/detail/${id}`,
+      providesTags: (id) => [{ type: 'Orders', id }],
+    }),
+    getUserOrder: builder.query({
+      query: () => 'order/user',
+      providesTags: (result) =>
+      result
+        ? [
+            ...result?.data.map(({ id } : {id : number | string}) => ({ type: 'Orders' as const, id })),
+            { type: 'Orders', id: 'LIST' },
+          ]
+        : [{ type: 'Orders', id: 'LIST' }],
+    }),
     getOrders: builder.query({
       query: () => 'order',
       providesTags: (result) =>
@@ -40,20 +54,46 @@ export const ordersApi = apiWithTag.injectEndpoints({
       }),
       invalidatesTags: (id) => [{ type: 'Orders', id },  { type: 'Orders', id: 'LIST' }],
     }),
-    // deleteCart: builder.mutation({
-    //   query: (id) => ({
-    //     url: `cart/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
-    // }),
+    momoPayment: builder.mutation({
+      query: (id) => ({
+        url: `payment/momo/${id}`,
+        method: 'POST',
+      }),
+      invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+    stripePayment: builder.mutation({
+      query: (payload) => ({
+        url: `payment/stripe/${payload.id}`,
+        method: 'POST',
+        body: payload.data,
+      }),
+      invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+    vnPayment: builder.mutation({
+      query: (id) => ({
+        url: `payment/vnpay/${id}`,
+        method: 'POST',
+      }),
+      invalidatesTags: [{ type: 'Orders', id: 'LIST' }],
+    }),
+
+
+
   }),
+
+
+
 });
 
 export const {
+  useGetUserOrderDetailQuery,
+  useGetUserOrderQuery,
   useAddOrderMutation,
   useGetOrdersQuery,
   usePrefetch,
   useGetOrderQuery,
-  useChangeStatusOrderMutation
+  useChangeStatusOrderMutation,
+  useMomoPaymentMutation,
+  useStripePaymentMutation,
+  useVnPaymentMutation
 } = ordersApi;

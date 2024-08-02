@@ -1,4 +1,4 @@
-import { Col, DatePicker, FormInstance, Modal, Row, Space } from 'antd'
+import { Col, DatePicker, FormInstance, Modal, Row, Select, Space } from 'antd'
 import { Button, Form, Input, InputNumber } from 'antd'
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom'
@@ -53,6 +53,7 @@ export default function ModalCreateVoucher({
           validateMessages={validateMessages}
           autoComplete="off"
           layout="vertical"
+          initialValues={{type: 'number', status: 'private', is_activate: '1'}}
         >
           {/* <Form.Item
             name={'code'}
@@ -74,8 +75,25 @@ export default function ModalCreateVoucher({
           </Form.Item>
 
           <Form.Item
-            name={'discount_amount'}
-            label='Số tiền giảm giá'
+            name={'type'}
+            label='Type voucher'
+          >
+            <Select
+      defaultValue="number"
+    
+    
+      options={[
+        { value: 'number', label: 'Số lượng' },
+        { value: 'percent', label: 'Phần trăm' },
+        { value: 'free_ship', label: 'Free ship' },
+        
+      ]}
+    />
+          </Form.Item>
+
+          <Form.Item
+            name={'value'}
+            label='Số tiền'
             rules={[{ required: true, type: 'number', message: 'Vui lòng nhập số tiền giảm giá' }]}
           >
             <InputNumber placeholder='Nhập số tiền giảm giá' style={{ width: '100%' }} />
@@ -122,12 +140,10 @@ export default function ModalCreateVoucher({
                 )
                   return true;
                 return (
-                  date &&
-                  date &&
                   date <
                   moment(
                     form.getFieldValue('start_date')?.format()
-                  )?.add(1, 'days')
+                  )?.add(-150, 'days')
                 );
               }}
             />
@@ -141,6 +157,46 @@ export default function ModalCreateVoucher({
             rules={[{ required: true, type: 'number', message: 'Vui lòng nhập giới hạn sử dụng' }]}
           >
             <InputNumber placeholder='Nhập giới hạn sử dụng' style={{ width: '100%' }} min={1} />
+          </Form.Item>
+
+          <Form.Item
+            name={'discount_max'}
+            label='Giá tối đa sau khi áp dụng'
+            rules={[{ required: true, type: 'number', message: 'Vui lòng nhập giá tối đa' }]}
+          >
+            <InputNumber placeholder='Enter ...' style={{ width: '100%' }} min={1} />
+          </Form.Item>
+
+          <Form.Item
+            name={'status'}
+            label='Status'
+          >
+            <Select
+      defaultValue="private"
+    
+    
+      options={[
+        { value: 'private', label: 'Private' },
+        { value: 'public', label: 'Public' },
+        
+      ]}
+    />
+          </Form.Item>
+
+          <Form.Item
+            name={'is_activate'}
+            label='Active'
+          >
+            <Select
+      defaultValue="1"
+    
+    
+      options={[
+        { value: '0', label: 'Inactive' },
+        { value: '1', label: 'Active' },
+        
+      ]}
+    />
           </Form.Item>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
