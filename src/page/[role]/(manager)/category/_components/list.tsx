@@ -53,7 +53,7 @@ export default function ListCategory() {
       align: 'center'
     },
     {
-      title: 'Name',
+      title: 'Tên danh mục',
       dataIndex: 'name',
       key: 'name',
       align: 'center',
@@ -61,7 +61,7 @@ export default function ListCategory() {
       render: (text) => <a>{text}</a>
     },
     {
-      title: 'Image',
+      title: 'Ảnh',
       dataIndex: 'image',
       key: 'image',
       align: 'center',
@@ -69,35 +69,35 @@ export default function ListCategory() {
       render: (image) => <img src={image} alt="" className="w-[120px] object-cover" />
     },
     {
-      title: 'Parent',
+      title: 'Danh mục cha',
       dataIndex: 'parent_id',
       key: 'parent_id',
       align: 'center',
       width: 100,
-      render: (text) => <>{text ? text : 'No Parent'}</>
+      render: (text) => <>{text ? text : 'không có'}</>
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'active',
       key: 'active',
       align: 'center',
       width: 100,
       render: (active) => {
         const color = active == 0 ? 'volcano' : 'green'
-        const text = active == 0 ? 'Disable' : 'Enable'
+        const text = active == 0 ? 'Không Hoạt động' : 'Đang hoạt động'
 
         return <Tag color={color}>{text.toUpperCase()}</Tag>
       }
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       width: 150,
       align: 'center',
       render: (record) => (
         <Space size={'middle'}>
            <Link to={"" + record.id}>
-              <Button type='primary'>Edit </Button>
+              <Button type='primary'>Sửa </Button>
             </Link>
           <Popconfirm
             placement='topRight'
@@ -108,7 +108,7 @@ export default function ListCategory() {
             cancelText='Hủy bỏ'
           >
             <Button type='primary' danger>
-               Delete
+               Xóa
             </Button>
           </Popconfirm>
         </Space>
@@ -127,7 +127,7 @@ export default function ListCategory() {
     <>
       <div className='flex items-center justify-between my-2'>
         <Typography.Title editable level={2} style={{ margin: 0 }}>
-          List Category
+          Danh sách danh mục
         </Typography.Title>
       </div>
       <div className=''>
@@ -144,13 +144,13 @@ export default function ListCategory() {
             allowClear
             onChange={handleChangeSearch}
             size='small'
-            placeholder={'search'}
+            placeholder={'Tìm kiếm'}
             style={{
               borderRadius: '2rem',
             }}
           />
           <Link to='add'>
-            <Button type='primary'>Add Category</Button>
+            <Button type='primary'>Thêm danh mục</Button>
           </Link>
         </Flex>
         <Table

@@ -22,10 +22,10 @@ const layout = {
 }
 
 const validateMessages = {
-  required: '${label} is required!',
+  required: '${label} là bắt buộc!',
   types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!'
+    email: '${label} không phải là 1 email hợp lệ!',
+    number: '${label} không phải là 1 số hợp lệ!'
   },
   number: {
     range: '${label} must be between ${min} and ${max}'

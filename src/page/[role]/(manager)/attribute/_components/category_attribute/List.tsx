@@ -116,7 +116,7 @@ export default function CategoryAttribute(){
       }
     
     return (<>
-    <Title level={2}>List category attributes</Title>
+    <Title level={2}>Danh mục thuộc tính sản phẩm</Title>
     <Table columns={columns} dataSource={dataItem}  
       loading={loadingCategoryAttribute}
       

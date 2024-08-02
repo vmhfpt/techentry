@@ -22,13 +22,13 @@ const layout = {
 }
 
 const validateMessages = {
-  required: '${label} is required!',
+  required: '${label} là bắt buộc!',
   types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!'
+    email: '${label} không phải là một email hợp lệ!',
+    number: '${label} không phải là số hợp lệ!'
   },
   number: {
-    range: '${label} must be between ${min} and ${max}'
+    range: '${label} phải ở giữa ${min} và ${max}'
   }
 }
 /* eslint-enable no-template-curly-in-string */
@@ -45,7 +45,7 @@ export default function AddBrand() {
       data: file,
       loading: false
     })
-    onSuccess('Upload successful', file)
+    onSuccess('Tải lên thành công', file)
  
   }
 
@@ -94,7 +94,7 @@ export default function AddBrand() {
   if (isError) return <ErrorLoad />
   return (
     <>
-      <Modal okButtonProps={{ hidden: true }}  title='Add brand' open={true} onCancel={handleCancel}>
+      <Modal okButtonProps={{ hidden: true }}  title='Thêm thương hiệu' open={true} onCancel={handleCancel}>
         <Form
         layout="vertical"
           form={form}
@@ -104,21 +104,21 @@ export default function AddBrand() {
           style={{ maxWidth: 600 }}
           validateMessages={validateMessages}
         >
-          <Form.Item name='name' label='Name' rules={[{ required: true }]}>
-            <Input type='text' placeholder='Enter your name' />
+          <Form.Item name='name' label='Tên' rules={[{ required: true }]}>
+            <Input type='text' placeholder='Nhập tên thương hiệu' />
           </Form.Item>
         
 
 
           <Form.Item
             name='upload'
-            label='Upload'
+            label='Tải lên'
             valuePropName='fileList'
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
             rules={[{ required: true }]}
           >
             <Upload name='image' listType='picture' customRequest={handleUpload}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Button icon={<UploadOutlined />}>Nhấn để tải lên</Button>
             </Upload>
           </Form.Item>
 
@@ -128,7 +128,7 @@ export default function AddBrand() {
 
           <Form.Item>
             <Button loading={isLoadingCreateBrand || file.loading} disabled={isLoadingCreateBrand || file.loading} type='primary' htmlType='submit'>
-              Create
+              Tạo
             </Button>
           </Form.Item>
         </Form>

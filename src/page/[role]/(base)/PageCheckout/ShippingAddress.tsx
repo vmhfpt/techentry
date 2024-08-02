@@ -144,7 +144,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
 
         <div className='sm:ml-8'>
           <h3 className=' text-slate-700 dark:text-slate-300 flex '>
-            <span className='uppercase'>SHIPPING ADDRESS</span>
+            <span className='uppercase'>Địa chỉ giao hàng</span>
             <svg
               fill='none'
               viewBox='0 0 24 24'
@@ -162,7 +162,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           className='bg-slate-50 dark:bg-slate-800 mt-5 sm:mt-0 sm:ml-auto !rounded-lg'
           onClick={onOpenActive}
         >
-          Change
+          Thay đổi
         </ButtonSecondary>
       </div>
       
@@ -190,7 +190,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
               
-              <Form.Item name='receiver_name' label='User name' rules={[{ required: true }]}>
+              <Form.Item name='receiver_name' label='Tên khách hàng' rules={[{ required: true }]}>
                 <Input  placeholder='Nhập tên'  />
               </Form.Item>
               
@@ -203,7 +203,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
               
-              <Form.Item name='receiver_phone' label='Phone number' rules={[{ required: true }]}>
+              <Form.Item name='receiver_phone' label='Số điện thoại' rules={[{ required: true }]}>
                 <Input  placeholder='03456789'/>
               </Form.Item>
             </div>
@@ -215,7 +215,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             Boolean(user.address) && <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
 
-              <Form.Item  label={<div className='flex gap-3'><span>Address</span> <Link to="/account"><EditOutlined /> </Link></div>} >
+              <Form.Item  label={<div className='flex gap-3'><span>Địa chỉ</span> <Link to="/account"><EditOutlined /> </Link></div>} >
                  <Input  placeholder={user.address} readOnly  />
               </Form.Item>
             
@@ -226,11 +226,11 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3'>
             <div className='app__select--input'>
 
-              <Form.Item name='receiver_pronvinces' label='Pronvinces' rules={[{ required: true }]}>
+              <Form.Item name='receiver_pronvinces' label='Tỉnh' rules={[{ required: true }]}>
                 <Select
                   loading={isLoadingProvinces}
                   
-                  placeholder='Select province'
+                  placeholder='Lựa chọn'
                   options={options}
                   onChange={(value) => onChangeProvince(value)}
                   
@@ -239,11 +239,11 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
               
             </div>
             <div className="app__select--input">
-              <Form.Item name='receiver_district' label='District' rules={[{ required: true }]}>
+              <Form.Item name='receiver_district' label='Quận/ huyện' rules={[{ required: true }]}>
                 <Select
                   loading={districtLoading}
                   onChange={(value) => onChangeDistrict(value)}
-                  placeholder='Enter name district'
+                  placeholder='Lựa chọn'
                   options={optionsDistrict}
                   
                 />
@@ -253,10 +253,10 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
 
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full app__select--input'>
-              <Form.Item name='receiver_ward' label='Ward' rules={[{ required: true }]}>
+              <Form.Item name='receiver_ward' label='Xã/phường/thị trấn' rules={[{ required: true }]}>
                 <Select
                   loading={wardLoading}
-                  placeholder='Enter name ward'
+                  placeholder='Lựa chọn'
                   options={optionsWard}
                  // defaultValue={user ? user?.address : ''}
                 />
@@ -267,7 +267,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
 
-              <Form.Item name='receiver_address' label='Address' rules={[{ required: true }]}>
+              <Form.Item name='receiver_address' label='Địa chỉ' rules={[{ required: true }]}>
                 <Input  placeholder='56 Tran Duy Hung' />
               </Form.Item>
             
@@ -281,7 +281,7 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           <div className='sm:flex space-y-4 sm:space-y-0 sm:space-x-3'>
             <div className='w-full'>
 
-              <Form.Item name='note' label='Note' rules={[{ required: true }]}>
+              <Form.Item name='note' label='Ghi chú' rules={[{ required: true }]}>
                 <Input  placeholder='...' />
               </Form.Item>
         
@@ -311,10 +311,10 @@ const ShippingAddress: FC<Props> = ({ isActive, onCloseActive, onOpenActive, for
           {/* ============ */}
           <div className='flex flex-col sm:flex-row pt-6'>
             <ButtonPrimary  type="button" className='sm:!px-7 shadow-none' onClick={onCloseActive}>
-              Save and next to Payment
+              Lưu và chuyển đến thanh toán
             </ButtonPrimary>
             <ButtonSecondary type="button" className='mt-3 sm:mt-0 sm:ml-3' onClick={onCloseActive}>
-              Cancel
+              Hủy
             </ButtonSecondary>
           </div>
         </div>

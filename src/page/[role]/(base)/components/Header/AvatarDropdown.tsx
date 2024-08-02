@@ -190,7 +190,7 @@ export default function AvatarDropdown() {
                             </svg>
                           </div>
                           <div className="ml-4">
-                            <p className="text-sm font-medium ">{"Login"}</p>
+                            <p className="text-sm font-medium ">{"Đăng nhập"}</p>
                           </div>
                         </button>
 
@@ -222,7 +222,7 @@ export default function AvatarDropdown() {
                               />
                             </svg>
                           </div>
-                          <Link to="/signup" >  <div className="ml-4"> <p className="text-sm font-medium ">{"SignUp"}</p>   </div> </Link>
+                          <Link to="/signup" >  <div className="ml-4"> <p className="text-sm font-medium ">{"Đăng kí"}</p>   </div> </Link>
                         
                            
                        
@@ -323,7 +323,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"My Order"}</p>
+                        <p className="text-sm font-medium ">{"Đơn hàng của tôi"}</p>
                       </div>
                     </Link>
 
@@ -350,7 +350,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Wishlist"}</p>
+                        <p className="text-sm font-medium ">{"Yêu thích"}</p>
                       </div>
                     </Link>
 
@@ -391,7 +391,7 @@ export default function AvatarDropdown() {
                           </svg>
                         </div>
                         <div className="ml-4">
-                          <p className="text-sm font-medium ">{"Dark theme"}</p>
+                          <p className="text-sm font-medium ">{"Chế độ tối"}</p>
                         </div>
                       </div>
                       <SwitchDarkMode2 />
@@ -456,7 +456,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Help"}</p>
+                        <p className="text-sm font-medium ">{"Trợ giúp"}</p>
                       </div>
                     </Link>
 
@@ -502,7 +502,7 @@ export default function AvatarDropdown() {
                             </svg>
                           </div>
                           <div className="ml-4">
-                            <p className="text-sm font-medium ">{"Log out"}</p>
+                            <p className="text-sm font-medium ">{"Đăng xuất"}</p>
                           </div>
                         </button>
                       )
@@ -550,7 +550,7 @@ export default function AvatarDropdown() {
                 <Flex justify="center" align="center" gap={20}>
                     <div className="border-b-[1px] flex-1"/>
                     <span>
-                      of signin with
+                      Đăng nhập bằng
                     </span>
                     <div className="border-b-[1px] flex-1"/>
                 </Flex>
@@ -570,7 +570,7 @@ export default function AvatarDropdown() {
                     </Form.Item>
                   </div>
                   <div>
-                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Password</label>
+                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Mật khẩu</label>
                     <Form.Item<FieldType>
                       name="password"
                       rules={[
@@ -603,12 +603,12 @@ export default function AvatarDropdown() {
                   </div>
 
                   <Form.Item>
-                    <Link to={''}>Forgot password</Link>
+                    <Link to={''}>Quên mật khẩu</Link>
                   </Form.Item>
 
                   <Form.Item>
                     <Button type="primary" htmlType="submit" className=" w-full p-5">
-                      Submit
+                    Đăng nhập
                     </Button>
                   </Form.Item>
                   <div className="flex justify-center">

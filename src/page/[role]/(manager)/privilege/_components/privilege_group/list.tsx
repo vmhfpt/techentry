@@ -38,13 +38,13 @@ export default function ListPrivilegeGroup(){
           dataIndex: 'id',
         },
         {
-          title: 'Name',
+          title: 'Tên',
           width: 100,
           dataIndex: 'name',
         },
         
         {
-          title: 'Action',
+          title: 'Hành động',
           width: 90,
           render: (data : IPrivilegeGroup) => (
             <Flex gap="small">
@@ -105,7 +105,7 @@ export default function ListPrivilegeGroup(){
          initialValues={formValuesUpdate}
          
     />
-    <Title level={2}>List privilege group</Title>
+    <Title level={2}>Danh sách nhóm quyền hạn</Title>
    
     <Table loading={isLoading}  columns={columnsPrivilegeGroup} dataSource={dataItem}  
       

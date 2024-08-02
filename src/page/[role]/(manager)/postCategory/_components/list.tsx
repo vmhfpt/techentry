@@ -49,7 +49,7 @@ export default function ListPostCategory() {
       align: 'center'
     },
     {
-      title: 'Name',
+      title: 'Tên danh mục',
       dataIndex: 'name',
       key: 'name',
       align: 'center',
@@ -57,7 +57,7 @@ export default function ListPostCategory() {
       render: (text) => <a>{text}</a>
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       width: 100,
       align: 'center',
@@ -90,7 +90,7 @@ export default function ListPostCategory() {
     <>
       <div className='flex items-center justify-between my-2'>
         <Typography.Title editable level={2} style={{ margin: 0 }}>
-          List Post Category
+          Danh mục bài viêt
         </Typography.Title>
 
         <Input
@@ -105,7 +105,7 @@ export default function ListPostCategory() {
           allowClear
           onChange={handleChangeSearch}
           size='small'
-          placeholder={'search'}
+          placeholder={'Tìm kiếm'}
           style={{
             borderRadius: '2rem',
             border: 'none',
@@ -126,7 +126,7 @@ export default function ListPostCategory() {
 
       <Flex wrap='wrap' gap='small'>
         <Link to='add'>
-          <Button type='primary'>Add Category</Button>
+          <Button type='primary'>Thêm danh mục</Button>
         </Link>
       </Flex>
     </>

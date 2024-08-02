@@ -138,7 +138,7 @@ const {data: carts} =  useGetCartsQuery(undefined, {skip: !user})
               <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">
                 <div className="relative bg-white dark:bg-neutral-800">
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
-                    <h3 className="text-xl font-semibold">Shopping cart</h3>
+                    <h3 className="text-xl font-semibold">Giỏ hàng</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
                       {carts?.data?.map(
                         (item : any, index : any) => renderProduct(item , index, close)
@@ -154,9 +154,9 @@ const {data: carts} =  useGetCartsQuery(undefined, {skip: !user})
                       <>
                       
                       <span>
-                        <span>Subtotal</span>
+                        <span>Tổng phụ</span>
                         <span className="block text-sm text-slate-500 dark:text-slate-400 font-normal">
-                          Shipping and taxes calculated at checkout.
+                        Vận chuyển và thuế được tính khi thanh toán.
                         </span>
                       </span>
                       <span className="">{carts && VND(getTotalPriceCart(carts?.data)) } </span>
@@ -170,14 +170,14 @@ const {data: carts} =  useGetCartsQuery(undefined, {skip: !user})
                         className="flex-1 border border-slate-200 dark:border-slate-700"
                         onClick={close}
                       >
-                        View cart
+                        Xem giỏ hàng
                       </ButtonSecondary>
                       <ButtonPrimary
                         href="/checkout"
                         onClick={close}
                         className="flex-1"
                       >
-                        Check out
+                        Thanh toán
                       </ButtonPrimary>
                     </div> }
 

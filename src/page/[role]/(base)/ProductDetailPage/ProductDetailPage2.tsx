@@ -85,8 +85,11 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
     const [postComment] = usePostCommentMutation();
     const {slug} = useParams()
     
-    const {data, isLoading} = useGetProductQuery(slug);     
-    const {data: listComments} = useGetCommentsQuery(2);   
+    const {data, isLoading} = useGetProductQuery(slug); 
+  
+
+    const productId = data?.data?.id;
+    const {data: listComments} = useGetCommentsQuery(productId, {skip: !productId,});   
 
     const dataProduct = data?.data;
     const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
@@ -402,7 +405,7 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
                 onClick={notifyAddTocart}
               >
                 <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-                <span className="ml-3">Add to cart</span>
+                <span className="ml-3">Thêm vào giỏ</span>
               </ButtonPrimary>
             </div>
 
@@ -566,7 +569,7 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
                 />
               </svg>
               <span className="ml-2 text-neutral-800 text-sm font-medium">
-                Show all photos
+                Hiện tất cả ảnh
               </span>
             </div>
           </div>
@@ -845,7 +848,7 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
           <hr className="border-slate-200 dark:border-slate-700" />
 
           <SectionSliderProductCard
-            heading="Customers also purchased"
+            heading="SẢN PHẨM TƯƠNG TỰ"
             subHeading=""
             headingFontClassName="text-2xl font-semibold"
             headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"

@@ -144,13 +144,13 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant}) => {
                             ))
                             }
                             <th scope="col" className="px-6 py-3">
-                                Quantity
+                                Số lượng
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Price
+                                Giá
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Price sale
+                                Giá khuyến mãi
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 SKU

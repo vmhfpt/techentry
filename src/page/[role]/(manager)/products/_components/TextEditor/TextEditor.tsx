@@ -34,7 +34,7 @@ export default function TextEditor() {
       <Form.Item
         name={'content'}
         className='m-0'
-        label={'content'}
+        label={'Nội dung'}
         rules={[
           {
             required: true, message: 'Trường này là bắt buộc'

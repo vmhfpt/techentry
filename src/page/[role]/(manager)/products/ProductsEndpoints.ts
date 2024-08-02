@@ -22,8 +22,8 @@ export const productsApi = apiWithTag.injectEndpoints({
         : [{ type: 'Products', id: 'LIST' }],
     }),
     getProduct: builder.query({
-      query: (slug) => `product/${slug}`,
-      providesTags: (slug) => [{ type: 'Products', slug }],
+      query: (id) => `product/${id}`,
+      providesTags: (id) => [{ type: 'Products', id }],
     }),
     filterProduct: builder.query({
       query: (feat) => `product/home/${feat}`,
