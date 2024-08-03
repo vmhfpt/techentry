@@ -176,7 +176,7 @@ export default function EditOrder(){
         </Col>
         <Col span={12}>
           <Card title="Thông tin khách hàng" bordered={false}>
-          <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
+              <div className="flex justify-between border-solid border-b-[1px] border-b-[#eee] py-4">
                   <b className="">Tên: </b>
                   <span className="">{dataItem?.receiver_name}</span>
               </div>
@@ -237,7 +237,6 @@ export default function EditOrder(){
         </Col>
         <Col span={12}>
           <Card title="Giao hàng" bordered={false}>
-        
             <div className="">
               <ul role="list" className="-mb-8">
 

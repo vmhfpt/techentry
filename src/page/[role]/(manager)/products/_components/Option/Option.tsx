@@ -1,27 +1,29 @@
-import { Flex, Form, InputNumber, Segmented, Select, Slider, SliderSingleProps, Switch } from 'antd';
-import React, { useEffect, useState } from 'react'
-import { CloudUploadOutlined, DeleteOutlined, PlusOutlined} from '@ant-design/icons';
+import { Button, Flex, Form, InputNumber, Segmented, Select, Slider, SliderSingleProps, Switch } from 'antd';
+import React, { useEffect, useRef, useState } from 'react'
+import { PlusOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import { useGetBrandsQuery } from '../../../brand/BrandEndpoints';
 import { IBrand } from '@/common/types/brand.interface';
-import LoadingPage from '../../../components/util/LoadingPage';
 import { useGetCategoriesQuery } from '../../../category/CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
+import PermMediaRoundedIcon from '@mui/icons-material/PermMediaRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 interface option{
     setImageUrl: React.Dispatch<React.SetStateAction<any>>
     discount: {
         typeDiscount: string;
         setTypeDiscount: React.Dispatch<React.SetStateAction<string>>
     };
-    setDetails: React.Dispatch<React.SetStateAction<any>>
+    setCategory: React.Dispatch<React.SetStateAction<any>>
 }
 
-export default function Option({setImageUrl, discount, setDetails}: option) {
+export default function Option({setImageUrl, discount, setCategory}: option) {
     const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
     const {data : dataBrands, isLoading : isLoadingBrand} = useGetBrandsQuery({});
     const [DisplayPic, setDisplayPic] = useState<string>();
     const formatter: NonNullable<SliderSingleProps['tooltip']>['formatter'] = (value) => `${value}%`;
-   
+    const fileInputRef = useRef(null);
+    
 
     const brands = dataBrands ? dataBrands?.data?.map((item : IBrand) => {
         return {
@@ -58,9 +60,10 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
 
     }
 
-    const getDetails = async (value) => {
-        const {data} = await axios.get(`http://127.0.0.1:8000/api/category/${value}`);        
-        setDetails(data.data)
+    const getDetails = async (value: string) => {
+        const {data} = await axios.get(`http://127.0.0.1:8000/api/category/show/${value}`);        
+        
+        setCategory(data.data)
     }
 
 
@@ -71,52 +74,56 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
             {/* Thumbnail */}
             <Form.Item
                 name="upload"
-                className='p-[2rem] sm:rounded-lg border-[#F1F1F4] m-0'
+                className='p-10 sm:rounded-xl border-[#F1F1F4] m-0 bg-[#ffff]'
                 rules={[{ required: true, message: 'Please upload a file!' }]}
-                style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1rem'}}
+                style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}
             >
                 <Flex vertical gap={20}>
-                    <h2 className='font-bold text-[16px]'>Thumbnail</h2>
-                    <div style={{ height: '12vw', overflow: 'hidden', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}} className='border-none rounded-[12px]  ' >
+                    <h2 className='font-bold text-[20px]'>Ảnh đại diện</h2>
+                    <div style={{ height: '10.5vw', boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} className='border-none rounded-xl relative ' >
                         {
                         DisplayPic
                         ?
-                        <div style={{ height: '100%', maxWidth: '100%' }} className='relative group'>
+                        <div style={{ height: '100%', maxWidth: '100%',  overflow: 'hidden'}} className='relative group border-none rounded-xl'>
                             <img src={DisplayPic} alt="" className='object-cover h-[100%] object-center' style={{width: '100%' }} />
-                            <div className=" absolute inset-0 z-1 opacity-0 group-hover:opacity-100 duration-1000" style={{ backgroundColor: 'rgb(0, 0, 0, 0.5)' }}></div>
-                            <button style={{ zIndex: 999, fontSize: "20px", color: 'white' }}
-                                onClick={() => setDisplayPic('')}
-                            >
-                                <DeleteOutlined className=" duration-1000 opacity-0 group-hover:opacity-100 absolute top-10 right-10" />
-                            </button>
                         </div>
                         :
-                        <Flex className='border-dashed  border-2 relative hover:bg-gray-100 hover:border-solid hover:border' vertical gap={10} justify='center' align='center' style={{ maxWidth: '100%', height: "100%", borderRadius: '12px' }}>
+                        <Flex className='relative rounded-xl' vertical gap={10} justify='center' align='center' style={{ maxWidth: '100%', height: "100%", borderRadius: '12px', overflow: 'hidden' }}>
                             <Flex vertical gap={10} style={{ width: '100%' }}>
                                 <Flex vertical align='center' justify='center'>
-                                    <CloudUploadOutlined style={{ fontSize: '50px', color: 'gray' }} className='' />
+                                    <PermMediaRoundedIcon style={{ fontSize: '60px', color: 'rgb(31 41 55 / var(--tw-text-opacity))' }} className='' />
                                 </Flex>
                             </Flex>
-                            <Flex style={{ width: '100%', color: 'gray' }} vertical justify='center' align='center'>
-                                <span style={{ fontSize: '11px' }}>
-                                    Kích thước tối đa: 50MB
-                                </span>
-                                <span style={{ fontSize: '11px' }}>
-                                    JPG, PNG, GIF, SVG
-                                </span>
-                            </Flex>
-                            <input type="file" accept="image/*" name="image" id="image" className='opacity-0 absolute inset-0'
-                                onChange={selectedImg}
-                            />
                         </Flex>
                         }
+
+                        <div className='w-[30px] h-[30px] rounded-full bg-[#fff] absolute top-[-10px] right-[-10px] flex items-center justify-center hover:text-blue-500 cursor-pointer overflow-hidden' style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} onClick={()=>{
+                            if(fileInputRef.current){
+                                fileInputRef.current.click();
+                            }
+                        }}>
+                            <EditRoundedIcon style={{fontSize: 20}} />
+                            <input ref={fileInputRef} type="file" accept="image/*" name="image" id="image" className='opacity-0'
+                                style={{display: 'none'}}
+                                onChange={selectedImg}
+                            />
+                        </div>
+                        
                     </div>
+                    <Flex style={{ width: '100%' }} className='text-gray-800' vertical justify='center' align='center'>
+                        <span style={{ fontSize: '11px' }}>
+                            Kích thước tối đa: 50MB
+                        </span>
+                        <span style={{ fontSize: '11px' }}>
+                            JPG, PNG, GIF, SVG
+                        </span>
+                    </Flex>
                 </Flex>
             </Form.Item>
             {/* Thumbnail */}
 
             {/* category */}
-            <div className='sm:rounded-lg flex-1 p-2 relative' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
+            <div className='sm:rounded-lg flex-1 p-2 relative bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div className='p-2'>
                     <h2 className='font-bold'>Danh mục</h2>
                 </div>
@@ -148,7 +155,7 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
             {/* category */}
 
             {/* Brand */}
-            <div className='sm:rounded-lg flex-1 p-2 relative' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
+            <div className='sm:rounded-lg flex-1 p-2 relative bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div className='p-2'>
                     <h2 className='font-bold'>Thương hiệu</h2>
                 </div>
@@ -178,8 +185,29 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
             </div>
             {/* Brand */}
 
+             {/* Tags */}
+             <div className='sm:rounded-lg flex-1 p-2 relative bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                <div className='p-2'>
+                    <h2 className='font-bold'>Tags</h2>
+                </div>
+                <Flex justify='center' align='' vertical className='p-2' gap={10} >
+                <Form.Item 
+                    className='m-0' 
+                    name='tags' 
+                >
+                    <Select 
+                    mode='tags'
+                    className='h-[40px]'
+                    style={{ width: '100%' }}  
+                    
+                    />
+                </Form.Item>  
+                </Flex>
+            </div>
+            {/* Tags */}
+
             {/* Setting */}
-            <div className='sm:rounded-lg overflow-hidden flex-1 p-2' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
+            <div className='sm:rounded-lg overflow-hidden flex-1 p-2 bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div className='p-2'>
                 <h2 className='font-bold'>Setting</h2>
                 </div>
@@ -247,29 +275,8 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
             </div>
             {/* Setting */}
 
-            {/* Tags */}
-            <div className='sm:rounded-lg flex-1 p-2 relative' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
-                <div className='p-2'>
-                    <h2 className='font-bold'>Tags</h2>
-                </div>
-                <Flex justify='center' align='' vertical className='p-2' gap={10} >
-                <Form.Item 
-                    className='m-0' 
-                    name='tags' 
-                >
-                    <Select 
-                    mode='tags'
-                    className='h-[40px]'
-                    style={{ width: '100%' }}  
-                    
-                    />
-                </Form.Item>  
-                </Flex>
-            </div>
-            {/* Tags */}
-
             {/* Discount */}
-            <div className='sm:rounded-lg flex-1 p-2 relative' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
+            <div className='sm:rounded-lg flex-1 p-2 relative bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div className='p-2'>
                     <h2 className='font-bold'>Discount</h2>
                 </div>
@@ -344,6 +351,15 @@ export default function Option({setImageUrl, discount, setDetails}: option) {
                 </Flex>
             </div>
             {/* Discount */}
+
+            <Flex gap={10} justify='flex-end'>
+                <Button className=' border-dashed'>
+                    reset
+                </Button>
+                <Button htmlType='submit'>
+                    Thêm sản phẩm
+                </Button>
+            </Flex>
         </Flex>
     )
 }

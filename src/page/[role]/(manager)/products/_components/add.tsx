@@ -6,9 +6,11 @@ import Variant from './Variant/variant';
 import getRandomNumber from '@/utils/randomNumber';
 import TableVariant from './Variant/TableVariant'
 import Option from './Option/Option'
-import TextEditor from './TextEditor/TextEditor';
 import { useCreateProductMutation } from '../ProductsEndpoints';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
+import LexicalEditor from '@/components/TextEditor/LexicalEditor';
+import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 
@@ -45,6 +47,29 @@ interface ResultItem {
   attributes: Attribute[];
 }
 
+interface Category {
+  id: string,
+  image: string,
+  is_active: number,
+  name: string,
+  details: Detail[],
+  variants: {
+    id: string,
+    category_id: string,
+    name: string
+  }[]
+}
+
+interface Detail {
+  id: string,
+  name: string,
+  attributes: {
+    detail_id: string,
+    id: string,
+    name: string
+  }[]
+}
+
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 
@@ -53,11 +78,11 @@ function AddProduct() {
   const [imageUrl, setImageUrl] = useState<Blob>();
   const [form] = Form.useForm();
   const [gallery, setGallery] = useState<Array<gallery>>([]);
-  const navigate = useNavigate()
   const fileInputRef = useRef<any>(null);
   const numberFile = useRef<number>(0);
+  
   const [typeDiscount, setTypeDiscount] = useState<string>('');
-  const [details, setDetails] = useState({});
+  const [category, setCategory] = useState<Category | null>(null);
   const [detailsAttr, setDetailsAttr] = useState<detailsAtrr[]>([]);
 
 
@@ -75,8 +100,7 @@ function AddProduct() {
   }]);  
   
 
-  const onFinish = async () => {
-
+  const onFinish = async () => {    
     const name = form.getFieldValue('name');
     const content = form.getFieldValue('content');
     const category_id = form.getFieldValue('category_id');
@@ -88,7 +112,7 @@ function AddProduct() {
     const is_hot_deal = form.getFieldValue('is_hot_deal') ? 1 : 0;
     const is_good_deal = form.getFieldValue('is_good_deal') ? 1 : 0;
     const is_new = form.getFieldValue('is_new') ? 1 : 0;
-    const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;
+    const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;    
     
     const newProductItem = [];    
 
@@ -142,7 +166,7 @@ function AddProduct() {
     formdata.append('type_discount', String(typeDiscount));
     formdata.append('discount', typeDiscount == 'percent' ? percentage : typeDiscount == 'fixed' ? fixed : '');
     formdata.append('product_details', JSON.stringify(details));
-    formdata.append('product_items', JSON.stringify(newProductItem));
+    formdata.append('product_items', JSON.stringify(newProductItem));    
         
     try {
       await addProduct(formdata).unwrap();
@@ -154,10 +178,6 @@ function AddProduct() {
     
   }
 
-  const handleCancel = () => {
-    navigate('..')
-  }
-
   const getBase64 = (file: FileType): Promise<string> =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -166,6 +186,35 @@ function AddProduct() {
       reader.onerror = (error) => reject(error);
     });
   
+
+  
+
+  const handleSetDetail = () => {
+    form.resetFields(['variant']);
+    setVariant([
+        ...variant,
+      {
+        id: Date.now() + '',
+        name: '',
+        attribute: [
+          {
+            id: Date.now() + '',
+            value: '',
+            image: null,
+            url: null
+          }
+        ]
+      }
+    ])
+  }  
+  
+  const handleRemoveDetail = (name: string) => {  
+    form.resetFields(['variant']);
+    const updatedVariant = variant.filter((item)=>item.id != name)  
+    if(variant.length > 1){
+      setVariant(updatedVariant)
+    }
+  }
 
   const selectGallery = async (e) => {
     if(gallery.length > 6) return;
@@ -214,88 +263,75 @@ function AddProduct() {
     ])
   }
 
-
-  const handleSetDetail = () => {
-    form.resetFields(['variant']);
-    setVariant([
-        ...variant,
-      {
-        id: Date.now() + '',
-        name: '',
-        attribute: [
-          {
-            id: Date.now() + '',
-            value: '',
-            image: null,
-            url: null
-          }
-        ]
-      }
-    ])
-  }  
-  
-  const handleRemoveDetail = (name: string) => {  
-    form.resetFields(['variant']);
-    const updatedVariant = variant.filter((item)=>item.id != name)  
-    if(variant.length > 1){
-      setVariant(updatedVariant)
-    }
-  }
-
   return (
     <>
-      <Drawer
-        open={true}
-        title={
-        <>
-          <h2 className=' font-bold text-[24px]'>Create new product</h2>
-        </>
-        }
-        width={'85%'}
-        styles={{
-          header: {
-            height: 60,
-          },
-          body: {
-            paddingBottom: 80,
-          },
-        }}
-        onClose={handleCancel}
+      <Form
+        layout='vertical'
+        form={form}
+        name='nest-messages'
+        onFinish={onFinish}
+        className='p-10 relative'
       >
-        
-        <Form
-          layout='vertical'
-          form={form}
-          name='nest-messages'
-          onFinish={onFinish}
-          className='p-10 relative'
-        >
-          <Flex className='fixed z-[10000000] top-[15px] right-10' gap={20}>
-            <Button  loading={isLoadingAddProduct} disabled={isLoadingAddProduct} htmlType='submit' type='primary' className=' '>
-              Create
-            </Button>
-            <Button type='dashed'>
-              Reset
-            </Button>
-          </Flex>
-          <Flex vertical gap={30}>
-            <Row gutter={[24, 8]} align={'stretch'}>
-              <Col span={5} className='w-full'>
-                <Option setImageUrl={setImageUrl} discount={{typeDiscount, setTypeDiscount}} setDetails={setDetails}/>
-              </Col>
-              <Col span={19}>
-                <Flex vertical className='' gap={30}>
+        <Flex vertical gap={30}>
+          <Row gutter={[24, 32]} align={'stretch'}>
+            <Col span={19}>
+              <Flex vertical className='' gap={30}>
 
-                  {/* Gallery */}
-                  <Form.Item
-                    name="gallery"
-                    className='p-[30px] sm:rounded-lg border-[#F1F1F4] m-0'
-                    style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1rem'}}
-                  >
-                    <Flex vertical gap={20}>
-                    <h2 className='font-bold text-[16px]'>Gallery</h2>
-                    <div style={{ flex: 5, overflow: 'hidden',  boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}} className='border-none rounded-[12px] relative' >
-                        <Flex className='border-dashed border-2 p-5 relative hover:bg-gray-100 hover:border-solid  ' vertical gap={10} justify='center' align='center' style={{ width: '100%', height: "7.5vw", borderRadius: '12px' }}>
+                {/* General */}
+                <div className=' p-[1.75rem] rounded-xl h-full bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}>
+                  <h2 className='mb-5 font-bold text-[20px]'>Thông tin chung</h2>
+                  <Flex vertical  gap={5} className='rounded-xl p-[1.75rem] border-[1px]'>
+                    <Flex vertical gap={10}>
+                      <h3 className='font-bold text-[16px]'>Tên sản phẩm</h3>
+                      <Form.Item
+                        name='name'
+                        className='w-full flex flex-col'
+                        rules={[
+                          { required: true, message: 'Vui lòng nhập tên sản phẩm!' },
+                          { max: 120, message: 'Tên không vượt quá 120 ký tự' },
+                          { min: 10, message: 'Tên không nhập nhỏ hơn 10 ký tự' },
+                          {
+                            whitespace: true,
+                            message: 'Tên sản phẩm không được để trống!'
+                          }
+                        ]}
+                      >
+                        <Input size='large' placeholder='Nhập tên sản phẩm' />
+                      </Form.Item>
+                    </Flex>
+                    <Flex vertical gap={10}>
+
+                      <h3 className='font-bold text-[16px]'>Mô tả sản phẩm</h3>
+                      <Form.Item
+                        name={'content'}
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Không được bỏ trống trường này'
+                          }
+                        ]}
+                      >
+                        <LexicalEditor form={form}/>
+                      </Form.Item>
+
+                    </Flex>
+                  </Flex>
+                </div>
+                {/* General */}
+
+                {/* Gallery */}
+                <Form.Item
+                  name="gallery"
+                  className='p-10 sm:rounded-xl border-[#F1F1F4] m-0 bg-[#ffff]'
+                  style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}
+                >
+                  <Flex vertical>
+                    <h2 className='font-bold text-[20px] mb-5'>Danh sách ảnh <span className='text-[12px]'>({gallery.length}/5)</span></h2>
+                    <div style={{ flex: 5, overflow: 'hidden'}} className='border-none rounded-xl relative bg-[#f8fafd] cursor-pointer' 
+                    >
+                        <Flex className='border-dashed border-2 p-5 relative border-blue-300' vertical gap={10} justify='center' align='center' style={{ width: '100%', minHeight: "20vw", borderRadius: '12px' }}
+                          
+                        >
                             {
                               gallery.length < 1
                               ?
@@ -303,16 +339,27 @@ function AddProduct() {
                                 <>
                                   <Flex vertical gap={10} style={{ width: '100%' }}>
                                     <Flex vertical align='center' justify='center'>
-                                        <CloudUploadOutlined style={{ fontSize: '50px', color: 'gray' }} className='' />
+                                        <PermMediaOutlinedIcon style={{ fontSize: '100px' }} className='text-gray-500' />
                                     </Flex>
                                   </Flex>
-                                  <Flex style={{ width: '100%', color: 'gray' }} vertical justify='center' align='center'>
+                                  <Flex style={{ width: '100%' }} vertical justify='center' align='center' gap={10}>
+                                      <h3 className='font-bold'>
+                                        Kéo và thả tập tin của bạn vào đây
+                                      </h3>
                                       <span style={{ fontSize: '11px' }}>
-                                          Kích thước tối đa: 50MB <span className={`${gallery.length != 5 ? 'text-red-400' : 'text-blue-400' }`}>{gallery.length}/5</span>
+                                        Hoặc
                                       </span>
-                                      <span style={{ fontSize: '11px' }}>
-                                          JPG, PNG, GIF, SVG
-                                      </span>
+                                      <Button
+                                        onClick={(e)=>{
+                                          e.stopPropagation();
+                                          if(fileInputRef.current){
+                                            fileInputRef.current.click()
+                                          }
+                                        }}
+                                        className='z-[3]'
+                                      >
+                                        Duyệt tập tin
+                                      </Button>
                                   </Flex>
                                 </>
                               )
@@ -326,153 +373,159 @@ function AddProduct() {
                               id="image" 
                               multiple 
                               className='opacity-0 absolute inset-0'
+                              style={{}}
                               onChange={selectGallery}
                               ref={fileInputRef}
                             />
                             <Flex justify='center' align='center' gap={20} wrap className='w-full h-[100%]'>
                               {gallery.map((item, index)=>(
-                                <div className='h-[100px] w-[15%] rounded-lg overflow-hidden' key={index}>
-                                  <div style={{ height: '100%', width: '100%' }} className='relative group' key={index}>
-                                    <img src={item.displayPic} alt="" className='object-cover h-full object-center' style={{width: '100%' }} />
-                                    <div className=" absolute inset-0 z-1 opacity-0 group-hover:opacity-100 duration-1000" style={{ backgroundColor: 'rgb(0, 0, 0, 0.5)' }}></div>
-                                    <div 
-                                      style={{ zIndex: 999, fontSize: "20px", color: 'white' }}
-                                      className=' cursor-pointer'
-                                      onClick={() => handleDeleteGallery(index)}
-                                    >
-                                      <DeleteOutlined className=" duration-1000 opacity-0 group-hover:opacity-100 absolute top-[50%] left-[50%]" style={{transform: 'translate(-50%, -50%)'}}/>
-                                    </div>
+                                <div style={{ height: '7vw', boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} className='border-none rounded-xl relative w-[13%] bg-[#fff]' key={index}>
+                                  <div style={{ height: '100%', maxWidth: '100%',  overflow: 'hidden'}} className='relative group border-none rounded-xl'>
+                                      <img src={item.displayPic} alt="" className='object-cover h-[100%] object-center' style={{width: '100%' }} />
+                                  </div>
+          
+                                  <div 
+                                    className='w-[30px] h-[30px] rounded-full bg-[#fff] absolute top-[-10px] right-[-10px] flex items-center justify-center hover:text-blue-500 cursor-pointer overflow-hidden' 
+                                    style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} 
+                                    onClick={()=>{
+                                      handleDeleteGallery(index)
+                                    }}
+                                  >
+                                    <CloseRoundedIcon style={{fontSize: 20}} />
                                   </div>
                                 </div>
                               ))}
                             </Flex>
                         </Flex>
                     </div>
-                    </Flex>
-                  </Form.Item>
-                  {/* Gallery */}
-                  
-                  {/* General */}
-                  <div className=' p-[2rem] sm:rounded-lg h-full' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
-                    <h2 className='mb-5 font-bold text-[16px]'>General</h2>
-                    <Flex vertical  gap={20}>
-                      <Form.Item
-                        name='name'
-                        label='Name'
-                        className='w-full'
-                        rules={[
-                          { required: true, message: 'Vui lòng nhập tên sản phẩm!' },
-                          { max: 120, message: 'Tên không vượt quá 120 ký tự' },
-                          { min: 10, message: 'Tên không nhập nhỏ hơn 10 ký tự' },
-                          {
-                            whitespace: true,
-                            message: 'Tên sản phẩm không được để trống!'
-                          }
-                        ]}
-                      >
-                        <Input size='large' placeholder='Nhập tên sản phẩm' />
-                      </Form.Item>
-                      <Flex vertical>
-                          <TextEditor/>
-                      </Flex>
-                    </Flex>
-                  </div>
-                  {/* General */}
-
-                   {/* Detail */}
-                   <Flex vertical gap={20} className='sm:rounded-lg p-10' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
-                    <h2 className={`font-bold text-[16px]`}>Thông tin chi tiết sản phẩm</h2>
-                    {details?.details && details?.details.map((item)=>(
-                      <Flex vertical gap={20} className='p-3' key={item.id}>
-                          <h2 className=' font-bold'>{item.name}</h2>
-                          <hr />
-                          <Flex align='center' wrap gap={20}>
-                              {item.attributes.map((attr)=>(
-                                <Flex vertical gap={5} key={attr.id} className='w-[25%]'>
-                                  <h2 className='font-bold'>{attr.name}</h2>
-                                  <Form.Item 
-                                    className='m-0' 
-                                    name={`attr-${attr.id}`} 
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message: 'Trường này không được bỏ trống'
-                                      }
-                                    ]}
-                                  >
-                                    <Select
-                                      className='h-[40px]'
-                                      mode='tags'
-                                      onChange={(e)=>{
-                                        const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
-                                        if(existingAttrIndex > -1){
-                                          const newDetailAttr = detailsAttr.map((item, index) => {
-                                            if (index === existingAttrIndex) {
-                                              return {
-                                                ...item,
-                                                values: e
-                                              };
-                                            }
-                                            return item;
-                                          });
-                                          setDetailsAttr(newDetailAttr)
-                                        }else {
-                                          // Nếu mục không tồn tại, thêm mới vào mảng
-                                          const newDetailAttr = [
-                                            ...detailsAttr,
-                                            {
-                                              id: attr.id,
-                                              idDetail: item.id,
-                                              values: e
-                                            }
-                                          ];
-                                          setDetailsAttr(newDetailAttr);
-                                        }
-
-                                      }}
-                                      style={{ width: '100%' }} 
-                                    />
-                                  </Form.Item> 
-                                </Flex>
-                              ))}
-                          </Flex>
-                      </Flex>
-                    ))}
                   </Flex>
-                  {/* Detail */}
+                </Form.Item>
+                {/* Gallery */}
 
-                  {/* Variant */}
-                  <Flex vertical gap={20} className='sm:rounded-lg p-10' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1rem 1rem 1rem'}}>
-                    <h2 className='font-bold text-[16px]'>Thông tin bán hàng</h2>
+                {/* Detail */}
+                <Flex vertical className='sm:rounded-xl p-10 bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                  <h2 className={`mb-5 font-bold text-[20px]`}>Thông tin chi tiết sản phẩm</h2>
+                  {category && category?.details.map((item)=>(
+                    <Flex vertical gap={20} key={item.id} className='p-5 border-[1px] rounded-xl'>
+                        <h2 className=' font-bold text-[16px]'>{item.name}</h2>
+                        <hr />
+                        <Flex align='center' wrap gap={20}>
+                            {item.attributes.map((attr)=>(
+                              <Flex vertical gap={5} key={attr.id} className='w-[25%]'>
+                                <h2 className='font-bold text-[14 px] text-gray-500'>{attr.name}</h2>
+                                <Form.Item 
+                                  className='m-0' 
+                                  name={`attr-${attr.id}`} 
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: 'Trường này không được bỏ trống'
+                                    }
+                                  ]}
+                                >
+                                  <Select
+                                    mode='tags'
+                                    onChange={(e)=>{
+                                      const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
+                                      if(existingAttrIndex > -1){
+                                        const newDetailAttr = detailsAttr.map((item, index) => {
+                                          if (index === existingAttrIndex) {
+                                            return {
+                                              ...item,
+                                              values: e
+                                            };
+                                          }
+                                          return item;
+                                        });
+                                        setDetailsAttr(newDetailAttr)
+                                      }else {
+                                        // Nếu mục không tồn tại, thêm mới vào mảng
+                                        const newDetailAttr = [
+                                          ...detailsAttr,
+                                          {
+                                            id: attr.id,
+                                            idDetail: item.id,
+                                            values: e
+                                          }
+                                        ];
+                                        setDetailsAttr(newDetailAttr);
+                                      }
+
+                                    }}
+                                    style={{ width: '100%'}} 
+                                  />
+                                </Form.Item> 
+                              </Flex>
+                            ))}
+                        </Flex>
+                    </Flex>
+                  ))}
+                </Flex>
+                {/* Detail */}
+
+                {/* Variant */}
+                <div className='p-10 rounded-xl bg-[#fff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                  <h2 className='font-bold text-[20px] mb-5'>Thông tin bán hàng</h2>
+                  {
+                    category
+                    ?
                     <Flex vertical gap={20}>
-                      {variant.map((name, i) => (
-                          <Variant key={name.id} show={i} keyValue={name.id} detail={variant} setDetail={setVariant} handleRemoveDetail={handleRemoveDetail} form={form}/>
+                      {variant.map((detail, i) => (
+                        <Flex vertical gap={10} key={i}>
+                          <Variant 
+                            key={detail.id} 
+                            show={i} 
+                            keyValue={detail.id} 
+                            detail={variant} 
+                            setDetail={setVariant} 
+                            handleRemoveDetail={handleRemoveDetail} 
+                            form={form} 
+                            variantModel={detail} 
+                            category={category}
+                            setCategory={setCategory}
+                          />
+                        </Flex>
                       ))}
                       {
                         variant.length == 1
                         ?
-                        <>
                           <div>
                             <Button className=' border-dashed' onClick={handleSetDetail}>Thêm biến thể 2</Button>
                           </div>
-                        </>
                         :
                         ''
                       }
                     </Flex>
+                    :
+                    ''
+                  }
+                </div>
 
-                    <Flex vertical gap={20}>
-                      <TableVariant variant={variant} setVariant={setVariant} />
-                    </Flex>
+                <Flex vertical className='bg-[#fff] p-10 rounded-xl' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                  <Flex className='mb-5' align='center' justify='space-between'>
+                    <h2 className='font-bold text-[20px]'>Danh sách phân loại hàng</h2>
+
+                    <Button className='border-dashed'>
+                      Áp dụng dữ liệu
+                    </Button>
                   </Flex>
-                  {/* Variant */}
-
+                  {
+                    category
+                    ?
+                    <TableVariant variant={variant} setVariant={setVariant} />
+                    :
+                    ''
+                  }
                 </Flex>
-              </Col>
-            </Row>
-          </Flex>
-        </Form>
-      </Drawer>
+                {/* Variant */}
+              </Flex>
+            </Col>
+            <Col span={5} className='w-full'>
+              <Option setImageUrl={setImageUrl} discount={{typeDiscount, setTypeDiscount}} setCategory={setCategory}/>
+            </Col>
+          </Row>
+        </Flex>
+      </Form> 
     </>
   )
 }

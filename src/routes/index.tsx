@@ -57,11 +57,16 @@ import ProductDetailPage2 from "@/page/[role]/(base)/ProductDetailPage/ProductDe
 import EditOrder from "@/page/[role]/(manager)/order/_components/edit";
 import CommonLayout from "@/page/[role]/(base)/AccountPage/CommonLayout";
 import DetailOrder from "@/page/[role]/(base)/AccountPage/DetailOrder";
+import ListProduct from "@/page/[role]/(manager)/products/_components/list";
+import LexicalEditor from "@/components/TextEditor/LexicalEditor";
 
 export default function Router() {
   return (
     <>
       <Routes>
+        <Route path="check" element={<LexicalEditor/>}>
+
+        </Route>
         <Route path='/' element={<Layout />}>
           <Route path='' element={<Base />}>
             <Route index element={<PageHome />} />
@@ -124,6 +129,7 @@ export default function Router() {
             <Route path='order/:id' element={<EditOrder />} />
 
             <Route path='products' element={<ProductManagement />}>
+              <Route index element={<ListProduct/>}/>
               <Route path='add' element={<AddProduct />} />
               
             </Route>

@@ -169,14 +169,14 @@ import { IAttribute, IDetail, IProduct, IProductItem } from "@/common/types/prod
               </span>
             </label>
           </div>
-          <div className="grid grid-cols-4 gap-2 mt-3">
+          <div className="flex flex-wrap gap-1 mt-3">
             {variant.attribute.map((item, index) => {
               const isActive = item === variantActives[key][variant.name];
               const sizeOutStock = !findProductVariant()(products, variantActives).quantity
               return (
                 <div
                   key={index}
-                  className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
+                  className={`relative h-10 sm:h-11 rounded-2xl flex items-center justify-center p-2
                   text-sm sm:text-base uppercase font-semibold select-none overflow-hidden border-2 z-0 ${
                     sizeOutStock
                       ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
