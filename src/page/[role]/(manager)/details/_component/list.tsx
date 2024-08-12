@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 import { useDeleteDetailMutation, useGetDetailsQuery } from "./DetailsEndpoints";
 import { IDetail } from "@/common/types/product.interface";
 
-
-
 export default function ListDetail() {
 
   const { data, isLoading } = useGetDetailsQuery({});

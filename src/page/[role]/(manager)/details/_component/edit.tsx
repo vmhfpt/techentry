@@ -1,6 +1,6 @@
 import { IDetail } from "@/common/types/product.interface";
 import { useGetDetailQuery, useUpdateDetailMutation } from "./DetailsEndpoints";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoadingUser from "../../user/util/Loading";

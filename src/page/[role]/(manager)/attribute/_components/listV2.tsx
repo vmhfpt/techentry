@@ -78,7 +78,6 @@ export default function ListAttributeV2() {
       key : key
     }
   })
-
  
   const handleUpdatePopup = (data : IAttribute) => {
     setFormValuesUpdate(data);
@@ -86,7 +85,6 @@ export default function ListAttributeV2() {
   }
 
   const onUpdate = async (values: IAttribute) => {
-
     const payload = {
       ...values,
       id : formValuesUpdate.id,

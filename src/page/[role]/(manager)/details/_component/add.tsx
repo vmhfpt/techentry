@@ -3,7 +3,7 @@ import { useCreateDetailMutation } from "./DetailsEndpoints";
 import { popupError, popupSuccess } from "@/page/[role]/shared/Toast";
 import { useNavigate } from "react-router-dom";
 import ErrorLoad from "../../components/util/ErrorLoad";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Form, Input, Modal, Select } from "antd";
 import { IDetail } from "@/common/types/product.interface";
 import { useGetCategoriesQuery } from "../../category/CategoryEndpoints";
 import { FormInstance } from "antd/lib";
@@ -24,6 +24,7 @@ export default function AddDetail(){
     useEffect(() => {
         setFormInstance(form);
     }, []);
+    
     useEffect(() => {
         if(categories){
             var options = categories?.data.map((item : {id : number, name : string}) => {

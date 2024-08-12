@@ -1,10 +1,6 @@
 import { baseApiConfig } from "@/api/baseApiConfig";
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-// import { createApi } from "@reduxjs/toolkit/query";
-
-
-
 const emptySplitApi = createApi({
   reducerPath: 'detailsApi',
   ...baseApiConfig

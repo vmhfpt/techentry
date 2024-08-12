@@ -13,12 +13,12 @@ interface UpdateAttributeFormProps {
 }
 
 interface UpdateAttributeFormModalProps {
-    loadingUpdate : boolean,
-    open: boolean;
-    onCreate: (values: IAttribute) => void;
-    onCancel: () => void;
-    initialValues: IAttribute;
-  }
+  loadingUpdate : boolean,
+  open: boolean;
+  onCreate: (values: IAttribute) => void;
+  onCancel: () => void;
+  initialValues: IAttribute;
+}
 
 
 
