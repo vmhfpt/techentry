@@ -4,11 +4,11 @@ import { Button, Divider, Form, Input, InputRef, Select, Space, UploadProps } fr
 import { Flex } from 'antd';
 import { FormInstance } from 'antd/es/form';
 import debounce from 'lodash.debounce'; 
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { GetProp } from 'antd/lib';
 import getRandomNumber from '@/utils/randomNumber';
 import axios from 'axios';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 interface Attribute {
@@ -59,13 +59,9 @@ interface ButtonEditProps {
     setCategory: React.Dispatch<React.SetStateAction<any>>;
 }
 
-interface Option{
+interface Variants {
     id: string,
-    name: string,
-    variants: {
-        id: string,
-        name: string
-    }[]
+    name: string
 }
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -74,18 +70,54 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
     const [edit, setEdit] = useState(true);
     const inputRef = useRef<null>(null);
     const [inputField, setInputField] = useState<number>(1);
-    const [options, setOptions] = useState<Option>({})
+    const [options, setOptions] = useState<Variants[]>([])
 
     const [name, setName] = useState('');
+    const [variantOption, setVariantOption] = useState('');
     const inputRefT = useRef<InputRef>(null);
     const inputFileRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
     const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
     };
+    const onVariantOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setVariantOption(event.target.value);
+    };
+
+    const addVariantOptionChange = async (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+        e.preventDefault();
+        
+        const checkOptionSame = options.findIndex((item: Variants, index: number): boolean=>{
+            return item.name == variantOption
+        });
+        
+        if(checkOptionSame >= 0 || variantOption.length > 15 || variantOption.length < 1){
+            return false
+        }
+
+        setOptions([
+            ...options,
+           {
+            id: Date.now() + getRandomNumber() + '',
+            name: variantOption
+           }
+        ]);
+
+        setVariantOption('');
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 0);
+    };
 
     const addItem = async (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
         e.preventDefault();
+        const checkOptionSame = category.variants.findIndex((item: Variants, index: number): boolean=>{
+            return item.name == name
+        });
+        
+        if(checkOptionSame >= 0 || name.length > 15 || name.length <= 0){
+            return false
+        }
         
         setCategory({
             ...category,
@@ -158,15 +190,32 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
         handleChangeParentDebounced(value);
         try{
             const {data} = await axios.post('http://127.0.0.1:8000/api/option', { name: value })
-            setOptions(data.data)
+            setOptions(data.data.variants)
 
         }catch(error){
             console.log(error);
         }
     };
 
-    const handleRemoveOption = (id) => {
+    const handleRemoveOption = (id: string) => {
         if (inputField > 1) {
+            const variants = form.getFieldsValue().variant;
+
+            if(variants){
+                const variantKeys = Object.keys(variants)
+
+                const variantKey = variantKeys.filter((item)=>{
+                    const idVariant = item.split('-')[show];                
+                    return idVariant != id
+                });            
+
+                const resetVariant = variantKey.reduce((acc, key) => {
+                    acc[key] = variants[key];
+                    return acc;
+                }, {} as Record<string, any>);    
+                form.setFieldValue('variant', resetVariant)
+            }
+            
             const newFields = detail.map(field => {
                 if (field.id === keyValue) {
                     return {
@@ -181,7 +230,7 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
         }
     };
 
-    const handleAddFieldDebounced = useCallback(debounce((value, index, id) => {
+    const handleAddFieldDebounced = useCallback(debounce((value, index, id) => {        
         if (index === inputField) {
             const newFields = detail.map(field => {
                 if (field.id === keyValue) {
@@ -208,7 +257,7 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
             });
             setDetail(newFields);
             setInputField(inputField + 1);
-        } else {
+        } else {                        
             const newFields = detail.map(field => {
                 if (field.id === keyValue) {
                     return {
@@ -327,18 +376,32 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
                             style={{ width: '23%' }}
                             placeholder="Chọn hoặc thêm biến thể sản phẩm"
                             className='m-0 h-[40px]'
-                            onChange={handleChangeParent}
+                            onChange={(value)=>{
+                                form.validateFields([`input-${keyValue}`]).then(() => {
+                                    // After validation, get any errors for this field
+                                    const errorMessages = form.getFieldError(`input-${keyValue}`);
+                                    if (errorMessages.length > 0) {
+                                      console.log(errorMessages);
+                                    } else {
+                                      handleChangeParent(value);
+                                    }
+                                  }).catch(err => {
+                                    // Handle form validation errors
+                                    const errorMessages = form.getFieldError(`input-${keyValue}`);
+                                    console.log(errorMessages);
+                                  });
+                            }}
                             dropdownRender={(menu) => (
                                 <>
                                     {menu}
                                     <Divider style={{ margin: '8px 0' }} />
                                     <Space style={{ padding: '0 8px 4px' }}>
                                         <Input
-                                        placeholder="Please enter item"
-                                        ref={inputRefT}
-                                        value={name}
-                                        onChange={onNameChange}
-                                        onKeyDown={(e) => e.stopPropagation()}
+                                            placeholder="Please enter item"
+                                            ref={inputRefT}
+                                            value={name}
+                                            onChange={onNameChange}
+                                            onKeyDown={(e) => e.stopPropagation()}
                                         />
                                         <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
                                             Add item
@@ -356,13 +419,13 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
                 <h3 className='font-bold'>Thuộc tính biến thể</h3>
                 <Flex className='' wrap gap={25}>
                     {variantModel.attribute.map((value, index) => (
-                        <div key={index} className='w-[23%]'>
+                        <div key={value.id} className='w-[23%]'>
                             {
                                 index < 5
                                 ? 
                                 <Form.Item
                                     name={`attr-value-${value.id}`}
-                                    className='m-0 relative w-[100%]'
+                                    className='m-0 relative w-full'
                                     rules={[
                                         {
                                             required: true,
@@ -385,8 +448,16 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
                                             message: 'Không được vượt quá 15 kí tự'
                                         }
                                     ]}
+                                    getValueFromEvent={(event) => {
+                                        // Nếu sự kiện đến từ Input, bỏ qua dữ liệu
+                                        if (event.target.tagName === 'INPUT') {
+                                          return form.getFieldValue(`attr-value-${value.id}`);
+                                        }
+                                        return event;
+                                    }}
                                 >
-                                    <Flex className='relative ' align='center' gap={10}>
+                                   
+                                    <Flex className='relative w-full' align='center' gap={10}>
                                         {
                                             show === 0
                                             ? 
@@ -399,14 +470,12 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
                                                     flex: '0 0 50px' // Giữ chiều rộng cố định cho hình ảnh 
                                                 }} 
                                                 className='border-none rounded-[12px] '
-                                                onClick={()=>{
-                                                    inputFileRefs.current[value.id]?.click();
-                                                }}
                                             >
                                                 {
                                                     value.url
                                                     ? 
-                                                    <div style={{ height: '100%', maxWidth: '100%' }} className='relative group'>
+                                                    <div style={{ height: '100%', maxWidth: '100%' }} className='relative group'
+                                                    >
                                                         <img src={value.url} alt="" className='object-cover h-[100%] object-center' style={{ width: '100%' }} />
                                                         <div className=" absolute inset-0 z-1 opacity-0 group-hover:opacity-100 duration-1000" style={{ backgroundColor: 'rgb(0, 0, 0, 0.5)' }}></div>
                                                         <DeleteOutlined onClick={(e) => {
@@ -414,7 +483,12 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
                                                             handleRemoveImage(value.id)
                                                         }} className=" duration-1000 opacity-0 group-hover:opacity-100 absolute left-[50%] top-[50%]" style={{ transform: 'translate(-50%, -50%)', zIndex: 999, fontSize: "20px", color: 'white' }} />
                                                     </div>
-                                                    : <Flex className='border-dashed border-2 relative hover:bg-gray-100 bg-white hover:border-solid hover:border' vertical gap={10} justify='center' align='center' style={{ width: '100%', height: "100%", borderRadius: '12px' }}>
+                                                    : 
+                                                    <Flex className='border-dashed border-2 relative hover:bg-gray-100 bg-white hover:border-solid hover:border' vertical gap={10} justify='center' align='center' style={{ width: '100%', height: "100%", borderRadius: '12px' }}
+                                                    onClick={()=>{
+                                                        inputFileRefs.current[value.id]?.click();
+                                                    }}
+                                                    >
                                                         <Flex vertical gap={10} style={{ width: '100%' }}>
                                                             <Flex vertical align='center' justify='center'>
                                                                 <CloudUploadOutlined style={{ fontSize: '10px', color: 'gray' }} className='' />
@@ -426,49 +500,52 @@ export default function Variant({ keyValue, detail, show, setDetail, handleRemov
                                             : 
                                             ''
                                         }
-                                    
-                                            {/* <Input placeholder='Nhập' onChange={(e) => handleAddField(e, index + 1, value.id)} className='flex-[3]' /> */}
-                                            <Select
-                                                placeholder="Chọn hoặc thêm"
-                                                className='h-[40px]'
-                                                onChange={(e) => {
-                                                    form.setFieldsValue({
-                                                        [`attr-value-${value.id}`]: e
-                                                    })
-                                                    handleAddField(e, index + 1, value.id)
-                                                }}
-                                                dropdownRender={(menu) => (
-                                                    <>
-                                                        {menu}
-                                                        <Divider style={{ margin: '8px 0' }} />
-                                                        <Space className='w-full'>
-                                                            <Input
-                                                                placeholder="Please enter item"
-                                                                ref={inputRefT}
-                                                                value={name}
-                                                                onChange={onNameChange}
-                                                                onKeyDown={(e) => e.stopPropagation()}
-                                                            />
-                                                            <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
-                                                                Add
-                                                            </Button>
-                                                        </Space>
-                                                    </>
-                                                )}
-                                                options={options.variants && options.variants.map((item) => ({ label: item.name, value: item.name }))}
-                                            />
+
+                                        <Select
+                                            placeholder="Chọn hoặc thêm"
+                                            className='h-[40px]'
+                                            onChange={(e) => {
+                                                form.setFieldValue(`attr-value-${value.id}`, e)
+                                                form.validateFields([`attr-value-${value.id}`])
+                                                handleAddField(e, index + 1, value.id)
+                                            }}
+                                            dropdownRender={(menu) => (
+                                                <>
+                                                    {menu}
+                                                    <Divider style={{ margin: '8px 0' }} />
+                                                    <Space className='w-full'>
+                                                        <Input
+                                                            placeholder="Please enter item"
+                                                            value={variantOption}
+                                                            ref={inputRefT}
+                                                            onChange={(e)=>{
+                                                                onVariantOptionChange(e)
+                                                            }}
+                                                            onKeyDown={(e) => {
+                                                                e.stopPropagation()
+                                                            }}
+                                                        />
+                                                        <Button type="text" icon={<PlusOutlined />} onClick={addVariantOptionChange}>
+                                                            Thêm
+                                                        </Button>
+                                                    </Space>
+                                                </>
+                                            )}
+                                            options={options && options.map((item) => ({ label: item.name, value: item.name }))}
+                                        />
+                                        
+                                            
                                         {
                                             index < inputField - 1
                                             ? 
                                             (
-                                                <DeleteForeverRoundedIcon 
-                                                    className='cursor-pointer absolute right-[5px]' 
-                                                    onClick={(e) => { 
-                                                        e.stopPropagation()
-                                                        handleRemoveOption(value.id)
-                                                    }} 
-                                                    style={{ color: 'red' }} 
-                                                />
+                                                <div className='w-[25px] h-[25px] rounded-full bg-[#fff] absolute top-[-10px] right-[-10px] flex items-center justify-center hover:text-blue-500 cursor-pointer overflow-hidden' style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} onClick={(e)=>{
+                                                    e.stopPropagation()
+                                                    handleRemoveOption(value.id)
+                                                }}>
+                                                    <CloseRoundedIcon style={{fontSize: 15}} />
+                                                    
+                                                </div>
                                             )
                                             : 
                                             ''

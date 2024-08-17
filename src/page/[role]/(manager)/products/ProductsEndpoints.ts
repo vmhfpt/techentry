@@ -21,9 +21,23 @@ export const productsApi = apiWithTag.injectEndpoints({
           ]
         : [{ type: 'Products', id: 'LIST' }],
     }),
+    getProductByCategory: builder.query({
+      query: (slug) => `product/${slug}/category`,
+      providesTags: (result) =>
+      result
+        ? [
+            ...result?.data?.map(({ id } : {id : number | string}) => ({ type: 'Products' as const, id })),
+            { type: 'Products', id: 'LIST' },
+          ]
+        : [{ type: 'Products', id: 'LIST' }],
+    }),
     getProduct: builder.query({
       query: (slug) => `product/${slug}`,
       providesTags: (slug) => [{ type: 'Products', slug }],
+    }),
+    editProduct: builder.query({
+      query: (id) => `product/edit/${id}`,
+      providesTags: (id) => [{ type: 'Products', id }],
     }),
     filterProduct: builder.query({
       query: (feat) => `product/home/${feat}`,
@@ -72,5 +86,7 @@ export const {
   useSearchProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-  useCreateProductMutation
+  useEditProductQuery,
+  useCreateProductMutation,
+  useGetProductByCategoryQuery
 } = productsApi;

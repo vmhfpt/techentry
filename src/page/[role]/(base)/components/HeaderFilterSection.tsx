@@ -28,7 +28,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
           className="sm:space-x-2"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
-          {["All items", "Women", "Mans", "Kids", "jewels"].map(
+          {["Tất cả danh mục", "Diện thoại", "máy tính", "sạc pin"].map(
             (item, index) => (
               <NavItem
                 key={index}
@@ -73,7 +73,7 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
               />
             </svg>
 
-            <span className="block truncate ml-2.5">Filter</span>
+            <span className="block truncate ml-2.5">Bộ lọc</span>
             <span className="absolute top-1/2 -translate-y-1/2 right-5">
               <ChevronDownIcon
                 className={`w-5 h-5 ${isOpen ? "rotate-180" : ""}`}

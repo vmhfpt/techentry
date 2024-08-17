@@ -33,7 +33,7 @@ export default function ListVoucher() {
       },
     },
     {
-      title: 'Code',
+      title: 'Mã giảm giá',
       dataIndex: 'code',
       key: 'code',
       render: (_: any, item: IVoucher) => {
@@ -41,7 +41,7 @@ export default function ListVoucher() {
       },
     },
     {
-      title: 'Tên voucher',
+      title: 'Tên mã giảm giá',
       render: (_: any, item: IVoucher) => {
         return item.name;
       },
@@ -82,7 +82,7 @@ export default function ListVoucher() {
 
 
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Flex wrap="wrap" gap="small">
@@ -101,10 +101,10 @@ export default function ListVoucher() {
   return <>
     <Typography.Title editable level={2} style={{ margin: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        List Voucher <Flex wrap="wrap" gap="small">
+        Danh sách mã giảm giá <Flex wrap="wrap" gap="small">
           {/* <Link to="add"> */}
           <Button type="primary" danger onClick={() => hooks.onShowModalDetail()}>
-            Add Voucher
+            Thêm mã giảm giá
           </Button>
           {/* </Link> */}
         </Flex>

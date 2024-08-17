@@ -217,7 +217,7 @@ const SidebarFilters = () => {
   const renderTabsSortOrder = () => {
     return (
       <div className="relative flex flex-col py-8 space-y-4">
-        <h3 className="font-semibold mb-2.5">Sort order</h3>
+        <h3 className="font-semibold mb-2.5">Sắp Xếp</h3>
         {DATA_sortOrderRadios.map((item) => (
           <Radio
             id={item.id}

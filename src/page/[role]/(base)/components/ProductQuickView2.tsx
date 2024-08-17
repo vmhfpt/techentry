@@ -240,7 +240,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
             onClick={notifyAddTocart}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-            <span className="ml-3">Add to cart</span>
+            <span className="ml-3">Thêm vào giỏ hàngs</span>
           </ButtonPrimary>
         </div>
 

@@ -10,9 +10,11 @@ import { popupError } from "../../shared/Toast";
 import { getTotalPriceCart } from "@/utils/handleCart";
 import { Button, Result } from "antd";
 import { VND } from "@/utils/formatVietNamCurrency";
+import CartEmptyAnimationIcon from "../components/Icon/Cart/CartEmpty";
 
 const CartPage = () => {
   const {data : carts , isLoading} = useGetCartsQuery({});
+
   const [deleteCart] = useDeleteCartMutation();
 
   const iconVariants = [
@@ -184,8 +186,11 @@ const CartPage = () => {
                 <NcInputNumber className="relative z-10" defaultValue={quantity} item={product}/>
               </div>
 
-              <div className="hidden flex-1 sm:flex justify-end">
-                <Prices price={parseFloat(price_sale)} className="mt-0.5" />
+              <div className="hidden flex-1 sm:flex  flex-col items-end gap-1">
+                <div className="flex flex-col gap-1">
+                <Prices price={parseFloat(price)} classChildren="text-[12px] line-through text-gray-400" />
+                <Prices price={parseFloat(price_sale)} className="mt-0.5" classChildren="text-[18px] text-red-400"/>
+                </div>
               </div>
             </div>
           </div>
@@ -210,41 +215,42 @@ const CartPage = () => {
   return (
     <div className="nc-CartPage">
       <Helmet>
-        <title>Shopping Cart || Ciseco Ecommerce Template</title>
+        <title>Giỏ hàng</title>
       </Helmet>
 
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-12 sm:mb-16">
           <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold ">
-            Shopping Cart
+            Giỏ hàng
           </h2>
           <div className="block mt-3 sm:mt-5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400">
             <Link to={"/#"} className="">
-              Homepage
+              Trang chủ
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
             <Link to={"/#"} className="">
-              Clothing Categories
+              Danh mục
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <span className="underline">Shopping Cart</span>
+            <span className="underline">Giỏ hàng</span>
           </div>
         </div>
 
         <hr className="border-slate-200 dark:border-slate-700 my-10 xl:my-12" />
         {!isLoading &&  !carts?.data.length &&   
         <Result
-          title="Cart is empty"
+          icon={<CartEmptyAnimationIcon width="200px" height="200px" />}
+          title="Giỏ hàng trống"
           extra={
-            <Link to="/"><Button type="primary" key="console">
-              Go back home
+            <Link to="/"><Button type="primary" key="console" className=" bg-black !rounded-[20px]">
+              Quay về trang chủ
             </Button> </Link>
           }
         />
       }
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[60%] xl:w-[55%] divide-y divide-slate-200 dark:divide-slate-700 ">
-            {isLoading ? <h1> Loading</h1> : carts?.data?.map(renderProduct)}
+            {isLoading ? <h1> Đang tải</h1> : carts?.data?.map(renderProduct)}
           </div>
 
           {!isLoading &&  Boolean(carts?.data.length)  && <><div className="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:mx-16 2xl:mx-20 flex-shrink-0"></div>
@@ -253,7 +259,7 @@ const CartPage = () => {
               <h3 className="text-lg font-semibold ">Order Summary</h3>
               <div className="mt-7 text-sm text-slate-500 dark:text-slate-400 divide-y divide-slate-200/70 dark:divide-slate-700/80">
                 <div className="flex justify-between pb-4">
-                  <span>Subtotal</span>
+                  <span>Subtoal</span>
                   <span className="font-semibold text-slate-900 dark:text-slate-200">
                     {carts && VND(getTotalPriceCart(carts.data))}
                   </span>
@@ -276,7 +282,7 @@ const CartPage = () => {
                 </div>
               </div>
               <ButtonPrimary href="/checkout" className="mt-8 w-full">
-                Checkout
+                Thanh toán
               </ButtonPrimary>
               <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">
                 <p className="block relative pl-5">

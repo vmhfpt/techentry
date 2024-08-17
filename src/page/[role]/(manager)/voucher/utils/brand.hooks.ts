@@ -24,10 +24,6 @@ export default function useVoucher() {
     const [visibleModalVoucherDetail, setVisibleModalVoucherDetail] = useState<boolean>(false);
  
 
-
-  
-
-
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -137,7 +133,7 @@ export default function useVoucher() {
                     form.resetFields();
                     onCancelModalDetail();
                 } catch (error) {
-                             showAlertError('Sửa thất bại');
+                    showAlertError('Sửa thất bại');
                     onCancelModalDetail
                     setLoading(false);
                     return;

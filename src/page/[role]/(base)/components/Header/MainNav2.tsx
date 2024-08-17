@@ -20,13 +20,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
   const dispatch = useAppDispatch();
   const [carts, setCarts] = useState([]);
 
-  useEffect(()=>{
-    (async ()=>{
-      const access_token = localStorage.getItem('access_token') || '';
-      const carts =  await dispatch(GetAllCart(access_token))
-      setCarts(carts.data);
-    })()
-  },[dispatch]);
+  
 
   const navigate = useNavigate();
 

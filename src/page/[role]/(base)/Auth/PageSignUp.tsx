@@ -50,22 +50,27 @@ const loginSocials = [
 ];
 
 
+
 const validationSchema = Joi.object({
   username: Joi.string().min(6).required().messages({
-    'string.min': 'Username must be at least 6 characters',
-    'any.required': 'Username is required',
+    'string.min': 'Tên người dùng phải có ít nhất 6 ký tự',
+    'any.required': 'Tên người dùng là bắt buộc',
+     'string.empty': 'Tên người dùng không được để trống'
   }),
   email: Joi.string().email({ tlds: { allow: false } }).required().messages({
-    'string.email': 'Invalid email address',
-    'any.required': 'Email is required',
+    'string.email': 'Địa chỉ email không hợp lệ',
+    'any.required': 'Địa chỉ email là bắt buộc',
+     'string.empty': 'Email không được để trống'
   }),
   password: Joi.string().min(6).required().messages({
-    'string.min': 'Password must be at least 6 characters',
-    'any.required': 'Password is required',
+    'string.min': 'Mật khẩu phải có ít nhất 6 ký tự',
+    'any.required': 'Mật khẩu là bắt buộc',
+    'string.empty': 'Mật khẩu không được để trống'
   }),
   confirmPassword: Joi.any().equal(Joi.ref('password')).required().messages({
-    'any.only': 'Passwords do not match',
-    'any.required': 'Confirm password is required',
+    'any.only': 'Xác nhận mật khẩu không khớp',
+    'any.required': 'Xác nhận mật khẩu là bắt buộc',
+    'string.empty': 'Xác nhận mật khẩu không được để trống',
   }),
 });
 
@@ -177,19 +182,19 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
         <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
         <label className="block">
             <span className="text-neutral-800 dark:text-neutral-200">
-              Username
+              Tên người dùng
             </span>
             <Input
             {...register('username')}
               type="text"
-              placeholder="Enter your username"
+              placeholder="Nhập tên người dùng của bạn"
               className="mt-1"
             />
-            {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+           {errors.username && <p className="text-red-500">{errors.username.message}</p>}
           </label>
           <label className="block">
             <span className="text-neutral-800 dark:text-neutral-200">
-              Email address
+              Địa chỉ email
             </span>
             <Input
             {...register('email')}
@@ -201,7 +206,7 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
           </label>
           <label className="block">
             <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-              Password
+              Mật khẩu
             </span>
             <Input {...register('password')} type="password" placeholder="*******" className="mt-1" />
             {errors.password && <p className="text-red-500">{errors.password.message}</p>}
@@ -209,12 +214,12 @@ const PageSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
 
           <label className="block">
             <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
-              Confirm Password
+              Xác nhận mật khẩu
             </span>
             <Input {...register('confirmPassword')}  type="password" placeholder="*******" className="mt-1" />
             {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
           </label>
-          <ButtonPrimary loading={isLoadingSignUp} disabled={isLoadingSignUp} type="submit">Sign Up</ButtonPrimary>
+          <ButtonPrimary loading={isLoadingSignUp} disabled={isLoadingSignUp} type="submit">Đăng kí</ButtonPrimary>
         </form>
 
       

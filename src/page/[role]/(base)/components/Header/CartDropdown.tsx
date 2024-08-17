@@ -9,8 +9,14 @@ import { ICart } from "@/common/types/cart.interface";
 import { getTotalIconCart , getTotalPriceCart, deleteCart} from "@/utils/handleCart";
 import { VND } from "@/utils/formatVietNamCurrency";
 import { useDeleteCartMutation, useGetCartsQuery } from "@/services/CartEndPoinst";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { setOpenModalLogin } from "@/app/webSlice";
+import { useAppDispatch } from "@/app/hooks";
 export default function CartDropdown() {
-  const {data: carts} = useGetCartsQuery({});
+  const dispatch = useAppDispatch();
+  const [user] = useLocalStorage('user', undefined);
+const {data: carts} =  useGetCartsQuery(undefined, {skip: !user}) 
+ 
   const [deleteCart] = useDeleteCartMutation();
   const renderProduct = (item: ICart, index: number, close: () => void) => {
 
@@ -75,7 +81,7 @@ export default function CartDropdown() {
                  group w-10 h-10 sm:w-12 sm:h-12 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full inline-flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative`}
           >
             <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
-              <span className="mt-[1px]">{carts && getTotalIconCart(carts?.data)}</span>
+              <span className="mt-[1px]">{carts ? getTotalIconCart(carts?.data) : 0}</span>
             </div>
             <svg
               className="w-6 h-6"
@@ -132,43 +138,64 @@ export default function CartDropdown() {
               <div className="overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">
                 <div className="relative bg-white dark:bg-neutral-800">
                   <div className="max-h-[60vh] p-5 overflow-y-auto hiddenScrollbar">
-                    <h3 className="text-xl font-semibold">Shopping cart</h3>
+                    <h3 className="text-xl font-semibold">Giỏ hàng</h3>
                     <div className="divide-y divide-slate-100 dark:divide-slate-700">
                       {carts?.data?.map(
                         (item : any, index : any) => renderProduct(item , index, close)
                       )}
                     </div>
                   </div>
+                  
+
+
                   <div className="bg-neutral-50 dark:bg-slate-900 p-5">
-                    <p className="flex justify-between font-semibold text-slate-900 dark:text-slate-100">
+                    {user ? <><p className="flex justify-between font-semibold text-slate-900 dark:text-slate-100">
+                      {Boolean(carts?.data?.length) ?  
+                      <>
+                      
                       <span>
-                        <span>Subtotal</span>
+                        <span>Tổng phụ</span>
                         <span className="block text-sm text-slate-500 dark:text-slate-400 font-normal">
-                          Shipping and taxes calculated at checkout.
+                        Vận chuyển và thuế được tính khi thanh toán.
                         </span>
                       </span>
-                      <span className="">{carts && VND(getTotalPriceCart(carts?.data))}</span>
+                      <span className="">{carts && VND(getTotalPriceCart(carts?.data)) } </span>
+                      </> : <span>Cart is empty</span>}
+                     
+            
                     </p>
-                    <div className="flex space-x-2 mt-5">
+                    {Boolean(carts?.data?.length) &&      <div className="flex space-x-2 mt-5">
                       <ButtonSecondary
                         href="/cart"
                         className="flex-1 border border-slate-200 dark:border-slate-700"
                         onClick={close}
                       >
-                        View cart
+                        Xem giỏ hàng
                       </ButtonSecondary>
                       <ButtonPrimary
                         href="/checkout"
                         onClick={close}
                         className="flex-1"
                       >
-                        Check out
+                        Thanh toán
                       </ButtonPrimary>
-                    </div>
+                    </div> }
+
+               
+                    
+                    </> :  <span onClick={() => dispatch(setOpenModalLogin(true))}> Vui lòng đăng nhập để mua hàng</span> }
+                  
                   </div>
+
+
+
+
                 </div>
               </div>
             </Popover.Panel>
+
+
+            
           </Transition>
         </>
       )}

@@ -90,7 +90,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
           <div className="glide__track relative" data-glide-el="track">
             <ul className="glide__slides">
               {
-                !dataItem && !dataItem?.data
+                !dataItem && !dataItem?.data || dataItem?.data.length < 1
                 ?
                 <>
                   {[1,2,3].map((item) => (

@@ -10,14 +10,11 @@ import PermMediaRoundedIcon from '@mui/icons-material/PermMediaRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 interface option{
     setImageUrl: React.Dispatch<React.SetStateAction<any>>
-    discount: {
-        typeDiscount: string;
-        setTypeDiscount: React.Dispatch<React.SetStateAction<string>>
-    };
     setCategory: React.Dispatch<React.SetStateAction<any>>
+    thumbnail?: string
 }
 
-export default function Option({setImageUrl, discount, setCategory}: option) {
+export default function Option({setImageUrl, setCategory, thumbnail}: option) {
     const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
     const {data : dataBrands, isLoading : isLoadingBrand} = useGetBrandsQuery({});
     const [DisplayPic, setDisplayPic] = useState<string>();
@@ -49,12 +46,11 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
         ]
 
         const fileSelected = e.target.files[0];    
-
         const size = fileSelected.size;
         const type = types.includes(fileSelected.type.replace('image/', ''));
 
         if (size <= 1048576 && type) {
-            setImageUrl(fileSelected);
+            setImageUrl(fileSelected);            
             setDisplayPic(URL.createObjectURL(fileSelected));
         }
 
@@ -82,10 +78,10 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                     <h2 className='font-bold text-[20px]'>Ảnh đại diện</h2>
                     <div style={{ height: '10.5vw', boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} className='border-none rounded-xl relative ' >
                         {
-                        DisplayPic
+                        DisplayPic ?? thumbnail
                         ?
                         <div style={{ height: '100%', maxWidth: '100%',  overflow: 'hidden'}} className='relative group border-none rounded-xl'>
-                            <img src={DisplayPic} alt="" className='object-cover h-[100%] object-center' style={{width: '100%' }} />
+                            <img src={DisplayPic ?? thumbnail} alt="" className='object-cover h-[100%] object-center' style={{width: '100%' }} />
                         </div>
                         :
                         <Flex className='relative rounded-xl' vertical gap={10} justify='center' align='center' style={{ maxWidth: '100%', height: "100%", borderRadius: '12px', overflow: 'hidden' }}>
@@ -128,27 +124,28 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                     <h2 className='font-bold'>Danh mục</h2>
                 </div>
                 <Flex justify='center' align='' vertical className='p-2' gap={10} >
-                <Form.Item 
-                    className='m-0' 
-                    name='category_id' 
-                    rules={
-                    [
-                        {
-                        required: true,
-                        message: 'Vui lòng chọn danh mục'
+                    <Form.Item 
+                        className='m-0' 
+                        name='category_id' 
+                        rules={
+                        [
+                            {
+                            required: true,
+                            message: 'Vui lòng chọn danh mục'
+                            }
+                        ]
                         }
-                    ]
-                    }
-                >
-                    <Select
-                        loading={isLoadingCategory}
-                        className='h-[40px] relative'
-                        options={categories}
-                        onChange={getDetails}
-                    />
-                </Form.Item>
-                <Flex align='center' justify='center' className='w-[30px] h-[30px] text-white cursor-pointer rounded-[9999px] absolute top-[-10px] right-[-9px] bg-blue-500'>
-                    <PlusOutlined />
+                    >
+                        <Select
+                            placeholder={'Chọn danh mục'}
+                            loading={isLoadingCategory}
+                            className='h-[40px] relative'
+                            options={categories}
+                            onChange={getDetails}
+                        />
+                    </Form.Item>
+                    <Flex align='center' justify='center' className='w-[30px] h-[30px] cursor-pointer rounded-[9999px] absolute top-[-10px] right-[-9px] bg-[#fff]' style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}}>
+                        <PlusOutlined />
                     </Flex>
                 </Flex>
             </div>
@@ -160,26 +157,27 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                     <h2 className='font-bold'>Thương hiệu</h2>
                 </div>
                 <Flex justify='center' align='' vertical className='p-2' gap={10} >
-                <Form.Item 
-                    className='m-0' 
-                    name='brand_id' 
-                    rules={
-                    [
-                        {
-                        required: true,
-                        message: 'Vui lòng chọn thượng hiệu'
+                    <Form.Item 
+                        className='m-0' 
+                        name='brand_id' 
+                        rules={
+                        [
+                            {
+                            required: true,
+                            message: 'Vui lòng chọn thượng hiệu'
+                            }
+                        ]
                         }
-                    ]
-                    }
-                >
-                    <Select
-                     loading={isLoadingBrand}
-                    className='h-[40px] relative'
-                    options={brands}
-                    />
-                </Form.Item>
-                <Flex align='center' justify='center' className='w-[30px] h-[30px] text-white cursor-pointer rounded-[9999px] absolute top-[-10px] right-[-9px] bg-blue-500'>
-                    <PlusOutlined />
+                    >
+                        <Select
+                        placeholder={'Chọn thương hiệu'}
+                        loading={isLoadingBrand}
+                        className='h-[40px] relative'
+                        options={brands}
+                        />
+                    </Form.Item>
+                    <Flex align='center' justify='center' className='w-[30px] h-[30px] cursor-pointer rounded-[9999px] absolute top-[-10px] right-[-9px] bg-[#fff]' style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}}>
+                        <PlusOutlined />
                     </Flex>
                 </Flex>
             </div>
@@ -188,7 +186,7 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
              {/* Tags */}
              <div className='sm:rounded-lg flex-1 p-2 relative bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div className='p-2'>
-                    <h2 className='font-bold'>Tags</h2>
+                    <h2 className='font-bold'>Từ khóa</h2>
                 </div>
                 <Flex justify='center' align='' vertical className='p-2' gap={10} >
                 <Form.Item 
@@ -196,10 +194,10 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                     name='tags' 
                 >
                     <Select 
+                    className='custom-seclect'
+                    placeholder={'Chọn từ khóa'}
                     mode='tags'
-                    className='h-[40px]'
                     style={{ width: '100%' }}  
-                    
                     />
                 </Form.Item>  
                 </Flex>
@@ -209,12 +207,12 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
             {/* Setting */}
             <div className='sm:rounded-lg overflow-hidden flex-1 p-2 bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div className='p-2'>
-                <h2 className='font-bold'>Setting</h2>
+                <h2 className='font-bold'>cài đặt</h2>
                 </div>
                 <hr />
                 <div className='flex justify-between items-center p-2'>
 
-                <h2>Is Active</h2>
+                <h2>Kích hoạt</h2>
                 <Form.Item 
                     className='m-0' 
                     label=''
@@ -226,7 +224,7 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                 </div>
                 <div className='flex justify-between items-center p-2'>
 
-                <h2>Is Hot Deal</h2>
+                <h2>Ưu đãi hấp dẫn</h2>
                 <Form.Item 
                     className='m-0' 
                     label=''
@@ -238,7 +236,7 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                 </div>
                 <div className='flex justify-between items-center p-2'>
 
-                <h2>Is Good Deal</h2>
+                <h2>Khuyến mãi hấp dẫn</h2>
                 <Form.Item 
                     className='m-0' 
                     label=''
@@ -250,7 +248,7 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                 </div>
                 <div className='flex justify-between items-center p-2'>
 
-                <h2>Is New</h2>
+                <h2>sản phẩm mới</h2>
                 <Form.Item 
                     className='m-0' 
                     label=''
@@ -262,7 +260,7 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                 </div>
                 <div className='flex justify-between items-center p-2'>
 
-                <h2>Is Show Home</h2>
+                <h2>sản phẩm nổi bật</h2>
                 <Form.Item 
                     className='m-0' 
                     label=''
@@ -274,92 +272,6 @@ export default function Option({setImageUrl, discount, setCategory}: option) {
                 </div>
             </div>
             {/* Setting */}
-
-            {/* Discount */}
-            <div className='sm:rounded-lg flex-1 p-2 relative bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
-                <div className='p-2'>
-                    <h2 className='font-bold'>Discount</h2>
-                </div>
-                <Flex justify='center' align='' vertical className='p-2' gap={10} >
-                <Form.Item 
-                    className='m-0 w-full' 
-                    name='discount' 
-                >
-                    <Segmented
-                    className='w-full flex justify-center items-center'
-                    options={[
-                        { label: 'none', value: '' },
-                        { label: '%', value: 'percent' },
-                        { label: 'Cố định', value: 'fixed'},
-                    ]}
-                    block
-                    onChange={(e)=>{
-                        discount.setTypeDiscount(e);
-                    }
-                    }
-                    />
-                </Form.Item>  
-                {
-                    discount.typeDiscount == 'percent'
-                    ?
-                    <>
-                    <Form.Item
-                        name={'percent'}
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Chọn mức giá'
-                        }
-                        ]}
-                    >
-                        <Slider
-                        tooltip={{ formatter }} 
-                        />
-                    </Form.Item>
-                    </>
-                    :
-                    discount.typeDiscount == "fixed"
-                    ?
-                    <>
-                    <Form.Item
-                        name={'fixed'}
-                        rules={[
-                        {
-                            required: true,
-                            message: 'Chọn mức giá'
-                        },
-                        {
-                            validator: (_, value)=>{
-                            if(value == 0){
-                                return Promise.reject('Phần trăm phải lớn hơn 0')
-                            }
-                            }
-                        }
-                        ]}
-                    >
-                        <InputNumber<number>
-                        defaultValue={0}
-                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value?.replace(/\$\s?|(,*)/g, '') as unknown as number}
-                        className='w-full'
-                        />
-                    </Form.Item>
-                    </>
-                    :
-                    ''
-                }
-                </Flex>
-            </div>
-            {/* Discount */}
-
-            <Flex gap={10} justify='flex-end'>
-                <Button className=' border-dashed'>
-                    reset
-                </Button>
-                <Button htmlType='submit'>
-                    Thêm sản phẩm
-                </Button>
-            </Flex>
         </Flex>
     )
 }

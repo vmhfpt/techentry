@@ -46,7 +46,7 @@ export default function AddBanner() {
   return (
     <>
       <Modal
-        title='Add Banner'
+        title='Thêm Banner'
         confirmLoading={isLoadingCreateBanner}
         open={true}
         okText='Đồng ý'
@@ -57,7 +57,7 @@ export default function AddBanner() {
         <Form form={form} name='nest-messages' layout='vertical' style={{ maxWidth: 600 }}>
           <Form.Item
             name='title'
-            label='Title Banner'
+            label='Tiêu đề banner'
             className='w-full'
             rules={[
               { required: true, message: 'Vui lòng nhập tiêu đề banner!' },
@@ -73,7 +73,7 @@ export default function AddBanner() {
 
           <Form.Item
             name='img'
-            label='Img Banner'
+            label='ảnh Banner'
             className='w-full'
             rules={[{ required: true, message: 'Vui lòng chọn Ảnh banner!' }]}
           >
@@ -97,7 +97,7 @@ export default function AddBanner() {
             <Input size='large' placeholder='Nhập url banner' className='w-full' />
           </Form.Item>
 
-          <Form.Item className='m-0' label='Active' name='status' valuePropName='checked'>
+          <Form.Item className='m-0' label='kích hoạt' name='status' valuePropName='checked'>
             <Switch />
           </Form.Item>
         </Form>

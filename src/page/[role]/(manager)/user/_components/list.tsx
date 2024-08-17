@@ -43,7 +43,7 @@ export default function ListUser(){
     
     const columns: TableProps<Iuser>['columns'] = [
         {
-          title: 'Username',
+          title: 'Tên người dùng',
           dataIndex: 'username',
           key: 'username',
           showSorterTooltip: { target: 'full-header' },
@@ -63,7 +63,7 @@ export default function ListUser(){
             ),
         },
         {
-          title: 'Email',
+          title: 'Ảnh',
           dataIndex: 'email',
           key: 'email',
           ...getColumnSearchProps(
@@ -84,7 +84,7 @@ export default function ListUser(){
           render: (image) => <img src={image} alt="" width={110} />
         },
         {
-          title: 'Role',
+          title: 'Vai trò',
           key: 'role_id',
           dataIndex: 'role_id',
           render: (_, { role_id  }) => (
@@ -108,20 +108,20 @@ export default function ListUser(){
           filterSearch: true,
         },
         {
-          title: 'Active',
+          title: 'Trạng thái',
           key: 'is_active',
           dataIndex: 'is_active',
           render: (_, { is_active }) => (
             <>
                   <Tag color={is_active == 1 ? 'green' : 'red'} >
-                      {is_active == 1 ? 'Active' : 'InActive'}
+                      {is_active == 1 ? 'Đang hoạt động' : 'Không hoạt động'}
                   </Tag>
             </>
           )
         
         },
         {
-          title: 'Action',
+          title: 'Hành động ',
           key: 'action',
           render: (data: Iuser) => (
             <Flex wrap="wrap" gap="small">
@@ -151,13 +151,13 @@ export default function ListUser(){
    
     <HandleLoading isLoading={isLoading} isError={isError}>
           <Typography.Title editable level={2} style={{ margin: 0 }}>
-                List users
+                Danh sách người dùng
             </Typography.Title>
             <Table columns={columns} dataSource={dataItem} />
 
             <Flex wrap="wrap" gap="small">
           <Link to="add">    <Button type="primary" danger>
-            Add user
+            Thêm người dùng
           </Button> </Link>
           
 

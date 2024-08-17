@@ -22,10 +22,10 @@ const layout = {
 }
 
 const validateMessages = {
-  required: '${label} is required!',
+  required: '${label} là bắt buộc!',
   types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!'
+    email: '${label} không phải là 1 email hợp lệ!',
+    number: '${label} không phải là 1 số hợp lệ!'
   },
   number: {
     range: '${label} must be between ${min} and ${max}'
@@ -71,7 +71,6 @@ export default function AddUser() {
        formData.append(key,values[key])
        
     }
-    formData.append('is_virtual','0');
     try {
       await createUser(formData).unwrap();
       popupSuccess('Add user success');
@@ -165,12 +164,8 @@ export default function AddUser() {
             <Input type='text' placeholder='Enter phone number' />
           </Form.Item>
 
-          <Form.Item name='address_line1' label='Address1' rules={[{ required: true }]}>
+          <Form.Item name='address' label='Address' rules={[{ required: true }]}>
             <Input type='text' placeholder='Enter your address ' />
-          </Form.Item>
-
-          <Form.Item name='address_line2' label='Address2' rules={[{ required: true }]}>
-            <Input type='text' placeholder='Enter your address temporate' />
           </Form.Item>
 
           <Form.Item name='county' label='County' rules={[{ required: true }]}>

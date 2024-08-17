@@ -1,6 +1,7 @@
 import { Button, Col, Flex, Form, Grid, Input, InputNumber, Row } from 'antd'
 import React, { Dispatch, SetStateAction } from 'react'
 import { CloudUploadOutlined, DeleteOutlined  } from '@ant-design/icons';
+import { FormInstance } from 'antd/es/form';
 
 interface attribute{
     id: string,
@@ -17,10 +18,10 @@ interface variant{
 interface TableVariantProps {
     variant: Array<variant>;
     setVariant: Dispatch<SetStateAction<variant[]>>;
-
+    form: FormInstance
 }
 
-const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, }) => {
+const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, form }) => {
     
     const selectedImgVariant = (e, id: string) => {
     
@@ -85,38 +86,38 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, }) => {
                 name={'variant'}
             >
                 {() => (
-                <div className="relative overflow-x-auto border-[1px] sm:rounded-lg">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <div className="relative overflow-x-auto sm:rounded-xl" style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                    <table className="w-full h-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-black uppercase bg-[#f6f6f6] dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 {
                                 variant.map((item, key)=>(
-                                    <th scope="col" className="px-5 py-5 text-center " key={key}>
+                                    <th scope="col" className="p-6 text-center " key={key}>
                                         {item.name ? item.name : `Phân loại ${key+1}`}
                                     </th>
                                 ))
                                 }
-                                <th scope="col" className="px-5 py-5">
-                                    Quantity
+                                <th scope="col" className="p-6">
+                                    Số lượng
                                 </th>
-                                <th scope="col" className="px-5 py-5">
-                                    Price
+                                <th scope="col" className="p-6">
+                                    Giá
                                 </th>
-                                <th scope="col" className="px-5 py-5">
-                                    Price sale
+                                <th scope="col" className="p-6">
+                                    Giá sale
                                 </th>
-                                <th scope="col" className="px-5 py-5">
+                                <th scope="col" className="p-6">
                                     SKU
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className=''>
                         {
                             variant[0].attribute.map((parent, index)=>(                        
                             index == 0 || index < variant[0].attribute.length - 1
                             ?
                             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-[#f6f6f6] dark:hover:bg-gray-600" key={index}>
-                                <th scope="row" className="px-5 py-5 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center min-w-[120px]">
+                                <th scope="row" className="p-6 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center min-w-[120px]">
                                     <Flex vertical align='center' justify='center' gap={10} >
                                         {parent.value}
                                         {
@@ -153,39 +154,27 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, }) => {
                                 variant.length < 2
                                 ?
                                 <>
-                                    <td className="px-5 py-5 ">
+                                    <td className="p-5">
                                         <Form.Item
                                             name={[parent.id, 'quantity']}
-                                            className='m-0' 
+                                            className='my-6' 
                                             rules={[
                                                 { required: true, message: 'Nhập số lượng' },
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        
-                                                    if (typeof value == 'number') {
-                                                        
-                                                        return Promise.resolve();
-
-                                                    }
-                                                    return Promise.reject(new Error('Giá khuyến mãi phải nhỏ hơn giá bán'));
-                                                    },
-                                                }),
                                             ]}
-                                            help=''
                                         >
                                             <InputNumber 
                                             placeholder='Nhập số lượng'
-                                            className=' border-gray-300 w-full' min={0}/>
+                                            className=' border-gray-300 w-full' min={0}
+                                            />
                                         </Form.Item>
                                     </td>
-                                    <td className="px-5 py-5">
+                                    <td className="p-5">
                                         <Form.Item
                                             name={[parent.id, 'price']}
-                                            className='m-0' 
+                                            className='my-6' 
                                             rules={[
                                                 { required: true, message: 'Nhập số tiền!' },
                                             ]}
-                                            help=''
                                         >
                                             <InputNumber 
                                             placeholder='Nhập giá tiền'
@@ -193,10 +182,10 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, }) => {
                                             className=' border-gray-300 w-full' min={0}/>
                                         </Form.Item>
                                     </td>
-                                    <td className="px-5 py-5">
+                                    <td className="p-5">
                                         <Form.Item
                                             name={[parent.id, 'price_sale']}
-                                            className='m-0'
+                                            className='my-6' 
                                             dependencies={[`${parent.id}.price`]}
                                             rules={[
                                                 { required: true, message: 'Nhập giá sale!' },
@@ -207,11 +196,10 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, }) => {
                                                         
                                                         return Promise.resolve();
                                                     }
-                                                    return Promise.reject(new Error('Giá khuyến mãi phải nhỏ hơn giá bán'));
+                                                    return Promise.reject(new Error('Phải nhỏ hơn giá bán'));
                                                     },
                                                 }),
                                             ]}
-                                            help=''
                                         >
                                             <InputNumber 
                                             placeholder='Nhập giá sale'
@@ -221,135 +209,161 @@ const TableVariant: React.FC<TableVariantProps> = ({variant, setVariant, }) => {
                                             />
                                         </Form.Item>
                                     </td>
-                                    <td className="px-5 py-5">
+                                    <td className="p-5">
                                         <Form.Item
                                             name={[parent.id, 'sku']}
-                                            className='m-0' 
-                                            help=''
+                                            className='my-6' 
                                         >
-                                            <Input  placeholder='Nhập SKU' />
+                                            <Input  
+                                            onChange={(e)=>{
+                                                const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').toUpperCase();
+                                                const input = form.getFieldValue('variant');
+                                                input[parent.id].sku = value
+                                                
+                                                form.setFieldValue('variant', input)
+                                            }}  
+                                            placeholder='Nhập SKU' 
+                                            />
                                         </Form.Item>
                                     </td>
                                 </>
                                 :
                                 <>
-                                <th className="px-5 py-5 text-center min-w-[120px]">
-                                    {variant[1].attribute.map((item, key)=>(
-                                        key ==  0 || key < variant[1].attribute.length - 1
-                                        ?
-                                        <Flex justify='center' align='center' className="py-5 min-h-[82px]" key={key}>
-                                            {item.value}
-                                        </Flex>
-                                        :
-                                        ''
-                                    ))}
+                                <th className="p-5 min-w-[120px]">
+                                    <Flex vertical className="p-0" style={{width: '100%', height: '100%'}}>
+
+                                        {variant[1].attribute.map((item, key)=>(
+                                            key ==  0 || key < variant[1].attribute.length - 1
+                                            ?
+                                               <Flex flex={1} align='center' justify='center' key={key}>
+                                                    {item.value}
+                                               </Flex>
+                                            :
+                                            ''
+                                        ))}
+                                    </Flex>
+
                                 </th>
-                                <td className="px-5 py-5">
-                                    {
-                                    variant[1].attribute.map((item, key)=>(
-                                    key ==  0 || key < variant[1].attribute.length - 1
-                                    ?
-                                    <Flex align='center' justify='center' className="block py-5 min-h-[82px]" key={key}>
-                                        <Form.Item
-                                            name={[parent.id + '-' + item.id, 'quantity']}
-                                            className='m-0'
-                                            rules={[
-                                                { required: true, message: 'Nhập số lượng' },
-                                            ]}
-                                            help=''
-                                            >
-                                            <InputNumber 
-                                                placeholder='Nhập giá số lượng'
-                                                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                className='border-gray-300 w-full'
-                                                min={0}
-                                            />
-                                        </Form.Item>
-                                    </Flex>
-                                    :
-                                    ''
-                                    ))}
-                                </td>
-                                <td className="px-5 py-5">
-                                {variant[1].attribute.map((item, key)=>(
-                                    key ==  0 || key < variant[1].attribute.length - 1
-                                    ?
-                                    <Flex align='center' justify='center' className="block py-5 min-h-[82px]" key={key}>
-                                        <Form.Item
-                                            name={[parent.id + '-' + item.id, 'price']}
-                                            className='m-0' 
-                                            rules={[
-                                            { required: true, message: 'Nhập giá sản phẩm'},
-                                            
-                                            ]}
-                                            help=''
-                                        >
-                                            <InputNumber 
-                                                placeholder='Nhập giá số lượng'
-                                                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                className='border-gray-300 w-full'
-                                                min={0}
-                                            />
-                                        </Form.Item>
-                                    </Flex>
-                                    :
-                                    ''
-                                    ))}
-                                </td>
-                                <td className="px-5 py-5">
-                                {
-                                variant[1].attribute.map((item, key)=>(
-                                    key ==  0 || key < variant[1].attribute.length - 1
-                                    ?
-                                    <Flex align='center' justify='center' className="block py-5 min-h-[82px]" key={key}>
-                                        <Form.Item
-                                            name={[parent.id + '-' + item.id, 'price_sale']}
-                                            className='m-0' 
-                                            rules={[
-                                            { required: true, message: 'Nhập giá sale' },
-                                            ({ getFieldValue }) => ({
-                                                validator(_, value) {
-                                                    
-                                                if (!value || getFieldValue(['variant',parent.id + '-' + item.id, 'price']) > value) {
-                                                    
-                                                    return Promise.resolve();
-                                                }
-                                                return Promise.reject(new Error('Giá khuyến mãi phải nhỏ hơn giá bán'));
-                                                },
-                                            }),
-                                            ]}
-                                            help=''
-                                        >
-                                            <InputNumber 
-                                                placeholder='Nhập giá số lượng'
-                                                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                className='border-gray-300 w-full'
-                                                min={0}
-                                            />
-                                        </Form.Item>
-                                    </Flex>
-                                    :
-                                    ''
-                                    ))}
-                                </td>
-                                <td className="px-5 py-5 ">
-                                    {
+                                <td className="p-5">
+                                    <Flex align='center' justify='center' className='w-full h-full' vertical>
+                                        {
                                         variant[1].attribute.map((item, key)=>(
                                         key ==  0 || key < variant[1].attribute.length - 1
                                         ?
-                                        <Flex align='center' justify='center' className="py-5 min-h-[82px]" key={key}>
-                                            <Form.Item
-                                                name={[parent.id + '-' + item.id, 'sku']}
-                                                className='m-0' 
-                                                help=''
-                                            >
-                                                <Input size='large' placeholder='Nhập SKU' />
-                                            </Form.Item>
-                                        </Flex>
+                                            <Flex flex={1} align='center' justify='center' key={key}>
+                                                <Form.Item
+                                                name={[parent.id + '-' + item.id, 'quantity']}
+                                                className='my-6'
+                                                rules={[
+                                                    { required: true, message: 'Nhập số lượng' },
+                                                ]}
+                                                >
+                                                    <InputNumber 
+                                                        placeholder='Nhập giá số lượng'
+                                                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                        className='border-gray-300 w-full'
+                                                        min={0}
+                                                    />
+                                                </Form.Item>
+                                            </Flex>
                                         :
                                         ''
+                                        ))}
+                                    </Flex>
+                                </td>
+                                <td className="p-5">
+                                    <Flex align='center' justify='center' className='w-full h-full' vertical>
+                                        {variant[1].attribute.map((item, key)=>(
+                                            key ==  0 || key < variant[1].attribute.length - 1
+                                            ?
+                                            <Flex flex={1} align='center' justify='center' key={key}>
+                                                <Form.Item
+                                                    name={[parent.id + '-' + item.id, 'price']}
+                                                    className='my-6'
+                                                    rules={[
+                                                    { required: true, message: 'Nhập giá sản phẩm'},
+                                                    
+                                                    ]}
+                                                >
+                                                    <InputNumber 
+                                                        placeholder='Nhập giá số lượng'
+                                                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                        className='border-gray-300 w-full'
+                                                        min={0}
+                                                    />
+                                                </Form.Item>
+                                            </Flex>
+                                            :
+                                            ''
+                                        ))}
+                                    </Flex>
+                                </td>
+                                <td className="p-5">
+                                    <Flex align='center' justify='center' className='w-full h-full' vertical>
+                                        {
+                                        variant[1].attribute.map((item, key)=>(
+                                            key ==  0 || key < variant[1].attribute.length - 1
+                                            ?
+                                            <Flex flex={1} align='center' justify='center' key={key}>
+                                                <Form.Item
+                                                    name={[parent.id + '-' + item.id, 'price_sale']}
+                                                    className='my-6' 
+                                                    rules={[
+                                                    { required: true, message: 'Nhập giá sale' },
+                                                    ({ getFieldValue }) => ({
+                                                        validator(_, value) {
+                                                            
+                                                        if (!value || getFieldValue(['variant',parent.id + '-' + item.id, 'price']) > value) {
+                                                            
+                                                            return Promise.resolve();
+                                                        }
+                                                        return Promise.reject(new Error('Phải nhỏ hơn giá bán'));
+                                                        },
+                                                    }),
+                                                    ]}
+                                                >
+                                                    <InputNumber 
+                                                        placeholder='Nhập giá số lượng'
+                                                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                        className='border-gray-300 w-full'
+                                                        min={0}
+                                                    />
+                                                </Form.Item>
+                                            </Flex>
+                                            :
+                                            ''
+                                            ))}
+                                    </Flex>
+                                </td>
+                                <td className="p-5">
+                                    <Flex align='center' justify='center' className='w-full h-full' vertical>
+                                        {
+                                        variant[1].attribute.map((item, key)=>(
+                                            key ==  0 || key < variant[1].attribute.length - 1
+                                            ?
+                                            <Flex flex={1} align='center' justify='center' key={key}>
+                                                <Form.Item
+                                                    name={[parent.id + '-' + item.id, 'sku']}
+                                                    className='my-6' 
+                                                >
+                                                    <Input 
+                                                    size='large' 
+                                                    placeholder='Nhập SKU' 
+                                                    onChange={(e)=>{
+                                                        const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').toUpperCase();
+                                                        const input = form.getFieldValue('variant');
+                                                        input[parent.id + '-' + item.id].sku = value
+                                                        
+                                                        form.setFieldValue('variant', input)
+                                                    }} 
+                                                    />
+                                                </Form.Item>
+                                            </Flex>
+                                            :
+                                            ''
                                         ))
-                                    }
+                                        }
+                                    </Flex>
                                 </td>
                                 </>
                             }

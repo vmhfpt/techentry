@@ -40,7 +40,7 @@ export default function ModalCreateVoucher({
   return (
     <>
       <Modal
-        title={isEdit ? 'Edit Voucher' : "Add Voucher"}
+        title={isEdit ? 'Sửa mã giảm giá' : "Thêm mã giảm giá"}
         open={visible}
         onCancel={onCancelModalCreate}
         footer={null}
@@ -65,13 +65,13 @@ export default function ModalCreateVoucher({
 
           <Form.Item
             name={'name'}
-            label='Name'
+            label='Mã'
             rules={[
               { required: true, message: 'Please enter the voucher name' },
               { max: 120, message: 'Voucher name must be at most 120 characters' },
             ]}
           >
-            <Input placeholder='Nhập tên Voucher' />
+            <Input placeholder='Nhập mã giản giá' />
           </Form.Item>
 
           <Form.Item
@@ -79,22 +79,22 @@ export default function ModalCreateVoucher({
             label='Type voucher'
           >
             <Select
-      defaultValue="number"
-    
-    
-      options={[
-        { value: 'number', label: 'Number' },
-        { value: 'percent', label: 'Percent' },
-        { value: 'free_ship', label: 'Free ship' },
-        
-      ]}
-    />
+              defaultValue="number"
+            
+            
+              options={[
+                { value: 'number', label: 'giá' },
+                { value: 'percent', label: 'Phần trăm' },
+                { value: 'free_ship', label: 'Free ship' },
+                
+              ]}
+            />
           </Form.Item>
 
           <Form.Item
             name={'value'}
-            label='Discount Amount'
-            rules={[{ required: true, type: 'number', message: 'Please enter the discount amount' }]}
+            label='Số tiền'
+            rules={[{ required: true, type: 'number', message: 'Vui lòng nhập số tiền giảm giá' }]}
           >
             <InputNumber placeholder='Nhập số tiền giảm giá' style={{ width: '100%' }} />
           </Form.Item>
@@ -152,17 +152,17 @@ export default function ModalCreateVoucher({
 
 
           <Form.Item
-            name={'quantity'}
-            label='Usage Limit'
-            rules={[{ required: true, type: 'number', message: 'Please enter the usage limit' }]}
+            name={'usage_limit'}
+            label='Giới hạn sử dụng'
+            rules={[{ required: true, type: 'number', message: 'Vui lòng nhập giới hạn sử dụng' }]}
           >
             <InputNumber placeholder='Nhập giới hạn sử dụng' style={{ width: '100%' }} min={1} />
           </Form.Item>
 
           <Form.Item
             name={'discount_max'}
-            label='Max price voucher'
-            rules={[{ required: true, type: 'number', message: 'Please enter the max price voucher' }]}
+            label='Giá tối đa sau khi áp dụng'
+            rules={[{ required: true, type: 'number', message: 'Vui lòng nhập giá tối đa' }]}
           >
             <InputNumber placeholder='Enter ...' style={{ width: '100%' }} min={1} />
           </Form.Item>

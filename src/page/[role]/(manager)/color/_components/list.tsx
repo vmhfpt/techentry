@@ -24,7 +24,7 @@ export default function ListColor() {
       },
     },
     {
-      title: 'Tên Color',
+      title: 'Tên màu sắc',
       dataIndex: 'age',
       key: 'age',
       render: (_: any, item: IColor) => {
@@ -32,15 +32,15 @@ export default function ListColor() {
       },
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Flex wrap="wrap" gap="small">
           <Button type="primary" onClick={() => hooks.onEditColor(record)}  >
-            Edit
+            Sửa
           </Button>
           <Button type="primary" danger onClick={() => hooks.onShowDeletePopup(record)}>
-            Delete
+            xóa
           </Button>
         </Flex>
       ),
@@ -51,10 +51,10 @@ export default function ListColor() {
   return <>
     <Typography.Title editable level={2} style={{ margin: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        List Color <Flex wrap="wrap" gap="small">
+        Danh sách màu sắc <Flex wrap="wrap" gap="small">
           {/* <Link to="add"> */}
           <Button type="primary" danger onClick={() => hooks.onShowModalDetail()}>
-            Add Color
+            Thêm màu sắc
           </Button>
           {/* </Link> */}
         </Flex>

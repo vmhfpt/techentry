@@ -1,4 +1,4 @@
-import { Col, Flex, Row, Button, Form, Input, Drawer, Select, UploadProps, GetProp } from 'antd'
+import { Col, Flex, Row, Button, Form, Input, Drawer, Select, UploadProps, GetProp, Modal, Dropdown, InputNumber } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import React, {  useEffect, useRef, useState } from 'react'
 import { CloudUploadOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -6,11 +6,12 @@ import Variant from './Variant/variant';
 import getRandomNumber from '@/utils/randomNumber';
 import TableVariant from './Variant/TableVariant'
 import Option from './Option/Option'
-import { useCreateProductMutation } from '../ProductsEndpoints';
+import { useCreateProductMutation, useGetProductQuery } from '../ProductsEndpoints';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
 import LexicalEditor from '@/components/TextEditor/LexicalEditor';
 import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
 
 
@@ -75,13 +76,15 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 function AddProduct() {
   const [addProduct, {isLoading : isLoadingAddProduct}] = useCreateProductMutation();
+  
   const [imageUrl, setImageUrl] = useState<Blob>();
   const [form] = Form.useForm();
+  const [formApply] = Form.useForm();
   const [gallery, setGallery] = useState<Array<gallery>>([]);
   const fileInputRef = useRef<any>(null);
   const numberFile = useRef<number>(0);
-  
-  const [typeDiscount, setTypeDiscount] = useState<string>('');
+  const navigate = useNavigate()
+
   const [category, setCategory] = useState<Category | null>(null);
   const [detailsAttr, setDetailsAttr] = useState<detailsAtrr[]>([]);
 
@@ -106,8 +109,6 @@ function AddProduct() {
     const category_id = form.getFieldValue('category_id');
     const brand_id = form.getFieldValue('brand_id');
     const product_item = form.getFieldValue('variant');
-    const percentage = form.getFieldValue('percentage');
-    const fixed = form.getFieldValue('fixed');
     const is_active = form.getFieldValue('is_active') ? 1 : 0;
     const is_hot_deal = form.getFieldValue('is_hot_deal') ? 1 : 0;
     const is_good_deal = form.getFieldValue('is_good_deal') ? 1 : 0;
@@ -130,7 +131,7 @@ function AddProduct() {
         variants: newVariant,
         ...product_item[key]
       });
-    }    
+    }       
     
     const details = detailsAttr.reduce((acc, item) => {
       // Tìm đối tượng idDetail hiện có trong acc hoặc tạo mới nếu không tồn tại
@@ -163,15 +164,15 @@ function AddProduct() {
     formdata.append('is_good_deal', String(is_good_deal));
     formdata.append('is_new', String(is_new));
     formdata.append('is_show_home', String(is_show_home));
-    formdata.append('type_discount', String(typeDiscount));
-    formdata.append('discount', typeDiscount == 'percent' ? percentage : typeDiscount == 'fixed' ? fixed : '');
     formdata.append('product_details', JSON.stringify(details));
     formdata.append('product_items', JSON.stringify(newProductItem));    
+    console.log(newProductItem);
+    
         
     try {
       await addProduct(formdata).unwrap();
       popupSuccess('Add product success');
-      navigate('..');
+      // navigate('..');
     } catch (error) {
       popupError('Add product error');
     }
@@ -256,12 +257,170 @@ function AddProduct() {
       
   }  
 
+  const submitApply = () => {    
+    const variantApply = formApply.getFieldsValue()
+    const price = variantApply.price
+    const priceSale = variantApply.price_sale
+    const quantity = variantApply.quantity
+    const sku = variantApply.sku
+    
+    let idVariant: string[] = variant[0].attribute.length > 1 
+      ? variant[0].attribute.slice(0, -1).map(item => item.id)
+      : variant[0].attribute.map(item => item.id);
+
+    // Nếu có nhiều hơn một biến thể
+    if (variant.length > 1) {
+      idVariant = idVariant.flatMap(item => {
+        // Nếu biến thể thứ hai có nhiều hơn một thuộc tính
+        if (variant[1].attribute.length > 1) {
+          return variant[1].attribute.slice(0, -1).map(item2 => `${item}-${item2.id}`);
+        } else {
+          // Nếu chỉ có một thuộc tính
+          return variant[1].attribute.map(item2 => `${item}-${item2.id}`);
+        }
+      });
+    }    
+
+    const mergeVariant = {
+      ...idVariant.reduce((acc, key) => {
+        acc[key] = { quantity: quantity, price: price, price_sale: priceSale, sku: sku };
+        return acc;
+      }, {} as Record<string, { quantity: number; price: number; price_sale: number; sku: string }>),
+    }
+
+    form.setFieldValue('variant', mergeVariant)
+    
+  }
+
+  const menu = (
+    <div style={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1.6875rem', width: 1000 }} className=' rounded-xl p-10'>
+      <Form 
+      form={formApply}
+      onFinish={submitApply}
+      >
+        <Row gutter={[20, 20]}>
+          <Col span={5}>
+            <Flex vertical gap={10}>
+              <label htmlFor="" className='font-bold'>Số lượng</label>
+              <Form.Item
+              className='m-0'
+                name="quantity"
+                rules={[{ required: true, message: 'Nhập số lượng' }]}
+              >
+                <InputNumber
+                  className='w-full'
+                  placeholder='nhập số lượng'
+                  min={0}
+                />
+              </Form.Item>
+            </Flex>
+          </Col>
+          <Col span={5}>
+            <Flex
+            gap={10}
+            vertical
+            >
+              <label htmlFor="" className='font-bold'>Giá</label>
+              <Form.Item
+                className='m-0'
+                name="price"
+                rules={[
+                  { required: true, message: 'Nhập giá' },
+                 
+                ]}
+              >
+                <InputNumber
+                  placeholder='Nhập giá'
+                  className='w-full'
+                  min={0}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                />
+              </Form.Item>
+            </Flex>
+          </Col>
+          <Col span={5}>
+            <Flex
+            gap={10}
+            vertical
+            >
+              <label htmlFor="" className='font-bold'>Giá sale</label>
+              <Form.Item
+                className='m-0'
+                name="price_sale"
+                rules={[
+                  { required: true, message: 'Nhập giá sale' },
+                  {
+                    validator: (_, value)=> {
+                      const price = formApply.getFieldValue('price');
+                      if(value > price){
+                        return Promise.reject('Không được lớn hơn giá thường')
+                      }
+                      
+                      return Promise.resolve();
+                    }
+                  }
+                ]}
+              >
+                <InputNumber
+                  placeholder='Nhập giá sale'
+                  className='w-full'
+                  min={0}
+                  formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                />
+              </Form.Item>
+            </Flex>
+          </Col>
+          <Col span={5}>
+            <Flex
+            gap={10}
+            vertical
+            >
+              <label htmlFor="" className='font-bold'>SKU</label>
+              <Form.Item
+                className='m-0'
+                name="sku"
+              >
+                <Input 
+                placeholder="SKU" 
+                onChange={(e)=>{
+                  const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').toUpperCase();
+                  formApply.setFieldValue('sku', value)
+                }} 
+                />
+              </Form.Item>
+            </Flex>
+          </Col>
+          <Col span={4}>
+            <Flex
+            gap={10}
+            vertical
+            className='h-full w-full'
+            >
+              <label htmlFor="" className='font-bold'>Hành động</label>
+              <Form.Item
+                className='w-full m-0'
+              >
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  className='h-[40px] w-full'
+                >
+                  Áp dụng
+                </Button>
+              </Form.Item>
+            </Flex>
+          </Col>
+        </Row>
+      </Form>
+    </div>
+  );
+
   const handleDeleteGallery = (id: number) => {
     numberFile.current--
     setGallery([
       ...gallery.filter((item, key) => key != id)
     ])
-  }
+  }  
 
   return (
     <>
@@ -272,6 +431,24 @@ function AddProduct() {
         onFinish={onFinish}
         className='p-10 relative'
       >
+        <Flex className='mb-5' align='center' justify='space-between'>
+          <Flex justify='center' align='center' gap={20}>
+            <div>
+              <Flex className='p-3 rounded-xl bg-[#fff] cursor-pointer' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1.6875rem', }}
+                onClick={()=>{
+                  navigate('..')
+                }}
+              >
+                <ArrowBackRoundedIcon/>
+              </Flex>
+            </div>
+            <Flex vertical>
+              <h2 className='font-bold text-[24px]'>Thêm sản phẩm</h2>
+              <span className='text-gray-500'>Quay lại trang danh sách sản phẩm</span>
+            </Flex>
+          </Flex>
+          
+        </Flex>
         <Flex vertical gap={30}>
           <Row gutter={[24, 32]} align={'stretch'}>
             <Col span={19}>
@@ -279,7 +456,21 @@ function AddProduct() {
 
                 {/* General */}
                 <div className=' p-[1.75rem] rounded-xl h-full bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}>
-                  <h2 className='mb-5 font-bold text-[20px]'>Thông tin chung</h2>
+                  <Flex className='mb-5 ' justify='space-between'>
+                    <h2 className='font-bold text-[20px]'>Thông tin chung</h2>
+                    <Flex gap={10}>
+                      <Button className='p-3' type='dashed'
+                      onClick={()=>{
+                        form.resetFields()
+                      }}
+                      >
+                        Cài đặt lại
+                      </Button>
+                      <Button className='p-3' type='primary' htmlType='submit'>
+                        Thêm
+                      </Button>
+                    </Flex>
+                  </Flex>
                   <Flex vertical  gap={5} className='rounded-xl p-[1.75rem] border-[1px]'>
                     <Flex vertical gap={10}>
                       <h3 className='font-bold text-[16px]'>Tên sản phẩm</h3>
@@ -288,7 +479,7 @@ function AddProduct() {
                         className='w-full flex flex-col'
                         rules={[
                           { required: true, message: 'Vui lòng nhập tên sản phẩm!' },
-                          { max: 120, message: 'Tên không vượt quá 120 ký tự' },
+                          { max: 70, message: 'Tên không vượt quá 70 ký tự' },
                           { min: 10, message: 'Tên không nhập nhỏ hơn 10 ký tự' },
                           {
                             whitespace: true,
@@ -300,7 +491,6 @@ function AddProduct() {
                       </Form.Item>
                     </Flex>
                     <Flex vertical gap={10}>
-
                       <h3 className='font-bold text-[16px]'>Mô tả sản phẩm</h3>
                       <Form.Item
                         name={'content'}
@@ -405,61 +595,66 @@ function AddProduct() {
                 {/* Detail */}
                 <Flex vertical className='sm:rounded-xl p-10 bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                   <h2 className={`mb-5 font-bold text-[20px]`}>Thông tin chi tiết sản phẩm</h2>
-                  {category && category?.details.map((item)=>(
-                    <Flex vertical gap={20} key={item.id} className='p-5 border-[1px] rounded-xl'>
-                        <h2 className=' font-bold text-[16px]'>{item.name}</h2>
-                        <hr />
-                        <Flex align='center' wrap gap={20}>
-                            {item.attributes.map((attr)=>(
-                              <Flex vertical gap={5} key={attr.id} className='w-[25%]'>
-                                <h2 className='font-bold text-[14 px] text-gray-500'>{attr.name}</h2>
-                                <Form.Item 
-                                  className='m-0' 
-                                  name={`attr-${attr.id}`} 
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: 'Trường này không được bỏ trống'
-                                    }
-                                  ]}
-                                >
-                                  <Select
-                                    mode='tags'
-                                    onChange={(e)=>{
-                                      const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
-                                      if(existingAttrIndex > -1){
-                                        const newDetailAttr = detailsAttr.map((item, index) => {
-                                          if (index === existingAttrIndex) {
-                                            return {
-                                              ...item,
-                                              values: e
-                                            };
-                                          }
-                                          return item;
-                                        });
-                                        setDetailsAttr(newDetailAttr)
-                                      }else {
-                                        // Nếu mục không tồn tại, thêm mới vào mảng
-                                        const newDetailAttr = [
-                                          ...detailsAttr,
-                                          {
-                                            id: attr.id,
-                                            idDetail: item.id,
-                                            values: e
-                                          }
-                                        ];
-                                        setDetailsAttr(newDetailAttr);
-                                      }
+                  <Flex vertical gap={20} className='p-5 border-[1px] rounded-xl'>
 
-                                    }}
-                                    style={{ width: '100%'}} 
-                                  />
-                                </Form.Item> 
-                              </Flex>
-                            ))}
+                    {category && category?.details.map((item)=>(
+                        <Flex key={item.id} vertical gap={20} className='rounded-xl'>
+                          <h2 className=' font-bold text-[16px]'>{item.name}</h2>
+                          <hr />
+                          <Flex align='center' wrap gap={20}>
+                              {item.attributes.map((attr)=>(
+                                <Flex vertical gap={5} key={attr.id} className='w-[23%]'>
+                                  <h2 className='font-bold text-[14 px]'>{attr.name}</h2>
+                                  <Form.Item 
+                                    className='m-0' 
+                                    name={`attr-${attr.id}`} 
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'Trường này không được bỏ trống'
+                                      }
+                                    ]}
+                                  >
+                                    <Select
+                                      className='custom-seclect'
+                                      mode='tags'
+                                      onChange={(e)=>{
+                                        const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
+                                        if(existingAttrIndex > -1){
+                                          const newDetailAttr = detailsAttr.map((item, index) => {
+                                            if (index === existingAttrIndex) {
+                                              return {
+                                                ...item,
+                                                values: e
+                                              };
+                                            }
+                                            return item;
+                                          });
+                                          setDetailsAttr(newDetailAttr)
+                                        }else {
+                                          // Nếu mục không tồn tại, thêm mới vào mảng
+                                          const newDetailAttr = [
+                                            ...detailsAttr,
+                                            {
+                                              id: attr.id,
+                                              idDetail: item.id,
+                                              values: e
+                                            }
+                                          ];
+                                          setDetailsAttr(newDetailAttr);
+                                        }
+
+                                      }}
+                                      style={{ width: '100%'}} 
+                                    />
+                                  </Form.Item> 
+                                </Flex>
+                              ))}
+                          </Flex>
                         </Flex>
-                    </Flex>
-                  ))}
+                    ))}
+                  </Flex>
+
                 </Flex>
                 {/* Detail */}
 
@@ -505,14 +700,21 @@ function AddProduct() {
                   <Flex className='mb-5' align='center' justify='space-between'>
                     <h2 className='font-bold text-[20px]'>Danh sách phân loại hàng</h2>
 
-                    <Button className='border-dashed'>
-                      Áp dụng dữ liệu
-                    </Button>
+                    <Dropdown
+                    dropdownRender={()=>menu}
+                    placement='topRight' 
+                    arrow 
+                    trigger={['click']}
+                    >
+                      <Button className='border-dashed'>
+                        Áp dụng dữ liệu
+                      </Button>
+                    </Dropdown>
                   </Flex>
                   {
                     category
                     ?
-                    <TableVariant variant={variant} setVariant={setVariant} />
+                    <TableVariant variant={variant} setVariant={setVariant} form={form} />
                     :
                     ''
                   }
@@ -521,11 +723,12 @@ function AddProduct() {
               </Flex>
             </Col>
             <Col span={5} className='w-full'>
-              <Option setImageUrl={setImageUrl} discount={{typeDiscount, setTypeDiscount}} setCategory={setCategory}/>
+              <Option setImageUrl={setImageUrl} setCategory={setCategory}/>
             </Col>
           </Row>
         </Flex>
       </Form> 
+     
     </>
   )
 }

@@ -10,6 +10,10 @@ import { login, logout, Logout, Signin } from "@/app/slices/authSlide";
 import { ISignin } from "@/common/types/Auth.interface";
 import { setLoading, setOpenModalLogin } from "@/app/webSlice";
 import { popupSuccess, popupError } from "@/page/[role]/shared/Toast";
+import { useGetCartsQuery } from "@/services/CartEndPoinst";
+import { useLazyGetCartsQuery } from "@/services/ProductEndPoinst";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { useGetUserQuery } from "@/page/[role]/(manager)/user/UsersEndpoints";
 
 type FieldType = {
   email?: string;
@@ -17,6 +21,8 @@ type FieldType = {
 };
 
 export default function AvatarDropdown() {
+  const [_, setUser] = useLocalStorage('user', undefined);
+  const {refetch} = useGetCartsQuery({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm()
@@ -24,7 +30,8 @@ export default function AvatarDropdown() {
  
   const {openModalLogin} = useAppSelector(state => state.web);
 
-  const user = localStorage.getItem('user') ;
+  const user = JSON.parse(String(localStorage.getItem('user')));
+  const {data : dataItem, isLoading : dataLoading } = useGetUserQuery(user?.id);
 
   // const [open, setOpen] = useState(false);
   // const [checked, setChecked] = useState(true);
@@ -36,17 +43,14 @@ export default function AvatarDropdown() {
 
     if(result?.success == false){
       form.setFields([
-        {
-          name: 'email',
-          errors: ['Email is required']
-        },
+
         {
           name: 'password',
           value: '',
           errors: ['Password is required']
         }
       ])
-      popupError(result?.result?.message);
+      popupError("Email hoặc mật khẩu không chính xác");
     }else{
       form.setFields([
         {
@@ -62,7 +66,8 @@ export default function AvatarDropdown() {
       ])
       dispatch(login(result))
       dispatch(setOpenModalLogin(false))
-      popupSuccess("Hello " + result.data.username);
+      popupSuccess("Hello " + result.user.username);
+      refetch();
       navigate('/')
     }
   }  
@@ -70,7 +75,7 @@ export default function AvatarDropdown() {
   const onLogout = async () => {
     const access_token = localStorage.getItem('access_token');
     dispatch(logout());
-
+    dispatch(setOpenModalLogin(false))
     if(!access_token){
 
       popupError('unAuth');
@@ -78,11 +83,12 @@ export default function AvatarDropdown() {
     }else{
 
       dispatch(setLoading(true));
-      const result = await dispatch(Logout(access_token));
+       await dispatch(Logout(access_token));
+       
       dispatch(setLoading(false));
-
-      popupSuccess(result?.result?.message);
-
+      setUser(undefined);
+      popupSuccess("Đăng xuất thành công");
+      navigate('/')
     }
     
   }
@@ -136,10 +142,10 @@ export default function AvatarDropdown() {
                         (
                           <>
                             <div className="flex items-center space-x-3">
-                              <Avatar imgUrl={JSON.parse(String(user)).image ? JSON.parse(String(user)).image : avatarImgs[10] } sizeClass="w-12 h-12" />
+                              <Avatar imgUrl={dataItem?.data.image ? dataItem?.data.image : avatarImgs[10] } sizeClass="w-12 h-12" />
                               <div className="flex-grow truncate break-all">
-                                <h4 className="font-semibold">{  JSON.parse(String(user)).username}</h4>
-                                <p className="text-xs mt-0.5 ">{  JSON.parse(String(user)).email}</p>
+                                <h4 className="font-semibold">{  dataItem?.data.username}</h4>
+                                <p className="text-xs mt-0.5 ">{  dataItem?.data.email}</p>
                               </div>
                             </div>
 
@@ -184,7 +190,7 @@ export default function AvatarDropdown() {
                             </svg>
                           </div>
                           <div className="ml-4">
-                            <p className="text-sm font-medium ">{"Login"}</p>
+                            <p className="text-sm font-medium ">{"Đăng nhập"}</p>
                           </div>
                         </button>
 
@@ -216,7 +222,7 @@ export default function AvatarDropdown() {
                               />
                             </svg>
                           </div>
-                          <Link to="/signup" >  <div className="ml-4"> <p className="text-sm font-medium ">{"SignUp"}</p>   </div> </Link>
+                          <Link to="/signup" >  <div className="ml-4"> <p className="text-sm font-medium ">{"Đăng kí"}</p>   </div> </Link>
                         
                            
                        
@@ -317,7 +323,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"My Order"}</p>
+                        <p className="text-sm font-medium ">{"Đơn hàng của tôi"}</p>
                       </div>
                     </Link>
 
@@ -344,7 +350,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Wishlist"}</p>
+                        <p className="text-sm font-medium ">{"Yêu thích"}</p>
                       </div>
                     </Link>
 
@@ -385,7 +391,7 @@ export default function AvatarDropdown() {
                           </svg>
                         </div>
                         <div className="ml-4">
-                          <p className="text-sm font-medium ">{"Dark theme"}</p>
+                          <p className="text-sm font-medium ">{"Chế độ tối"}</p>
                         </div>
                       </div>
                       <SwitchDarkMode2 />
@@ -450,7 +456,7 @@ export default function AvatarDropdown() {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Help"}</p>
+                        <p className="text-sm font-medium ">{"Trợ giúp"}</p>
                       </div>
                     </Link>
 
@@ -496,7 +502,7 @@ export default function AvatarDropdown() {
                             </svg>
                           </div>
                           <div className="ml-4">
-                            <p className="text-sm font-medium ">{"Log out"}</p>
+                            <p className="text-sm font-medium ">{"Đăng xuất"}</p>
                           </div>
                         </button>
                       )
@@ -544,7 +550,7 @@ export default function AvatarDropdown() {
                 <Flex justify="center" align="center" gap={20}>
                     <div className="border-b-[1px] flex-1"/>
                     <span>
-                      of signin with
+                      Đăng nhập bằng
                     </span>
                     <div className="border-b-[1px] flex-1"/>
                 </Flex>
@@ -564,7 +570,7 @@ export default function AvatarDropdown() {
                     </Form.Item>
                   </div>
                   <div>
-                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Password</label>
+                    <label htmlFor="password" className="font-bold block mb-[0.5rem]">Mật khẩu</label>
                     <Form.Item<FieldType>
                       name="password"
                       rules={[
@@ -597,12 +603,12 @@ export default function AvatarDropdown() {
                   </div>
 
                   <Form.Item>
-                    <Link to={''}>Forgot password</Link>
+                    <Link to={''}>Quên mật khẩu</Link>
                   </Form.Item>
 
                   <Form.Item>
                     <Button type="primary" htmlType="submit" className=" w-full p-5">
-                      Submit
+                    Đăng nhập
                     </Button>
                   </Form.Item>
                   <div className="flex justify-center">

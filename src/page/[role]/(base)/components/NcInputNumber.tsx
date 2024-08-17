@@ -40,8 +40,6 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
     onChange && onChange(value - 1);
 
     try{
-      console.log(item);
-      
       item && await changeCart({id : item.id, quantity : value - 1 });
     }catch(error){
       popupError('Update cart error');

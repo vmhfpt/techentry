@@ -65,12 +65,12 @@ const columns: TableProps<IBrand>['columns'] = [
 
 
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Flex wrap="wrap" gap="small">
           <Link to={String(record.id)} ><Button type="primary" >
-            Edit
+            Sửa
           </Button></Link>
           <Popconfirm
                     disabled={isLoadingDeleteBrand}
@@ -80,7 +80,7 @@ const columns: TableProps<IBrand>['columns'] = [
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button danger loading={isLoadingDeleteBrand} >Delete</Button>
+                    <Button danger loading={isLoadingDeleteBrand} >Xóa</Button>
                   </Popconfirm>
         </Flex>
       ),
@@ -96,10 +96,10 @@ const columns: TableProps<IBrand>['columns'] = [
   return <>
     <Typography.Title editable level={2} style={{ margin: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        List Brand <Flex wrap="wrap" gap="small">
+        Danh sách thương hiệu <Flex wrap="wrap" gap="small">
          
          <Link to="add">  <Button type="primary" danger >
-            Add Brand
+            Thêm thương hiệu
           </Button></Link>
          
         </Flex>

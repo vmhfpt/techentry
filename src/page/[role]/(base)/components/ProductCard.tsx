@@ -95,7 +95,7 @@ const ProductCard: FC<ProductCardProps> = ({
               leaveTo="opacity-0 translate-x-20"
             >
               <p className="block text-base font-semibold leading-none">
-                Added to cart!
+                Đã thêm vào giỏ hàng!
               </p>
               <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
               {renderProductCartOnNotify({ second })}
@@ -157,7 +157,7 @@ const ProductCard: FC<ProductCardProps> = ({
                 to={"/cart"}
                 className="font-medium text-primary-6000 dark:text-primary-500 "
               >
-                View cart
+                Xem giỏ hàng
               </Link>
             </div>
           </div>
@@ -214,7 +214,7 @@ const ProductCard: FC<ProductCardProps> = ({
           onClick={() => notifyAddTocart({ second: null })}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-          <span className="ml-1">Add to Cart</span>
+          <span className="ml-1">Add to cart</span>
         </ButtonPrimary>
         <ButtonSecondary
           className="ml-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"
@@ -263,12 +263,13 @@ const ProductCard: FC<ProductCardProps> = ({
   return (
     <>
       <div
-        className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
+        className={`nc-ProductCard relative flex flex-col bg-transparent ${className} rounded-3xl overflow-hidden`}
         data-nc-id="ProductCard"
+        style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1.6875rem' }}
       >
         <Link to={`/product-detail/${slug}`} className="absolute inset-0"></Link>
 
-        <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
+        <div className="relative flex-shrink-0  rounded-3xl overflow-hidden z-1 group">
           <Link to={`/product-detail/${slug}`} className="block">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
@@ -284,7 +285,7 @@ const ProductCard: FC<ProductCardProps> = ({
           {secondVariantArray && secondVariantArray.length ? renderSizeList() : renderGroupButtons()}
         </div>
 
-        <div className="space-y-4 px-2.5 pt-5 pb-2.5">
+        <div className="space-y-4 px-3 pt-5 pb-2.5">
           {renderVariants()}
 
           <div>
@@ -295,7 +296,7 @@ const ProductCard: FC<ProductCardProps> = ({
             </h2>
           </div>
 
-          <div className="flex justify-between items-end ">
+          <div className="flex justify-between items-center ">
             <Prices price={maxPrice} />
             <div className="flex items-center mb-0.5">
               <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />

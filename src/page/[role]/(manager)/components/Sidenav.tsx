@@ -32,7 +32,7 @@ function Sidenav() {
                 >
                   {<Dashboard color={darkColor} />}
                 </div>
-                <span className={`label font-bold text-[#344767]`}>Dashboard</span>
+                <span className={`label font-bold text-[#344767]`}>Bảng điều khiển</span>
               </Flex>
             </div>
           </>
@@ -50,7 +50,7 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className={`label font-bold text-[#344767]`}>Maketing</span>
+              <span className={`label font-bold text-[#344767]`}>Tiếp thị</span>
             </Flex>
           </>
         ),
@@ -60,7 +60,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={'#9ca3af'} />}
-                  <span className="label font-bold text-gray-400">Voucher</span>
+                  <span className="label font-bold text-gray-400">Mã giảm giá</span>
                 </Flex>
               </>
             ),
@@ -78,7 +78,7 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className={`label font-bold text-[#344767]`}>Catalog</span>
+              <span className={`label font-bold text-[#344767]`}>Mục lục</span>
             </Flex>
           </>
         ),
@@ -88,7 +88,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Products</span>
+                  <span className="label font-bold text-gray-400">Sản phẩm</span>
                 </Flex>
               </>
             ),
@@ -99,7 +99,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Categories</span>
+                  <span className="label font-bold text-gray-400">Danh mục</span>
                 </Flex>
               </>
             ),
@@ -110,7 +110,7 @@ function Sidenav() {
               <>
                <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Color</span>
+                  <span className="label font-bold text-gray-400">Màu sắc</span>
                 </Flex>
               </>
             ),
@@ -121,7 +121,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Attributes Product</span>
+                  <span className="label font-bold text-gray-400">Thuộc tính sản phẩm</span>
                 </Flex>
               </>
             ),
@@ -132,7 +132,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Brands</span>
+                  <span className="label font-bold text-gray-400">Thương hiệu</span>
                 </Flex>
               </>
             ),
@@ -151,7 +151,7 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className={`label font-bold text-[#344767]`}>Post</span>
+              <span className={`label font-bold text-[#344767]`}>Bài viết</span>
             </Flex>
           </>
         ),
@@ -161,7 +161,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Post Categories</span>
+                  <span className="label font-bold text-gray-400">Danh mục bài viết</span>
                 </Flex>
               </>
             ),
@@ -172,7 +172,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Posts</span>
+                  <span className="label font-bold text-gray-400">Bài viết</span>
                 </Flex>
               </>
             ),
@@ -191,7 +191,7 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className={`label font-bold text-[#344767]`}>User</span>
+              <span className={`label font-bold text-[#344767]`}>Người dùng</span>
             </Flex>
           </>
         ),
@@ -201,7 +201,7 @@ function Sidenav() {
               <>
                <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Users</span>
+                  <span className="label font-bold text-gray-400">Người dùng</span>
                 </Flex>
               </>
             ),
@@ -212,7 +212,7 @@ function Sidenav() {
               <>
                 <Flex align="center" gap={10} justify="center" className="children-menu">
                   {<Tables color={darkColor} />}
-                  <span className="label font-bold text-gray-400">Privilege</span>
+                  <span className="label font-bold text-gray-400">Quyền hạn</span>
                 </Flex>
               </>
             ),
@@ -245,7 +245,7 @@ function Sidenav() {
               >
                 {<Tables color={darkColor} />}
               </span>
-              <span className="label font-bold text-[#344767]">Orders</span>
+              <span className="label font-bold text-[#344767]">Đơn hàng</span>
             </Flex>
           </>
         ),
@@ -262,7 +262,7 @@ function Sidenav() {
               >
                 <Billing color={darkColor} />
               </span>
-              <span className="label font-bold text-[#344767]">Billing</span>
+              <span className="label font-bold text-[#344767]">thanh toán</span>
             </Flex>
           </>
         ),
@@ -285,7 +285,7 @@ function Sidenav() {
         label: (
           <>
             <Text style={{ fontSize: '16px', fontWeight: '700' }} className={`text-[${bgIcon}]`}>
-              Account Pages
+            Trang tài khoản
             </Text>
           </>
         ),
@@ -299,7 +299,7 @@ function Sidenav() {
             >
               {profile}
             </span>
-            <span className="label font-bold text-[#344767]">Profile</span>
+            <span className="label font-bold text-[#344767]">Hồ sơ</span>
           </Flex>
         ),
         link: '/admin/profile'
@@ -363,7 +363,7 @@ function Sidenav() {
     <>
       <Flex gap={10} className="brand" style={{ display: 'flex', alignItems: 'center' }}>
         <img src={logo} alt="" />
-        <span className=" text-center">Muse Dashboard</span>
+        <span className=" text-center">Bảng điều khiển</span>
       </Flex>
       <hr />
       <Menu theme="light" mode="inline" triggerSubMenuAction='click' openKeys={stateOpenKeys} defaultSelectedKeys={stateOpenKeys} items={items} onOpenChange={onOpenChange} />

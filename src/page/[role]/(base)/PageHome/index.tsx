@@ -23,7 +23,7 @@ function PageHome() {
       {/* SECTION HERO */}
       <SectionHero2 />
 
-      <div className='mt-24 lg:mt-32'>
+      <div className=' mt-24 lg:mt-32'>
         <DiscoverMoreSlider />
       </div>
 

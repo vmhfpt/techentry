@@ -52,7 +52,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
   const [indexActive, setIndexActive] = useState(0)
   const [isRunning, toggleIsRunning] = useBoolean(true)
   const { data } = useGetBannersQuery({})
-  const [bannersList, setBannersList] = useState([])
+  const [bannersList, setBannersList] = useState(DATA)
 
   useEffect(() => {
     if (data) {
@@ -112,7 +112,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
 
   const renderItem = (index: number) => {
     const isActive = indexActive === index
-    const item = bannersList[index]
+    const item : any = bannersList[index]
     if (!isActive) {
       return null
     }
@@ -165,7 +165,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
         <div className='absolute inset-0 bg-[#E3FFE6]'>
           {/* <div className="absolute inset-0 bg-[#F7F0EA]"> */}
           <img
-            className={`absolute w-full h-full ${item?.image_url ? '' : 'object-contain'}`}
+            className={`absolute w-full h-full object-fill`}
             src={item?.image_url ?? backgroundLineSvg}
             alt='hero'
           />
@@ -192,7 +192,7 @@ const SectionHero2: FC<SectionHero2Props> = ({ className = '' }) => {
               <ButtonPrimary
                 className='nc-SectionHero2Item__button dark:bg-slate-900'
                 sizeClass='py-3 px-6 sm:py-5 sm:px-9'
-                href='#'
+                
               >
                 <span>Explore now</span>
                 <span>

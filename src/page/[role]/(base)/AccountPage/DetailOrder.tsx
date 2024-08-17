@@ -22,6 +22,7 @@ import { formatDate } from "@/utils/convertCreatedLaravel";
 
 export default function DetailOrder(){
   const orderIcon = [
+    <></>,
     <HandleAnimationIcon width={30} height={30} />,
     <PrepareAnimationIcon width={30} height={30}/>,
     <PrepareSuccessAnimationIcon width={30} height={30}/>,
@@ -53,11 +54,10 @@ const renderProductItem = (product: any, index: number) => {
             <div className="flex justify-between ">
                 <div>
                 <h3 className="text-base font-medium line-clamp-1">{name}</h3>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    <span>{"Natural"}</span>
-                    <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                    <span>{"XL"}</span>
-                </p>
+                <div className="mt-1.5 sm:mt-2.5 flex text-sm text-slate-600 dark:text-slate-300">
+                  <span> {`${product?.varians[0].name}`} &nbsp;</span> 
+                  {product?.varians[1] &&  <span>|&nbsp; {`${product?.varians[1].name}`}</span>}
+                </div>
                 </div>
                 <Prices price={price} className="mt-0.5 ml-2"/>
             </div>
@@ -112,7 +112,7 @@ const renderProductItem = (product: any, index: number) => {
                                                 {orderIcon[item.status_id]}
                                             </div>
                                         </div>
-                                        <div className="flex min-w-0 flex-1 justify-between space-x-4 ">
+                                        <div className="flex min-w-0 flex-1 justify-between space-x-4 items-center">
                                             <div className="whitespace-nowrap text-right text-sm text-gray-500 flex justify-center items-center flex-col">
                                                 <span> {item.status_name}</span>
                                                 <span> {formatTimestamp(item.created_at)}</span>
