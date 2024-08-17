@@ -23,43 +23,44 @@ export default function EditDetail() {
 
     const { data: dataItem, isLoading: dataLoading, isError: isErrorDataItem } = useGetDetailQuery(param.id)
     const [uploadDetail, { isLoading: isLoadingUploadDetail }] = useUpdateDetailMutation();
-    const {data : categories, isLoading } = useGetCategoriesQuery([]);
+    const { data: categories, isLoading } = useGetCategoriesQuery([]);
     const [optionDetails, setOptionDetails] = useState([]);
     const [formInstance, setFormInstance] = useState<FormInstance>();
     const [form] = Form.useForm();
     const [formValuesUpdate, setFormValuesUpdate] = useState({
-        name : '',
-        category_id : []
-     });
+        name: '',
+        category_id: []
+    });
 
     useEffect(() => {
         setFormInstance(form);
     }, []);
     useEffect(() => {
-        if(dataItem){
-            var dataCatId = dataItem.category?.map((item:any)=>{
+        if (dataItem) {
+            console.log(dataItem)
+            var dataCatId = dataItem.category?.map((item: any) => {
                 return item.id;
             });
-            formValuesUpdate.name=dataItem.name;
+            formValuesUpdate.name = dataItem.name;
             formValuesUpdate.category_id = dataCatId
             setFormValuesUpdate(formValuesUpdate);
             form.setFieldsValue(formValuesUpdate)
             setFormInstance(form);
         }
-     }, [dataItem])
+    }, [dataItem])
 
-     useEffect(() => {
-        if(categories){
-            var options = categories?.data.map((item : {id : number, name : string}) => {
+    useEffect(() => {
+        if (categories) {
+            var options = categories?.data.map((item: { id: number, name: string }) => {
                 return {
-                    value : item.id,
-                    label : item.name
+                    value: item.id,
+                    label: item.name
                 }
             });
             setOptionDetails(options);
         }
-        
-     }, [categories])
+
+    }, [categories])
 
     const onFinish = async (values: IDetail | any) => {
         try {
@@ -82,20 +83,20 @@ export default function EditDetail() {
     const handleCancel = () => {
         navigate('..')
     }
-
+    //console.log(formValuesUpdate)
     if (dataLoading) return <LoadingUser />
     if (isErrorDataItem) return <ErrorLoad />
     return (
         <>
-            <Modal 
+            <Modal
                 okText="Update"
-                okButtonProps={{ autoFocus: true, disabled: isLoadingUploadDetail, loading : isLoadingUploadDetail}}
+                okButtonProps={{ autoFocus: true, disabled: isLoadingUploadDetail, loading: isLoadingUploadDetail }}
                 onOk={async () => {
                     try {
-                      const values = await formInstance?.validateFields();
-                      onFinish(values);
+                        const values = await formInstance?.validateFields();
+                        onFinish(values);
                     } catch (error) {
-                      console.log('Failed:', error);
+                        console.log('Failed:', error);
                     }
                 }}
                 title='Edit detail' open={true} onCancel={handleCancel}>
