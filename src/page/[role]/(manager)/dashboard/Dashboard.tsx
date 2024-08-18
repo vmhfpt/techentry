@@ -16,43 +16,12 @@ import { useAppSelector } from "../../../../app/hooks";
 import { useGetStatisticalTodayQuery } from "./StatisticalEnpoint";
 import { VND } from "@/utils/formatVietNamCurrency";
 import CountUp from 'react-countup';
+import Piechart from "./components/charts/pieChart";
 
 export default function Dashboard() {
-    const { Title } = Typography;    
     const {backgroundColor} = useAppSelector(state => state.web)
     const {data, isLoading} = useGetStatisticalTodayQuery({})
-    console.log(data);
-    
-    const count = [
-      {
-        today: "Today’s Sales",
-        title: "$53,000",
-        persent: "+30%",
-        icon: dollor,
-        bnb: "bnb2",
-      },
-      {
-        today: "Today’s Users",
-        title: "3,200",
-        persent: "+20%",
-        icon: profile,
-        bnb: "bnb2",
-      },
-      {
-        today: "New Clients",
-        title: "+1,200",
-        persent: "-20%",
-        icon: heart,
-        bnb: "redtext",
-      },
-      {
-        today: "New Orders",
-        title: "$13,200",
-        persent: "10%",
-        icon: cart,
-        bnb: "bnb2",
-      },
-    ];
+    const { Title, Text } = Typography;  
   
     return (
       <>
@@ -166,7 +135,14 @@ export default function Dashboard() {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={9} className="mb-24">
               <Card bordered={false} className="criclebox h-full">
-                <LineChart color={'#3a416f'}/>
+                <Flex vertical gap={20}>
+                <Flex justify="space-between" className="flex-col md:flex-row md:align-items-center " flex={1}>
+                  <Text className=" font-bold text-[24px]">
+                    Danh mục được quan tâm nhất
+                  </Text>
+                </Flex>
+                <Piechart color={'#3a416f'}/>
+                </Flex>
               </Card>
             </Col>
           </Row>

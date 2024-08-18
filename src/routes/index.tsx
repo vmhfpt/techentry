@@ -42,23 +42,29 @@ import VoucherManagement from '../page/[role]/(manager)/voucher'
 import PostCategoryManagement from '@/page/[role]/(manager)/postCategory'
 import AddPostCategory from '@/page/[role]/(manager)/postCategory/_components/add'
 import EditPostCategory from '@/page/[role]/(manager)/postCategory/_components/edit'
-import PrivilegeUser from "@/page/[role]/(manager)/user/_components/privilege";
-import PostsManagement from "@/page/[role]/(manager)/posts";
-import AddPosts from "@/page/[role]/(manager)/posts/_components/add";
-import EditPosts from "@/page/[role]/(manager)/posts/_components/edit";
-import ProductManagement from "@/page/[role]/(manager)/products";
-import AddProduct from "@/page/[role]/(manager)/products/_components/add";
-import ColorManagement from "@/page/[role]/(manager)/color";
-import OrderManagement from "@/page/[role]/(manager)/order";
-import AddBrand from "@/page/[role]/(manager)/brand/_components/add";
-import EditBrand from "@/page/[role]/(manager)/brand/_components/edit";
-import ProductDetailPage2 from "@/page/[role]/(base)/ProductDetailPage/ProductDetailPage2";
-import EditOrder from "@/page/[role]/(manager)/order/_components/edit";
-import CommonLayout from "@/page/[role]/(base)/AccountPage/CommonLayout";
-import DetailOrder from "@/page/[role]/(base)/AccountPage/DetailOrder";
 import ListProduct from "@/page/[role]/(manager)/products/_components/list";
-import GuardPage from '@/middleware/GuardPage';
 import EditProduct  from '@/page/[role]/(manager)/products/_components/edit';
+import PrivilegeUser from '@/page/[role]/(manager)/user/_components/privilege'
+import PostsManagement from '@/page/[role]/(manager)/posts'
+import AddPosts from '@/page/[role]/(manager)/posts/_components/add'
+import EditPosts from '@/page/[role]/(manager)/posts/_components/edit'
+import ProductManagement from '@/page/[role]/(manager)/products'
+import AddProduct from '@/page/[role]/(manager)/products/_components/add'
+import ColorManagement from '@/page/[role]/(manager)/color'
+import OrderManagement from '@/page/[role]/(manager)/order'
+import AddBrand from '@/page/[role]/(manager)/brand/_components/add'
+import EditBrand from '@/page/[role]/(manager)/brand/_components/edit'
+import ProductDetailPage2 from '@/page/[role]/(base)/ProductDetailPage/ProductDetailPage2'
+import EditOrder from '@/page/[role]/(manager)/order/_components/edit'
+import CommonLayout from '@/page/[role]/(base)/AccountPage/CommonLayout'
+import DetailOrder from '@/page/[role]/(base)/AccountPage/DetailOrder'
+import GuardPage from '@/middleware/GuardPage'
+import AddAttribute from '@/page/[role]/(manager)/attribute/_components/attribute/add'
+import DetailManagement from '@/page/[role]/(manager)/details'
+import AttributeManagementV2 from '@/page/[role]/(manager)/attribute/indexV2'
+import AddDetail from '@/page/[role]/(manager)/details/_component/add'
+import EditDetail from '@/page/[role]/(manager)/details/_component/edit'
+import EditAttributeV2 from '@/page/[role]/(manager)/attribute/_components/attribute/editV2'
 
 export default function Router() {
   return (
@@ -147,6 +153,10 @@ export default function Router() {
             </Route>
 
             <Route path='attributes-product' element={<AttributeManagement />}></Route>
+            <Route path='details' element={<DetailManagement />}>
+              <Route path='add' element={<AddDetail />} />
+              <Route path=':id' element={<EditDetail />} />
+            </Route>
 
             {/* <Route path="categories" element={<CategoryManagement />}>
                   <Route path="add" element={<AddCategory />} />
@@ -171,6 +181,11 @@ export default function Router() {
             <Route path='categories' element={<CategoryManagement />}>
               <Route path='add' element={<AddCategory />} />
               <Route path=':id' element={<EditCategory />} />
+            </Route>
+
+            <Route path='attributes' element={<AttributeManagementV2 />}>
+              <Route path='add' element={<AddAttribute />} />
+              <Route path=':id' element={<EditAttributeV2 />} />
             </Route>
 
             <Route path='post-categories' element={<PostCategoryManagement />}>

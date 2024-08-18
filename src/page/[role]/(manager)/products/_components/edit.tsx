@@ -11,8 +11,7 @@ import LexicalEditor from '@/components/TextEditor/LexicalEditor';
 import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import Add from './add';
-
+import { useGetCategoriesQuery } from '../../category/CategoryEndpoints';
 
 
 interface gallery{
@@ -78,12 +77,15 @@ function EditProduct() {
   const {id} = useParams()  
   const [addProduct, {isLoading : isLoadingAddProduct}] = useCreateProductMutation();
   const {data: product, isLoading: isLoadingProduct} = useEditProductQuery(id)
+  const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
+
   const [imageUrl, setImageUrl] = useState<Blob>();
   const [form] = Form.useForm();
   const [gallery, setGallery] = useState<Array<gallery>>([]);
   const fileInputRef = useRef<any>(null);
   const numberFile = useRef<number>(0);
   const navigate = useNavigate()
+  
 
   const [category, setCategory] = useState<Category | null>(null);
   const [detailsAttr, setDetailsAttr] = useState<detailsAtrr[]>([]);
@@ -183,10 +185,8 @@ function EditProduct() {
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (error) => reject(error);
-    });
-  
-
-  
+    }
+  );
 
   const handleSetDetail = () => {
     form.resetFields(['variant']);
@@ -264,8 +264,6 @@ function EditProduct() {
 
   useEffect(()=>{
     if(product && !isLoadingProduct){
-      console.log(product);
-      
       const {name, content, category_id, brand_id} = product.data
       const addForm = {
         name,

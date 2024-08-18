@@ -4,7 +4,7 @@ import { PlusOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import { useGetBrandsQuery } from '../../../brand/BrandEndpoints';
 import { IBrand } from '@/common/types/brand.interface';
-import { useGetCategoriesQuery } from '../../../category/CategoryEndpoints';
+import { useGetCategoriesQuery, useGetDetailCategoryQuery } from '../../../category/CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
 import PermMediaRoundedIcon from '@mui/icons-material/PermMediaRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -15,10 +15,13 @@ interface option{
 }
 
 export default function Option({setImageUrl, setCategory, thumbnail}: option) {
+    const [categoryId, setCategoryId] = useState<string|null>(null);
     const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
+    const {data: dataDetails, isLoading : isLoadingDetails} = useGetDetailCategoryQuery(categoryId, {
+        skip: !categoryId
+    });
     const {data : dataBrands, isLoading : isLoadingBrand} = useGetBrandsQuery({});
     const [DisplayPic, setDisplayPic] = useState<string>();
-    const formatter: NonNullable<SliderSingleProps['tooltip']>['formatter'] = (value) => `${value}%`;
     const fileInputRef = useRef(null);
     
 
@@ -57,12 +60,13 @@ export default function Option({setImageUrl, setCategory, thumbnail}: option) {
     }
 
     const getDetails = async (value: string) => {
-        const {data} = await axios.get(`http://127.0.0.1:8000/api/category/show/${value}`);        
-        
-        setCategory(data.data)
+        setCategoryId(value)
     }
 
-
+    if(dataDetails && !isLoadingDetails){
+        setCategory(dataDetails.data)
+    }
+    
     
     return (
         <Flex vertical gap={30}>

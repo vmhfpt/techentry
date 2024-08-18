@@ -272,7 +272,6 @@ export default function ListOrder() {
         <Flex gap={20} vertical>
         
           <Table
-            
             pagination={{ pageSize: 8 }}
             columns={columns}
             size='middle'

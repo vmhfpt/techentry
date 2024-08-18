@@ -42,8 +42,8 @@ export const CATS_DISCOVER: CardCategory3Props[] = [
 const DiscoverMoreSlider = () => {
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
- const {data, isLoading } = useGetVouchersQuery({});
-useEffect(() => {
+  const { data, isLoading } = useGetVouchersQuery({});
+  useEffect(() => {
     const OPTIONS: any = {
       perView: 2.8,
       gap: 32,
