@@ -26,7 +26,6 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
   const debouncedValue = useDebounce(searchKey, 500)
 
   const navigate = useNavigate()
-  console.log(filterProducts)
   const handleSearch = (e: any) => {
     setSearchKey(e.target.value)
   }
@@ -149,9 +148,8 @@ const MainNav2: FC<MainNav2Props> = ({ className = '' }) => {
 
           <div className='flex-1 flex items-center justify-end '>
             {searchForm()}
-            {!showSearchForm && <LangDropdown />}
             <AvatarDropdown />
-            <CartDropdown />
+            <CartDropdown/>
           </div>
         </div>
       </div>

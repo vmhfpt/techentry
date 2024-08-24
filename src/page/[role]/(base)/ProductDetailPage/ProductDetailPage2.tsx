@@ -746,7 +746,7 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
 
           <Row gutter={[32, 24]}>
             <Col className="gutter-row " span={16}>
-              <div className="py-5 rounded-xl relative max-h-[500px] p-4 overflow-hidden border-[1px] border-gray-100 min-h-[500px]" style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+              <div className="py-5 rounded-xl relative max-h-[700px] p-4 overflow-hidden border-[1px] border-gray-100 min-h-[500px]" style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
                 <div dangerouslySetInnerHTML={{ __html: data.data.content }} />
                 <div style={{background: 'linear-gradient(180deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, .91) 50%, #fff 55%)'}} className=" absolute bottom-0 left-0 p-2 flex justify-center items-center w-full">
                   <Button onClick={()=>setOpenContent(true)}>
@@ -772,12 +772,12 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
                   header={<div className="text-[20px] font-bold">Thông số kĩ thuật</div>}
                   footer={<div><Button onClick={()=>setOpenDetail(true)} className="w-full">Xem cấu hình chi tiết</Button></div>}
                   bordered
-                  dataSource={details.flatMap((item: IDetail) => item.attributes).slice(0,13)}
+                  dataSource={details.flatMap((item: IDetail) => item.attributes).slice(0,10)}
                   renderItem={(item: IAttribute) => (
                     <List.Item className=" flex justify-between">
                       
-                        <div>{item.name}</div> 
-                        <div>
+                        <div className="w-[30%]">{item.name}</div> 
+                        <div className="w-[50%]">
                           <ul>
                             {item.values.map((item, key)=>(
                               <li key={key}>
@@ -811,9 +811,8 @@ import { useGetVouchersQuery } from "../../(manager)/voucher/VoucherEndpoint";
                         dataSource={item.attributes}
                         renderItem={(item) => (
                           <List.Item className=" flex justify-between">
-                            
-                              <div>{item.name}</div>
-                              <div>
+                              <div className="w-[30%]">{item.name}</div> 
+                              <div className="w-[50%]">
                                 <ul>
                                   {item.values.map((item, key)=>(
                                     <li key={key}>

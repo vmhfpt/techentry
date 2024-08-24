@@ -12,6 +12,8 @@ import LexicalEditor from '@/components/TextEditor/LexicalEditor';
 import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { setLoading, setOpenModalLogin } from "@/app/webSlice";
+import { useAppDispatch } from '@/app/hooks';
 
 
 
@@ -76,6 +78,7 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 function AddProduct() {
   const [addProduct, {isLoading : isLoadingAddProduct}] = useCreateProductMutation();
+  const dispatch = useAppDispatch()
   
   const [imageUrl, setImageUrl] = useState<Blob>();
   const [form] = Form.useForm();
@@ -93,7 +96,7 @@ function AddProduct() {
     id: `${Date.now()}${getRandomNumber()}`,
     name: '',
     attribute: [
-      {
+      { 
         id: `${Date.now()}${getRandomNumber()}`,
         image: null,
         url: null,
@@ -137,8 +140,8 @@ function AddProduct() {
       // Tìm đối tượng idDetail hiện có trong acc hoặc tạo mới nếu không tồn tại
         let detail = acc.find(d => d.id === item.idDetail);
         if (!detail) {
-            detail = { id: item.idDetail, attributes: [] };
-            acc.push(detail);
+          detail = { id: item.idDetail, attributes: [] };
+          acc.push(detail);
         }
     
         // Thêm thuộc tính vào detail
@@ -170,8 +173,10 @@ function AddProduct() {
     
         
     try {
+      dispatch(setLoading(true))
       await addProduct(formdata).unwrap();
       popupSuccess('Add product success');
+      dispatch(setLoading(false))
       // navigate('..');
     } catch (error) {
       popupError('Add product error');

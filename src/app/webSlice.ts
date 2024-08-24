@@ -11,6 +11,7 @@ export interface WebState {
   notification: boolean,
   backgroundColor: string,
   openModalLogin: boolean
+  openModalSigin: boolean
 }
 
 const initialState: WebState = {
@@ -23,7 +24,8 @@ const initialState: WebState = {
   fixedNavbar: true,
   loading: false,
   notification: false,
-  openModalLogin: false
+  openModalLogin: false,
+  openModalSigin: false
 }
 
 export const webSlice = createSlice({
@@ -53,6 +55,10 @@ export const webSlice = createSlice({
     setOpenModalLogin: (state, {payload}) => {
       state.openModalLogin = payload
       
+    },
+    setOpenModalSignin: (state, {payload}) => {
+      state.openModalSigin = payload
+      
     }
   }
 })
@@ -63,7 +69,8 @@ export const {
   setMiniSidenav, 
   setNotification, 
   setLoading,
-  setOpenModalLogin
+  setOpenModalLogin,
+  setOpenModalSignin
 } = webSlice.actions
 
 export default webSlice.reducer

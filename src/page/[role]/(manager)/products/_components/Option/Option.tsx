@@ -4,7 +4,7 @@ import { PlusOutlined} from '@ant-design/icons';
 import axios from 'axios';
 import { useGetBrandsQuery } from '../../../brand/BrandEndpoints';
 import { IBrand } from '@/common/types/brand.interface';
-import { useGetCategoriesQuery, useGetDetailCategoryQuery } from '../../../category/CategoryEndpoints';
+import { useGetCategoriesQuery } from '../../../category/CategoryEndpoints';
 import { ICategory } from '@/common/types/category.interface';
 import PermMediaRoundedIcon from '@mui/icons-material/PermMediaRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -15,15 +15,11 @@ interface option{
 }
 
 export default function Option({setImageUrl, setCategory, thumbnail}: option) {
-    const [categoryId, setCategoryId] = useState<string|null>(null);
     const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
-    const {data: dataDetails, isLoading : isLoadingDetails} = useGetDetailCategoryQuery(categoryId, {
-        skip: !categoryId
-    });
     const {data : dataBrands, isLoading : isLoadingBrand} = useGetBrandsQuery({});
     const [DisplayPic, setDisplayPic] = useState<string>();
+    const formatter: NonNullable<SliderSingleProps['tooltip']>['formatter'] = (value) => `${value}%`;
     const fileInputRef = useRef(null);
-    
 
     const brands = dataBrands ? dataBrands?.data?.map((item : IBrand) => {
         return {
@@ -60,13 +56,10 @@ export default function Option({setImageUrl, setCategory, thumbnail}: option) {
     }
 
     const getDetails = async (value: string) => {
-        setCategoryId(value)
+        const {data} = await axios.get(`http://127.0.0.1:8000/api/category/show/${value}`);        
+        
+        setCategory(data.data)
     }
-
-    if(dataDetails && !isLoadingDetails){
-        setCategory(dataDetails.data)
-    }
-    
     
     return (
         <Flex vertical gap={30}>
@@ -75,7 +68,7 @@ export default function Option({setImageUrl, setCategory, thumbnail}: option) {
             <Form.Item
                 name="upload"
                 className='p-10 sm:rounded-xl border-[#F1F1F4] m-0 bg-[#ffff]'
-                rules={[{ required: true, message: 'Please upload a file!' }]}
+                rules={[{ required: thumbnail ? false : true, message: 'Please upload a file!' }]}
                 style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}
             >
                 <Flex vertical gap={20}>

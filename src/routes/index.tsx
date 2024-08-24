@@ -65,6 +65,7 @@ import AttributeManagementV2 from '@/page/[role]/(manager)/attribute/indexV2'
 import AddDetail from '@/page/[role]/(manager)/details/_component/add'
 import EditDetail from '@/page/[role]/(manager)/details/_component/edit'
 import EditAttributeV2 from '@/page/[role]/(manager)/attribute/_components/attribute/editV2'
+import ListCategory from '@/page/[role]/(manager)/category/_components/list'
 
 export default function Router() {
   return (
@@ -79,12 +80,6 @@ export default function Router() {
           <Route path='' element={<Base />}>
             <Route path='login' element={<PageLogin />} />
             <Route path='signup' element={<PageSignUp />} />
-
-            <Route path='contact' element={<PageContact />} />
-            <Route path='about' element={<PageAbout />} />
-
-            <Route path='blog' element={<BlogPage />} />
-            <Route path='blog/:slug' element={<BlogSingle />} />
 
             <Route
               path='account'
@@ -178,15 +173,16 @@ export default function Router() {
               <Route path=':id' element={<EditBrand />} />
             </Route>
 
-            <Route path='categories' element={<CategoryManagement />}>
+            <Route path='categories'>
+              <Route index element={<ListCategory />}/>
               <Route path='add' element={<AddCategory />} />
               <Route path=':id' element={<EditCategory />} />
             </Route>
 
-            <Route path='attributes' element={<AttributeManagementV2 />}>
+            {/* <Route path='attributes' element={<AttributeManagementV2 />}>
               <Route path='add' element={<AddAttribute />} />
               <Route path=':id' element={<EditAttributeV2 />} />
-            </Route>
+            </Route> */}
 
             <Route path='post-categories' element={<PostCategoryManagement />}>
               <Route path='add' element={<AddPostCategory />} />

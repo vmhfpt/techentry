@@ -1,7 +1,6 @@
 import { Col, Flex, Row, Button, Form, Input, Drawer, Select, UploadProps, GetProp } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import React, {  useEffect, useRef, useState } from 'react'
-import Variant from './Variant/variant';
 import getRandomNumber from '@/utils/randomNumber';
 import TableVariant from './Variant/TableVariant'
 import Option from './Option/Option'
@@ -12,29 +11,26 @@ import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { useGetCategoriesQuery } from '../../category/CategoryEndpoints';
+import { useGetGalleryQuery } from '@/app/endPoint/GalleryEndPoint';
+import VariantUpdate from './Variant/VariantUpdate';
+import TableVariantDemo from './Variant/TableVariantDemo';
+import { CloudUploadOutlined, DeleteOutlined, DownOutlined, MinusCircleOutlined, PlusCircleOutlined, PlusOutlined  } from '@ant-design/icons';
 
 
 interface gallery{
-  image: File | string
+  id?: string
+  image?: File | string
   displayPic: string
 }
 
 interface attribute{
   id: string,
   value: string,
-  image: File|null,
-  url: string|null
 }
 interface variant{
   id: string,
   name: string,
   attribute: attribute[]
-}
-
-interface detailsAtrr{
-  id: string | number,
-  idDetail: string
-  values: Array<string>
 }
 
 interface Attribute {
@@ -64,10 +60,15 @@ interface Detail {
   id: string,
   name: string,
   attributes: {
-    detail_id: string,
     id: string,
     name: string
   }[]
+}
+
+interface PayloadGallery {
+  id: string | number,
+  add?: (string|File)[]
+  delete?: (string|number)[]
 }
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -77,7 +78,11 @@ function EditProduct() {
   const {id} = useParams()  
   const [addProduct, {isLoading : isLoadingAddProduct}] = useCreateProductMutation();
   const {data: product, isLoading: isLoadingProduct} = useEditProductQuery(id)
-  const {data: dataCategories, isLoading : isLoadingCategory} = useGetCategoriesQuery({});
+  const {data: dataGallery, isLoading: isLoadingGallery} = useGetGalleryQuery(id)
+  const [editor, setEditor] = useState<string>('');
+  const [payloadGallery, setPayloadGallery] = useState<PayloadGallery>({
+    id: id ?? ''
+  });
 
   const [imageUrl, setImageUrl] = useState<Blob>();
   const [form] = Form.useForm();
@@ -85,97 +90,84 @@ function EditProduct() {
   const fileInputRef = useRef<any>(null);
   const numberFile = useRef<number>(0);
   const navigate = useNavigate()
-  
 
   const [category, setCategory] = useState<Category | null>(null);
-  const [detailsAttr, setDetailsAttr] = useState<detailsAtrr[]>([]);
 
 
-  const [variant, setVariant] = useState<Array<variant>>([{
-    id: `${Date.now()}${getRandomNumber()}`,
-    name: '',
-    attribute: [
-      {
-        id: `${Date.now()}${getRandomNumber()}`,
-        image: null,
-        url: null,
-        value: ''
-      },
-    ]
-  }]);  
+  const [variant, setVariant] = useState<Array<variant>>([]);  
   
 
   const onFinish = async () => {    
-    const name = form.getFieldValue('name');
-    const content = form.getFieldValue('content');
-    const category_id = form.getFieldValue('category_id');
-    const brand_id = form.getFieldValue('brand_id');
-    const product_item = form.getFieldValue('variant');
-    const is_active = form.getFieldValue('is_active') ? 1 : 0;
-    const is_hot_deal = form.getFieldValue('is_hot_deal') ? 1 : 0;
-    const is_good_deal = form.getFieldValue('is_good_deal') ? 1 : 0;
-    const is_new = form.getFieldValue('is_new') ? 1 : 0;
-    const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;    
+    // const name = form.getFieldValue('name');
+    // const content = form.getFieldValue('content');
+    // const category_id = form.getFieldValue('category_id');
+    // const brand_id = form.getFieldValue('brand_id');
+    // const product_item = form.getFieldValue('variant');
+    // const is_active = form.getFieldValue('is_active') ? 1 : 0;
+    // const is_hot_deal = form.getFieldValue('is_hot_deal') ? 1 : 0;
+    // const is_good_deal = form.getFieldValue('is_good_deal') ? 1 : 0;
+    // const is_new = form.getFieldValue('is_new') ? 1 : 0;
+    // const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;    
     
-    const newProductItem = [];    
+    // const newProductItem = [];    
 
-    for(const key in product_item){      
-      const id = key.split('-');
-      const image = variant[0].attribute.find(item => item.id === id[0])?.image;
-      const newVariant = variant.map((item, key)=>({
-        variant: item.name,
-        attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value 
-      }));
+    // for(const key in product_item){      
+    //   const id = key.split('-');
+    //   const image = variant[0].attribute.find(item => item.id === id[0])?.image;
+    //   const newVariant = variant.map((item, key)=>({
+    //     variant: item.name,
+    //     attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value 
+    //   }));
 
-      newProductItem.push({
-        id: id[0],
-        image,
-        variants: newVariant,
-        ...product_item[key]
-      });
-    }    
+    //   newProductItem.push({
+    //     id: id[0],
+    //     image,
+    //     variants: newVariant,
+    //     ...product_item[key]
+    //   });
+    // }    
     
-    const details = detailsAttr.reduce((acc, item) => {
-      // Tìm đối tượng idDetail hiện có trong acc hoặc tạo mới nếu không tồn tại
-        let detail = acc.find(d => d.id === item.idDetail);
-        if (!detail) {
-            detail = { id: item.idDetail, attributes: [] };
-            acc.push(detail);
-        }
+    // const details = detailsAttr.reduce((acc, item) => {
+    //   // Tìm đối tượng idDetail hiện có trong acc hoặc tạo mới nếu không tồn tại
+    //     let detail = acc.find(d => d.id === item.idDetail);
+    //     if (!detail) {
+    //         detail = { id: item.idDetail, attributes: [] };
+    //         acc.push(detail);
+    //     }
     
-        // Thêm thuộc tính vào detail
-        detail.attributes.push({
-            id: item.id,
-            values: item.values
-        });
+    //     // Thêm thuộc tính vào detail
+    //     detail.attributes.push({
+    //         id: item.id,
+    //         values: item.values
+    //     });
     
-        return acc;
-    }, [] as ResultItem[]);    
+    //     return acc;
+    // }, [] as ResultItem[]);    
   
 
-    const formdata = new FormData();
+    // const formdata = new FormData();
 
-    formdata.append('thumbnail', imageUrl ? imageUrl : '');
-    formdata.append('gallery', gallery ? JSON.stringify(gallery) : '');
-    formdata.append('name', name);
-    formdata.append('content', content);
-    formdata.append('category_id', category_id);
-    formdata.append('brand_id', brand_id);
-    formdata.append('is_active', String(is_active));
-    formdata.append('is_hot_deal', String(is_hot_deal));
-    formdata.append('is_good_deal', String(is_good_deal));
-    formdata.append('is_new', String(is_new));
-    formdata.append('is_show_home', String(is_show_home));
-    formdata.append('product_details', JSON.stringify(details));
-    formdata.append('product_items', JSON.stringify(newProductItem));    
+    // formdata.append('thumbnail', imageUrl ? imageUrl : '');
+    // formdata.append('gallery', gallery ? JSON.stringify(gallery) : '');
+    // formdata.append('name', name);
+    // formdata.append('content', content);
+    // formdata.append('category_id', category_id);
+    // formdata.append('brand_id', brand_id);
+    // formdata.append('is_active', String(is_active));
+    // formdata.append('is_hot_deal', String(is_hot_deal));
+    // formdata.append('is_good_deal', String(is_good_deal));
+    // formdata.append('is_new', String(is_new));
+    // formdata.append('is_show_home', String(is_show_home));
+    // formdata.append('product_details', JSON.stringify(details));
+    // formdata.append('product_items', JSON.stringify(newProductItem));    
         
-    try {
-      await addProduct(formdata).unwrap();
-      popupSuccess('Add product success');
-      navigate('..');
-    } catch (error) {
-      popupError('Add product error');
-    }
+    // try {
+    //   await addProduct(formdata).unwrap();
+    //   popupSuccess('Add product success');
+    //   navigate('..');
+    // } catch (error) {
+    //   popupError('Add product error');
+    // }
     
   }
 
@@ -189,27 +181,30 @@ function EditProduct() {
   );
 
   const handleSetDetail = () => {
-    form.resetFields(['variant']);
     setVariant([
         ...variant,
       {
         id: Date.now() + '',
         name: '',
-        attribute: [
-          {
-            id: Date.now() + '',
-            value: '',
-            image: null,
-            url: null
-          }
-        ]
+        attribute: []
       }
     ])
   }  
   
   const handleRemoveDetail = (name: string) => {  
-    form.resetFields(['variant']);
-    const updatedVariant = variant.filter((item)=>item.id != name)  
+    const updatedVariant = variant.filter((item)=>{
+      const variants = form.getFieldValue('variant');
+      if(item.id == name){
+        const newVariant = variants.map((itemc)=>{
+          delete itemc[item.name]
+          return {
+            ...itemc,
+          }
+        })
+        form.setFieldValue('variant', newVariant)
+      }
+      return item.id != name
+    })  
     if(variant.length > 1){
       setVariant(updatedVariant)
     }
@@ -248,39 +243,129 @@ function EditProduct() {
             image: newFile,
             displayPic:  URL.createObjectURL(file)
           }
-        ]);        
+        ]);  
+        setPayloadGallery({
+          ...payloadGallery,
+          add: [
+            ...payloadGallery.add ?? [],
+            newFile
+          ]
+        })   
+           
       }
     }
     e.target.value = null;
       
   }  
 
-  const handleDeleteGallery = (id: number) => {
+  const handleDeleteGallery = (index: number, id: string) => {    
     numberFile.current--
     setGallery([
-      ...gallery.filter((item, key) => key != id)
+      ...gallery.filter((item, key) => key != index)
     ])
-  }
+    
+    if(id){
+      if(payloadGallery.delete && payloadGallery.delete.indexOf(id) != -1){
+        return
+      }else{
+        setPayloadGallery({
+          ...payloadGallery,
+          delete: [
+            ...payloadGallery.delete ?? [],
+            id
+          ]
+        })
+      }
+    }
+  }  
+
+  const handleAdd = () => {
+      // Thêm mục mới với dữ liệu mặc định
+      form.setFieldsValue({
+          variant: [
+              ...form.getFieldValue('variant'),
+              {
+                  image: '',
+                  quantity: null,
+                  price: null,
+                  price_sale: null,
+                  sku: '',
+                  status: 'new'
+              }
+          ]
+      });
+  };
+
 
   useEffect(()=>{
     if(product && !isLoadingProduct){
-      const {name, content, category_id, brand_id} = product.data
+      const {name, content, category_id, brand_id, category, products} = product.data
+      const variantModels: variant[] = product.variants
+      const variantSet = products.map((item)=>({
+        id: item.id,
+        ...item.variants.reduce((acc, item)=>{
+          acc[item.variant_name] = item.name
+          return acc
+        }, {}),
+        quantity: item.quantity,
+        price: item.price,
+        price_sale: item.price_sale,
+        status: 'edit'
+      }))
+
       const addForm = {
         name,
         category_id,
-        brand_id
+        brand_id,
+        content,
+        variant: variantSet
       }
+    setEditor(`${content}`)
+    setCategory(category)
+    category.details.forEach((item)=>{
+      item.attributes.forEach((item)=>{
+        form.setFieldValue(`attr-${item.id}`, item.values.map((item)=>item.name))
+      })
+    })
+    setVariant([
+      ...variantModels
+    ])
+    variantModels.forEach((item: variant)=>{
+      form.setFieldValue(`input-${item.id}`, item.name)
+      item.attribute.forEach((item)=>{
+        form.setFieldValue(`attr-value-${item.id}`, item.value)
+      })
+    })
 
     form.setFieldsValue(addForm)
     }
   }, [product])
+
+  useEffect(()=>{
+    if(dataGallery && !isLoadingGallery){
+      const galleries = dataGallery.data
+      
+      setGallery([
+        ...gallery,
+        ...galleries.
+        filter((item) => 
+          gallery.findIndex(itemCheck => 
+            itemCheck.id === item.id
+          ) === -1
+        ).map((item)=>({
+            id: item.id,
+            displayPic: item.image
+          })
+        )
+      ]);
+    }
+  }, [dataGallery])  
 
   return (
     <>
       <Form
         layout='vertical'
         form={form}
-        name='nest-messages'
         onFinish={onFinish}
         className='p-10 relative'
       >
@@ -304,7 +389,11 @@ function EditProduct() {
 
                 {/* General */}
                 <div className=' p-[1.75rem] rounded-xl h-full bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}>
-                  <h2 className='mb-5 font-bold text-[20px]'>Thông tin chung</h2>
+                  <Flex align='center' justify='space-between'>
+                    <h2 className='mb-5 font-bold text-[20px]'>Thông tin chung</h2>
+                    <Button htmlType='submit'>Cập nhật</Button>
+                  </Flex>
+
                   <Flex vertical  gap={5} className='rounded-xl p-[1.75rem] border-[1px]'>
                     <Flex vertical gap={10}>
                       <h3 className='font-bold text-[16px]'>Tên sản phẩm</h3>
@@ -325,7 +414,6 @@ function EditProduct() {
                       </Form.Item>
                     </Flex>
                     <Flex vertical gap={10}>
-
                       <h3 className='font-bold text-[16px]'>Mô tả sản phẩm</h3>
                       <Form.Item
                         name={'content'}
@@ -336,7 +424,11 @@ function EditProduct() {
                           }
                         ]}
                       >
-                        <LexicalEditor form={form}/>
+                        {
+                        
+                        <LexicalEditor form={form} defaultValue={editor} />
+                        
+                        }
                       </Form.Item>
 
                     </Flex>
@@ -413,7 +505,7 @@ function EditProduct() {
                                     className='w-[30px] h-[30px] rounded-full bg-[#fff] absolute top-[-10px] right-[-10px] flex items-center justify-center hover:text-blue-500 cursor-pointer overflow-hidden' 
                                     style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} 
                                     onClick={()=>{
-                                      handleDeleteGallery(index)
+                                      handleDeleteGallery(index, item.id ?? '')
                                     }}
                                   >
                                     <CloseRoundedIcon style={{fontSize: 20}} />
@@ -445,38 +537,13 @@ function EditProduct() {
                                     {
                                       required: true,
                                       message: 'Trường này không được bỏ trống'
-                                    }
+                                    },
                                   ]}
+
                                 >
                                   <Select
                                     mode='tags'
-                                    onChange={(e)=>{
-                                      const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
-                                      if(existingAttrIndex > -1){
-                                        const newDetailAttr = detailsAttr.map((item, index) => {
-                                          if (index === existingAttrIndex) {
-                                            return {
-                                              ...item,
-                                              values: e
-                                            };
-                                          }
-                                          return item;
-                                        });
-                                        setDetailsAttr(newDetailAttr)
-                                      }else {
-                                        // Nếu mục không tồn tại, thêm mới vào mảng
-                                        const newDetailAttr = [
-                                          ...detailsAttr,
-                                          {
-                                            id: attr.id,
-                                            idDetail: item.id,
-                                            values: e
-                                          }
-                                        ];
-                                        setDetailsAttr(newDetailAttr);
-                                      }
-
-                                    }}
+                                    className='custom-seclect'
                                     style={{ width: '100%'}} 
                                   />
                                 </Form.Item> 
@@ -497,7 +564,7 @@ function EditProduct() {
                     <Flex vertical gap={20}>
                       {variant.map((detail, i) => (
                         <Flex vertical gap={10} key={i}>
-                          <Variant 
+                          <VariantUpdate 
                             key={detail.id} 
                             show={i} 
                             keyValue={detail.id} 
@@ -530,14 +597,18 @@ function EditProduct() {
                   <Flex className='mb-5' align='center' justify='space-between'>
                     <h2 className='font-bold text-[20px]'>Danh sách phân loại hàng</h2>
 
-                    <Button className='border-dashed'>
-                      Áp dụng dữ liệu
-                    </Button>
+                        <Button
+                            type="dashed"
+                            onClick={handleAdd}
+                            icon={<PlusOutlined />}
+                        >
+                            Add
+                        </Button>
                   </Flex>
                   {
                     category
                     ?
-                    <TableVariant variant={variant} setVariant={setVariant} form={form}/>
+                    <TableVariantDemo variant={variant} form={form}/>
                     :
                     ''
                   }

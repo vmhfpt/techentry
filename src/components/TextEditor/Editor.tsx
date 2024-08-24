@@ -72,14 +72,18 @@ import TwitterPlugin from './plugins/TwitterPlugin';
 import YouTubePlugin from './plugins/YouTubePlugin';
 import ContentEditable from './ui/ContentEditable';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $generateNodesFromDOM } from '@lexical/html';
 
 
 const skipCollaborationInit =
   // @ts-expect-error
   window.parent != null && window.parent.frames.right === window;
 
-export default function Editor(): JSX.Element {
+export default function Editor({defaultValue}: {defaultValue?: string}): JSX.Element {
   const {historyState} = useSharedHistoryContext();
+  const [editor] = useLexicalComposerContext();
+  
   const {
     settings: {
       isCollab,
@@ -130,6 +134,19 @@ export default function Editor(): JSX.Element {
       window.removeEventListener('resize', updateViewPortWidth);
     };
   }, [isSmallWidthViewport]);
+
+  useEffect(()=>{
+    if(defaultValue){
+      editor.update(() => {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(defaultValue, 'text/html');
+        const nodes = $generateNodesFromDOM(editor, dom);
+        const root = $getRoot();
+        root.append(...nodes);
+      });
+    }
+  }, [defaultValue])
+
 
   return (
     <>

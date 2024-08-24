@@ -34,6 +34,9 @@ const ProductCard: FC<ProductCardProps> = ({
     thumbnail,
     slug,
     products,
+    products_sum_product_itemsquantity,
+    order_details_sum_quantity,
+    is_active
   } = data;
   const [addToCart, {isLoading}] = useAddToCartMutation();
   const [variantActive, setVariantActive] = React.useState(0);
@@ -41,17 +44,24 @@ const ProductCard: FC<ProductCardProps> = ({
   const [image, setImage] = React.useState(thumbnail);
   const blocksRef = useRef([]);
   const [maxWidth, setMaxWidth] = useState(0);
-
+  
+  
   useEffect(() => {
     const widths = blocksRef.current.map(block => block.offsetWidth);
     const max = Math.max(...widths);
     setMaxWidth(max);
   }, []);
-
+  
   const prices = products.map((product: IProductItem) => parseFloat(product.price));
+  const price_sale = products.map((product: IProductItem) => parseFloat(product.price_sale));
   const maxPrice = Math.max(...prices);
-  // const minPrice = Math.min(...prices);  
-
+  const maxPriceSale = Math.max(...price_sale)
+  
+  const productVariantDetail = {
+    price: maxPrice,
+    price_sale: maxPriceSale
+  }
+  
   const firstVariantGroup: Set<string> = new Set();
   const secondVariantGroup: Set<string> = new Set();
 
@@ -270,17 +280,14 @@ const ProductCard: FC<ProductCardProps> = ({
         <Link to={`/product-detail/${slug}`} className="absolute inset-0"></Link>
 
         <div className="relative flex-shrink-0  rounded-3xl overflow-hidden z-1 group">
-          <Link to={`/product-detail/${slug}`} className="block">
+          <Link to={`/product-detail/${slug}`} className="block p-5">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
               src={image}
-              className="object-cover w-full h-full drop-shadow-xl"
             />
           </Link>
 
-          <ProductStatus status={status} />
-
-          <LikeButton liked={isLiked} className="absolute top-3 right-3 z-10" />
+          <ProductStatus productVariantDetail={productVariantDetail} />
 
           {secondVariantArray && secondVariantArray.length ? renderSizeList() : renderGroupButtons()}
         </div>
@@ -301,8 +308,12 @@ const ProductCard: FC<ProductCardProps> = ({
             <div className="flex items-center mb-0.5">
               <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
               <span className="text-sm ml-1 text-slate-500 dark:text-slate-400">
-                {(Math.random() * 1 + 4).toFixed(1)} (
-                {Math.floor(Math.random() * 70 + 20)} reviews)
+                {(Math.random() * 1 + 4).toFixed(1)} 
+                (
+                  {
+                    `${order_details_sum_quantity ? order_details_sum_quantity : 0} Đã mua`
+                  }
+                )
               </span>
             </div>
           </div>

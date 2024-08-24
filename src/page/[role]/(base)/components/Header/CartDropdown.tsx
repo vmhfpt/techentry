@@ -15,7 +15,8 @@ import { useAppDispatch } from "@/app/hooks";
 export default function CartDropdown() {
   const dispatch = useAppDispatch();
   const [user] = useLocalStorage('user', undefined);
-const {data: carts} =  useGetCartsQuery(undefined, {skip: !user}) 
+  const {data: carts} =  useGetCartsQuery(undefined, {skip: !user}) 
+  
  
   const [deleteCart] = useDeleteCartMutation();
   const renderProduct = (item: ICart, index: number, close: () => void) => {
