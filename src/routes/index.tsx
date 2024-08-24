@@ -63,6 +63,7 @@ import AttributeManagementV2 from '@/page/[role]/(manager)/attribute/indexV2'
 import AddDetail from '@/page/[role]/(manager)/details/_component/add'
 import EditDetail from '@/page/[role]/(manager)/details/_component/edit'
 import EditAttributeV2 from '@/page/[role]/(manager)/attribute/_components/attribute/editV2'
+import GuardAdmin from '@/middleware/GruardAdmin'
 
 export default function Router() {
   return (
@@ -132,7 +133,7 @@ export default function Router() {
 
           <Route path='admin/login' element={<Login />} />
 
-          <Route path='admin' element={<Manager />}>
+          <Route path='admin' element={<GuardAdmin> <Manager /></GuardAdmin>}>
             <Route index element={<Navigate to='/admin/dashboard' />} />
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='billing' element={<Billing />} />

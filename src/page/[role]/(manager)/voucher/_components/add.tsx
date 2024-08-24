@@ -53,14 +53,14 @@ export default function ModalCreateVoucher({
           validateMessages={validateMessages}
           autoComplete="off"
           layout="vertical"
-          initialValues={{type: 'number', status: 'private', is_activate: '1'}}
+          initialValues={{ type: 'number', status: 'private', is_activate: '1' }}
         >
           {/* <Form.Item
             name={'code'}
             label='Code'
 
           > */}
-            {/* <Input placeholder='Nhập mã Voucher' disabled />
+          {/* <Input placeholder='Nhập mã Voucher' disabled />
           </Form.Item> */}
 
           <Form.Item
@@ -79,16 +79,16 @@ export default function ModalCreateVoucher({
             label='Type voucher'
           >
             <Select
-      defaultValue="number"
-    
-    
-      options={[
-        { value: 'number', label: 'Số lượng' },
-        { value: 'percent', label: 'Phần trăm' },
-        { value: 'free_ship', label: 'Free ship' },
-        
-      ]}
-    />
+              defaultValue="number"
+
+
+              options={[
+                { value: 'number', label: 'Số lượng' },
+                { value: 'percent', label: 'Phần trăm' },
+                { value: 'free_ship', label: 'Free ship' },
+
+              ]}
+            />
           </Form.Item>
 
           <Form.Item
@@ -152,7 +152,7 @@ export default function ModalCreateVoucher({
 
 
           <Form.Item
-            name={'usage_limit'}
+            name={'quantity'}
             label='Giới hạn sử dụng'
             rules={[{ required: true, type: 'number', message: 'Vui lòng nhập giới hạn sử dụng' }]}
           >
@@ -172,15 +172,15 @@ export default function ModalCreateVoucher({
             label='Status'
           >
             <Select
-      defaultValue="private"
-    
-    
-      options={[
-        { value: 'private', label: 'Private' },
-        { value: 'public', label: 'Public' },
-        
-      ]}
-    />
+              defaultValue="private"
+
+
+              options={[
+                { value: 'private', label: 'Private' },
+                { value: 'public', label: 'Public' },
+
+              ]}
+            />
           </Form.Item>
 
           <Form.Item
@@ -188,15 +188,15 @@ export default function ModalCreateVoucher({
             label='Active'
           >
             <Select
-      defaultValue="1"
-    
-    
-      options={[
-        { value: '0', label: 'Inactive' },
-        { value: '1', label: 'Active' },
-        
-      ]}
-    />
+              defaultValue="1"
+
+
+              options={[
+                { value: '0', label: 'Inactive' },
+                { value: '1', label: 'Active' },
+
+              ]}
+            />
           </Form.Item>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
