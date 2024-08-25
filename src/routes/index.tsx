@@ -43,7 +43,7 @@ import PostCategoryManagement from '@/page/[role]/(manager)/postCategory'
 import AddPostCategory from '@/page/[role]/(manager)/postCategory/_components/add'
 import EditPostCategory from '@/page/[role]/(manager)/postCategory/_components/edit'
 import ListProduct from "@/page/[role]/(manager)/products/_components/list";
-import EditProduct  from '@/page/[role]/(manager)/products/_components/edit';
+import EditProduct from '@/page/[role]/(manager)/products/_components/edit';
 import PrivilegeUser from '@/page/[role]/(manager)/user/_components/privilege'
 import PostsManagement from '@/page/[role]/(manager)/posts'
 import AddPosts from '@/page/[role]/(manager)/posts/_components/add'
@@ -66,6 +66,7 @@ import AddDetail from '@/page/[role]/(manager)/details/_component/add'
 import EditDetail from '@/page/[role]/(manager)/details/_component/edit'
 import EditAttributeV2 from '@/page/[role]/(manager)/attribute/_components/attribute/editV2'
 import ListCategory from '@/page/[role]/(manager)/category/_components/list'
+import GuardAdmin from '@/middleware/GruardAdmin'
 
 export default function Router() {
   return (
@@ -74,7 +75,7 @@ export default function Router() {
         <Route path='/' element={<Layout />}>
           <Route path='' element={<Base />}>
             <Route index element={<PageHome />} />
-            <Route path=':slug' element={<PageCategory/>}/>
+            <Route path=':slug' element={<PageCategory />} />
           </Route>
 
           <Route path='' element={<Base />}>
@@ -124,7 +125,7 @@ export default function Router() {
 
           <Route path='admin/login' element={<Login />} />
 
-          <Route path='admin' element={<Manager />}>
+          <Route path='admin' element={<GuardAdmin> <Manager /></GuardAdmin>}>
             <Route index element={<Navigate to='/admin/dashboard' />} />
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='billing' element={<Billing />} />
@@ -142,9 +143,9 @@ export default function Router() {
             <Route path='order/:id' element={<EditOrder />} />
 
             <Route path='products' element={<ProductManagement />}>
-              <Route index element={<ListProduct/>}/>
+              <Route index element={<ListProduct />} />
               <Route path='add' element={<AddProduct />} />
-              <Route path=':id' element={<EditProduct/>} />
+              <Route path=':id' element={<EditProduct />} />
             </Route>
 
             <Route path='attributes-product' element={<AttributeManagement />}></Route>
@@ -174,7 +175,7 @@ export default function Router() {
             </Route>
 
             <Route path='categories'>
-              <Route index element={<ListCategory />}/>
+              <Route index element={<ListCategory />} />
               <Route path='add' element={<AddCategory />} />
               <Route path=':id' element={<EditCategory />} />
             </Route>
