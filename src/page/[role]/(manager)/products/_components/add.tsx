@@ -1,6 +1,6 @@
 import { Col, Flex, Row, Button, Form, Input, Drawer, Select, UploadProps, GetProp, Modal, Dropdown, InputNumber } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import React, {  useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CloudUploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import Variant from './Variant/variant';
 import getRandomNumber from '@/utils/randomNumber';
@@ -8,7 +8,7 @@ import TableVariant from './Variant/TableVariant'
 import Option from './Option/Option'
 import { useCreateProductMutation, useGetProductQuery } from '../ProductsEndpoints';
 import { popupError, popupSuccess } from '@/page/[role]/shared/Toast';
-import LexicalEditor from '@/components/TextEditor/LexicalEditor';
+
 import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
@@ -17,36 +17,36 @@ import { useAppDispatch } from '@/app/hooks';
 
 
 
-interface gallery{
+interface gallery {
   image: File | string
   displayPic: string
 }
 
-interface attribute{
+interface attribute {
   id: string,
   value: string,
-  image: File|null,
-  url: string|null
+  image: File | null,
+  url: string | null
 }
-interface variant{
+interface variant {
   id: string,
   name: string,
   attribute: attribute[]
 }
 
-interface detailsAtrr{
+interface detailsAtrr {
   id: string | number,
   idDetail: string
   values: Array<string>
 }
 
 interface Attribute {
-  id: string|number;
+  id: string | number;
   values: string[];
 }
 
 interface ResultItem {
-  id: string|number;
+  id: string | number;
   attributes: Attribute[];
 }
 
@@ -77,9 +77,9 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 
 function AddProduct() {
-  const [addProduct, {isLoading : isLoadingAddProduct}] = useCreateProductMutation();
+  const [addProduct, { isLoading: isLoadingAddProduct }] = useCreateProductMutation();
   const dispatch = useAppDispatch()
-  
+
   const [imageUrl, setImageUrl] = useState<Blob>();
   const [form] = Form.useForm();
   const [formApply] = Form.useForm();
@@ -96,17 +96,17 @@ function AddProduct() {
     id: `${Date.now()}${getRandomNumber()}`,
     name: '',
     attribute: [
-      { 
+      {
         id: `${Date.now()}${getRandomNumber()}`,
         image: null,
         url: null,
         value: ''
       },
     ]
-  }]);  
-  
+  }]);
 
-  const onFinish = async () => {    
+
+  const onFinish = async () => {
     const name = form.getFieldValue('name');
     const content = form.getFieldValue('content');
     const category_id = form.getFieldValue('category_id');
@@ -116,16 +116,16 @@ function AddProduct() {
     const is_hot_deal = form.getFieldValue('is_hot_deal') ? 1 : 0;
     const is_good_deal = form.getFieldValue('is_good_deal') ? 1 : 0;
     const is_new = form.getFieldValue('is_new') ? 1 : 0;
-    const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;    
-    
-    const newProductItem = [];    
+    const is_show_home = form.getFieldValue('is_show_home') ? 1 : 0;
 
-    for(const key in product_item){      
+    const newProductItem = [];
+
+    for (const key in product_item) {
       const id = key.split('-');
       const image = variant[0].attribute.find(item => item.id === id[0])?.image;
-      const newVariant = variant.map((item, key)=>({
+      const newVariant = variant.map((item, key) => ({
         variant: item.name,
-        attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value 
+        attribute: item.attribute.find(item => item.id == id[key] && item.value)?.value
       }));
 
       newProductItem.push({
@@ -134,25 +134,25 @@ function AddProduct() {
         variants: newVariant,
         ...product_item[key]
       });
-    }       
-    
+    }
+
     const details = detailsAttr.reduce((acc, item) => {
       // Tìm đối tượng idDetail hiện có trong acc hoặc tạo mới nếu không tồn tại
-        let detail = acc.find(d => d.id === item.idDetail);
-        if (!detail) {
-          detail = { id: item.idDetail, attributes: [] };
-          acc.push(detail);
-        }
-    
-        // Thêm thuộc tính vào detail
-        detail.attributes.push({
-            id: item.id,
-            values: item.values
-        });
-    
-        return acc;
-    }, [] as ResultItem[]);    
-  
+      let detail = acc.find(d => d.id === item.idDetail);
+      if (!detail) {
+        detail = { id: item.idDetail, attributes: [] };
+        acc.push(detail);
+      }
+
+      // Thêm thuộc tính vào detail
+      detail.attributes.push({
+        id: item.id,
+        values: item.values
+      });
+
+      return acc;
+    }, [] as ResultItem[]);
+
 
     const formdata = new FormData();
 
@@ -168,10 +168,10 @@ function AddProduct() {
     formdata.append('is_new', String(is_new));
     formdata.append('is_show_home', String(is_show_home));
     formdata.append('product_details', JSON.stringify(details));
-    formdata.append('product_items', JSON.stringify(newProductItem));    
+    formdata.append('product_items', JSON.stringify(newProductItem));
     console.log(newProductItem);
-    
-        
+
+
     try {
       dispatch(setLoading(true))
       await addProduct(formdata).unwrap();
@@ -181,7 +181,7 @@ function AddProduct() {
     } catch (error) {
       popupError('Add product error');
     }
-    
+
   }
 
   const getBase64 = (file: FileType): Promise<string> =>
@@ -191,14 +191,14 @@ function AddProduct() {
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = (error) => reject(error);
     });
-  
 
-  
+
+
 
   const handleSetDetail = () => {
     form.resetFields(['variant']);
     setVariant([
-        ...variant,
+      ...variant,
       {
         id: Date.now() + '',
         name: '',
@@ -212,19 +212,19 @@ function AddProduct() {
         ]
       }
     ])
-  }  
-  
-  const handleRemoveDetail = (name: string) => {  
+  }
+
+  const handleRemoveDetail = (name: string) => {
     form.resetFields(['variant']);
-    const updatedVariant = variant.filter((item)=>item.id != name)  
-    if(variant.length > 1){
+    const updatedVariant = variant.filter((item) => item.id != name)
+    if (variant.length > 1) {
       setVariant(updatedVariant)
     }
   }
 
   const selectGallery = async (e) => {
-    if(gallery.length > 6) return;
-    
+    if (gallery.length > 6) return;
+
     const types = [
       'jpeg',
       'png',
@@ -232,44 +232,44 @@ function AddProduct() {
       'gif',
     ]
 
-    const fileSelected = e.target.files;  
-    
+    const fileSelected = e.target.files;
 
-    for(const key in fileSelected){
-      if(numberFile.current == 5) break;
-      if(typeof fileSelected[key] == 'number') break;
-      
-      const file = await fileSelected[key] ;
+
+    for (const key in fileSelected) {
+      if (numberFile.current == 5) break;
+      if (typeof fileSelected[key] == 'number') break;
+
+      const file = await fileSelected[key];
       if (!(file instanceof File)) continue;
 
       const size = file.size;
       const type = types.includes(file.type.replace('image/', ''));
 
-      const newFile = await getBase64(fileSelected[key]) ;
-        
+      const newFile = await getBase64(fileSelected[key]);
+
       if (size <= 1048576 && type) {
         numberFile.current++;
-        setGallery((pveImages)=>[
+        setGallery((pveImages) => [
           ...pveImages,
           {
             image: newFile,
-            displayPic:  URL.createObjectURL(file)
+            displayPic: URL.createObjectURL(file)
           }
-        ]);        
+        ]);
       }
     }
     e.target.value = null;
-      
-  }  
 
-  const submitApply = () => {    
+  }
+
+  const submitApply = () => {
     const variantApply = formApply.getFieldsValue()
     const price = variantApply.price
     const priceSale = variantApply.price_sale
     const quantity = variantApply.quantity
     const sku = variantApply.sku
-    
-    let idVariant: string[] = variant[0].attribute.length > 1 
+
+    let idVariant: string[] = variant[0].attribute.length > 1
       ? variant[0].attribute.slice(0, -1).map(item => item.id)
       : variant[0].attribute.map(item => item.id);
 
@@ -284,7 +284,7 @@ function AddProduct() {
           return variant[1].attribute.map(item2 => `${item}-${item2.id}`);
         }
       });
-    }    
+    }
 
     const mergeVariant = {
       ...idVariant.reduce((acc, key) => {
@@ -294,21 +294,21 @@ function AddProduct() {
     }
 
     form.setFieldValue('variant', mergeVariant)
-    
+
   }
 
   const menu = (
     <div style={{ backgroundColor: 'white', boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1.6875rem', width: 1000 }} className=' rounded-xl p-10'>
-      <Form 
-      form={formApply}
-      onFinish={submitApply}
+      <Form
+        form={formApply}
+        onFinish={submitApply}
       >
         <Row gutter={[20, 20]}>
           <Col span={5}>
             <Flex vertical gap={10}>
               <label htmlFor="" className='font-bold'>Số lượng</label>
               <Form.Item
-              className='m-0'
+                className='m-0'
                 name="quantity"
                 rules={[{ required: true, message: 'Nhập số lượng' }]}
               >
@@ -322,8 +322,8 @@ function AddProduct() {
           </Col>
           <Col span={5}>
             <Flex
-            gap={10}
-            vertical
+              gap={10}
+              vertical
             >
               <label htmlFor="" className='font-bold'>Giá</label>
               <Form.Item
@@ -331,7 +331,7 @@ function AddProduct() {
                 name="price"
                 rules={[
                   { required: true, message: 'Nhập giá' },
-                 
+
                 ]}
               >
                 <InputNumber
@@ -345,8 +345,8 @@ function AddProduct() {
           </Col>
           <Col span={5}>
             <Flex
-            gap={10}
-            vertical
+              gap={10}
+              vertical
             >
               <label htmlFor="" className='font-bold'>Giá sale</label>
               <Form.Item
@@ -355,12 +355,12 @@ function AddProduct() {
                 rules={[
                   { required: true, message: 'Nhập giá sale' },
                   {
-                    validator: (_, value)=> {
+                    validator: (_, value) => {
                       const price = formApply.getFieldValue('price');
-                      if(value > price){
+                      if (value > price) {
                         return Promise.reject('Không được lớn hơn giá thường')
                       }
-                      
+
                       return Promise.resolve();
                     }
                   }
@@ -377,29 +377,29 @@ function AddProduct() {
           </Col>
           <Col span={5}>
             <Flex
-            gap={10}
-            vertical
+              gap={10}
+              vertical
             >
               <label htmlFor="" className='font-bold'>SKU</label>
               <Form.Item
                 className='m-0'
                 name="sku"
               >
-                <Input 
-                placeholder="SKU" 
-                onChange={(e)=>{
-                  const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').toUpperCase();
-                  formApply.setFieldValue('sku', value)
-                }} 
+                <Input
+                  placeholder="SKU"
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').toUpperCase();
+                    formApply.setFieldValue('sku', value)
+                  }}
                 />
               </Form.Item>
             </Flex>
           </Col>
           <Col span={4}>
             <Flex
-            gap={10}
-            vertical
-            className='h-full w-full'
+              gap={10}
+              vertical
+              className='h-full w-full'
             >
               <label htmlFor="" className='font-bold'>Hành động</label>
               <Form.Item
@@ -425,7 +425,7 @@ function AddProduct() {
     setGallery([
       ...gallery.filter((item, key) => key != id)
     ])
-  }  
+  }
 
   return (
     <>
@@ -439,12 +439,12 @@ function AddProduct() {
         <Flex className='mb-5' align='center' justify='space-between'>
           <Flex justify='center' align='center' gap={20}>
             <div>
-              <Flex className='p-3 rounded-xl bg-[#fff] cursor-pointer' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1.6875rem', }}
-                onClick={()=>{
+              <Flex className='p-3 rounded-xl bg-[#fff] cursor-pointer' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 1.6875rem', }}
+                onClick={() => {
                   navigate('..')
                 }}
               >
-                <ArrowBackRoundedIcon/>
+                <ArrowBackRoundedIcon />
               </Flex>
             </div>
             <Flex vertical>
@@ -452,7 +452,7 @@ function AddProduct() {
               <span className='text-gray-500'>Quay lại trang danh sách sản phẩm</span>
             </Flex>
           </Flex>
-          
+
         </Flex>
         <Flex vertical gap={30}>
           <Row gutter={[24, 32]} align={'stretch'}>
@@ -460,14 +460,14 @@ function AddProduct() {
               <Flex vertical className='' gap={30}>
 
                 {/* General */}
-                <div className=' p-[1.75rem] rounded-xl h-full bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}>
+                <div className=' p-[1.75rem] rounded-xl h-full bg-[#ffff]' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}>
                   <Flex className='mb-5 ' justify='space-between'>
                     <h2 className='font-bold text-[20px]'>Thông tin chung</h2>
                     <Flex gap={10}>
                       <Button className='p-3' type='dashed'
-                      onClick={()=>{
-                        form.resetFields()
-                      }}
+                        onClick={() => {
+                          form.resetFields()
+                        }}
                       >
                         Cài đặt lại
                       </Button>
@@ -476,7 +476,7 @@ function AddProduct() {
                       </Button>
                     </Flex>
                   </Flex>
-                  <Flex vertical  gap={5} className='rounded-xl p-[1.75rem] border-[1px]'>
+                  <Flex vertical gap={5} className='rounded-xl p-[1.75rem] border-[1px]'>
                     <Flex vertical gap={10}>
                       <h3 className='font-bold text-[16px]'>Tên sản phẩm</h3>
                       <Form.Item
@@ -506,7 +506,7 @@ function AddProduct() {
                           }
                         ]}
                       >
-                        <LexicalEditor form={form}/>
+
                       </Form.Item>
 
                     </Flex>
@@ -518,145 +518,145 @@ function AddProduct() {
                 <Form.Item
                   name="gallery"
                   className='p-10 sm:rounded-xl border-[#F1F1F4] m-0 bg-[#ffff]'
-                  style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}
+                  style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem', }}
                 >
                   <Flex vertical>
                     <h2 className='font-bold text-[20px] mb-5'>Danh sách ảnh <span className='text-[12px]'>({gallery.length}/5)</span></h2>
-                    <div style={{ flex: 5, overflow: 'hidden'}} className='border-none rounded-xl relative bg-[#f8fafd] cursor-pointer' 
+                    <div style={{ flex: 5, overflow: 'hidden' }} className='border-none rounded-xl relative bg-[#f8fafd] cursor-pointer'
                     >
-                        <Flex className='border-dashed border-2 p-5 relative border-blue-300' vertical gap={10} justify='center' align='center' style={{ width: '100%', minHeight: "20vw", borderRadius: '12px' }}
-                          
-                        >
-                            {
-                              gallery.length < 1
-                              ?
-                              (
-                                <>
-                                  <Flex vertical gap={10} style={{ width: '100%' }}>
-                                    <Flex vertical align='center' justify='center'>
-                                        <PermMediaOutlinedIcon style={{ fontSize: '100px' }} className='text-gray-500' />
-                                    </Flex>
+                      <Flex className='border-dashed border-2 p-5 relative border-blue-300' vertical gap={10} justify='center' align='center' style={{ width: '100%', minHeight: "20vw", borderRadius: '12px' }}
+
+                      >
+                        {
+                          gallery.length < 1
+                            ?
+                            (
+                              <>
+                                <Flex vertical gap={10} style={{ width: '100%' }}>
+                                  <Flex vertical align='center' justify='center'>
+                                    <PermMediaOutlinedIcon style={{ fontSize: '100px' }} className='text-gray-500' />
                                   </Flex>
-                                  <Flex style={{ width: '100%' }} vertical justify='center' align='center' gap={10}>
-                                      <h3 className='font-bold'>
-                                        Kéo và thả tập tin của bạn vào đây
-                                      </h3>
-                                      <span style={{ fontSize: '11px' }}>
-                                        Hoặc
-                                      </span>
-                                      <Button
-                                        onClick={(e)=>{
-                                          e.stopPropagation();
-                                          if(fileInputRef.current){
-                                            fileInputRef.current.click()
-                                          }
-                                        }}
-                                        className='z-[3]'
-                                      >
-                                        Duyệt tập tin
-                                      </Button>
-                                  </Flex>
-                                </>
-                              )
-                              :
-                              ''
-                            }
-                            <input 
-                              type="file" 
-                              accept="image/*" 
-                              name="image" 
-                              id="image" 
-                              multiple 
-                              className='opacity-0 absolute inset-0'
-                              style={{}}
-                              onChange={selectGallery}
-                              ref={fileInputRef}
-                            />
-                            <Flex justify='center' align='center' gap={20} wrap className='w-full h-[100%]'>
-                              {gallery.map((item, index)=>(
-                                <div style={{ height: '7vw', boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} className='border-none rounded-xl relative w-[13%] bg-[#fff]' key={index}>
-                                  <div style={{ height: '100%', maxWidth: '100%',  overflow: 'hidden'}} className='relative group border-none rounded-xl'>
-                                      <img src={item.displayPic} alt="" className='object-cover h-[100%] object-center' style={{width: '100%' }} />
-                                  </div>
-          
-                                  <div 
-                                    className='w-[30px] h-[30px] rounded-full bg-[#fff] absolute top-[-10px] right-[-10px] flex items-center justify-center hover:text-blue-500 cursor-pointer overflow-hidden' 
-                                    style={{boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)'}} 
-                                    onClick={()=>{
-                                      handleDeleteGallery(index)
+                                </Flex>
+                                <Flex style={{ width: '100%' }} vertical justify='center' align='center' gap={10}>
+                                  <h3 className='font-bold'>
+                                    Kéo và thả tập tin của bạn vào đây
+                                  </h3>
+                                  <span style={{ fontSize: '11px' }}>
+                                    Hoặc
+                                  </span>
+                                  <Button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (fileInputRef.current) {
+                                        fileInputRef.current.click()
+                                      }
                                     }}
+                                    className='z-[3]'
                                   >
-                                    <CloseRoundedIcon style={{fontSize: 20}} />
-                                  </div>
-                                </div>
-                              ))}
-                            </Flex>
+                                    Duyệt tập tin
+                                  </Button>
+                                </Flex>
+                              </>
+                            )
+                            :
+                            ''
+                        }
+                        <input
+                          type="file"
+                          accept="image/*"
+                          name="image"
+                          id="image"
+                          multiple
+                          className='opacity-0 absolute inset-0'
+                          style={{}}
+                          onChange={selectGallery}
+                          ref={fileInputRef}
+                        />
+                        <Flex justify='center' align='center' gap={20} wrap className='w-full h-[100%]'>
+                          {gallery.map((item, index) => (
+                            <div style={{ height: '7vw', boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)' }} className='border-none rounded-xl relative w-[13%] bg-[#fff]' key={index}>
+                              <div style={{ height: '100%', maxWidth: '100%', overflow: 'hidden' }} className='relative group border-none rounded-xl'>
+                                <img src={item.displayPic} alt="" className='object-cover h-[100%] object-center' style={{ width: '100%' }} />
+                              </div>
+
+                              <div
+                                className='w-[30px] h-[30px] rounded-full bg-[#fff] absolute top-[-10px] right-[-10px] flex items-center justify-center hover:text-blue-500 cursor-pointer overflow-hidden'
+                                style={{ boxShadow: '0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075)' }}
+                                onClick={() => {
+                                  handleDeleteGallery(index)
+                                }}
+                              >
+                                <CloseRoundedIcon style={{ fontSize: 20 }} />
+                              </div>
+                            </div>
+                          ))}
                         </Flex>
+                      </Flex>
                     </div>
                   </Flex>
                 </Form.Item>
                 {/* Gallery */}
 
                 {/* Detail */}
-                <Flex vertical className='sm:rounded-xl p-10 bg-[#ffff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                <Flex vertical className='sm:rounded-xl p-10 bg-[#ffff]' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
                   <h2 className={`mb-5 font-bold text-[20px]`}>Thông tin chi tiết sản phẩm</h2>
                   <Flex vertical gap={20} className='p-5 border-[1px] rounded-xl'>
 
-                    {category && category?.details.map((item)=>(
-                        <Flex key={item.id} vertical gap={20} className='rounded-xl'>
-                          <h2 className=' font-bold text-[16px]'>{item.name}</h2>
-                          <hr />
-                          <Flex align='center' wrap gap={20}>
-                              {item.attributes.map((attr)=>(
-                                <Flex vertical gap={5} key={attr.id} className='w-[23%]'>
-                                  <h2 className='font-bold text-[14 px]'>{attr.name}</h2>
-                                  <Form.Item 
-                                    className='m-0' 
-                                    name={`attr-${attr.id}`} 
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message: 'Trường này không được bỏ trống'
-                                      }
-                                    ]}
-                                  >
-                                    <Select
-                                      className='custom-seclect'
-                                      mode='tags'
-                                      onChange={(e)=>{
-                                        const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
-                                        if(existingAttrIndex > -1){
-                                          const newDetailAttr = detailsAttr.map((item, index) => {
-                                            if (index === existingAttrIndex) {
-                                              return {
-                                                ...item,
-                                                values: e
-                                              };
-                                            }
-                                            return item;
-                                          });
-                                          setDetailsAttr(newDetailAttr)
-                                        }else {
-                                          // Nếu mục không tồn tại, thêm mới vào mảng
-                                          const newDetailAttr = [
-                                            ...detailsAttr,
-                                            {
-                                              id: attr.id,
-                                              idDetail: item.id,
-                                              values: e
-                                            }
-                                          ];
-                                          setDetailsAttr(newDetailAttr);
+                    {category && category?.details.map((item) => (
+                      <Flex key={item.id} vertical gap={20} className='rounded-xl'>
+                        <h2 className=' font-bold text-[16px]'>{item.name}</h2>
+                        <hr />
+                        <Flex align='center' wrap gap={20}>
+                          {item.attributes.map((attr) => (
+                            <Flex vertical gap={5} key={attr.id} className='w-[23%]'>
+                              <h2 className='font-bold text-[14 px]'>{attr.name}</h2>
+                              <Form.Item
+                                className='m-0'
+                                name={`attr-${attr.id}`}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: 'Trường này không được bỏ trống'
+                                  }
+                                ]}
+                              >
+                                <Select
+                                  className='custom-seclect'
+                                  mode='tags'
+                                  onChange={(e) => {
+                                    const existingAttrIndex = detailsAttr.findIndex(item => item.id === attr.id);
+                                    if (existingAttrIndex > -1) {
+                                      const newDetailAttr = detailsAttr.map((item, index) => {
+                                        if (index === existingAttrIndex) {
+                                          return {
+                                            ...item,
+                                            values: e
+                                          };
                                         }
+                                        return item;
+                                      });
+                                      setDetailsAttr(newDetailAttr)
+                                    } else {
+                                      // Nếu mục không tồn tại, thêm mới vào mảng
+                                      const newDetailAttr = [
+                                        ...detailsAttr,
+                                        {
+                                          id: attr.id,
+                                          idDetail: item.id,
+                                          values: e
+                                        }
+                                      ];
+                                      setDetailsAttr(newDetailAttr);
+                                    }
 
-                                      }}
-                                      style={{ width: '100%'}} 
-                                    />
-                                  </Form.Item> 
-                                </Flex>
-                              ))}
-                          </Flex>
+                                  }}
+                                  style={{ width: '100%' }}
+                                />
+                              </Form.Item>
+                            </Flex>
+                          ))}
                         </Flex>
+                      </Flex>
                     ))}
                   </Flex>
 
@@ -664,52 +664,52 @@ function AddProduct() {
                 {/* Detail */}
 
                 {/* Variant */}
-                <div className='p-10 rounded-xl bg-[#fff]' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                <div className='p-10 rounded-xl bg-[#fff]' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
                   <h2 className='font-bold text-[20px] mb-5'>Thông tin bán hàng</h2>
                   {
                     category
-                    ?
-                    <Flex vertical gap={20}>
-                      {variant.map((detail, i) => (
-                        <Flex vertical gap={10} key={i}>
-                          <Variant 
-                            key={detail.id} 
-                            show={i} 
-                            keyValue={detail.id} 
-                            detail={variant} 
-                            setDetail={setVariant} 
-                            handleRemoveDetail={handleRemoveDetail} 
-                            form={form} 
-                            variantModel={detail} 
-                            category={category}
-                            setCategory={setCategory}
-                          />
-                        </Flex>
-                      ))}
-                      {
-                        variant.length == 1
-                        ?
-                          <div>
-                            <Button className=' border-dashed' onClick={handleSetDetail}>Thêm biến thể 2</Button>
-                          </div>
-                        :
-                        ''
-                      }
-                    </Flex>
-                    :
-                    ''
+                      ?
+                      <Flex vertical gap={20}>
+                        {variant.map((detail, i) => (
+                          <Flex vertical gap={10} key={i}>
+                            <Variant
+                              key={detail.id}
+                              show={i}
+                              keyValue={detail.id}
+                              detail={variant}
+                              setDetail={setVariant}
+                              handleRemoveDetail={handleRemoveDetail}
+                              form={form}
+                              variantModel={detail}
+                              category={category}
+                              setCategory={setCategory}
+                            />
+                          </Flex>
+                        ))}
+                        {
+                          variant.length == 1
+                            ?
+                            <div>
+                              <Button className=' border-dashed' onClick={handleSetDetail}>Thêm biến thể 2</Button>
+                            </div>
+                            :
+                            ''
+                        }
+                      </Flex>
+                      :
+                      ''
                   }
                 </div>
 
-                <Flex vertical className='bg-[#fff] p-10 rounded-xl' style={{boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem'}}>
+                <Flex vertical className='bg-[#fff] p-10 rounded-xl' style={{ boxShadow: 'rgba(0, 0, 0, 0.05) 0rem 1.25rem 1.6875rem 0rem' }}>
                   <Flex className='mb-5' align='center' justify='space-between'>
                     <h2 className='font-bold text-[20px]'>Danh sách phân loại hàng</h2>
 
                     <Dropdown
-                    dropdownRender={()=>menu}
-                    placement='topRight' 
-                    arrow 
-                    trigger={['click']}
+                      dropdownRender={() => menu}
+                      placement='topRight'
+                      arrow
+                      trigger={['click']}
                     >
                       <Button className='border-dashed'>
                         Áp dụng dữ liệu
@@ -718,22 +718,22 @@ function AddProduct() {
                   </Flex>
                   {
                     category
-                    ?
-                    <TableVariant variant={variant} setVariant={setVariant} form={form} />
-                    :
-                    ''
+                      ?
+                      <TableVariant variant={variant} setVariant={setVariant} form={form} />
+                      :
+                      ''
                   }
                 </Flex>
                 {/* Variant */}
               </Flex>
             </Col>
             <Col span={5} className='w-full'>
-              <Option setImageUrl={setImageUrl} setCategory={setCategory}/>
+              <Option setImageUrl={setImageUrl} setCategory={setCategory} />
             </Col>
           </Row>
         </Flex>
-      </Form> 
-     
+      </Form>
+
     </>
   )
 }
